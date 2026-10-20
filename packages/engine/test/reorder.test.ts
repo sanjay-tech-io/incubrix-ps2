@@ -92,6 +92,15 @@ describe("reorder: move a section before a point, or to the end", () => {
     expect(timelineHash(materialize(ctx, moveThenCut))).toBe(timelineHash(materialize(ctx, cutOnly)));
   });
 
+  it("(c) a cut strictly inside moved material leaves both remainders, in place (the unordered-list cut path)", () => {
+    const log = edit(edit([], A), cutOp(ctx, 93 * U, 95 * U)); // inside the silence 92-98, which now plays at 90-96
+    expect(segsUs(log)).toEqual([[0, 90 * U], [92 * U, 93 * U], [95 * U, 98 * U], [90 * U, 92 * U], [98 * U, 200 * U]]);
+    expect(materialize(ctx, log).durationUs).toBe(198 * U);
+    // the same cut on the reordered video and on the original gives the same set of surviving source material
+    const plain = segsUs(edit([], cutOp(ctx, 93 * U, 95 * U)));
+    expect(plain).toEqual([[0, 93 * U], [95 * U, 200 * U]]);
+  });
+
   it("(c) a move whose span covers already-moved material moves it as one block, keeping its current order", () => {
     // after A the order is [0,90) [92,98) [90,92) [98,200); now move source 90-100.4 (covers [92,98), [90,92), and the first sentence of 98-100.4)
     const log = edit(edit([], A), moveOp(90 * U, 100_400_000, null));
@@ -163,14 +172,15 @@ describe("(b) effects after a reorder", () => {
     expect(t.answer.warnings.join(" ")).toMatch(/separate places/);
   });
 
-  it("auto-caption text follows the new order (derived from surviving words in output order)", () => {
-    const cues = autoCaptionCues(ctx, materialize(ctx, edit([], moveOp(90 * U, 92 * U, 98 * U))));
+  it("auto-caption text follows the new order: swap two sentences and their cues swap (output order, not source order)", () => {
+    // move "Captions are generated..." (98-100.4) to before "Honestly..." (90.0): they now play in the opposite order
+    const cues = autoCaptionCues(ctx, materialize(ctx, edit([], moveOp(98 * U, 100_400_000, 90 * U))));
     const texts = cues.map((c) => c.text);
-    expect(texts.indexOf("Honestly the speed is great.")).toBeGreaterThan(-1);
-    expect(texts.indexOf("Honestly the speed is great.")).toBeLessThan(texts.indexOf("Captions are generated from your words."));
+    expect(texts.indexOf("Captions are generated from your words.")).toBeGreaterThan(-1);
+    expect(texts.indexOf("Captions are generated from your words.")).toBeLessThan(texts.indexOf("Honestly the speed is great."));
     expect(cues.map((c) => c.startUs)).toEqual([...cues.map((c) => c.startUs)].sort((a, b) => a - b)); // times ascend in the output
-    const honestly = cues.find((c) => c.text.startsWith("Honestly"))!;
-    expect(honestly).toMatchObject({ startUs: 96 * U, endUs: 98 * U });
+    expect(cues.find((c) => c.text.startsWith("Captions"))).toMatchObject({ startUs: 90 * U, endUs: 92_400_000 });
+    expect(cues.find((c) => c.text.startsWith("Honestly"))).toMatchObject({ startUs: 92_400_000, endUs: 94_400_000 });
   });
 });
 

@@ -70,6 +70,19 @@ describe("grid warnings on every path that builds spans (touching words, 29.97 f
     expect(resolveOriginalRange(ctx, 2_000_000, 3_200_000).warnings.join(" ")).toMatch(TWO);
   });
 
+  it("resolveEditedRange also warns when the range STARTS exactly at a segment edge that sits on a touching-words boundary", async () => {
+    // cut 1.0 s (snapped into the silence) .. 2.0 s (between "beta." and "pricing": cannot be snapped); the next segment starts at 2.0 s
+    const { snapBoundaryUs, usToCursor } = await import("../src/cursor");
+    const { timelinePieces } = await import("../src/timemap");
+    const s = snapBoundaryUs(ctx.index, 1_000_000, NTSC);
+    const cut: Operation = { type: "cut", reason: "user", span: { start: usToCursor(ctx.index, s, NTSC), end: usToCursor(ctx.index, 2_000_000, NTSC) } };
+    const tl = materialize(ctx, [{ seq: 0, kind: "edit", group: 1, op: cut }]);
+    const second = timelinePieces(ctx, tl)[1]!;
+    expect(second.srcS).toBe(2_000_000);
+    const r = resolveEditedRange(ctx, tl, second.outS, second.outS + 500_000);
+    expect(r.warnings.join(" ")).toMatch(TWO); // the start is not "interior", so only the span-level check can find this
+  });
+
   it("they do not warn when both ends are fine (silence on the grid)", () => {
     // 4.0 s is inside the silence 3.2-6.0: snapped to the nearest frame, no warning
     expect(resolveEditedRange(ctx, tl0, 4_000_000, 5_000_000).warnings).toEqual([]);
