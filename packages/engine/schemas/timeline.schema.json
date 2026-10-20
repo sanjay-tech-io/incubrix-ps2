@@ -1,0 +1,374 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://incubrix.example/schemas/timeline.schema.json",
+  "title": "IncuBrix session document",
+  "description": "Source facts, atoms, the append-only operation log and the conversation log. The materialized Timeline (replay of the log) is defined in $defs/Timeline.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "source", "atoms", "log", "conversation"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "source": { "$ref": "#/$defs/Source" },
+    "atoms": { "type": "array", "items": { "$ref": "#/$defs/Atom" } },
+    "log": { "type": "array", "items": { "$ref": "#/$defs/LogEntry" } },
+    "conversation": { "type": "array", "items": { "$ref": "#/$defs/ConversationEntry" } }
+  },
+  "$defs": {
+    "Micros": { "type": "integer", "minimum": 0, "description": "Integer microseconds." },
+    "Sha256": { "type": "string", "pattern": "^[0-9a-f]{64}$" },
+    "AtomId": { "type": "string", "pattern": "^a_[0-9a-f]{12}$" },
+    "EffectId": { "type": "string", "pattern": "^fx_[0-9]+_[0-9]+$" },
+    "SegmentId": { "type": "string", "pattern": "^seg_[0-9]+$" },
+    "Color": { "type": "string", "pattern": "^#[0-9a-f]{6}$" },
+
+    "Source": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sha256", "durationUs", "fps", "hasAudio", "hasVideo", "variableFrameRate"],
+      "properties": {
+        "sha256": { "$ref": "#/$defs/Sha256" },
+        "durationUs": { "$ref": "#/$defs/Micros" },
+        "fps": {
+          "oneOf": [
+            { "type": "null" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["num", "den"],
+              "properties": {
+                "num": { "type": "integer", "minimum": 1 },
+                "den": { "type": "integer", "minimum": 1 }
+              }
+            }
+          ]
+        },
+        "hasAudio": { "type": "boolean" },
+        "hasVideo": { "type": "boolean" },
+        "variableFrameRate": { "type": "boolean" }
+      }
+    },
+
+    "Atom": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "startUs", "endUs", "text", "speaker", "confidencePermille", "lowConfidence", "filler", "overlapsSpeech"],
+      "properties": {
+        "id": { "$ref": "#/$defs/AtomId" },
+        "kind": { "enum": ["word", "silence"] },
+        "startUs": { "$ref": "#/$defs/Micros" },
+        "endUs": { "$ref": "#/$defs/Micros" },
+        "text": { "type": "string" },
+        "speaker": { "type": ["string", "null"] },
+        "confidencePermille": { "type": "integer", "minimum": 0, "maximum": 1000 },
+        "lowConfidence": { "type": "boolean" },
+        "filler": { "type": "boolean" },
+        "overlapsSpeech": { "type": "boolean" }
+      }
+    },
+
+    "AtomRange": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["from", "to"],
+      "properties": {
+        "from": { "$ref": "#/$defs/AtomId" },
+        "to": { "$ref": "#/$defs/AtomId" }
+      }
+    },
+    "Cursor": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["atom", "offsetUs"],
+      "properties": {
+        "atom": { "$ref": "#/$defs/AtomId" },
+        "offsetUs": { "$ref": "#/$defs/Micros" }
+      }
+    },
+    "Span": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["start", "end"],
+      "properties": {
+        "start": { "$ref": "#/$defs/Cursor" },
+        "end": { "$ref": "#/$defs/Cursor" }
+      }
+    },
+    "Rate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["num", "den"],
+      "properties": {
+        "num": { "type": "integer", "minimum": 1 },
+        "den": { "type": "integer", "minimum": 1 }
+      }
+    },
+
+    "CaptionStyle": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["color", "sizePt", "bold"],
+      "properties": {
+        "color": { "$ref": "#/$defs/Color" },
+        "sizePt": { "type": "integer", "minimum": 1 },
+        "bold": { "type": "boolean" }
+      }
+    },
+    "MusicParams": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["assetSha256", "gainDb", "duckDb", "attackUs", "releaseUs"],
+      "properties": {
+        "assetSha256": { "$ref": "#/$defs/Sha256" },
+        "gainDb": { "type": "number" },
+        "duckDb": { "type": "number", "minimum": 0 },
+        "attackUs": { "$ref": "#/$defs/Micros" },
+        "releaseUs": { "$ref": "#/$defs/Micros" }
+      }
+    },
+    "EffectParams": {
+      "oneOf": [
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "text", "style"],
+          "properties": {
+            "kind": { "const": "caption" },
+            "text": { "type": "string" },
+            "style": { "$ref": "#/$defs/CaptionStyle" }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "text", "style", "position"],
+          "properties": {
+            "kind": { "const": "text_overlay" },
+            "text": { "type": "string" },
+            "style": { "$ref": "#/$defs/CaptionStyle" },
+            "position": { "enum": ["top", "center", "bottom"] }
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind"],
+          "properties": { "kind": { "const": "mute" } }
+        },
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind"],
+          "properties": { "kind": { "const": "bleep" } }
+        }
+      ]
+    },
+
+    "Operation": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["type", "span", "reason"],
+          "properties": {
+            "type": { "const": "cut" },
+            "span": { "$ref": "#/$defs/Span" },
+            "reason": { "enum": ["user", "filler", "silence"] }
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["type", "span"],
+          "properties": { "type": { "const": "keep_only" }, "span": { "$ref": "#/$defs/Span" } }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["type", "span", "before"],
+          "properties": {
+            "type": { "const": "move" },
+            "span": { "$ref": "#/$defs/Span" },
+            "before": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/Cursor" }] }
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["type", "span", "rate"],
+          "properties": {
+            "type": { "const": "set_speed" },
+            "span": { "$ref": "#/$defs/Span" },
+            "rate": { "$ref": "#/$defs/Rate" }
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["type", "effectId", "range", "params"],
+          "properties": {
+            "type": { "const": "add_effect" },
+            "effectId": { "$ref": "#/$defs/EffectId" },
+            "range": { "$ref": "#/$defs/AtomRange" },
+            "params": { "$ref": "#/$defs/EffectParams" }
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["type", "effectId", "params"],
+          "properties": {
+            "type": { "const": "update_effect" },
+            "effectId": { "$ref": "#/$defs/EffectId" },
+            "params": { "$ref": "#/$defs/EffectParams" }
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["type", "effectId"],
+          "properties": { "type": { "const": "remove_effect" }, "effectId": { "$ref": "#/$defs/EffectId" } }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["type", "style"],
+          "properties": { "type": { "const": "auto_caption" }, "style": { "$ref": "#/$defs/CaptionStyle" } }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["type", "music"],
+          "properties": { "type": { "const": "set_music" }, "music": { "$ref": "#/$defs/MusicParams" } }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["type"],
+          "properties": { "type": { "const": "clear_music" } }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["type", "range"],
+          "properties": { "type": { "const": "protect_pause" }, "range": { "$ref": "#/$defs/AtomRange" } }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["type", "range"],
+          "properties": { "type": { "const": "unprotect_pause" }, "range": { "$ref": "#/$defs/AtomRange" } }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["type", "targetGroup"],
+          "properties": { "type": { "const": "restore" }, "targetGroup": { "type": "integer", "minimum": 1 } }
+        }
+      ]
+    },
+
+    "LogEntry": {
+      "oneOf": [
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["seq", "kind", "group", "op"],
+          "properties": {
+            "seq": { "type": "integer", "minimum": 0 },
+            "kind": { "const": "edit" },
+            "group": { "type": "integer", "minimum": 1 },
+            "op": { "$ref": "#/$defs/Operation" }
+          }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["seq", "kind"],
+          "properties": { "seq": { "type": "integer", "minimum": 0 }, "kind": { "const": "undo" } }
+        },
+        {
+          "type": "object", "additionalProperties": false,
+          "required": ["seq", "kind"],
+          "properties": { "seq": { "type": "integer", "minimum": 0 }, "kind": { "const": "redo" } }
+        }
+      ]
+    },
+
+    "Answer": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "summary", "question", "options", "reason", "timePolicy", "warnings", "timelineHash", "durationUs"],
+      "properties": {
+        "status": { "enum": ["applied", "needs_clarification", "rejected"] },
+        "summary": { "type": ["string", "null"] },
+        "question": { "type": ["string", "null"] },
+        "options": { "type": "array", "items": { "type": "string" } },
+        "reason": { "type": ["string", "null"] },
+        "timePolicy": { "enum": ["current", "original"] },
+        "warnings": { "type": "array", "items": { "type": "string" } },
+        "timelineHash": { "$ref": "#/$defs/Sha256" },
+        "durationUs": { "$ref": "#/$defs/Micros" }
+      }
+    },
+    "PendingQuestion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["originalText", "question", "options"],
+      "properties": {
+        "originalText": { "type": "string" },
+        "question": { "type": "string" },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["label", "operations"],
+            "properties": {
+              "label": { "type": "string" },
+              "operations": { "type": "array", "items": { "$ref": "#/$defs/Operation" } }
+            }
+          }
+        }
+      }
+    },
+    "ConversationEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["turn", "text", "answer", "appliedGroup", "pending"],
+      "properties": {
+        "turn": { "type": "integer", "minimum": 0 },
+        "text": { "type": "string" },
+        "answer": { "$ref": "#/$defs/Answer" },
+        "appliedGroup": { "type": ["integer", "null"], "minimum": 1 },
+        "pending": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/PendingQuestion" }] }
+      }
+    },
+
+    "Segment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "span"],
+      "properties": { "id": { "$ref": "#/$defs/SegmentId" }, "span": { "$ref": "#/$defs/Span" } }
+    },
+    "SpeedRegion": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["span", "rate"],
+      "properties": { "span": { "$ref": "#/$defs/Span" }, "rate": { "$ref": "#/$defs/Rate" } }
+    },
+    "Effect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "range", "params", "state", "partial", "createdInGroup"],
+      "properties": {
+        "id": { "$ref": "#/$defs/EffectId" },
+        "range": { "$ref": "#/$defs/AtomRange" },
+        "params": { "$ref": "#/$defs/EffectParams" },
+        "state": { "enum": ["active", "dormant"] },
+        "partial": { "type": "boolean" },
+        "createdInGroup": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "Timeline": {
+      "description": "Materialized result of replay(source, atoms, log). This object is what timeline_hash is computed over (canonical JSON, sorted keys).",
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["sourceSha256", "segments", "speedRegions", "effects", "protectedPauses", "music", "autoCaption", "durationUs"],
+      "properties": {
+        "sourceSha256": { "$ref": "#/$defs/Sha256" },
+        "segments": { "type": "array", "items": { "$ref": "#/$defs/Segment" } },
+        "speedRegions": { "type": "array", "items": { "$ref": "#/$defs/SpeedRegion" } },
+        "effects": { "type": "array", "items": { "$ref": "#/$defs/Effect" } },
+        "protectedPauses": { "type": "array", "items": { "$ref": "#/$defs/AtomRange" } },
+        "music": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/MusicParams" }] },
+        "autoCaption": { "oneOf": [{ "type": "null" }, { "$ref": "#/$defs/CaptionStyle" }] },
+        "durationUs": { "$ref": "#/$defs/Micros" }
+      }
+    }
+  }
+}
