@@ -158,12 +158,12 @@ describe("effects follow their words", () => {
     // 4x over 41-45 s: the 2.0 s caption would last 0.5 s.
     const tl = materialize(ctx, edit(withCaption, speedOp(ctx, 41_000_000, 45_000_000, 4)));
     const d = effectDisplay(ctx, tl, tl.effects[0]!)!;
-    expect(d).toEqual({ startUs: 41_250_000, endUs: 41_950_000, extended: true });
+    expect(d).toMatchObject({ startUs: 41_250_000, endUs: 41_950_000, extended: true });
   });
 
   it("a caption already longer than 0.7 s is not extended", () => {
     const tl = materialize(ctx, withCaption);
-    expect(effectDisplay(ctx, tl, tl.effects[0]!)).toEqual({ startUs: 42_000_000, endUs: 44_000_000, extended: false });
+    expect(effectDisplay(ctx, tl, tl.effects[0]!)).toMatchObject({ startUs: 42_000_000, endUs: 44_000_000, extended: false });
   });
 });
 
@@ -173,10 +173,6 @@ describe("log replay edge cases", () => {
     expect(() => materialize(ctx, edit([], bad))).toThrow(/INVALID_CURSOR/);
   });
 
-  it("reorder is not implemented in M1 and says so", () => {
-    const op: Operation = { type: "move", span: span(ctx, 0, 1_000_000), before: null };
-    expect(() => materialize(ctx, edit([], op))).toThrow(/NOT_IMPLEMENTED/);
-  });
 
   it("undo then redo of the same group gives the same timeline hash", () => {
     const base = edit([], cutOp(ctx, 0, 30_000_000));

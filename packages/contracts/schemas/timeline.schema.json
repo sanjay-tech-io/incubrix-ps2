@@ -423,6 +423,19 @@
           "properties": {
             "type": {
               "type": "string",
+              "const": "clear_auto_caption"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
               "const": "set_music"
             },
             "music": {
@@ -591,12 +604,16 @@
             },
             "style": {
               "$ref": "#/$defs/CaptionStyle"
+            },
+            "position": {
+              "$ref": "#/$defs/Position"
             }
           },
           "required": [
             "kind",
             "text",
-            "style"
+            "style",
+            "position"
           ],
           "additionalProperties": false
         },
@@ -614,12 +631,7 @@
               "$ref": "#/$defs/CaptionStyle"
             },
             "position": {
-              "type": "string",
-              "enum": [
-                "top",
-                "center",
-                "bottom"
-              ]
+              "$ref": "#/$defs/Position"
             }
           },
           "required": [
@@ -683,6 +695,14 @@
     "Color": {
       "type": "string",
       "pattern": "^#[0-9a-f]{6}$"
+    },
+    "Position": {
+      "type": "string",
+      "enum": [
+        "top",
+        "center",
+        "bottom"
+      ]
     },
     "MusicParams": {
       "type": "object",
@@ -1019,6 +1039,9 @@
         "partial": {
           "type": "boolean"
         },
+        "fragmented": {
+          "type": "boolean"
+        },
         "createdInGroup": {
           "type": "integer",
           "minimum": 1,
@@ -1031,6 +1054,7 @@
         "params",
         "state",
         "partial",
+        "fragmented",
         "createdInGroup"
       ],
       "additionalProperties": false

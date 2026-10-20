@@ -37,7 +37,7 @@ describe("buildAtoms", () => {
   it("respects an explicit filler flag (a filler 'like' vs a normal 'like')", () => {
     const atoms = buildAtoms(SHA, 3_000_000, [
       { text: "like", startUs: 0, endUs: 1_000_000, filler: true },
-      { text: "like", startUs: 1_000_000, endUs: 2_000_000 },
+      { text: "like", startUs: 1_000_000, endUs: 2_000_000, filler: false },
     ]);
     expect(atoms.filter((a) => a.kind === "word").map((a) => a.filler)).toEqual([true, false]);
   });

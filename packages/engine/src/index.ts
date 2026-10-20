@@ -13,3 +13,5 @@ export * from "./session";
 export * from "./search";
 export * from "./resolve";
 export * from "./incremental";
+export * from "./plan";
+export * from "./music";

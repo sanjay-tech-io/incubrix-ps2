@@ -29,7 +29,7 @@ describe("hard case: caption added, its sentence cut, the cut restored", () => {
     const back = submitOperations(ctx, s, "put that sentence back", [{ type: "restore", targetGroup: 2 }]);
     const tl = currentTimeline(ctx, back.state);
     expect(tl.effects[0]!.state).toBe("active");
-    expect(effectDisplay(ctx, tl, tl.effects[0]!)).toEqual({ startUs: 90 * U, endUs: 92 * U, extended: false });
+    expect(effectDisplay(ctx, tl, tl.effects[0]!)).toMatchObject({ startUs: 90 * U, endUs: 92 * U, extended: false });
     expect(back.answer.durationUs).toBe(200 * U);
   });
 
@@ -52,7 +52,7 @@ describe("hard case: cut before, speed over and restore all leave the caption on
     s = submitOperations(ctx, s, "speed", [{ type: "set_speed", span: span(ctx, 40 * U, 48 * U), rate: { num: 2, den: 1 } }]).state;
     const tl = currentTimeline(ctx, s);
     // 12 s edited start is unchanged by a speed change that begins at source 40 (edited 10) -> caption starts at 10 + (42-40)/2 = 11 s
-    expect(effectDisplay(ctx, tl, tl.effects[0]!)).toEqual({ startUs: 11 * U, endUs: 12 * U, extended: false });
+    expect(effectDisplay(ctx, tl, tl.effects[0]!)).toMatchObject({ startUs: 11 * U, endUs: 12 * U, extended: false });
     expect(tl.effects[0]!.range).toEqual({ from: first.id, to: last.id });
   });
 });
@@ -119,7 +119,7 @@ describe("property: incremental application equals a full replay", () => {
               const effects = materialize(ctx, log).effects;
               if (effects.length === 0) continue;
               const e = effects[c.pick % effects.length]!;
-              op = { type: "update_effect", effectId: e.id, params: { kind: "caption", text: "recolored", style: { ...WHITE, color: "#ff0000" } } };
+              op = { type: "update_effect", effectId: e.id, params: { kind: "caption", text: "recolored", style: { ...WHITE, color: "#ff0000" }, position: "bottom" } };
             }
             const appended = appendEdit(log, [op]);
             log = appended.log;
@@ -172,7 +172,7 @@ describe("property: the session path (caches, incremental priming) equals a fres
             else {
               const effects = currentTimeline(ctx, s).effects;
               if (effects.length === 0) continue;
-              op = { type: "update_effect", effectId: effects[c.pick % effects.length]!.id, params: { kind: "caption", text: "r", style: { ...WHITE, color: "#ff0000" } } };
+              op = { type: "update_effect", effectId: effects[c.pick % effects.length]!.id, params: { kind: "caption", text: "r", style: { ...WHITE, color: "#ff0000" }, position: "bottom" } };
             }
             s = submitOperations(ctx, s, "x", [op]).state;
           }

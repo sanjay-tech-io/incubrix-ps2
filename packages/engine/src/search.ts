@@ -1,4 +1,5 @@
 import { atomAt, atomPos, normalizeWord } from "./atoms";
+import { gridWarnings } from "./resolve";
 import type { EngineContext } from "./context";
 import { snapBoundaryUs, usToCursor } from "./cursor";
 import { atomOutSpan, timelinePieces } from "./timemap";
@@ -72,6 +73,8 @@ export interface TopicPart {
   range: AtomRange;
   /** What removing "this part" cuts: the sentence plus the silence right after it, so no double pause is left. */
   span: Span;
+  /** Grid warnings for the span ends (two touching words cannot be put on a frame boundary). Pass them on with the answer. */
+  warnings: string[];
   originalStartUs: Micros;
   editedStartUs: Micros;
 }
@@ -91,13 +94,13 @@ export function findTopicParts(ctx: EngineContext, tl: Timeline, topic: string):
     const lastWord = atoms[s.lastPos]!;
     const next = atoms[s.lastPos + 1];
     const endUs = next && next.kind === "silence" ? next.endUs : lastWord.endUs;
+    const startSnapped = snapBoundaryUs(ctx.index, firstWord.startUs, ctx.fps);
+    const endSnapped = snapBoundaryUs(ctx.index, endUs, ctx.fps);
     parts.push({
       snippet: words.map((w) => w.text).join(" "),
       range: { from: firstWord.id, to: lastWord.id },
-      span: {
-        start: usToCursor(ctx.index, snapBoundaryUs(ctx.index, firstWord.startUs, ctx.fps), ctx.fps),
-        end: usToCursor(ctx.index, snapBoundaryUs(ctx.index, endUs, ctx.fps), ctx.fps),
-      },
+      span: { start: usToCursor(ctx.index, startSnapped, ctx.fps), end: usToCursor(ctx.index, endSnapped, ctx.fps) },
+      warnings: gridWarnings(ctx, [startSnapped, endSnapped]),
       originalStartUs: firstWord.startUs,
       editedStartUs: alive[0]!.startUs,
     });

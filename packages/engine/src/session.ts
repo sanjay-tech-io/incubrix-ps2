@@ -138,9 +138,26 @@ function describeChange(ctx: EngineContext, before: Timeline, after: Timeline, o
     } else if (dAfter && dBefore && dAfter.startUs !== dBefore.startUs) {
       parts.push(`${label} moved from ${formatTime(dBefore.startUs)} to ${formatTime(dAfter.startUs)}.`);
     }
+    if (e.state === "active" && e.fragmented && !prev?.fragmented) {
+      const where = dAfter ? ` at ${formatTime(dAfter.startUs)}` : "";
+      warnings.push(
+        e.params.kind === "mute" || e.params.kind === "bleep"
+          ? `${label} now plays in ${dAfter?.runs.length ?? 2} separate places; it applies to the words wherever they are.`
+          : `${label} is now split: its words no longer play together, so it is shown on the first part only${where}.`,
+      );
+    }
     if (dAfter?.extended && !dBefore?.extended) {
       warnings.push(`${label} would be on screen for under ${MIN_CAPTION_VISIBLE_US / 1_000_000} s after the speed change, so it is shown for 0.7 s instead.`);
     }
+  }
+  for (const op of ops) {
+    if (op.type !== "move") continue;
+    const iv = spanToInterval(ctx.index, op.span, ctx.fps);
+    const first = atomsOverlapping(ctx, iv.s, iv.e).map((i) => ctx.index.atoms[i]!).find((a) => a.kind === "word");
+    if (!first) continue;
+    const was = atomOutSpan(timelinePieces(ctx, before), first);
+    const now = atomOutSpan(timelinePieces(ctx, after), first);
+    if (was && now) parts.push(`Moved the section starting "${first.text}" from ${formatTime(was.startUs)} to ${formatTime(now.startUs)}.`);
   }
   warnings.push(...flaggedWarning(ctx, ops));
   return { summary: parts.join(" "), warnings };

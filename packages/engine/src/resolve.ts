@@ -24,6 +24,29 @@ function offGridWarning(us: Micros): string {
   return `The cut point at ${formatTime(us)} is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).`;
 }
 
+/**
+ * The warning every span-building path must attach for a boundary that could not be put on the frame grid
+ * (two touching words). undefined when the boundary is fine. Same text as snapPoint's, on purpose.
+ */
+export function gridWarning(ctx: EngineContext, us: Micros): string | undefined {
+  return offGrid(ctx, us) ? offGridWarning(us) : undefined;
+}
+
+/** Add the grid warnings for these boundaries to `warnings`, skipping any the list already contains. */
+export function addGridWarnings(ctx: EngineContext, warnings: string[], boundaries: readonly Micros[]): void {
+  for (const w of gridWarnings(ctx, boundaries)) if (!warnings.some((x) => x.includes(w))) warnings.push(w);
+}
+
+/** gridWarning for several boundaries, without repeats. */
+export function gridWarnings(ctx: EngineContext, boundaries: readonly Micros[]): string[] {
+  const out: string[] = [];
+  for (const us of boundaries) {
+    const w = gridWarning(ctx, us);
+    if (w !== undefined && !out.includes(w)) out.push(w);
+  }
+  return out;
+}
+
 export interface SnapResult {
   us: Micros;
   warning?: string;
@@ -65,9 +88,11 @@ export function snapPoint(ctx: EngineContext, t: Micros): SnapResult {
   const pool = nearSilence.length > 0 ? nearSilence : edges;
   const best = pool.reduce((a, b) => (Math.abs(a.us - t) <= Math.abs(b.us - t) ? a : b));
   const why = nearSilence.length > 0 ? "the nearest silence" : "the nearest word edge (no silence nearby)";
+  const moved = snapBoundaryUs(idx, best.us, ctx.fps);
+  const grid = gridWarning(ctx, moved);
   return {
-    us: snapBoundaryUs(idx, best.us, ctx.fps),
-    warning: `${formatTime(t)} is inside the word "${atom.text}", so the cut point moved to ${formatTime(best.us)}, ${why}.`,
+    us: moved,
+    warning: `${formatTime(t)} is inside the word "${atom.text}", so the cut point moved to ${formatTime(best.us)}, ${why}.${grid ? " " + grid : ""}`,
   };
 }
 
@@ -120,6 +145,7 @@ export function resolveEditedRange(ctx: EngineContext, tl: Timeline, startUs: Mi
   }
   const good = ivs.filter((iv) => iv.e > iv.s);
   if (good.length === 0) throw new EngineError("INVALID_SPAN", "after moving the cut points off the words, nothing is left in that range");
+  addGridWarnings(ctx, warnings, good.flatMap((iv) => [iv.s, iv.e]));
   return { spans: good.map((iv) => ({ start: usToCursor(ctx.index, iv.s, ctx.fps), end: usToCursor(ctx.index, iv.e, ctx.fps) })), warnings };
 }
 
@@ -133,6 +159,7 @@ export function resolveOriginalRange(ctx: EngineContext, startUs: Micros, endUs:
   const a = snapPoint(ctx, startUs);
   const b = snapPoint(ctx, endUs);
   const warnings = [a.warning, b.warning].filter((w): w is string => w !== undefined);
+  addGridWarnings(ctx, warnings, [a.us, b.us]);
   if (b.us <= a.us) throw new EngineError("INVALID_SPAN", "after moving the cut points off the words, nothing is left in that range");
   return { spans: [{ start: usToCursor(ctx.index, a.us, ctx.fps), end: usToCursor(ctx.index, b.us, ctx.fps) }], warnings };
 }

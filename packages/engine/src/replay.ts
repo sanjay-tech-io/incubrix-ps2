@@ -1,9 +1,9 @@
 import { atomPos } from "./atoms";
 import type { EngineContext } from "./context";
-import { spanToInterval, usToCursorUnchecked, type Interval } from "./cursor";
+import { cursorToUs, spanToInterval, usToCursorUnchecked, type Interval } from "./cursor";
 import { EngineError } from "./errors";
 import { analyzeLog, type Log } from "./log";
-import { buildPieces, primePieces, type SpeedInterval } from "./timemap";
+import { buildPieces, effectRunsFromPieces, primePieces, type SpeedInterval } from "./timemap";
 import type { AtomRange, CaptionStyle, Effect, EffectId, EffectParams, MusicParams, Operation, Rate, SpeedLimits, Timeline } from "./types";
 
 /**
@@ -14,6 +14,9 @@ import type { AtomRange, CaptionStyle, Effect, EffectId, EffectParams, MusicPara
  * that is stored/hashed, with positions written back as cursors.
  * Raw keeps speed regions UNCLIPPED; clipping to surviving segments happens in
  * finalize, so a restored cut brings its speed change back with it.
+ *
+ * Output order and source order are independent (reorder): `segs` is in OUTPUT order, each entry a
+ * source interval; `speed` and effects are anchored to SOURCE positions and never move.
  */
 export interface RawEffect {
   id: EffectId;
@@ -23,8 +26,10 @@ export interface RawEffect {
 }
 
 export interface Raw {
-  segs: Interval[]; // output order == source order until `move` exists (M4)
-  speed: SpeedInterval[]; // sorted, non-overlapping
+  segs: Interval[]; // OUTPUT order; disjoint in source time
+  /** segs is also sorted by source time (true until a move reorders it): enables binary search. */
+  ordered: boolean;
+  speed: SpeedInterval[]; // sorted by source time, non-overlapping
   effects: RawEffect[];
   pauses: AtomRange[];
   music: MusicParams | null;
@@ -32,7 +37,7 @@ export interface Raw {
 }
 
 export function emptyRaw(ctx: EngineContext): Raw {
-  return { segs: [{ s: 0, e: ctx.source.durationUs }], speed: [], effects: [], pauses: [], music: null, autoCaption: null };
+  return { segs: [{ s: 0, e: ctx.source.durationUs }], ordered: true, speed: [], effects: [], pauses: [], music: null, autoCaption: null };
 }
 
 // ---------------------------------------------------------------------------
@@ -40,9 +45,8 @@ export function emptyRaw(ctx: EngineContext): Raw {
 // ---------------------------------------------------------------------------
 
 /**
- * segs and speed are sorted and non-overlapping, so the first interval that ends after x
- * can be found by binary search. (This relies on output order == source order; when
- * reorder (move) is implemented in M4 the segment list needs a separate source index.)
+ * Lists sorted by source time and non-overlapping: the first interval that ends after x is found by
+ * binary search. Used for the speed list always, and for segs while raw.ordered is true.
  */
 function firstEndingAfter(xs: readonly Interval[], x: number): number {
   let lo = 0;
@@ -86,6 +90,84 @@ function replaceSpeed(speed: readonly SpeedInterval[], iv: Interval, rate: Rate 
     if (last.e > iv.e) mid.push({ s: iv.e, e: last.e, rate: last.rate });
   }
   return [...speed.slice(0, i), ...mid, ...speed.slice(j)];
+}
+
+/** Cut iv out of segments in any order: linear scan (used once a reorder has made segs unordered). */
+function removeLinear(segs: readonly Interval[], iv: Interval): Interval[] {
+  const out: Interval[] = [];
+  for (const s of segs) {
+    if (iv.e <= s.s || iv.s >= s.e) out.push(s);
+    else {
+      if (s.s < iv.s) out.push({ s: s.s, e: iv.s });
+      if (iv.e < s.e) out.push({ s: iv.e, e: s.e });
+    }
+  }
+  return out;
+}
+
+/** Neighbours that are also contiguous in the source are one segment (canonical form: a move and its inverse cancel). */
+function mergeAdjacent(segs: readonly Interval[]): Interval[] {
+  const out: Interval[] = [];
+  for (const s of segs) {
+    const last = out[out.length - 1];
+    if (last && last.e === s.s) out[out.length - 1] = { s: last.s, e: s.e };
+    else out.push(s);
+  }
+  return out;
+}
+
+function isSourceSorted(segs: readonly Interval[]): boolean {
+  for (let i = 1; i < segs.length; i++) if (segs[i]!.s < segs[i - 1]!.s) return false;
+  return true;
+}
+
+/**
+ * Reorder rule (documented in DESIGN.md):
+ *  - the moved material is every surviving piece inside the source span iv, as one block, KEEPING the output
+ *    order those pieces currently have (so a span that covers already-moved material moves them together);
+ *  - it is re-inserted immediately before the surviving material at source position `before`: if `before` falls
+ *    inside a surviving segment that segment is split there; if it falls in cut material, the block goes
+ *    before the next surviving material in SOURCE order; null (or nothing later survives) means the end;
+ *  - `before` strictly inside the span itself is an error (a section cannot be moved into itself).
+ */
+function moveSpan(raw: Raw, iv: Interval, before: number | null): Raw {
+  const moved: Interval[] = [];
+  const rest: Interval[] = [];
+  for (const seg of raw.segs) {
+    const a = Math.max(seg.s, iv.s);
+    const b = Math.min(seg.e, iv.e);
+    if (b <= a) {
+      rest.push(seg);
+      continue;
+    }
+    if (seg.s < a) rest.push({ s: seg.s, e: a });
+    moved.push({ s: a, e: b });
+    if (b < seg.e) rest.push({ s: b, e: seg.e });
+  }
+  if (moved.length === 0) throw new EngineError("INVALID_SPAN", "nothing of that section is in the video, so there is nothing to move");
+  let at = rest.length;
+  if (before !== null) {
+    let bestS = Number.POSITIVE_INFINITY;
+    let splitAt = -1;
+    for (let i = 0; i < rest.length; i++) {
+      const r = rest[i]!;
+      if (r.s < before && before < r.e) {
+        splitAt = i;
+        break;
+      }
+      if (r.s >= before && r.s < bestS) {
+        bestS = r.s;
+        at = i;
+      }
+    }
+    if (splitAt >= 0) {
+      const r = rest[splitAt]!;
+      rest.splice(splitAt, 1, { s: r.s, e: before }, { s: before, e: r.e });
+      at = splitAt + 1;
+    }
+  }
+  const segs = mergeAdjacent([...rest.slice(0, at), ...moved, ...rest.slice(at)]);
+  return { ...raw, segs, ordered: isSourceSorted(segs) };
 }
 
 function gcd(a: number, b: number): number {
@@ -146,7 +228,7 @@ export function applyOp(ctx: EngineContext, raw: Raw, op: Operation, group: numb
   switch (op.type) {
     case "cut": {
       const iv = spanToInterval(ctx.index, op.span, ctx.fps);
-      return { ...raw, segs: removeFromSorted(raw.segs, iv) };
+      return { ...raw, segs: raw.ordered ? removeFromSorted(raw.segs, iv) : removeLinear(raw.segs, iv) };
     }
     case "keep_only": {
       const iv = spanToInterval(ctx.index, op.span, ctx.fps);
@@ -199,6 +281,8 @@ export function applyOp(ctx: EngineContext, raw: Raw, op: Operation, group: numb
       return { ...raw, pauses: raw.pauses.filter((p) => !sameRange(p, op.range)) };
     case "auto_caption":
       return { ...raw, autoCaption: op.style };
+    case "clear_auto_caption":
+      return { ...raw, autoCaption: null };
     case "set_music":
       return { ...raw, music: op.music };
     case "clear_music":
@@ -206,8 +290,14 @@ export function applyOp(ctx: EngineContext, raw: Raw, op: Operation, group: numb
     case "restore":
       // Realized by excluding the target group when the log is replayed (see analyzeLog); nothing to apply.
       return raw;
-    case "move":
-      throw new EngineError("NOT_IMPLEMENTED", "reordering sections is not implemented yet (planned for M4)");
+    case "move": {
+      const iv = spanToInterval(ctx.index, op.span, ctx.fps);
+      const before = op.before === null ? null : cursorToUs(ctx.index, op.before, ctx.fps, "start");
+      if (before !== null && before > iv.s && before < iv.e) {
+        throw new EngineError("INVALID_SPAN", "a section cannot be moved into itself: the target point is inside the section");
+      }
+      return moveSpan(raw, iv, before);
+    }
   }
 }
 
@@ -226,9 +316,11 @@ export function finalize(ctx: EngineContext, raw: Raw): Timeline {
 
   // Clip speed regions to what survives; merge touching regions with the same rate so the
   // stored form does not depend on how the edits happened to be split.
+  // A source-ordered view of the segments (the stored list is in output order after a reorder).
+  const srcSegs = raw.ordered ? raw.segs : [...raw.segs].sort((x, y) => x.s - y.s);
   const clipped: SpeedInterval[] = [];
-  let k = 0; // first speed region that can still touch this or a later segment (both lists are sorted)
-  for (const seg of raw.segs) {
+  let k = 0; // first speed region that can still touch this or a later segment (both lists are source-sorted)
+  for (const seg of srcSegs) {
     while (k < raw.speed.length && raw.speed[k]!.e <= seg.s) k++;
     for (let m = k; m < raw.speed.length && raw.speed[m]!.s < seg.e; m++) {
       const r = raw.speed[m]!;
@@ -252,13 +344,14 @@ export function finalize(ctx: EngineContext, raw: Raw): Timeline {
     const inRange = idx.atoms.slice(a, b + 1);
     const words = inRange.filter((x) => x.kind === "word");
     const deciding = words.length > 0 ? words : inRange;
-    const alive = deciding.filter((x) => overlapsAny(raw.segs, x.startUs, x.endUs)).length;
+    const alive = deciding.filter((x) => overlapsAny(srcSegs, x.startUs, x.endUs)).length;
     return {
       id: e.id,
       range: e.range,
       params: e.params,
       state: alive > 0 ? "active" : "inactive",
       partial: alive > 0 && alive < deciding.length,
+      fragmented: alive > 0 && effectRunsFromPieces(ctx, pieces, e.range).length > 1,
       createdInGroup: e.createdInGroup,
     };
   });

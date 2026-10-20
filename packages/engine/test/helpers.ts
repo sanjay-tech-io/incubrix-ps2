@@ -19,5 +19,5 @@ export function speedOp(ctx: EngineContext, startUs: number, endUs: number, num:
 }
 
 export function captionOp(effectId: string, from: string, to: string, text: string, style: CaptionStyle = WHITE): Operation {
-  return { type: "add_effect", effectId, range: { from, to }, params: { kind: "caption", text, style } };
+  return { type: "add_effect", effectId, range: { from, to }, params: { kind: "caption", text, style, position: "bottom" } };
 }

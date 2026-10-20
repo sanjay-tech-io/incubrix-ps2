@@ -78,10 +78,12 @@ export const MusicParams = z
   })
   .meta({ id: "MusicParams" });
 
+const Position = z.enum(["top", "center", "bottom"]).meta({ id: "Position" });
+
 export const EffectParams = z
   .discriminatedUnion("kind", [
-    z.strictObject({ kind: z.literal("caption"), text: z.string(), style: CaptionStyle }),
-    z.strictObject({ kind: z.literal("text_overlay"), text: z.string(), style: CaptionStyle, position: z.enum(["top", "center", "bottom"]) }),
+    z.strictObject({ kind: z.literal("caption"), text: z.string(), style: CaptionStyle, position: Position }),
+    z.strictObject({ kind: z.literal("text_overlay"), text: z.string(), style: CaptionStyle, position: Position }),
     z.strictObject({ kind: z.literal("mute") }),
     z.strictObject({ kind: z.literal("bleep") }),
   ])
@@ -98,6 +100,7 @@ export const Operation = z
     z.strictObject({ type: z.literal("update_effect"), effectId: EffectId, params: EffectParams }),
     z.strictObject({ type: z.literal("remove_effect"), effectId: EffectId }),
     z.strictObject({ type: z.literal("auto_caption"), style: CaptionStyle }),
+    z.strictObject({ type: z.literal("clear_auto_caption") }),
     z.strictObject({ type: z.literal("set_music"), music: MusicParams }),
     z.strictObject({ type: z.literal("clear_music") }),
     z.strictObject({ type: z.literal("protect_pause"), range: AtomRange }),
@@ -129,6 +132,8 @@ export const Effect = z
     state: z.enum(["active", "inactive"]),
     /** Some, not all, anchored words are cut. */
     partial: z.boolean(),
+    /** Surviving anchored words are not all in one run in the output (a reorder split them): a caption shows on the first run only. */
+    fragmented: z.boolean(),
     createdInGroup: posInt,
   })
   .meta({ id: "Effect" });

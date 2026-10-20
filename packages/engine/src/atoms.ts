@@ -9,7 +9,10 @@ export interface WordInput {
   endUs: Micros;
   speaker?: string | null;
   confidencePermille?: number;
-  /** Set explicitly for a filler "like"; um/uh are detected from the text when omitted. */
+  /**
+   * Set explicitly to override. When omitted: um/uh are detected from the text, and "like" is decided by
+   * isFillerLike (a deterministic rule on punctuation and pauses, documented there).
+   */
   filler?: boolean;
   overlapsSpeech?: boolean;
   speakerUncertain?: boolean;
@@ -22,8 +25,37 @@ export interface BuildAtomsOptions {
 
 const DEFAULT_CONFIDENCE = 950;
 const DEFAULT_LOW_CONFIDENCE = 600;
-// Why only these: "like" cannot be judged from its text alone, so it is never filler unless the caller says so.
+// um/uh style fillers are recognised from the text alone. "like" cannot be, so it has its own rule below.
 const FILLER_TEXT = /^(um+|uh+|uhm+|erm|er|hmm+)$/;
+
+/** A pause at least this long next to "like" counts as a hesitation (rule R3 below). */
+export const LIKE_PAUSE_US = 300_000;
+
+/**
+ * Is the word at atoms[i] a filler "like"? Deterministic rule, no model involved. The word must be "like" and
+ * at least one of these holds, otherwise it is a real word ("I like this tool" is NOT a filler):
+ *   R1  its own text ends with a comma ("like,")
+ *   R2  the previous word ends with a comma ("so, like really")
+ *   R3  it is isolated by pauses of 0.3 s or more on both sides
+ *   R4  it directly follows a filler (um, uh) with at most a 0.3 s pause between them
+ * Anything else (including "I like", "would like to", "like a pro") is kept as speech.
+ */
+export function isFillerLike(atoms: readonly Atom[], i: number): boolean {
+  const a = atoms[i];
+  if (!a || a.kind !== "word" || normalizeWord(a.text) !== "like") return false;
+  if (a.text.endsWith(",")) return true; // R1
+  let p = i - 1;
+  const prevIsPause = atoms[p]?.kind === "silence";
+  const pauseBefore = prevIsPause ? atoms[p]!.endUs - atoms[p]!.startUs : 0;
+  if (prevIsPause) p -= 1;
+  const prevWord = atoms[p];
+  if (prevWord?.kind === "word" && prevWord.text.endsWith(",")) return true; // R2
+  const next = atoms[i + 1];
+  const pauseAfter = next?.kind === "silence" ? next.endUs - next.startUs : 0;
+  if (pauseBefore >= LIKE_PAUSE_US && pauseAfter >= LIKE_PAUSE_US) return true; // R3
+  if (prevWord?.kind === "word" && prevWord.filler && pauseBefore <= LIKE_PAUSE_US) return true; // R4
+  return false;
+}
 
 export function normalizeWord(text: string): string {
   return text.toLowerCase().replace(/[^\p{L}\p{N}']/gu, "");
@@ -43,6 +75,7 @@ export function buildAtoms(sourceSha256: string, durationUs: Micros, words: read
   const atoms: Atom[] = [];
   let cursor = 0;
 
+  const likeCandidates: number[] = []; // "like" words whose filler flag is decided once all atoms exist
   const push = (a: Omit<Atom, "id">): void => {
     atoms.push({ id: atomIdOf(sourceSha256, atoms.length, a.kind, a.text, a.startUs), ...a });
   };
@@ -71,9 +104,11 @@ export function buildAtoms(sourceSha256: string, durationUs: Micros, words: read
       overlapsSpeech: w.overlapsSpeech ?? false,
       speakerUncertain: w.speakerUncertain ?? false,
     });
+    if (w.filler === undefined && normalizeWord(w.text) === "like") likeCandidates.push(atoms.length - 1);
     cursor = w.endUs;
   }
   pushSilence(cursor, durationUs);
+  for (const i of likeCandidates) atoms[i] = { ...atoms[i]!, filler: isFillerLike(atoms, i) };
   return atoms;
 }
 

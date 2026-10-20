@@ -36,12 +36,12 @@ describe("worked example (steps 1-7)", () => {
     const ranges = phraseRanges(ctx, "welcome to the channel");
     expect(ranges).toHaveLength(1);
     turn = submitOperations(ctx, state, 'caption "Welcome!" on "welcome to the channel"', [
-      { type: "add_effect", effectId: nextEffectId(state.log), range: ranges[0]!, params: { kind: "caption", text: "Welcome!", style: WHITE } },
+      { type: "add_effect", effectId: nextEffectId(state.log), range: ranges[0]!, params: { kind: "caption", text: "Welcome!", style: WHITE, position: "bottom" } },
     ]);
     state = turn.state;
     expect(turn.answer.status).toBe("applied");
     expect(turn.answer.timePolicy).toBe("current");
-    expect(caption(state).display).toEqual({ startUs: 42 * U, endUs: 44 * U, extended: false });
+    expect(caption(state).display).toMatchObject({ startUs: 42 * U, endUs: 44 * U, extended: false });
     expect(turn.answer.durationUs).toBe(200 * U);
     hashes.s1 = turn.answer.timelineHash;
   });
@@ -56,7 +56,7 @@ describe("worked example (steps 1-7)", () => {
     expect(turn.answer.status).toBe("applied");
     expect(turn.answer.durationUs).toBe(170 * U);
     expect(turn.answer.summary).toBe('Length 3:20.000 -> 2:50.000 (-0:30.000). caption "Welcome!" moved from 0:42.000 to 0:12.000.');
-    expect(caption(state).display).toEqual({ startUs: 12 * U, endUs: 14 * U, extended: false });
+    expect(caption(state).display).toMatchObject({ startUs: 12 * U, endUs: 14 * U, extended: false });
     expect(caption(state).effect.range).toEqual(before); // anchored to the same atoms, not to seconds
     expect(turn.answer.timelineHash).not.toBe(hashes.s1);
     hashes.s2 = turn.answer.timelineHash;
@@ -114,7 +114,7 @@ describe("worked example (steps 1-7)", () => {
     expect(turn.answer.durationUs).toBe(150 * U); // 165 - (30 s of source played at 2x saves 15 s)
     const regions = currentTimeline(ctx, state).speedRegions.map((r) => [cursorToUs(ctx.index, r.span.start, ctx.fps), cursorToUs(ctx.index, r.span.end, ctx.fps, "end")]);
     expect(regions).toEqual([[90 * U, 108 * U], [113 * U, 125 * U]]);
-    expect(caption(state).display).toEqual({ startUs: 12 * U, endUs: 14 * U, extended: false });
+    expect(caption(state).display).toMatchObject({ startUs: 12 * U, endUs: 14 * U, extended: false });
     hashes.s4 = turn.answer.timelineHash;
   });
 
@@ -124,7 +124,7 @@ describe("worked example (steps 1-7)", () => {
     state = turn.state;
     expect(turn.answer.status).toBe("applied");
     expect(turn.answer.durationUs).toBe(180 * U); // 200 - 5 (pricing part) - 15 (2x)
-    expect(caption(state).display).toEqual({ startUs: 42 * U, endUs: 44 * U, extended: false });
+    expect(caption(state).display).toMatchObject({ startUs: 42 * U, endUs: 44 * U, extended: false });
     const tl = currentTimeline(ctx, state);
     const pieces = timelinePieces(ctx, tl);
     expect(sourceToEdited(pieces, 10 * U)).toBe(10 * U); // intro content is back
@@ -140,7 +140,7 @@ describe("worked example (steps 1-7)", () => {
     expect(turn.answer.status).toBe("applied");
     expect(turn.answer.summary).toMatch(/^Undid edit 5\./);
     expect(turn.answer.durationUs).toBe(150 * U);
-    expect(caption(state).display).toEqual({ startUs: 12 * U, endUs: 14 * U, extended: false });
+    expect(caption(state).display).toMatchObject({ startUs: 12 * U, endUs: 14 * U, extended: false });
     expect(currentTimeline(ctx, state).speedRegions).toHaveLength(2); // step 4 not undone
     expect(turn.answer.timelineHash).toBe(hashes.s4); // exactly the state after step 4
     expect(analyzeLog(state.log).active).toEqual([1, 2, 3, 4]);
@@ -149,12 +149,12 @@ describe("worked example (steps 1-7)", () => {
   it("step 7: 'make that caption red' applies to the only caption", () => {
     const found = findEffect(currentTimeline(ctx, state), "caption");
     if (found.kind !== "one") throw new Error("expected exactly one caption");
-    turn = submitOperations(ctx, state, "make that caption red", [{ type: "update_effect", effectId: found.effect.id, params: { kind: "caption", text: "Welcome!", style: RED } }]);
+    turn = submitOperations(ctx, state, "make that caption red", [{ type: "update_effect", effectId: found.effect.id, params: { kind: "caption", text: "Welcome!", style: RED, position: "bottom" } }]);
     state = turn.state;
     expect(turn.answer.status).toBe("applied");
     const c = caption(state);
-    expect(c.effect.params).toEqual({ kind: "caption", text: "Welcome!", style: RED });
-    expect(c.display).toEqual({ startUs: 12 * U, endUs: 14 * U, extended: false });
+    expect(c.effect.params).toEqual({ kind: "caption", text: "Welcome!", style: RED, position: "bottom" });
+    expect(c.display).toMatchObject({ startUs: 12 * U, endUs: 14 * U, extended: false });
     expect(turn.answer.durationUs).toBe(150 * U);
     expect(turn.answer.timelineHash).not.toBe(hashes.s4); // colour is part of the timeline
   });
@@ -168,7 +168,7 @@ describe("worked example (steps 1-7)", () => {
     expect(findEffect(tl, "caption").kind).toBe("one");
     expect(findEffect(tl, "bleep").kind).toBe("none");
     const two = submitOperations(ctx, state, "second caption", [
-      { type: "add_effect", effectId: nextEffectId(state.log), range: phraseRanges(ctx, "pricing")[0]!, params: { kind: "caption", text: "Pricing", style: WHITE } },
+      { type: "add_effect", effectId: nextEffectId(state.log), range: phraseRanges(ctx, "pricing")[0]!, params: { kind: "caption", text: "Pricing", style: WHITE, position: "bottom" } },
     ]);
     expect(findEffect(currentTimeline(ctx, two.state), "caption").kind).toBe("ambiguous");
   });

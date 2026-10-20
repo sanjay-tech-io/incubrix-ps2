@@ -95,7 +95,7 @@ const caption: Operation = {
   type: "add_effect",
   effectId: "fx_9999_0",
   range: { from: atoms[mid]!.id, to: atoms[mid + 40]!.id },
-  params: { kind: "caption", text: "x", style: { color: "#ffffff", sizePt: 32, bold: true } },
+  params: { kind: "caption", text: "x", style: { color: "#ffffff", sizePt: 32, bold: true }, position: "bottom" },
 };
 results["add a caption with 4,000 segments - cold"] = bench(5, () => submitOperations(ctx, cold(s4000), "caption", [caption]));
 results["add a caption with 4,000 segments - warm"] = bench(5, () => submitOperations(ctx, s4000, "caption", [caption]));

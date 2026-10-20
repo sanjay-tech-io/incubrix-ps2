@@ -17,7 +17,7 @@ const sample: SessionDocument = {
     { id: "a_000000000002", kind: "silence", startUs: 1_000_000, endUs: 3_000_000, text: "", speaker: null, confidencePermille: 1000, lowConfidence: false, filler: false, overlapsSpeech: false, speakerUncertain: false },
   ],
   log: [
-    { seq: 0, kind: "edit", group: 1, op: { type: "add_effect", effectId: "fx_0_0", range: { from: "a_000000000001", to: "a_000000000001" }, params: { kind: "caption", text: "Welcome!", style: { color: "#ffffff", sizePt: 32, bold: true } } } },
+    { seq: 0, kind: "edit", group: 1, op: { type: "add_effect", effectId: "fx_0_0", range: { from: "a_000000000001", to: "a_000000000001" }, params: { kind: "caption", text: "Welcome!", style: { color: "#ffffff", sizePt: 32, bold: true }, position: "bottom" } } },
     { seq: 1, kind: "edit", group: 2, op: { type: "cut", span: { start: { atom: "a_000000000002", offsetUs: 500_000 }, end: { atom: "a_000000000002", offsetUs: 2_000_000 } }, reason: "user" } },
     { seq: 2, kind: "undo" },
     { seq: 3, kind: "redo" },
@@ -64,7 +64,7 @@ describe("the schema accepts what the engine really produces", () => {
     s = submitOperations(ctx, s, "speed", [speedOp(ctx, 90 * U, 108 * U, 2)]).state;
     s = submitOperations(ctx, s, "intro back", [{ type: "restore", targetGroup: 2 }]).state;
     s = submitUndo(ctx, s, "undo").state;
-    s = submitOperations(ctx, s, "red", [{ type: "update_effect", effectId: "fx_0_0", params: { kind: "caption", text: "Welcome!", style: RED } }]).state;
+    s = submitOperations(ctx, s, "red", [{ type: "update_effect", effectId: "fx_0_0", params: { kind: "caption", text: "Welcome!", style: RED, position: "bottom" } }]).state;
     s = submitOperations(ctx, s, "speed 10x", [speedOp(ctx, 90 * U, 108 * U, 10)]).state; // rejected: still logged in the conversation
 
     const doc: SessionDocument = { schemaVersion: 1, source, atoms, log: [...s.log], conversation: [...s.conversation] };
