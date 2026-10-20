@@ -1,0 +1,5 @@
+faster-whisper==1.2.1
+fastapi==0.151.0
+uvicorn==0.54.0
+python-multipart==0.0.32
+av==16.1.0  # faster-whisper 1.2.1 passes metadata_errors, which PyAV 19 rejects
