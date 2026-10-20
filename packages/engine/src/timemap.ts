@@ -1,7 +1,7 @@
 import { atomPos } from "./atoms";
 import type { EngineContext } from "./context";
 import { spanToInterval, type Interval } from "./cursor";
-import { divRound } from "./frames";
+import { divRound, frameStartUs, snapToFrameUs, type Fps } from "./frames";
 import type { Atom, Effect, Micros, Rate, Timeline } from "./types";
 
 /**
@@ -10,9 +10,16 @@ import type { Atom, Effect, Micros, Rate, Timeline } from "./types";
  * The edited timeline is a list of pieces, in output order. Each piece is a
  * stretch of source played at one constant rate. Within a piece, output time
  * is linear in source time, so mapping is one multiply/divide.
- * Rounding: every piece's output length is rounded to the nearest microsecond
- * (error at most 0.5 us per piece, far below a frame); the same rounding is
- * used for the total, so the sum of pieces IS timeline.durationUs.
+ *
+ * Rounding (frame accuracy). The output is a whole number of frames. A piece's
+ * exact output length is usually a fraction of a frame (31 frames at 2x = 15.5),
+ * so pieces get frames by CUMULATIVE rounding:
+ *   frames_k = round(exact frames up to piece k) - round(exact frames up to piece k-1)
+ * The total therefore equals round(exact total) (within 0.5 frame of exact) and
+ * each piece is within 1 frame of its own exact length. Fractions are kept exact
+ * with BigInt, so no float error creeps in. Piece start/end times are frame starts
+ * (rounded to a microsecond), so the sum of pieces IS timeline.durationUs.
+ * Without an fps (audio only) the same rule is applied in microseconds.
  */
 export interface SpeedInterval extends Interval {
   rate: Rate;
@@ -24,23 +31,68 @@ export interface Piece {
   outS: Micros;
   outE: Micros;
   rate: Rate;
+  /** Whole output frames this piece occupies (null without an fps). */
+  outFrames: number | null;
 }
 
 const ONE: Rate = { num: 1, den: 1 };
+const US = 1_000_000n;
 
-/** segs and speed must each be sorted and non-overlapping (replay guarantees this). */
-export function buildPieces(segs: readonly Interval[], speed: readonly SpeedInterval[]): Piece[] {
+function gcdBig(a: bigint, b: bigint): bigint {
+  while (b !== 0n) [a, b] = [b, a % b];
+  return a;
+}
+
+/**
+ * A source time as an exact number of frames (a fraction). A time that sits on the
+ * frame grid stands for that exact frame (the microsecond value is only the frame
+ * start rounded to the nearest microsecond), so 31 frames really are 31 frames and
+ * not 30.99999. A time off the grid (a boundary between two touching words) is
+ * kept as the exact fraction it is.
+ */
+function framePos(t: number, fps: Fps): [bigint, bigint] {
+  if (snapToFrameUs(t, fps) === t) return [BigInt(divRound(t * fps.num, fps.den * 1_000_000)), 1n];
+  return [BigInt(t) * BigInt(fps.num), BigInt(fps.den) * US];
+}
+
+/** segs and speed must each be sorted and non-overlapping (replay guarantees this). Linear in pieces. */
+export function buildPieces(segs: readonly Interval[], speed: readonly SpeedInterval[], fps: Fps | null = null): Piece[] {
   const pieces: Piece[] = [];
-  let out = 0;
+  // exact cumulative output length so far, in frames (or microseconds without fps): cumN / cumD
+  let cumN = 0n;
+  let cumD = 1n;
+  let prevR = 0n; // round(cumulative) after the previous piece
+
   const push = (srcS: number, srcE: number, rate: Rate): void => {
-    const outLen = divRound((srcE - srcS) * rate.den, rate.num);
-    pieces.push({ srcS, srcE, outS: out, outE: out + outLen, rate });
-    out += outLen;
+    // exact output length of this piece = (source length) / rate, in frames (or microseconds)
+    let n: bigint;
+    let d: bigint;
+    if (fps) {
+      const [sn, sd] = framePos(srcS, fps);
+      const [en, ed] = framePos(srcE, fps);
+      n = (en * sd - sn * ed) * BigInt(rate.den);
+      d = ed * sd * BigInt(rate.num);
+    } else {
+      n = BigInt(srcE - srcS) * BigInt(rate.den);
+      d = BigInt(rate.num);
+    }
+    const l = (cumD / gcdBig(cumD, d)) * d; // lcm
+    cumN = cumN * (l / cumD) + n * (l / d);
+    cumD = l;
+    const r = (2n * cumN + cumD) / (2n * cumD); // round half up (all values are non-negative)
+    const frames = Number(r - prevR);
+    const outS = fps ? frameStartUs(Number(prevR), fps) : Number(prevR);
+    const outE = fps ? frameStartUs(Number(r), fps) : Number(r);
+    pieces.push({ srcS, srcE, outS, outE, rate, outFrames: fps ? frames : null });
+    prevR = r;
   };
+
+  let j = 0; // first speed region that can still touch the current or a later segment
   for (const seg of segs) {
+    while (j < speed.length && speed[j]!.e <= seg.s) j++;
     let at = seg.s;
-    for (const sp of speed) {
-      if (sp.e <= seg.s || sp.s >= seg.e) continue;
+    for (let k = j; k < speed.length && speed[k]!.s < seg.e; k++) {
+      const sp = speed[k]!;
       const a = Math.max(sp.s, seg.s);
       const b = Math.min(sp.e, seg.e);
       if (at < a) push(at, a, ONE);
@@ -56,7 +108,7 @@ export function buildPieces(segs: readonly Interval[], speed: readonly SpeedInte
 export function timelinePieces(ctx: EngineContext, tl: Timeline): Piece[] {
   const segs = tl.segments.map((s) => spanToInterval(ctx.index, s.span, ctx.fps));
   const speed = tl.speedRegions.map((r) => ({ ...spanToInterval(ctx.index, r.span, ctx.fps), rate: r.rate }));
-  return buildPieces(segs, speed);
+  return buildPieces(segs, speed, ctx.fps);
 }
 
 /** Source time -> edited time. null when that moment was cut. A boundary belongs to the piece that starts there. */

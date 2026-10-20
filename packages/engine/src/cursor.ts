@@ -1,6 +1,6 @@
 import { atomAt, atomPos, type AtomIndex } from "./atoms";
 import { EngineError } from "./errors";
-import { snapToFrameUs, type Fps } from "./frames";
+import { ceilToFrameUs, floorToFrameUs, snapToFrameUs, type Fps } from "./frames";
 import type { Cursor, Micros, Span } from "./types";
 
 /** A region of the source in absolute microseconds, [s, e). Internal working form; the log stores Spans. */
@@ -9,17 +9,41 @@ export interface Interval {
   e: Micros;
 }
 
+/**
+ * Source-side cut boundaries must lie on the frame grid. A boundary between a
+ * silence and a word is moved INTO the silence (never into the word, so no word is
+ * clipped): floor when the silence is before the word, ceil when it is after.
+ * Where that is impossible (two touching words, or a silence shorter than the move
+ * needs) the boundary stays where it is and the caller warns.
+ * Returns t unchanged when t is not a boundary between two atoms.
+ */
+export function snapBoundaryUs(idx: AtomIndex, t: Micros, fps: Fps | null): Micros {
+  if (fps === null || t <= 0 || t >= idx.durationUs) return t;
+  if (snapToFrameUs(t, fps) === t) return t;
+  const b = atomAt(idx, t);
+  if (b.startUs !== t) return t; // interior of an atom: not a boundary
+  const a = idx.atoms[atomPos(idx, b.id) - 1]!;
+  if (a.kind === "silence" && b.kind === "word") {
+    const g = floorToFrameUs(t, fps);
+    return g >= a.startUs ? g : t;
+  }
+  if (a.kind === "word" && b.kind === "silence") {
+    const g = ceilToFrameUs(t, fps);
+    return g <= b.endUs ? g : t;
+  }
+  return t;
+}
+
 export type CursorRole = "start" | "end";
 
 /**
  * Cursor rules (decision recorded in CLAUDE.md):
+ *  - a boundary (offset 0) must be on the frame grid unless it cannot be snapped (see snapBoundaryUs);
  *  - offset is an integer with 0 <= offset < atom length;
  *  - a word atom only allows offset 0 (a cut never lands inside a word);
  *  - an offset > 0 inside a silence atom must sit on the frame grid;
  *  - the end of the source is written as (last atom, its length) and is allowed
  *    only as an END cursor, because a half-open span needs some way to say "to the end".
- * Offset 0 is a content boundary and is exempt from the grid: it is anchored to
- * the atom, and the renderer does the final rounding (tolerance 1 frame).
  */
 export function validateCursor(idx: AtomIndex, c: Cursor, fps: Fps | null, role: CursorRole = "start"): void {
   const pos = atomPos(idx, c.atom);
@@ -32,7 +56,12 @@ export function validateCursor(idx: AtomIndex, c: Cursor, fps: Fps | null, role:
   if (c.offsetUs >= len) {
     throw new EngineError("INVALID_CURSOR", `offset ${c.offsetUs} is outside atom ${c.atom} (length ${len})`);
   }
-  if (c.offsetUs === 0) return;
+  if (c.offsetUs === 0) {
+    if (fps !== null && snapBoundaryUs(idx, atom.startUs, fps) !== atom.startUs) {
+      throw new EngineError("INVALID_CURSOR", `boundary ${atom.startUs} is not on the frame grid ${fps.num}/${fps.den} and could be snapped into a neighbouring silence`);
+    }
+    return;
+  }
   if (atom.kind === "word") {
     throw new EngineError("INVALID_CURSOR", `a cursor cannot be inside the word "${atom.text}" (offset ${c.offsetUs})`);
   }

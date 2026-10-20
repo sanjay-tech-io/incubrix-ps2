@@ -20,6 +20,8 @@ const MUTANTS = [
   { name: "later speed change multiplies instead of replacing", file: "src/replay.ts", from: "const kept = raw.speed.flatMap((r) => subtract(r, iv).map((p) => ({ ...p, rate: r.rate })));", to: "const kept = raw.speed;" },
   { name: "restore ignored", file: "src/log.ts", from: "if (op.type === \"restore\") neutralized.add(op.targetGroup);", to: "void op;" },
   { name: "speed limits not enforced", file: "src/replay.ts", from: "if (cmpRate(rate, limits.min) < 0 || cmpRate(rate, limits.max) > 0) {", to: "if (false) {" },
+  { name: "frames rounded per piece instead of cumulatively", file: "src/timemap.ts", from: "const r = (2n * cumN + cumD) / (2n * cumD); // round half up (all values are non-negative)", to: "const r = prevR + (2n * n + d) / (2n * d);" },
+  { name: "floor/ceil snapping swapped (cut would clip words)", file: "src/cursor.ts", from: "const g = floorToFrameUs(t, fps);", to: "const g = ceilToFrameUs(t, fps);" },
 ];
 
 function runTests() {

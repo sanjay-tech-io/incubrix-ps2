@@ -26,3 +26,20 @@ export function snapToFrameUs(t: number, fps: Fps): number {
   const k = divRound(t * fps.num, fps.den * US_PER_S);
   return frameStartUs(k, fps);
 }
+
+/** Largest frame start that is <= t. */
+export function floorToFrameUs(t: number, fps: Fps): number {
+  let k = Math.floor((t * fps.num) / (fps.den * US_PER_S));
+  while (frameStartUs(k + 1, fps) <= t) k++;
+  while (k > 0 && frameStartUs(k, fps) > t) k--;
+  return frameStartUs(k, fps);
+}
+
+/** Smallest frame start that is >= t. */
+export function ceilToFrameUs(t: number, fps: Fps): number {
+  const f = floorToFrameUs(t, fps);
+  if (f === t) return t;
+  let k = Math.floor((t * fps.num) / (fps.den * US_PER_S));
+  while (frameStartUs(k, fps) < t) k++;
+  return frameStartUs(k, fps);
+}

@@ -1,6 +1,6 @@
 import { atomPos, normalizeWord } from "./atoms";
 import type { EngineContext } from "./context";
-import { usToCursor } from "./cursor";
+import { snapBoundaryUs, usToCursor } from "./cursor";
 import { atomOutSpan, timelinePieces } from "./timemap";
 import type { AtomRange, Micros, Span, Timeline } from "./types";
 
@@ -94,7 +94,10 @@ export function findTopicParts(ctx: EngineContext, tl: Timeline, topic: string):
     parts.push({
       snippet: words.map((w) => w.text).join(" "),
       range: { from: firstWord.id, to: lastWord.id },
-      span: { start: usToCursor(ctx.index, firstWord.startUs, ctx.fps), end: usToCursor(ctx.index, endUs, ctx.fps) },
+      span: {
+        start: usToCursor(ctx.index, snapBoundaryUs(ctx.index, firstWord.startUs, ctx.fps), ctx.fps),
+        end: usToCursor(ctx.index, snapBoundaryUs(ctx.index, endUs, ctx.fps), ctx.fps),
+      },
       originalStartUs: firstWord.startUs,
       editedStartUs: alive[0]!.startUs,
     });

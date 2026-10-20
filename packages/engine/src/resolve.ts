@@ -1,8 +1,8 @@
 import { atomAt } from "./atoms";
 import type { EngineContext } from "./context";
-import { usToCursor, type Interval } from "./cursor";
+import { snapBoundaryUs, usToCursor, type Interval } from "./cursor";
 import { EngineError } from "./errors";
-import { divRound, snapToFrameUs } from "./frames";
+import { ceilToFrameUs, divRound, floorToFrameUs, snapToFrameUs } from "./frames";
 import { timelinePieces } from "./timemap";
 import type { Effect, Micros, Span, Timeline } from "./types";
 
@@ -32,11 +32,15 @@ export function snapPoint(ctx: EngineContext, t: Micros): SnapResult {
   if (t <= 0) return { us: 0 };
   if (t >= idx.durationUs) return { us: idx.durationUs };
   const atom = atomAt(idx, t);
-  if (t === atom.startUs) return { us: t };
+  if (t === atom.startUs) return { us: snapBoundaryUs(idx, t, ctx.fps) };
 
   if (atom.kind === "silence") {
-    const snapped = ctx.fps ? snapToFrameUs(t, ctx.fps) : t;
-    return { us: Math.min(atom.endUs, Math.max(atom.startUs, snapped)) };
+    if (!ctx.fps) return { us: t };
+    let snapped = snapToFrameUs(t, ctx.fps);
+    // keep the result inside this silence, on the grid
+    if (snapped > atom.endUs) snapped = floorToFrameUs(atom.endUs, ctx.fps);
+    if (snapped < atom.startUs) snapped = ceilToFrameUs(atom.startUs, ctx.fps);
+    return snapped >= atom.startUs && snapped <= atom.endUs ? { us: snapped } : { us: t };
   }
 
   const pos = idx.byId.get(atom.id)!;
@@ -51,7 +55,7 @@ export function snapPoint(ctx: EngineContext, t: Micros): SnapResult {
   const best = pool.reduce((a, b) => (Math.abs(a.us - t) <= Math.abs(b.us - t) ? a : b));
   const why = nearSilence.length > 0 ? "the nearest silence" : "the nearest word edge (no silence nearby)";
   return {
-    us: best.us,
+    us: snapBoundaryUs(idx, best.us, ctx.fps),
     warning: `${formatTime(t)} is inside the word "${atom.text}", so the cut point moved to ${formatTime(best.us)}, ${why}.`,
   };
 }

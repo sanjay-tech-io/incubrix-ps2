@@ -203,7 +203,7 @@ export function finalize(ctx: EngineContext, raw: Raw): Timeline {
     else merged.push({ ...r });
   }
 
-  const pieces = buildPieces(raw.segs, merged);
+  const pieces = buildPieces(raw.segs, merged, ctx.fps);
   const durationUs = pieces.length === 0 ? 0 : pieces[pieces.length - 1]!.outE;
 
   const effects: Effect[] = raw.effects.map((e) => {

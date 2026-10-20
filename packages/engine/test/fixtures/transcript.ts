@@ -78,10 +78,10 @@ export interface Fixture {
   ctx: EngineContext;
 }
 
-export function makeFixture(overrideWords?: (w: WordInput[]) => WordInput[]): Fixture {
+export function makeFixture(overrideWords?: (w: WordInput[]) => WordInput[], fps: { num: number; den: number } = FPS): Fixture {
   const words = overrideWords ? overrideWords(toWords()) : toWords();
   const atoms = buildAtoms(SOURCE_SHA, DURATION_US, words);
-  const source: Source = { sha256: SOURCE_SHA, durationUs: DURATION_US, fps: FPS, hasAudio: true, hasVideo: true, variableFrameRate: false };
+  const source: Source = { sha256: SOURCE_SHA, durationUs: DURATION_US, fps, hasAudio: true, hasVideo: true, variableFrameRate: false };
   return { source, atoms, ctx: createContext(source, atoms) };
 }
 
