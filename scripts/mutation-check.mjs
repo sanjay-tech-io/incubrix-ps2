@@ -61,6 +61,7 @@ function runTests() {
 
 let survivors = 0;
 for (const m of MUTANTS) {
+  if (process.env.ONLY && !m.name.includes(process.env.ONLY)) continue;
   const path = `${engine}/${m.file}`;
   const original = readFileSync(path, "utf8");
   const normalized = original.split("\r\n").join("\n"); // match patterns regardless of the checkout line endings

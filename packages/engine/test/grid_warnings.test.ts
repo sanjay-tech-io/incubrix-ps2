@@ -79,7 +79,7 @@ describe("grid warnings on every path that builds spans (touching words, 29.97 f
     const tl = materialize(ctx, [{ seq: 0, kind: "edit", group: 1, op: cut }]);
     const second = timelinePieces(ctx, tl)[1]!;
     expect(second.srcS).toBe(2_000_000);
-    const r = resolveEditedRange(ctx, tl, second.outS, second.outS + 500_000);
+    const r = resolveEditedRange(ctx, tl, second.outS, second.outS + 1_400_000); // ends at about 3.4 s: inside a silence, so only the START can warn
     expect(r.warnings.join(" ")).toMatch(TWO); // the start is not "interior", so only the span-level check can find this
   });
 
