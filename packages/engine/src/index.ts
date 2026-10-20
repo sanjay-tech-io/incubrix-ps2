@@ -9,3 +9,6 @@ export * from "./context";
 export * from "./log";
 export * from "./replay";
 export * from "./timemap";
+export * from "./session";
+export * from "./search";
+export * from "./resolve";

@@ -309,10 +309,11 @@
           "items": {
             "type": "object",
             "additionalProperties": false,
-            "required": ["label", "operations"],
+            "required": ["label", "operations", "warnings"],
             "properties": {
               "label": { "type": "string" },
-              "operations": { "type": "array", "items": { "$ref": "#/$defs/Operation" } }
+              "operations": { "type": "array", "items": { "$ref": "#/$defs/Operation" } },
+              "warnings": { "type": "array", "items": { "type": "string" } }
             }
           }
         }

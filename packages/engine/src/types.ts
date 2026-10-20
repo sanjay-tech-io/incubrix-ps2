@@ -287,7 +287,7 @@ export interface PendingQuestion {
   originalText: string;
   question: string;
   /** Candidate choices, each with the already-resolved operations it would log. */
-  options: { label: string; operations: Operation[] }[];
+  options: { label: string; operations: Operation[]; warnings: string[] }[];
 }
 
 /**
