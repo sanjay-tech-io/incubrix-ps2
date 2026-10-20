@@ -1,0 +1,90 @@
+[
+ {
+  "model": "tiny.en",
+  "first_run_incl_download": {
+   "wall_s": 16.27,
+   "words": 390,
+   "load_s": 0.9894025980029255,
+   "transcribe_s": 14.587,
+   "rtf": 0.1216,
+   "peak_rss_mb": 604.4,
+   "audio_s": 120.0
+  },
+  "second_run_cached": {
+   "wall_s": 16.21,
+   "words": 390,
+   "load_s": 0.8112960069993278,
+   "transcribe_s": 14.751,
+   "rtf": 0.1229,
+   "peak_rss_mb": 604.4,
+   "audio_s": 120.0
+  },
+  "model_cache_mb": 2.6
+ },
+ {
+  "model": "base.en",
+  "first_run_incl_download": {
+   "wall_s": 27.06,
+   "words": 388,
+   "load_s": 1.1178979300020728,
+   "transcribe_s": 25.336,
+   "rtf": 0.2111,
+   "peak_rss_mb": 682.7,
+   "audio_s": 120.0
+  },
+  "second_run_cached": {
+   "wall_s": 26.31,
+   "words": 388,
+   "load_s": 1.0128097409906331,
+   "transcribe_s": 24.669,
+   "rtf": 0.2056,
+   "peak_rss_mb": 682.8,
+   "audio_s": 120.0
+  },
+  "model_cache_mb": 2.6
+ },
+ {
+  "model": "small.en",
+  "first_run_incl_download": {
+   "wall_s": 91.58,
+   "words": 388,
+   "load_s": 2.858038503996795,
+   "transcribe_s": 88.083,
+   "rtf": 0.734,
+   "peak_rss_mb": 1355.8,
+   "audio_s": 120.0
+  },
+  "second_run_cached": {
+   "wall_s": 64.95,
+   "words": 388,
+   "load_s": 3.2950990670069586,
+   "transcribe_s": 60.772,
+   "rtf": 0.5064,
+   "peak_rss_mb": 1356.9,
+   "audio_s": 120.0
+  },
+  "model_cache_mb": 2.6
+ },
+ {
+  "model": "medium.en",
+  "first_run_incl_download": {
+   "wall_s": 188.95,
+   "words": 377,
+   "load_s": 27.58890737799811,
+   "transcribe_s": 160.686,
+   "rtf": 1.339,
+   "peak_rss_mb": 3985.9,
+   "audio_s": 120.0
+  },
+  "second_run_cached": {
+   "wall_s": 166.64,
+   "words": 377,
+   "load_s": 5.738268175991834,
+   "transcribe_s": 160.086,
+   "rtf": 1.334,
+   "peak_rss_mb": 3220.2,
+   "audio_s": 120.0
+  },
+  "model_cache_mb": 2.6
+ }
+]

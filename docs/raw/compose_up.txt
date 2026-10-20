@@ -1,0 +1,24 @@
+ Volume incubrix-ps2_pgdata Removed 
+ Network incubrix-ps2_default Removed 
+ Container incubrix-ps2-init-1 Exited 
+ Container incubrix-ps2-worker-1 Starting 
+ Container incubrix-ps2-init-1 Exited 
+ Container incubrix-ps2-api-1 Starting 
+ Container incubrix-ps2-worker-1 Started 
+ Container incubrix-ps2-api-1 Started 
+NAME                      IMAGE                        COMMAND                  SERVICE    CREATED          STATUS                    PORTS
+incubrix-ps2-api-1        incubrix-ps2-api             "docker-entrypoint.s…"   api        12 seconds ago   Up 3 seconds (healthy)    0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
+incubrix-ps2-asr-1        incubrix-ps2-asr             "uvicorn asr.server:…"   asr        16 seconds ago   Up 11 seconds (healthy)   
+incubrix-ps2-postgres-1   postgres:16                  "docker-entrypoint.s…"   postgres   16 seconds ago   Up 11 seconds (healthy)   5432/tcp
+incubrix-ps2-s3-1         chrislusf/seaweedfs:latest   "/bin/sh -c 'export …"   s3         16 seconds ago   Up 12 seconds (healthy)   7333/tcp, 8080/tcp, 8333/tcp, 8888/tcp, 9333/tcp, 18080/tcp, 18888/tcp, 19333/tcp
+incubrix-ps2-worker-1     incubrix-ps2-worker          "docker-entrypoint.s…"   worker     12 seconds ago   Up 4 seconds (healthy)    
+asr-1     | INFO:     Started server process [1]
+asr-1     | INFO:     Waiting for application startup.
+asr-1     | INFO:     Application startup complete.
+asr-1     | INFO:     Uvicorn running on http://0.0.0.0:8000 (Press CTRL+C to quit)
+asr-1     | INFO:     127.0.0.1:40418 - "GET /health HTTP/1.1" 200 OK
+asr-1     | INFO:     127.0.0.1:40424 - "GET /health HTTP/1.1" 200 OK
+asr-1     | INFO:     127.0.0.1:48048 - "GET /health HTTP/1.1" 200 OK
+worker-1  | {"timestamp":"2026-10-20T10:29:29.455Z","level":"info","service":"worker","msg":"listening","port":8081,"placeholder":true}
+api-1     | {"timestamp":"2026-10-20T10:29:29.731Z","level":"info","service":"api","msg":"listening","port":8080,"placeholder":true}
+init-1    | {"level":"info","msg":"init done","applied":["0001_init.sql"],"bucket":"incubrix"}
