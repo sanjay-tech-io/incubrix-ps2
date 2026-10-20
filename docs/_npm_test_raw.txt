@@ -1,0 +1,27 @@
+
+> incubrix@0.0.0 test
+> npm test --workspaces --if-present
+
+
+> @incubrix/engine@0.0.0 test
+> eslint . && vitest run
+
+
+ RUN  v2.1.9 D:/VSC/incubrix/incubrix-ps2/packages/engine
+
+ ✓ test/worked_example.test.ts (11 tests | 1 skipped) 43ms
+ ✓ test/replay.test.ts (24 tests) 37ms
+ ✓ test/session.test.ts (30 tests) 74ms
+ ✓ test/atoms.test.ts (21 tests) 31ms
+ ✓ test/search_resolve.test.ts (21 tests) 33ms
+ ✓ test/canonical.test.ts (18 tests) 22ms
+ ✓ test/hard_cases.test.ts (5 tests) 281ms
+ ✓ test/schema.test.ts (3 tests) 13ms
+ ✓ test/lint_guard.test.ts (12 tests) 917ms
+   ✓ engine purity lint rules > forbids Date in packages/engine/src 866ms
+
+ Test Files  9 passed (9)
+      Tests  144 passed | 1 skipped (145)
+   Start at  12:52:35
+   Duration  3.92s (transform 653ms, setup 0ms, collect 2.78s, tests 1.45s, environment 3ms, prepare 1.74s)
+

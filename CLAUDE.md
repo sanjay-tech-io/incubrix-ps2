@@ -6,7 +6,7 @@ Goal: pass every must-have, verify the Core, Advanced and Outstanding levels, an
 - Monorepo, npm workspaces, Node 20, TypeScript strict everywhere.
 - packages/engine: pure deterministic core (timeline, operations, replay, hash, time mapping, search, filler/silence logic).
 - apps/api: Fastify 5 + zod. apps/worker: pg-boss jobs (ingest, transcribe, render, export).
-- apps/web: React + Vite, minimal, built LAST, served by the API as static files.
+- No custom UI. The API serves Swagger UI/Redoc generated from openapi.yaml (decision, see Decisions).
 - services/asr: Python FastAPI + faster-whisper (CPU, int8). Adapters: mock (fixture transcripts) and faster-whisper.
 - Postgres 16 via DATABASE_URL (plain SQL migrations, `pg`). No Supabase SDK/Auth/Storage/Realtime. A Supabase Postgres URL may be used as DATABASE_URL for the demo only.
 - S3-compatible storage via @aws-sdk/client-s3 (MinIO in docker-compose). ffmpeg/ffprobe for all media.
@@ -43,7 +43,7 @@ Errors: {"error":{"code","message","retryable","details"}}, UPPER_SNAKE_CASE, al
 - Prefer clear code I can explain live over clever code. Comment the why of each design decision.
 
 ## Build order (do not gold-plate; finish each milestone before the next)
-M1 engine core + the 8-step worked example as tests. M2 API, jobs, idempotency, errors, health, manifest, compose. M3 ASR adapter + ffmpeg render + A/V sync tests. M4 Advanced level items. M5 Outstanding items (snapping, low confidence, OTIO export, scale, 40+ CI scenarios). M6 deploy demo, session pack, metrics, docs, demo video. M7 minimal React UI.
+M1 engine core + the 8-step worked example as tests. M2 API, jobs, idempotency, errors, health, manifest, compose. M3 ASR adapter + ffmpeg render + A/V sync tests. M4 Advanced level items. M5 Outstanding items (snapping, low confidence, OTIO export, scale, 40+ CI scenarios). M6 deploy demo, session pack, metrics, docs, demo video. M7 serve Swagger UI/Redoc from openapi.yaml.
 
 ## Commands
 npm test | npm run test:e2e | docker compose up | npm run session -- <file.yaml> | npm run batch -- <dir> | npm run metrics
@@ -65,3 +65,16 @@ npm test | npm run test:e2e | docker compose up | npm run session -- <file.yaml>
 - Logged operations store resolved atom-ID ranges (plus an in-atom offset only inside silence atoms), never seconds.
 - Separate conversation log. Clarification turns do not change the timeline hash.
 - Cut rule: cut exactly if inside a silence atom; if inside a word, snap to nearby silence and warn.
+- M7 is NOT a React UI. It is serving Swagger UI/Redoc from openapi.yaml; there is no apps/web.
+- Cursors: a cursor is (atomId, offsetUs) with 0 <= offsetUs < atom length. A non-zero offset is allowed only inside silence atoms and must sit on the frame grid (source fps as an integer rational). Offset 0 (a content boundary) is exempt from the grid; the renderer does the final rounding. The end of the source is (last atom, its length), allowed only as an END cursor. Tests reject invalid cursors.
+- Partial cut of a captioned phrase: the caption keeps its literal text on the surviving words and the answer lists the cut words. If ALL anchor words are cut, the effect becomes inactive in the materialized timeline but is NEVER deleted from the log; the answer says so, and restoring the words reactivates it.
+- Captions and text overlays have a 0.7 s minimum visible duration after speed changes; the answer warns when one is extended. Auto-caption text is derived from surviving words.
+- Effect ids are fx_<n>_<k> where n counts edit operations only (not conversation turns, not undo/redo markers). Two different histories that look identical may therefore hash differently; the same history always hashes the same.
+- Overlapping speech is a flag on the word, not overlapping atoms. Atoms also carry speakerUncertain. Any operation touching a low-confidence, overlapping or speaker-uncertain word returns a warning.
+- crypto is banned in the engine. SHA-256 comes from @noble/hashes (pure JS, MIT), listed in SOURCES.md. Canonical JSON throws on floats, NaN and undefined; music gain is stored as integer centi-dB.
+- Speed overlap rule: the later change wins on the overlap and REPLACES the earlier rate (rates never multiply); 1x clears. Rates are stored in lowest terms. Speed regions are kept in source coordinates and clipped to surviving segments.
+- Restore: "restore edit N" is a new op (targetGroup N). Replay skips group N while a restore that is itself in effect points at it. The log is never rewritten; restoring a restore brings the original edit back.
+- Time mapping rounds each speed piece's output length to the nearest microsecond (error at most 0.5 us per piece).
+- Parsing instructions is NOT part of M1; M1 tests build structured operations directly using pure engine helpers (phrase search, topic search, time resolution).
+- Reorder (move) is not implemented in M1; it throws NOT_IMPLEMENTED and is planned for M4.
+- docs/STATUS.md is the project memory: updated and committed at the end of every milestone.
