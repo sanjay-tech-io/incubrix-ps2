@@ -47,3 +47,21 @@ M1 engine core + the 8-step worked example as tests. M2 API, jobs, idempotency, 
 
 ## Commands
 npm test | npm run test:e2e | docker compose up | npm run session -- <file.yaml> | npm run batch -- <dir> | npm run metrics
+
+## Amendments
+- Use Node 22. Add `docker compose run tests` as the single test command (unit + integration + e2e, no keys).
+- Transcript and atoms are cached by source sha256; atom IDs derive from that hash plus content. No timestamps, session IDs or random UUIDs in the timeline or hash.
+- Diarization sits behind an adapter with a mock. Speaker is stored per atom.
+- Logged operations store resolved atom-ID ranges, never seconds.
+- Keep a separate conversation log (text, answer, status, pending question). Clarification turns do not change the timeline hash and are not undo groups.
+- Cut rule: cut exactly if inside a silence atom; if inside a word, snap to nearby silence and warn.
+- Instruction responses must be fast (<2 s). The LLM fallback has a short timeout and falls back to needs_clarification.
+- Scale test uses synthetic data and is labelled as such.
+## Decisions
+- Node 22 everywhere.
+- The live demo uses REAL ASR (faster-whisper) and REAL diarization by default, as background jobs with progress, because hidden tests will likely use videos we have never seen. Mocks are for tests only. Env switches: ASR_PROVIDER, DIARIZATION_PROVIDER, LLM_PROVIDER.
+- The session runner accepts a video as URL, local path or upload.
+- Speed changes are limited to a documented range: MAX_SPEED env (default 4x), minimum 0.25x. Beyond it the instruction is rejected with the reason and the allowed range. The engine receives the limits as a parameter (it cannot read env).
+- Logged operations store resolved atom-ID ranges (plus an in-atom offset only inside silence atoms), never seconds.
+- Separate conversation log. Clarification turns do not change the timeline hash.
+- Cut rule: cut exactly if inside a silence atom; if inside a word, snap to nearby silence and warn.
