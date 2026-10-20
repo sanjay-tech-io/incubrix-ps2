@@ -106,6 +106,22 @@ export function buildPieces(segs: readonly Interval[], speed: readonly SpeedInte
 
 /** Pieces of a materialized timeline (converts its cursors to absolute times). */
 export function timelinePieces(ctx: EngineContext, tl: Timeline): Piece[] {
+  const hit = pieceCache.get(tl);
+  if (hit) return hit;
+  const pieces = computeTimelinePieces(ctx, tl);
+  pieceCache.set(tl, pieces);
+  return pieces;
+}
+
+// A Timeline object is never mutated, so its pieces can be remembered (effects, answers and lookups all need them).
+const pieceCache = new WeakMap<Timeline, Piece[]>();
+
+/** Let finalize hand over the pieces it already built for the duration. */
+export function primePieces(tl: Timeline, pieces: Piece[]): void {
+  pieceCache.set(tl, pieces);
+}
+
+function computeTimelinePieces(ctx: EngineContext, tl: Timeline): Piece[] {
   const segs = tl.segments.map((s) => spanToInterval(ctx.index, s.span, ctx.fps));
   const speed = tl.speedRegions.map((r) => ({ ...spanToInterval(ctx.index, r.span, ctx.fps), rate: r.rate }));
   return buildPieces(segs, speed, ctx.fps);
@@ -113,26 +129,57 @@ export function timelinePieces(ctx: EngineContext, tl: Timeline): Piece[] {
 
 /** Source time -> edited time. null when that moment was cut. A boundary belongs to the piece that starts there. */
 export function sourceToEdited(pieces: readonly Piece[], t: Micros): Micros | null {
-  for (const p of pieces) {
-    if (t >= p.srcS && t < p.srcE) return p.outS + divRound((t - p.srcS) * p.rate.den, p.rate.num);
-  }
+  const i = lastStartingAtOrBefore(pieces, t);
+  const p = pieces[i];
+  if (p && t >= p.srcS && t < p.srcE) return p.outS + divRound((t - p.srcS) * p.rate.den, p.rate.num);
   return null;
+}
+
+// Pieces are in source order (no reorder yet), so srcS and srcE both increase: binary search instead of a scan.
+/** Index of the last piece with srcS <= t, or -1. */
+function lastStartingAtOrBefore(pieces: readonly Piece[], t: Micros): number {
+  let lo = 0;
+  let hi = pieces.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (pieces[mid]!.srcS <= t) lo = mid + 1;
+    else hi = mid;
+  }
+  return lo - 1;
+}
+
+/** Index of the first piece with srcE > t (pieces.length if none). */
+function firstEndingAfter(pieces: readonly Piece[], t: Micros): number {
+  let lo = 0;
+  let hi = pieces.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (pieces[mid]!.srcE > t) hi = mid;
+    else lo = mid + 1;
+  }
+  return lo;
 }
 
 /** Like sourceToEdited but for the END of something: a boundary belongs to the piece that ends there. */
 export function sourceToEditedEnd(pieces: readonly Piece[], t: Micros): Micros | null {
-  for (const p of pieces) {
-    if (t > p.srcS && t <= p.srcE) return p.outS + divRound((t - p.srcS) * p.rate.den, p.rate.num);
-  }
+  const i = firstEndingAfter(pieces, t - 1); // first piece with srcE >= t
+  const p = pieces[i];
+  if (p && t > p.srcS && t <= p.srcE) return p.outS + divRound((t - p.srcS) * p.rate.den, p.rate.num);
   return null;
 }
 
 /** Edited time -> source time. Times at or after the end map to the end of the last piece. */
 export function editedToSource(pieces: readonly Piece[], o: Micros): Micros {
   if (pieces.length === 0) return 0;
-  for (const p of pieces) {
-    if (o >= p.outS && o < p.outE) return Math.min(p.srcE, p.srcS + divRound((o - p.outS) * p.rate.num, p.rate.den));
+  let lo = 0;
+  let hi = pieces.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (pieces[mid]!.outS <= o) lo = mid + 1;
+    else hi = mid;
   }
+  const p = pieces[lo - 1]; // last piece starting at or before o
+  if (p && o < p.outE) return Math.min(p.srcE, p.srcS + divRound((o - p.outS) * p.rate.num, p.rate.den));
   return pieces[pieces.length - 1]!.srcE;
 }
 
@@ -140,8 +187,9 @@ export function editedToSource(pieces: readonly Piece[], o: Micros): Micros {
 export function atomOutSpan(pieces: readonly Piece[], atom: Atom): { startUs: Micros; endUs: Micros } | null {
   let startUs: Micros | null = null;
   let endUs: Micros | null = null;
-  for (const p of pieces) {
-    if (p.srcE <= atom.startUs || p.srcS >= atom.endUs) continue;
+  for (let i = firstEndingAfter(pieces, atom.startUs); i < pieces.length; i++) {
+    const p = pieces[i]!;
+    if (p.srcS >= atom.endUs) break;
     const a = Math.max(atom.startUs, p.srcS);
     const b = Math.min(atom.endUs, p.srcE);
     if (startUs === null) startUs = p.outS + divRound((a - p.srcS) * p.rate.den, p.rate.num);

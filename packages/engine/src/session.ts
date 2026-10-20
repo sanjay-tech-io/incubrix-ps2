@@ -4,7 +4,7 @@ import { EngineError } from "./errors";
 import { timelineHash } from "./hash";
 import { analyzeLog, appendEdit, appendRedo, appendUndo, type Log } from "./log";
 import { formatTime } from "./resolve";
-import { applyOp, materialize, rawFromLog } from "./replay";
+import { applyOp, materialize, primeRaw, rawFromLog, type Raw } from "./replay";
 import { atomsOverlapping, rangeAtoms } from "./search";
 import { atomOutSpan, effectDisplay, MIN_CAPTION_VISIBLE_US, timelinePieces } from "./timemap";
 import type { Answer, ConversationEntry, Effect, Operation, PendingQuestion, Timeline } from "./types";
@@ -150,9 +150,12 @@ function describeChange(ctx: EngineContext, before: Timeline, after: Timeline, o
 // validation of a new instruction
 // ---------------------------------------------------------------------------
 
-function validate(ctx: EngineContext, log: Log, ops: readonly Operation[]): void {
+/** Check the operations one by one against the current state; returns the state after them. */
+function validate(ctx: EngineContext, log: Log, ops: readonly Operation[]): Raw {
   const an = analyzeLog(log);
-  const group = Math.max(0, ...an.opsByGroup.keys()) + 1;
+  let group = 0;
+  for (const g of an.opsByGroup.keys()) if (g > group) group = g;
+  group += 1;
   let raw = rawFromLog(ctx, log);
   for (const op of ops) {
     if (op.type === "restore") {
@@ -166,6 +169,7 @@ function validate(ctx: EngineContext, log: Log, ops: readonly Operation[]): void
     }
     raw = applyOp(ctx, raw, op, group, true);
   }
+  return raw;
 }
 
 function reject(ctx: EngineContext, state: SessionState, text: string, reason: string, policy: TimePolicy): Turn {
@@ -185,8 +189,10 @@ export function submitOperations(ctx: EngineContext, state: SessionState, text: 
   let appended: { log: Log; group: number };
   try {
     if (ops.length === 0) throw new EngineError("INVALID_RANGE", "the instruction produced no operations");
-    validate(ctx, state.log, ops);
+    const rawAfter = validate(ctx, state.log, ops);
     appended = appendEdit(state.log, ops);
+    // Without a restore, replaying the new log is exactly "previous state + this group", so don't redo that work.
+    if (!ops.some((o) => o.type === "restore")) primeRaw(ctx, appended.log, rawAfter);
     after = materialize(ctx, appended.log);
     if (after.durationUs === 0) throw new EngineError("EMPTY_RESULT", "this would remove the whole video; nothing would be left to play");
   } catch (e) {

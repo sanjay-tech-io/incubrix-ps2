@@ -1,9 +1,9 @@
 import { atomPos } from "./atoms";
 import type { EngineContext } from "./context";
-import { spanToInterval, usToCursor, type Interval } from "./cursor";
+import { spanToInterval, usToCursorUnchecked, type Interval } from "./cursor";
 import { EngineError } from "./errors";
 import { analyzeLog, type Log } from "./log";
-import { buildPieces, type SpeedInterval } from "./timemap";
+import { buildPieces, primePieces, type SpeedInterval } from "./timemap";
 import type { AtomRange, CaptionStyle, Effect, EffectId, EffectParams, MusicParams, Operation, Rate, SpeedLimits, Timeline } from "./types";
 
 /**
@@ -39,13 +39,53 @@ export function emptyRaw(ctx: EngineContext): Raw {
 // interval helpers
 // ---------------------------------------------------------------------------
 
-/** a minus b, as 0, 1 or 2 intervals. */
-function subtract(a: Interval, b: Interval): Interval[] {
-  if (b.e <= a.s || b.s >= a.e) return [a];
-  const out: Interval[] = [];
-  if (b.s > a.s) out.push({ s: a.s, e: b.s });
-  if (b.e < a.e) out.push({ s: b.e, e: a.e });
-  return out;
+/**
+ * segs and speed are sorted and non-overlapping, so the first interval that ends after x
+ * can be found by binary search. (This relies on output order == source order; when
+ * reorder (move) is implemented in M4 the segment list needs a separate source index.)
+ */
+function firstEndingAfter(xs: readonly Interval[], x: number): number {
+  let lo = 0;
+  let hi = xs.length;
+  while (lo < hi) {
+    const mid = (lo + hi) >> 1;
+    if (xs[mid]!.e > x) hi = mid;
+    else lo = mid + 1;
+  }
+  return lo;
+}
+
+/** Remove iv from a sorted, disjoint list: O(log n) to find, O(n) to copy. */
+function removeFromSorted(segs: readonly Interval[], iv: Interval): Interval[] {
+  const i = firstEndingAfter(segs, iv.s);
+  let j = i;
+  while (j < segs.length && segs[j]!.s < iv.e) j++;
+  if (i === j) return segs as Interval[];
+  const first = segs[i]!;
+  const last = segs[j - 1]!;
+  const mid: Interval[] = [];
+  if (first.s < iv.s) mid.push({ s: first.s, e: iv.s });
+  if (last.e > iv.e) mid.push({ s: iv.e, e: last.e });
+  return [...segs.slice(0, i), ...mid, ...segs.slice(j)];
+}
+
+/** Speed overlap rule: the new region wins; regions it overlaps are trimmed around it. rate null = back to 1x. */
+function replaceSpeed(speed: readonly SpeedInterval[], iv: Interval, rate: Rate | null): SpeedInterval[] {
+  const i = firstEndingAfter(speed, iv.s);
+  let j = i;
+  while (j < speed.length && speed[j]!.s < iv.e) j++;
+  if (i === j && rate === null) return speed as SpeedInterval[];
+  const mid: SpeedInterval[] = [];
+  if (i < j) {
+    const first = speed[i]!;
+    if (first.s < iv.s) mid.push({ s: first.s, e: iv.s, rate: first.rate });
+  }
+  if (rate !== null) mid.push({ s: iv.s, e: iv.e, rate });
+  if (i < j) {
+    const last = speed[j - 1]!;
+    if (last.e > iv.e) mid.push({ s: iv.e, e: last.e, rate: last.rate });
+  }
+  return [...speed.slice(0, i), ...mid, ...speed.slice(j)];
 }
 
 function gcd(a: number, b: number): number {
@@ -106,7 +146,7 @@ export function applyOp(ctx: EngineContext, raw: Raw, op: Operation, group: numb
   switch (op.type) {
     case "cut": {
       const iv = spanToInterval(ctx.index, op.span, ctx.fps);
-      return { ...raw, segs: raw.segs.flatMap((s) => subtract(s, iv)) };
+      return { ...raw, segs: removeFromSorted(raw.segs, iv) };
     }
     case "keep_only": {
       const iv = spanToInterval(ctx.index, op.span, ctx.fps);
@@ -119,9 +159,7 @@ export function applyOp(ctx: EngineContext, raw: Raw, op: Operation, group: numb
       const iv = spanToInterval(ctx.index, op.span, ctx.fps);
       const rate = checkSpeed(op.rate, ctx.limits);
       // Overlap rule: the new region wins; existing regions are trimmed around it.
-      const kept = raw.speed.flatMap((r) => subtract(r, iv).map((p) => ({ ...p, rate: r.rate })));
-      const speed = cmpRate(rate, { num: 1, den: 1 }) === 0 ? kept : [...kept, { ...iv, rate }];
-      return { ...raw, speed: speed.sort((x, y) => x.s - y.s) };
+      return { ...raw, speed: replaceSpeed(raw.speed, iv, cmpRate(rate, { num: 1, den: 1 }) === 0 ? null : rate) };
     }
     case "add_effect": {
       checkRange(ctx, op.range);
@@ -178,24 +216,27 @@ export function applyOp(ctx: EngineContext, raw: Raw, op: Operation, group: numb
 // ---------------------------------------------------------------------------
 
 function overlapsAny(segs: readonly Interval[], s: number, e: number): boolean {
-  return segs.some((x) => x.s < e && x.e > s);
+  const i = firstEndingAfter(segs, s);
+  return i < segs.length && segs[i]!.s < e;
 }
 
 export function finalize(ctx: EngineContext, raw: Raw): Timeline {
   const idx = ctx.index;
-  const toSpan = (iv: Interval) => ({ start: usToCursor(idx, iv.s, ctx.fps), end: usToCursor(idx, iv.e, ctx.fps) });
+  const toSpan = (iv: Interval) => ({ start: usToCursorUnchecked(idx, iv.s), end: usToCursorUnchecked(idx, iv.e) });
 
   // Clip speed regions to what survives; merge touching regions with the same rate so the
   // stored form does not depend on how the edits happened to be split.
   const clipped: SpeedInterval[] = [];
-  for (const r of raw.speed) {
-    for (const seg of raw.segs) {
+  let k = 0; // first speed region that can still touch this or a later segment (both lists are sorted)
+  for (const seg of raw.segs) {
+    while (k < raw.speed.length && raw.speed[k]!.e <= seg.s) k++;
+    for (let m = k; m < raw.speed.length && raw.speed[m]!.s < seg.e; m++) {
+      const r = raw.speed[m]!;
       const s = Math.max(r.s, seg.s);
       const e = Math.min(r.e, seg.e);
       if (e > s) clipped.push({ s, e, rate: r.rate });
     }
   }
-  clipped.sort((a, b) => a.s - b.s);
   const merged: SpeedInterval[] = [];
   for (const r of clipped) {
     const last = merged[merged.length - 1];
@@ -224,7 +265,7 @@ export function finalize(ctx: EngineContext, raw: Raw): Timeline {
 
   const pauses = [...raw.pauses].sort((x, y) => atomPos(idx, x.from) - atomPos(idx, y.from));
 
-  return {
+  const timeline: Timeline = {
     sourceSha256: ctx.source.sha256,
     segments: raw.segs.map((s, i) => ({ id: `seg_${i}`, span: toSpan(s) })),
     speedRegions: merged.map((r) => ({ span: toSpan(r), rate: r.rate })),
@@ -234,24 +275,57 @@ export function finalize(ctx: EngineContext, raw: Raw): Timeline {
     autoCaption: raw.autoCaption,
     durationUs,
   };
+  primePieces(timeline, pieces);
+  return timeline;
 }
 
 // ---------------------------------------------------------------------------
 // whole-log replay
 // ---------------------------------------------------------------------------
 
+// Caches, keyed by the (immutable) log object. A log is never mutated: appending makes a new array.
+const rawCache = new WeakMap<EngineContext, WeakMap<Log, Raw>>();
+const timelineCache = new WeakMap<EngineContext, WeakMap<Log, Timeline>>();
+
+function cacheFor<V extends object>(all: WeakMap<EngineContext, WeakMap<Log, V>>, ctx: EngineContext): WeakMap<Log, V> {
+  let m = all.get(ctx);
+  if (!m) {
+    m = new WeakMap();
+    all.set(ctx, m);
+  }
+  return m;
+}
+
 /** Raw state after replaying a log from scratch: groups in effect, minus restored ones, in log order. */
 export function rawFromLog(ctx: EngineContext, log: Log): Raw {
+  const cache = cacheFor(rawCache, ctx);
+  const hit = cache.get(log);
+  if (hit) return hit;
   const { active, opsByGroup, neutralized } = analyzeLog(log);
   let raw = emptyRaw(ctx);
   for (const g of active) {
     if (neutralized.has(g)) continue;
     for (const op of opsByGroup.get(g)!) raw = applyOp(ctx, raw, op, g, false);
   }
+  cache.set(log, raw);
   return raw;
 }
 
-/** The full replay. This is the definition of "the timeline"; everything else is an optimisation of it. */
+/**
+ * Tell the cache what the raw state of a log is when the caller has already computed it
+ * incrementally (the previous log's state plus one new group, no restore involved).
+ * A property test ("session path equals fresh replay") guards that this equals rawFromLog.
+ */
+export function primeRaw(ctx: EngineContext, log: Log, raw: Raw): void {
+  cacheFor(rawCache, ctx).set(log, raw);
+}
+
+/** The full replay (memoized per log). This is the definition of "the timeline"; everything else is an optimisation of it. */
 export function materialize(ctx: EngineContext, log: Log): Timeline {
-  return finalize(ctx, rawFromLog(ctx, log));
+  const cache = cacheFor(timelineCache, ctx);
+  const hit = cache.get(log);
+  if (hit) return hit;
+  const tl = finalize(ctx, rawFromLog(ctx, log));
+  cache.set(log, tl);
+  return tl;
 }

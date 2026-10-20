@@ -150,3 +150,37 @@ describe("property: how a cut is split does not matter", () => {
     );
   });
 });
+
+describe("property: the session path (caches, incremental priming) equals a fresh full replay", () => {
+  type SCmd = Cmd | { t: "restore"; g: number };
+  const sCmd: fc.Arbitrary<SCmd> = fc.oneof({ weight: 6, arbitrary: cmdArb }, { weight: 2, arbitrary: fc.integer({ min: 1, max: 8 }).map((g) => ({ t: "restore" as const, g })) });
+
+  it("after every turn of a random session (edits, undo, redo, restore, rejected turns), the cached timeline equals a replay on a brand-new engine", async () => {
+    const { submitOperations, submitRedo, submitUndo, newSession, currentTimeline } = await import("../src/session");
+    fc.assert(
+      fc.property(fc.array(sCmd, { minLength: 1, maxLength: 20 }), (cmds) => {
+        let s = newSession();
+        for (const c of cmds) {
+          if (c.t === "undo") s = submitUndo(ctx, s, "undo").state;
+          else if (c.t === "redo") s = submitRedo(ctx, s, "redo").state;
+          else {
+            let op: Operation;
+            if (c.t === "restore") op = { type: "restore", targetGroup: c.g };
+            else if (c.t === "cut") op = { type: "cut", span: { start: cursorAt(c.a), end: cursorAt(c.b) }, reason: "user" };
+            else if (c.t === "speed") op = { type: "set_speed", span: { start: cursorAt(c.a), end: cursorAt(c.b) }, rate: RATES[c.r]! };
+            else if (c.t === "caption") op = captionOp(nextEffectId(s.log), atoms[c.a]!.id, atoms[c.b]!.id, `c${c.a}`, WHITE);
+            else {
+              const effects = currentTimeline(ctx, s).effects;
+              if (effects.length === 0) continue;
+              op = { type: "update_effect", effectId: effects[c.pick % effects.length]!.id, params: { kind: "caption", text: "r", style: { ...WHITE, color: "#ff0000" } } };
+            }
+            s = submitOperations(ctx, s, "x", [op]).state;
+          }
+          const fresh = makeFixture().ctx; // different context object: no cache can be shared
+          expect(currentTimeline(ctx, s)).toEqual(materialize(fresh, [...s.log]));
+        }
+      }),
+      { numRuns: 100, seed: 424242 },
+    );
+  });
+});

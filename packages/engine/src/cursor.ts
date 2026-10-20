@@ -93,6 +93,16 @@ export function usToCursor(idx: AtomIndex, t: Micros, fps: Fps | null): Cursor {
   return c;
 }
 
+/** usToCursor without re-validation, for positions the engine itself produced from valid cursors. */
+export function usToCursorUnchecked(idx: AtomIndex, t: Micros): Cursor {
+  if (t === idx.durationUs) {
+    const last = idx.atoms[idx.atoms.length - 1]!;
+    return { atom: last.id, offsetUs: last.endUs - last.startUs };
+  }
+  const atom = atomAt(idx, t);
+  return { atom: atom.id, offsetUs: t - atom.startUs };
+}
+
 export function spanToInterval(idx: AtomIndex, span: Span, fps: Fps | null): Interval {
   const s = cursorToUs(idx, span.start, fps, "start");
   const e = cursorToUs(idx, span.end, fps, "end");

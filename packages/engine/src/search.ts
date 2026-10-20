@@ -1,4 +1,4 @@
-import { atomPos, normalizeWord } from "./atoms";
+import { atomAt, atomPos, normalizeWord } from "./atoms";
 import type { EngineContext } from "./context";
 import { snapBoundaryUs, usToCursor } from "./cursor";
 import { atomOutSpan, timelinePieces } from "./timemap";
@@ -109,9 +109,9 @@ export function findTopicParts(ctx: EngineContext, tl: Timeline, topic: string):
 /** Atoms whose time overlaps [s, e) in source time. Used to find which words an edit touches. */
 export function atomsOverlapping(ctx: EngineContext, s: Micros, e: Micros): number[] {
   const out: number[] = [];
-  ctx.index.atoms.forEach((a, i) => {
-    if (a.startUs < e && a.endUs > s) out.push(i);
-  });
+  if (e <= s || s >= ctx.index.durationUs) return out;
+  const first = atomPos(ctx.index, atomAt(ctx.index, Math.max(0, s)).id); // binary search, then walk
+  for (let i = first; i < ctx.index.atoms.length && ctx.index.atoms[i]!.startUs < e; i++) out.push(i);
   return out;
 }
 

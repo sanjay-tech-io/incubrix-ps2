@@ -7,7 +7,8 @@
   "scripts": {
     "test": "eslint . && vitest run",
     "typecheck": "tsc -p tsconfig.json",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "bench": "vite-node bench/perf.ts"
   },
   "devDependencies": {
     "ajv": "^8.17.1",

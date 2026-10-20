@@ -55,6 +55,17 @@ export interface LogAnalysis {
  * restoring a restore brings the original edit back.
  */
 export function analyzeLog(log: Log): LogAnalysis {
+  const cached = analysisCache.get(log);
+  if (cached) return cached;
+  const result = computeAnalysis(log);
+  analysisCache.set(log, result);
+  return result;
+}
+
+// Logs are immutable values (append returns a new array), so an analysis can be remembered per log object.
+const analysisCache = new WeakMap<Log, LogAnalysis>();
+
+function computeAnalysis(log: Log): LogAnalysis {
   const active: number[] = [];
   let redo: number[] = [];
   const opsByGroup = new Map<number, Operation[]>();
