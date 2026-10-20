@@ -1,21 +1,27 @@
 # Project status (project memory)
 
-Updated at the end of every milestone. Last update: end of M1 (2026-10-20). Everything below was run, not assumed; "not verified" means exactly that.
+Updated at the end of every milestone. Last update: end of M1b (2026-10-20). Everything below was run, not assumed; "not verified" means exactly that.
 
 ## Done and verified
 | Item | Proof (command) |
 |---|---|
-| npm workspaces, strict TypeScript, vitest, ESLint purity rules | `npm test` (exit 0: 9 test files, 145 passed, 1 skipped) and `npm run typecheck` (no errors) |
-| Data model + `packages/engine/schemas/timeline.schema.json` | `npm test` (`schema.test.ts`: real session + timeline validate) |
+| npm workspaces (engine, contracts), strict TypeScript, vitest, ESLint purity rules | `npm test` exit 0; `npm run typecheck` exit 0 |
+| Clean install from the public registry; lockfile has no mirror URLs | `grep -c npmmirror package-lock.json` = 0; `npm ci` then `npm test` exit 0 |
+| zod contracts are the source of truth; JSON Schema generated and compared with the committed file | `npm test` (packages/contracts: 4 tests; engine `schema.test.ts`) |
 | Canonical JSON, pure-JS SHA-256 | `npm test` (`canonical.test.ts`) |
-| Atoms, cursors, frame grid | `npm test` (`atoms.test.ts`) |
+| Atoms, cursors, frame grid, snapping into silence | `npm test` (`atoms.test.ts`, `frame_rounding.test.ts`) |
+| Output frames by cumulative rounding (odd counts, property test) | `npm test` (`frame_rounding.test.ts`) |
 | Replay, undo/redo/restore, time mapping, speed rules, effect states | `npm test` (`replay.test.ts`, `session.test.ts`) |
 | Worked example steps 1-7 on the synthetic fixture | `npm test` (`worked_example.test.ts`) |
-| Incremental == full replay (property) | `npm test` (`hard_cases.test.ts`) |
+| Incremental == full replay; cached session path == fresh replay | `npm test` (`hard_cases.test.ts`) |
 | Engine purity rules actually fire | `npm test` (`lint_guard.test.ts`) |
+| Surviving mutants killed; 15 of 15 hand-picked mutants die | `npm test` (`mutants.test.ts`); `npm run mutation-check` |
+| Performance targets on a synthetic 60-minute source | `npm run bench -w @incubrix/engine` (docs/PERF_ENGINE.md) |
+
+Latest `npm test` (root): contracts 4 passed; engine 174 passed, 1 skipped (the render step, "needs M3"). Last update of this file: end of M1b (2026-10-20).
 
 ## Not verified (not built or not run)
-Rendering and A/V sync (M3); worked example step 8; API, jobs, idempotency, errors, health, manifest, docker compose (M2); real ASR and diarization; LLM adapters; reorder, filler and silence removal, music ducking, mute/bleep audio; multi-speaker handling; OTIO export; performance and 60-minute scale; any real video; any metric; CI.
+Docker / docker compose (Docker is not installed on the dev machine); rendering and A/V sync (M3); worked example step 8; API, jobs, idempotency, errors, health, manifest, docker compose (M2); real ASR and diarization; LLM adapters; reorder, filler and silence removal, music ducking, mute/bleep audio; multi-speaker handling; OTIO export; performance and 60-minute scale; any real video; any metric; CI.
 
 ## Decisions
 Full list: `CLAUDE.md` section "Decisions" and `docs/DESIGN.md`. Headlines: Node 22; real ASR/diarization in the demo and mocks for tests only; cursor = (atom, offset) with offset only inside silences and on the frame grid; partial-cut rule and inactive effects; 0.7 s minimum caption time; speed range 0.25x-4x (`MAX_SPEED`); later speed change replaces the earlier rate; restore is a new op that points at a group; effect ids count edit ops only; sha256 from @noble/hashes; no React UI (M7 = Swagger UI/Redoc from openapi.yaml).
@@ -23,7 +29,10 @@ Full list: `CLAUDE.md` section "Decisions" and `docs/DESIGN.md`. Headlines: Node
 ## Open items
 - Record the single-speaker test video from `docs/TEST_VIDEO_SCRIPT.md`, add it to `SOURCES.md`.
 - Decide how to resolve "the intro"/"that caption" style references (parser/history lookup, M2/M4).
-- Decide whether to also frame-snap word-boundary cursors (see REVIEW_M1 doubt 1) once M3 measures drift.
+- Boundaries between two touching words cannot be frame-snapped; check the drift once M3 can render (REVIEW_M1B doubt 2).
+- Install/verify Docker on the GCP VM before M2.
+- Reorder (M4) must add a separate source index: binary search in the engine assumes output order == source order.
+- `npm audit` reports 6 vulnerabilities in dev dependencies; not investigated.
 - Add `.gitattributes` for line endings (needs approval).
 - Reorder (`move`), filler/silence removal, music, multi-speaker: M4.
 - No `test-pack/` exists yet; no metric may be quoted until real runs are saved there.
@@ -59,3 +68,11 @@ Full list: `CLAUDE.md` section "Decisions" and `docs/DESIGN.md`. Headlines: Node
 | 26 | Instruction latency, 60-minute scale | not measured | **no** |
 | 27 | Real ASR, diarization, API, jobs, idempotency, compose, OTIO | not built | **no** |
 | 28 | Any metric (latency, cost, clipping, clarification quality) | none produced; nothing is under `test-pack/` | **no** |
+| 29 | `registry=https://registry.npmjs.org/` is pinned and the lockfile has no mirror URLs | `.npmrc`; `grep -c npmmirror package-lock.json` = 0; `npm ci` then `npm test` exit 0 (REVIEW_M1B section 1) | yes |
+| 30 | Source-side cut boundaries are on the frame grid (silence-to-word boundaries move into the silence, never into a word) | `frame_rounding.test.ts`; mutant "floor/ceil swapped" killed | yes, except boundaries between two touching words (cannot be snapped; warned in `snapPoint`) |
+| 31 | Output frames: sum of piece frames = round(total); each piece within 1 frame | `frame_rounding.test.ts` (odd counts at 2x and 3/2x; seeded property, 150 runs, independent BigInt arithmetic); mutant "per-piece rounding" killed | yes (engine arithmetic only; **not** against a rendered video) |
+| 32 | Any instruction < 300 ms; 4,000-op instruction < 1 s (synthetic 60 min, 24,001 atoms) | `docs/PERF_ENGINE.md`, `npm run bench -w @incubrix/engine`; worst single observed 155.9 ms; 4,000-op ~50-58 ms | yes on this laptop, synthetic data |
+| 33 | Cached session path equals a replay on a brand-new engine | `hard_cases.test.ts` property (100 seeded sessions incl. restore and rejected turns); 3 cache mutants killed | yes |
+| 34 | Music, protected pauses, auto-caption style are in the timeline and hash; effect ids count edit entries only | `mutants.test.ts`; 4 original surviving mutants killed (without these tests 4 of 9 survived) | yes |
+| 35 | zod contracts are the source of truth; committed JSON Schema equals the generated one | `packages/contracts/test/schema.test.ts` | yes |
+| 36 | Docker works on the dev machine / compose runs | `docker --version`: command not found on this machine | **no** |
