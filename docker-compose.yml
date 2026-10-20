@@ -9,6 +9,7 @@ x-env: &env
 x-app: &app
   <<: *env
   build: .
+  image: incubrix-app
   restart: unless-stopped
 
 services:
