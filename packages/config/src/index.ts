@@ -32,7 +32,7 @@ const base = z.object({
 
     ASR_PROVIDER: z.enum(["mock", "faster-whisper"]).default("mock"),
     ASR_URL: z.url().default("http://asr:8000"),
-    DIARIZATION_PROVIDER: z.enum(["mock", "none"]).default("mock"),
+    DIARIZATION_PROVIDER: z.enum(["sherpa", "mock", "none"]).default("mock"),
     LLM_PROVIDER: z.enum(["rules", "mock", "groq", "gemini"]).default("rules"),
     LLM_TIMEOUT_MS: z.coerce.number().int().min(100).max(30000).default(1500),
     GROQ_API_KEY: z.string().min(1).optional(),

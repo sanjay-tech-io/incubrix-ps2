@@ -5,6 +5,7 @@ from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
 
 from asr.adapters.base import Adapter
+from asr.diarize import DiarizationSettings, Diarizer, assign_speakers
 from asr.schema import Transcript
 
 
@@ -23,31 +24,57 @@ def build_adapter(name: Optional[str] = None) -> Adapter:
         from asr.adapters.fwhisper import FasterWhisperAdapter
 
         return FasterWhisperAdapter(
-            model_size=os.environ.get("WHISPER_MODEL", "base.en"),
+            model_size=os.environ.get("ASR_MODEL", "base.en"),
             compute_type=os.environ.get("WHISPER_COMPUTE_TYPE", "int8"),
         )
     raise ValueError(f"unknown ASR_ADAPTER {name!r}")
 
 
-def create_app(adapter: Optional[Adapter] = None) -> FastAPI:
+def build_diarizer(name: Optional[str] = None, settings: Optional[DiarizationSettings] = None) -> Optional[Diarizer]:
+    name = name or os.environ.get("DIARIZATION_PROVIDER", "none")
+    if name == "none":
+        return None
+    if name == "mock":
+        from asr.diarizers.mock import MockDiarizer
+
+        return MockDiarizer()
+    if name == "sherpa":
+        from asr.diarizers.sherpa import SherpaDiarizer
+
+        return SherpaDiarizer(os.environ.get("DIARIZATION_MODEL_DIR", "/models/diarization"), settings or DiarizationSettings.from_env(os.environ))
+    raise ValueError(f"unknown DIARIZATION_PROVIDER {name!r} (sherpa | mock | none)")
+
+
+def create_app(adapter: Optional[Adapter] = None, diarizer: Optional[Diarizer] = None) -> FastAPI:
     app = FastAPI(title="incubrix-asr")
     adp = adapter or build_adapter()
+    dia_settings = DiarizationSettings.from_env(os.environ)
+    # Passing an adapter (tests) without a diarizer means "no diarization", never "read the env".
+    dia = diarizer if (adapter is not None or diarizer is not None) else build_diarizer(settings=dia_settings)
 
     @app.get("/health")
     def health():
-        return {"status": "ok", "service": "asr", "adapter": adp.name}
+        return {"status": "ok", "service": "asr", "adapter": adp.name, "diarization": dia.name if dia else "none"}
 
     @app.post("/transcribe", response_model=Transcript, response_model_exclude_none=True)
     async def transcribe(
         file: UploadFile = File(...),
         initial_prompt: Optional[str] = None,
         vad_filter: bool = True,
+        diarize: bool = True,
     ):
         audio = await file.read()
         if not audio:
             return error(400, "EMPTY_AUDIO", "uploaded file is empty")
         prompt = initial_prompt if initial_prompt is not None else (os.environ.get("WHISPER_INITIAL_PROMPT") or None)
-        return adp.transcribe(audio, initial_prompt=prompt, vad_filter=vad_filter)
+        t = adp.transcribe(audio, initial_prompt=prompt, vad_filter=vad_filter)
+        if dia is not None and diarize:
+            turns = dia.diarize(audio)
+            t.words = assign_speakers(t.words, turns, dia_settings)
+            t.settings["diarization"] = {**dia.describe(), "uncertain_below": dia_settings.uncertain_below, "overlap_min_fraction": dia_settings.overlap_min,
+                                         "speakers_found": len({x.speaker for x in turns}), "turns": len(turns)}
+            t.timings["diarization"] = getattr(dia, "last_timings", {})
+        return t
 
     return app
 

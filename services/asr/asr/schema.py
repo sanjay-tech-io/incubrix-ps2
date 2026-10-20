@@ -22,6 +22,10 @@ class Word(BaseModel):
     end_us: int
     confidence_permille: int
     speaker: Optional[str] = None
+    # Set only when diarization ran. Wire names are snake_case; the engine's atoms call them
+    # speakerUncertain / overlapsSpeech.
+    speaker_uncertain: Optional[bool] = None
+    overlaps_speech: Optional[bool] = None
 
     @model_validator(mode="after")
     def _ordered(self):
