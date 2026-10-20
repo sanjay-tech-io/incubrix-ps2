@@ -1,0 +1,458 @@
+{
+ "audio": "/tmp/claude-1000/-home-g23m143-incubrix-ps2/37cb2070-a70d-4afa-a043-a3181072b6f6/scratchpad/clips/synthetic.wav",
+ "prompt": "Umm, let me think, like, hmm... okay, so, uh, here is what I think.",
+ "results": [
+  {
+   "model": "tiny.en",
+   "vad_filter": true,
+   "prompt": false,
+   "words": 45,
+   "fillers": 0,
+   "filler_list": [],
+   "prompt_echoed": false,
+   "rtf": 0.0818,
+   "text": "So here is what I think we should ship the first version on Friday. The second part is a bit harder. I mean we need more tests and maybe review them. Okay, let me say that again, the plan is simple, record, edit, and export."
+  },
+  {
+   "model": "tiny.en",
+   "vad_filter": true,
+   "prompt": true,
+   "words": 40,
+   "fillers": 0,
+   "filler_list": [],
+   "prompt_echoed": false,
+   "rtf": 0.0807,
+   "text": "We should ship the first version on Friday. The second part is a bit harder. I mean, we need more tests and maybe review them. Okay, let me say that, again, the plan is fixed. simple, record, edit, and export."
+  },
+  {
+   "model": "tiny.en",
+   "vad_filter": false,
+   "prompt": false,
+   "words": 45,
+   "fillers": 0,
+   "filler_list": [],
+   "prompt_echoed": false,
+   "rtf": 0.0792,
+   "text": "So here is what I think we should ship the first version on Friday. The second part is a bit harder. I mean we need more tests and maybe review them. Okay, let me say that again, the plan is simple, record, edit, and export."
+  },
+  {
+   "model": "tiny.en",
+   "vad_filter": false,
+   "prompt": true,
+   "words": 40,
+   "fillers": 0,
+   "filler_list": [],
+   "prompt_echoed": false,
+   "rtf": 0.0774,
+   "text": "We should ship the first version on Friday. The second part is a bit harder. I mean, we need more tests and maybe review them. Okay, let me say that, again, the plan is fixed. simple, record, edit, and export."
+  },
+  {
+   "model": "base.en",
+   "vad_filter": true,
+   "prompt": false,
+   "words": 59,
+   "fillers": 9,
+   "filler_list": [
+    [
+     "Umm,",
+     0
+    ],
+    [
+     "umm,",
+     3880000
+    ],
+    [
+     "umm,",
+     7860000
+    ],
+    [
+     "umm,",
+     14240000
+    ],
+    [
+     "umm,",
+     18500000
+    ],
+    [
+     "umm,",
+     21280000
+    ],
+    [
+     "Umm,",
+     23660000
+    ],
+    [
+     "umm,",
+     26360000
+    ],
+    [
+     "um,",
+     30500000
+    ]
+   ],
+   "prompt_echoed": false,
+   "rtf": 0.4168,
+   "text": "Umm, let me think. Okay, so, umm, here is what I think. We should, umm, ship the first version on Friday. The second part is, umm, a bit harder. I mean, we need, umm, more tests, and, umm, maybe a review. Umm, okay, let me, umm, say that again. And the plan is simple, um, record, edit, and export."
+  },
+  {
+   "model": "base.en",
+   "vad_filter": true,
+   "prompt": true,
+   "words": 60,
+   "fillers": 10,
+   "filler_list": [
+    [
+     "Umm,",
+     0
+    ],
+    [
+     "uh,",
+     3840000
+    ],
+    [
+     "umm,",
+     7840000
+    ],
+    [
+     "Umm,",
+     11760000
+    ],
+    [
+     "umm,",
+     14220000
+    ],
+    [
+     "umm,",
+     18500000
+    ],
+    [
+     "umm,",
+     21280000
+    ],
+    [
+     "Umm,",
+     23680000
+    ],
+    [
+     "umm,",
+     26340000
+    ],
+    [
+     "um,",
+     30500000
+    ]
+   ],
+   "prompt_echoed": false,
+   "rtf": 0.1697,
+   "text": "Umm, let me think. Okay, so, uh, here is what I think. We should, umm, ship the first version on Friday. Umm, the second part is, umm, a bit harder. I mean, we need, umm, more tests. And, umm, maybe a review. Umm, okay, let me, umm, say that again. And the plan is simple, um, record, edit, and export."
+  },
+  {
+   "model": "base.en",
+   "vad_filter": false,
+   "prompt": false,
+   "words": 59,
+   "fillers": 9,
+   "filler_list": [
+    [
+     "Umm,",
+     0
+    ],
+    [
+     "umm,",
+     3500000
+    ],
+    [
+     "umm,",
+     7840000
+    ],
+    [
+     "umm,",
+     13940000
+    ],
+    [
+     "umm,",
+     18020000
+    ],
+    [
+     "umm,",
+     20820000
+    ],
+    [
+     "Umm,",
+     23660000
+    ],
+    [
+     "umm,",
+     25880000
+    ],
+    [
+     "um,",
+     30500000
+    ]
+   ],
+   "prompt_echoed": false,
+   "rtf": 0.4154,
+   "text": "Umm, let me think. Okay, so umm, here is what I think. We should, umm, ship the first version on Friday. The second part is umm, a bit harder. I mean, we need umm, more tests. And umm, maybe a review. Umm, okay, let me umm, say that again. And the plan is simple, um, record, edit, and export."
+  },
+  {
+   "model": "base.en",
+   "vad_filter": false,
+   "prompt": true,
+   "words": 60,
+   "fillers": 10,
+   "filler_list": [
+    [
+     "Umm,",
+     0
+    ],
+    [
+     "uh,",
+     3840000
+    ],
+    [
+     "umm,",
+     7840000
+    ],
+    [
+     "Umm,",
+     11760000
+    ],
+    [
+     "umm,",
+     14220000
+    ],
+    [
+     "umm,",
+     18500000
+    ],
+    [
+     "umm,",
+     21280000
+    ],
+    [
+     "Umm,",
+     23680000
+    ],
+    [
+     "umm,",
+     26340000
+    ],
+    [
+     "um,",
+     30500000
+    ]
+   ],
+   "prompt_echoed": false,
+   "rtf": 0.1688,
+   "text": "Umm, let me think. Okay, so, uh, here is what I think. We should, umm, ship the first version on Friday. Umm, the second part is, umm, a bit harder. I mean, we need, umm, more tests. And, umm, maybe a review. Umm, okay, let me, umm, say that again. And the plan is simple, um, record, edit, and export."
+  },
+  {
+   "model": "small.en",
+   "vad_filter": true,
+   "prompt": false,
+   "words": 59,
+   "fillers": 10,
+   "filler_list": [
+    [
+     "Um,",
+     0
+    ],
+    [
+     "uh,",
+     4000000
+    ],
+    [
+     "um,",
+     7660000
+    ],
+    [
+     "um,",
+     11720000
+    ],
+    [
+     "uh,",
+     14520000
+    ],
+    [
+     "um,",
+     18460000
+    ],
+    [
+     "uh,",
+     21140000
+    ],
+    [
+     "um,",
+     23580000
+    ],
+    [
+     "uh,",
+     26220000
+    ],
+    [
+     "um,",
+     30740000
+    ]
+   ],
+   "prompt_echoed": false,
+   "rtf": 0.4476,
+   "text": "Um, let me think, okay, so, uh, here is what I think, we should, um, ship the first version on Friday, um, the second part is, uh, a bit harder, I mean, we need, um, more tests, and, uh, maybe a review, um, okay, let me, uh, say that again. The plan is simple, um, record, edit, and export."
+  },
+  {
+   "model": "small.en",
+   "vad_filter": true,
+   "prompt": true,
+   "words": 59,
+   "fillers": 10,
+   "filler_list": [
+    [
+     "Umm,",
+     0
+    ],
+    [
+     "uh,",
+     4000000
+    ],
+    [
+     "um,",
+     7480000
+    ],
+    [
+     "Umm,",
+     11940000
+    ],
+    [
+     "uh,",
+     14240000
+    ],
+    [
+     "um,",
+     18420000
+    ],
+    [
+     "uh,",
+     21140000
+    ],
+    [
+     "Umm,",
+     23600000
+    ],
+    [
+     "uh,",
+     26220000
+    ],
+    [
+     "um,",
+     30760000
+    ]
+   ],
+   "prompt_echoed": false,
+   "rtf": 0.4514,
+   "text": "Umm, let me think, okay, so, uh, here is what I think. We should, um, ship the first version on Friday. Umm, the second part is, uh, a bit harder. I mean, we need, um, more tests and, uh, maybe a review. Umm, okay, let me, uh, say that again. The plan is simple, um, record, edit, and export."
+  },
+  {
+   "model": "small.en",
+   "vad_filter": false,
+   "prompt": false,
+   "words": 59,
+   "fillers": 10,
+   "filler_list": [
+    [
+     "Um,",
+     0
+    ],
+    [
+     "uh,",
+     4000000
+    ],
+    [
+     "um,",
+     7660000
+    ],
+    [
+     "um,",
+     11720000
+    ],
+    [
+     "uh,",
+     14520000
+    ],
+    [
+     "um,",
+     18460000
+    ],
+    [
+     "uh,",
+     21140000
+    ],
+    [
+     "um,",
+     23580000
+    ],
+    [
+     "uh,",
+     26220000
+    ],
+    [
+     "um,",
+     30740000
+    ]
+   ],
+   "prompt_echoed": false,
+   "rtf": 0.4276,
+   "text": "Um, let me think, okay, so, uh, here is what I think, we should, um, ship the first version on Friday, um, the second part is, uh, a bit harder, I mean, we need, um, more tests, and, uh, maybe a review, um, okay, let me, uh, say that again. The plan is simple, um, record, edit, and export."
+  },
+  {
+   "model": "small.en",
+   "vad_filter": false,
+   "prompt": true,
+   "words": 59,
+   "fillers": 10,
+   "filler_list": [
+    [
+     "Umm,",
+     0
+    ],
+    [
+     "uh,",
+     4000000
+    ],
+    [
+     "um,",
+     7480000
+    ],
+    [
+     "Umm,",
+     11940000
+    ],
+    [
+     "uh,",
+     14240000
+    ],
+    [
+     "um,",
+     18420000
+    ],
+    [
+     "uh,",
+     21140000
+    ],
+    [
+     "Umm,",
+     23600000
+    ],
+    [
+     "uh,",
+     26220000
+    ],
+    [
+     "um,",
+     30760000
+    ]
+   ],
+   "prompt_echoed": false,
+   "rtf": 0.4677,
+   "text": "Umm, let me think, okay, so, uh, here is what I think. We should, um, ship the first version on Friday. Umm, the second part is, uh, a bit harder. I mean, we need, um, more tests and, uh, maybe a review. Umm, okay, let me, uh, say that again. The plan is simple, um, record, edit, and export."
+  }
+ ]
+}

@@ -1,0 +1,78 @@
+{
+ "summary": {
+  "audio_s": 120.0,
+  "load_s": 0.233,
+  "process_s": 48.898,
+  "rtf": 0.4075,
+  "peak_rss_mb": 224.3,
+  "speakers": 3,
+  "turns": 13
+ },
+ "turns": [
+  {
+   "start_us": 30969,
+   "end_us": 17412220,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 8789094,
+   "end_us": 10780344,
+   "speaker": "SPEAKER_01"
+  },
+  {
+   "start_us": 17952221,
+   "end_us": 22035971,
+   "speaker": "SPEAKER_01"
+  },
+  {
+   "start_us": 22035971,
+   "end_us": 58806595,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 22744720,
+   "end_us": 23217220,
+   "speaker": "SPEAKER_01"
+  },
+  {
+   "start_us": 58452221,
+   "end_us": 65438469,
+   "speaker": "SPEAKER_01"
+  },
+  {
+   "start_us": 64375343,
+   "end_us": 65269722,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 66434097,
+   "end_us": 76542221,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 71817223,
+   "end_us": 72576599,
+   "speaker": "SPEAKER_01"
+  },
+  {
+   "start_us": 77183472,
+   "end_us": 107372849,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 83460968,
+   "end_us": 83849098,
+   "speaker": "SPEAKER_03"
+  },
+  {
+   "start_us": 107372849,
+   "end_us": 107862221,
+   "speaker": "SPEAKER_03"
+  },
+  {
+   "start_us": 107895973,
+   "end_us": 119978470,
+   "speaker": "SPEAKER_00"
+  }
+ ]
+}

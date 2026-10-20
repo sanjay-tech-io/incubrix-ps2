@@ -1,0 +1,8 @@
+{
+  "name": "@incubrix/worker",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": { "start": "node src/main.ts" },
+  "dependencies": { "@incubrix/config": "*", "pg": "^8.13.0" }
+}

@@ -1,0 +1,109 @@
+{
+ "Wespeaker/wespeaker-voxceleb-resnet34": {
+  "gated": false,
+  "license": "apache-2.0",
+  "license_name": null,
+  "extra_gated_prompt": null,
+  "extra_gated_fields": [],
+  "source": "https://huggingface.co/api/models/Wespeaker/wespeaker-voxceleb-resnet34"
+ },
+ "csukuangfj/sherpa-onnx-pyannote-segmentation-3-0": {
+  "gated": false,
+  "license": null,
+  "license_name": null,
+  "extra_gated_prompt": null,
+  "extra_gated_fields": [],
+  "source": "https://huggingface.co/api/models/csukuangfj/sherpa-onnx-pyannote-segmentation-3-0"
+ },
+ "funasr/campplus": {
+  "gated": false,
+  "license": "apache-2.0",
+  "license_name": null,
+  "extra_gated_prompt": null,
+  "extra_gated_fields": [],
+  "source": "https://huggingface.co/api/models/funasr/campplus"
+ },
+ "nvidia/diar_sortformer_4spk-v1": {
+  "gated": false,
+  "license": "cc-by-nc-4.0",
+  "license_name": null,
+  "extra_gated_prompt": null,
+  "extra_gated_fields": [],
+  "source": "https://huggingface.co/api/models/nvidia/diar_sortformer_4spk-v1"
+ },
+ "nvidia/diar_streaming_sortformer_4spk-v2": {
+  "gated": false,
+  "license": "cc-by-4.0",
+  "license_name": null,
+  "extra_gated_prompt": null,
+  "extra_gated_fields": [],
+  "source": "https://huggingface.co/api/models/nvidia/diar_streaming_sortformer_4spk-v2"
+ },
+ "nvidia/speakerverification_en_titanet_large": {
+  "gated": false,
+  "license": "cc-by-4.0",
+  "license_name": null,
+  "extra_gated_prompt": null,
+  "extra_gated_fields": [],
+  "source": "https://huggingface.co/api/models/nvidia/speakerverification_en_titanet_large"
+ },
+ "pyannote/segmentation-3.0": {
+  "gated": "auto",
+  "license": "mit",
+  "license_name": null,
+  "extra_gated_prompt": "The collected information will help acquire a better knowledge of pyannote.audio userbase and help its maintainers improve it further. Though this model uses MIT license and will always remain open-source, we will occasionnally email you about premium models and paid services around pyannote.",
+  "extra_gated_fields": [
+   "Company/university",
+   "Website"
+  ],
+  "source": "https://huggingface.co/api/models/pyannote/segmentation-3.0"
+ },
+ "pyannote/speaker-diarization-3.1": {
+  "gated": "auto",
+  "license": "mit",
+  "license_name": null,
+  "extra_gated_prompt": "The collected information will help acquire a better knowledge of pyannote.audio userbase and help its maintainers improve it further. Though this pipeline uses MIT license and will always remain open-source, we will occasionnally email you about premium pipelines and paid services around pyannote.",
+  "extra_gated_fields": [
+   "Company/university",
+   "Website"
+  ],
+  "source": "https://huggingface.co/api/models/pyannote/speaker-diarization-3.1"
+ },
+ "pyannote/speaker-diarization-community-1": {
+  "gated": "auto",
+  "license": "cc-by-4.0",
+  "license_name": null,
+  "extra_gated_prompt": "Your input helps us strengthen the pyannote community and improve our open-source offerings. This pipeline is released under the CC-BY-4.0 license and will always remain freely accessible. By providing your details, you agree that we may email you occasionally with important news about pyannote models, invitations to try premium pipelines, and information about specific services designed for researchers and professionals like you.",
+  "extra_gated_fields": [
+   "Company/university",
+   "Use case"
+  ],
+  "source": "https://huggingface.co/api/models/pyannote/speaker-diarization-community-1"
+ },
+ "pyannote/wespeaker-voxceleb-resnet34-LM": {
+  "gated": false,
+  "license": "cc-by-4.0",
+  "license_name": null,
+  "extra_gated_prompt": null,
+  "extra_gated_fields": [],
+  "source": "https://huggingface.co/api/models/pyannote/wespeaker-voxceleb-resnet34-LM"
+ },
+ "speechbrain/spkrec-ecapa-voxceleb": {
+  "gated": false,
+  "license": "apache-2.0",
+  "license_name": null,
+  "extra_gated_prompt": null,
+  "extra_gated_fields": [],
+  "source": "https://huggingface.co/api/models/speechbrain/spkrec-ecapa-voxceleb"
+ },
+ "Systran/faster-whisper-small.en": {
+  "license": "mit",
+  "gated": false,
+  "source": "https://huggingface.co/api/models/Systran/faster-whisper-small.en"
+ },
+ "Systran/faster-whisper-base.en": {
+  "license": "mit",
+  "gated": false,
+  "source": "https://huggingface.co/api/models/Systran/faster-whisper-base.en"
+ }
+}

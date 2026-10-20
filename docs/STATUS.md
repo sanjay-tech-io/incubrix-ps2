@@ -1,6 +1,6 @@
 # Project status (project memory)
 
-Updated at the end of every milestone. Last update: end of M1c (2026-10-20). Everything below was run, not assumed; "not verified" means exactly that.
+Updated at the end of every milestone. Last update: infra workstream (2026-10-20), on top of M1c. Everything below was run, not assumed; "not verified" means exactly that.
 
 ## Done and verified
 | Item | Proof (command) |
@@ -17,9 +17,21 @@ Updated at the end of every milestone. Last update: end of M1c (2026-10-20). Eve
 | 40 hand-picked mutants all die | `npm run mutation-check` (see REVIEW_M1C.md section 5 for the raw output of the final run) |
 | Performance targets on a synthetic 60-minute source | `npm run bench -w @incubrix/engine` (docs/PERF_ENGINE.md) |
 
+### Infra workstream (branch `infra`, details and raw output in docs/REVIEW_INFRA.md)
+| Item | Proof |
+|---|---|
+| Config loader (zod, fail fast), `.env.example` lists every setting (test) | `npm test -w @incubrix/config` |
+| Plain-SQL migrations + runner, 7 tables, append-only operation_log | `docker compose run --rm tests` (db: 11 passed incl. 6 Postgres tests) |
+| docker compose: postgres 16, SeaweedFS (S3; MinIO would not pull), init, api/worker placeholders, asr; all healthy | `docker compose up -d --build`, `docker compose ps` (docs/raw/compose_up.txt) |
+| ASR service (faster-whisper + mock), integer us / permille | `python -m pytest` in services/asr: 11 passed, 1 skipped |
+| Media tools: exact-fraction fps, VFR, audio silencedetect, clamp to silence | `npm test -w @incubrix/media` (25 passed) |
+| Real ASR spike on a public-domain clip (RTF base.en 0.21, small.en 0.51, medium.en 1.33) | docs/SPIKE_ASR.md |
+| Diarization licence evaluation; default candidate sherpa-onnx + pyannote-seg-3.0 ONNX + WeSpeaker | docs/REVIEW_INFRA.md section 5 (training-data licences and accuracy NOT verified) |
+
 Latest `npm test` (root): see docs/REVIEW_M1C.md section 2. Last update of this file: end of M1c (2026-10-20).
 
 ## Not verified (not built or not run)
+Infra additions not done: real api/worker, compose end-to-end test, diarization integration and accuracy, disfluency-prompt effect on labelled human speech (see REVIEW_INFRA.md section 8). Older list follows; its Docker item is now outdated (Docker works on the GCP VM).
 Docker / docker compose (Docker is not installed on the dev machine); rendering and A/V sync (M3); worked example step 8; instruction parsing; audio mixing of music/bleeps; API, jobs, idempotency, errors, health, manifest, docker compose (M2); real ASR and diarization; LLM adapters; reorder, filler and silence removal, music ducking, mute/bleep audio; multi-speaker handling; OTIO export; performance on a real 60-minute video or through the API (only a synthetic source on one laptop is measured); any real video; any metric; CI.
 
 ## Decisions

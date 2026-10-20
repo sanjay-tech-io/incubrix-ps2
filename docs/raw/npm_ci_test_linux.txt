@@ -1,0 +1,48 @@
+  run `npm fund` for details
+
+6 vulnerabilities (3 moderate, 1 high, 2 critical)
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
+
+Run `npm audit` for details.
+ RUN  v2.1.9 /home/g23m143/incubrix-ps2/packages/contracts
+
+ ✓ test/schema.test.ts (4 tests) 349ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  09:32:15
+   Duration  990ms (transform 112ms, setup 0ms, collect 242ms, tests 349ms, environment 0ms, prepare 117ms)
+
+
+> @incubrix/engine@0.0.0 test
+> eslint . && vitest run
+
+
+ RUN  v2.1.9 /home/g23m143/incubrix-ps2/packages/engine
+
+ ✓ test/session.test.ts (30 tests) 80ms
+ ✓ test/new_ops.test.ts (39 tests) 134ms
+ ✓ test/reorder.test.ts (26 tests) 202ms
+ ✓ test/replay.test.ts (23 tests) 49ms
+ ✓ test/frame_rounding.test.ts (14 tests) 208ms
+ ✓ test/worked_example.test.ts (11 tests | 1 skipped) 77ms
+ ✓ test/search_resolve.test.ts (21 tests) 32ms
+ ✓ test/atoms.test.ts (21 tests) 31ms
+ ✓ test/grid_warnings.test.ts (11 tests) 37ms
+ ✓ test/mutants.test.ts (14 tests) 27ms
+ ✓ test/canonical.test.ts (18 tests) 29ms
+ ✓ test/hard_cases.test.ts (6 tests) 2435ms
+   ✓ property: incremental application equals a full replay > after every command of a random edit/undo/redo sequence, snapshots agree with replaying the log 397ms
+   ✓ property: the session path (caches, incremental priming) equals a fresh full replay > after every turn of a random session (edits, undo, redo, restore, rejected turns), the cached timeline equals a replay on a brand-new engine 1985ms
+ ✓ test/schema.test.ts (4 tests) 331ms
+   ✓ the schema accepts what the engine really produces > a real session (caption, cut, question, answer, speed, restore, undo, recolour) validates, and so does its materialized timeline 302ms
+ ✓ test/lint_guard.test.ts (12 tests) 855ms
+   ✓ engine purity lint rules > forbids Date in packages/engine/src 791ms
+
+ Test Files  14 passed (14)
+      Tests  249 passed | 1 skipped (250)
+   Start at  09:32:19
+   Duration  5.60s (transform 1.13s, setup 0ms, collect 3.80s, tests 4.53s, environment 5ms, prepare 1.89s)
+

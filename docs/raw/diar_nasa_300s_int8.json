@@ -1,0 +1,138 @@
+{
+ "summary": {
+  "audio_s": 300.0,
+  "load_s": 0.225,
+  "process_s": 125.632,
+  "rtf": 0.4188,
+  "peak_rss_mb": 240.2,
+  "speakers": 4,
+  "turns": 25
+ },
+ "turns": [
+  {
+   "start_us": 30969,
+   "end_us": 17344721,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 8924094,
+   "end_us": 10274094,
+   "speaker": "SPEAKER_01"
+  },
+  {
+   "start_us": 10274094,
+   "end_us": 10763469,
+   "speaker": "SPEAKER_02"
+  },
+  {
+   "start_us": 17952221,
+   "end_us": 21023470,
+   "speaker": "SPEAKER_02"
+  },
+  {
+   "start_us": 21023470,
+   "end_us": 58907845,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 22677221,
+   "end_us": 23234095,
+   "speaker": "SPEAKER_02"
+  },
+  {
+   "start_us": 58469093,
+   "end_us": 65455345,
+   "speaker": "SPEAKER_02"
+  },
+  {
+   "start_us": 60325344,
+   "end_us": 60662846,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 64662224,
+   "end_us": 65185349,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 66434097,
+   "end_us": 76508469,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 71850967,
+   "end_us": 72492218,
+   "speaker": "SPEAKER_02"
+  },
+  {
+   "start_us": 77200348,
+   "end_us": 98310974,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 83477844,
+   "end_us": 83832222,
+   "speaker": "SPEAKER_03"
+  },
+  {
+   "start_us": 98884720,
+   "end_us": 126255974,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 107355972,
+   "end_us": 107760971,
+   "speaker": "SPEAKER_03"
+  },
+  {
+   "start_us": 127049095,
+   "end_us": 165524109,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 166317230,
+   "end_us": 189098480,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 176104736,
+   "end_us": 176543488,
+   "speaker": "SPEAKER_03"
+  },
+  {
+   "start_us": 189840988,
+   "end_us": 198143478,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 198919739,
+   "end_us": 255012238,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 221430984,
+   "end_us": 221819107,
+   "speaker": "SPEAKER_01"
+  },
+  {
+   "start_us": 255518478,
+   "end_us": 260850983,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 261762238,
+   "end_us": 276527863,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 277084747,
+   "end_us": 282636597,
+   "speaker": "SPEAKER_00"
+  },
+  {
+   "start_us": 284121613,
+   "end_us": 299967224,
+   "speaker": "SPEAKER_00"
+  }
+ ]
+}

@@ -1,0 +1,42 @@
+{
+ "summary": {
+  "probe": {
+   "durationUs": 120000000,
+   "hasVideo": false,
+   "hasAudio": true,
+   "video": null,
+   "audio": {
+    "sampleRate": 16000,
+    "channels": 1
+   }
+  },
+  "silences": 7,
+  "silenceTotalUs": 3134251,
+  "words": 393,
+  "adjustments": 3,
+  "insideSilence": 0,
+  "maxShrinkUs": 215250,
+  "medianShrinkUs": -127250
+ },
+ "adjustments": [
+  {
+   "index": 134,
+   "field": "startUs",
+   "from": 36040000,
+   "to": 36167250
+  },
+  {
+   "index": 144,
+   "field": "endUs",
+   "from": 40600000,
+   "to": 40384750
+  },
+  {
+   "index": 145,
+   "field": "startUs",
+   "from": 40600000,
+   "to": 40831313
+  }
+ ],
+ "insideSilence": []
+}
