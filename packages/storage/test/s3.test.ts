@@ -1,7 +1,7 @@
 import type { S3Client } from "@aws-sdk/client-s3";
 import { beforeAll, describe, expect, it } from "vitest";
 import { loadConfig } from "@incubrix/config";
-import { ensureBucket, makeS3 } from "../src/index.ts";
+import { ensureBucket, makeS3, presignGet, presignPut } from "../src/index.ts";
 
 // Integration: needs the S3 store from compose (TEST_S3=1 is set by the tests service).
 const run = process.env.TEST_S3 ? describe : describe.skip;
@@ -25,5 +25,18 @@ run("S3 store", () => {
     await s3.send(new PutObjectCommand({ Bucket: cfg.S3_BUCKET, Key: "test/hello.txt", Body: "hello" }));
     const r = await s3.send(new GetObjectCommand({ Bucket: cfg.S3_BUCKET, Key: "test/hello.txt" }));
     expect(await r.Body!.transformToString()).toBe("hello");
+  });
+
+  it("presigned PUT then presigned GET work with plain fetch and no credentials", async () => {
+    const key = "test/presigned.txt";
+    const put = await presignPut(s3, cfg.S3_BUCKET, key, 60);
+    expect((await fetch(put, { method: "PUT", body: "via presigned url" })).ok).toBe(true);
+    const got = await fetch(await presignGet(s3, cfg.S3_BUCKET, key, 60));
+    expect(await got.text()).toBe("via presigned url");
+  });
+
+  it("a presigned URL for a different key does not return this object", async () => {
+    const res = await fetch(await presignGet(s3, cfg.S3_BUCKET, "test/does-not-exist.txt", 60));
+    expect(res.status).toBe(404);
   });
 });
