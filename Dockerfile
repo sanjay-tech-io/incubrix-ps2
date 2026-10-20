@@ -1,6 +1,6 @@
-# One image for api, worker, init and tests (Node 22, ffmpeg for the media tools).
+# One image for api, worker, init and tests (Node 22, ffmpeg for the media tools, espeak-ng to synthesize the AI-generated speech in the test clips).
 FROM node:22-bookworm-slim
-RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg ca-certificates && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg espeak-ng ca-certificates && rm -rf /var/lib/apt/lists/*
 WORKDIR /app
 COPY package.json package-lock.json .npmrc ./
 COPY packages/contracts/package.json packages/contracts/
