@@ -4,3 +4,6 @@ export * from "./jobs.ts";
 export * from "./videos.ts";
 export * from "./transcripts.ts";
 export * from "./sessions.ts";
+export * from "./urlguard.ts";
+export * from "./manifest.ts";
+export * from "./log.ts";

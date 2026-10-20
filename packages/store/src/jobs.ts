@@ -75,3 +75,19 @@ export async function requeueStale(db: Db, staleSeconds: number): Promise<number
   const r = await db.query("update jobs set status='queued', progress=0, updated_at=now() where status='running' and updated_at < now() - make_interval(secs => $1)", [staleSeconds]);
   return r.rowCount ?? 0;
 }
+
+/** The public JSON of a job: what GET /api/v1/jobs/{id} returns and what a callback POSTs. */
+export function jobView(j: JobRow): Record<string, unknown> {
+  const result = j.result;
+  return {
+    job_id: j.id,
+    type: j.type,
+    status: j.status,
+    progress: j.progress,
+    result,
+    links: (result?.links as Record<string, string> | undefined) ?? {},
+    error: j.error,
+    created_at: j.created_at.toISOString(),
+    updated_at: j.updated_at.toISOString(),
+  };
+}
