@@ -1,0 +1,7 @@
+fastify 5.12.7 MIT
+@fastify/multipart 10.1.4 MIT
+pino 10.4.0 MIT
+tsx 4.23.15 MIT
+yaml 2.9.1 ISC
+ajv 8.20.0 MIT
+@aws-sdk/s3-request-presigner 3.1153.0 Apache-2.0

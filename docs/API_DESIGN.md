@@ -39,3 +39,19 @@ Real providers by default (`ASR_PROVIDER=faster-whisper`, `DIARIZATION_PROVIDER=
 2. VFR: accept with warning (my default) or reject?
 3. Render route as a documented 501 stub until M3: OK?
 4. `packages/nlu` and `packages/errors` as new workspace packages: OK?
+
+---
+
+## Amendments after approval (what changed while building M2)
+Approved answers: migration 0002 yes (log stays append-only, tested); VFR accepted with a warning in the answer and the manifest; `NO_AUDIO_TRACK` rejects; render is a 501 `NOT_IMPLEMENTED` stub listed in openapi.yaml; `packages/nlu` and `packages/errors` yes, and `packages/nlu` has the engine's purity ESLint rules plus a 3x-identical-output test. Change A (transcript cache key = sha256 + ASR provider + model + diarization provider + num_speakers + silence/clamp settings, with a test that a different model misses) and Change B (every summary text names the time policy) are implemented.
+
+What differs from the one-page design:
+- **Migration 0002 needed no new `operation_log.kind` column**: `kind` already existed. It only replaces the `group_no > 0` CHECK by "edits have group_no > 0, undo/redo rows have group_no = 0 and op `{}`".
+- **tsx runs api and worker.** The engine imports without file extensions and uses TypeScript parameter properties, which plain `node` type stripping cannot run; the engine is not changed.
+- **One provider switch.** The Python ASR service now reads `ASR_PROVIDER` and `DIARIZATION_PROVIDER` too (`ASR_ADAPTER` still works as the old name). Compose defaults are the real providers; the `tests` service overrides to `mock`.
+- **Progress inside the ASR stage is estimated from elapsed time** (the ASR service reports no progress), capped at 95% of that stage; the other stages are exact steps.
+- **Unrecognised instruction text is `rejected`** with a reason listing examples (not `needs_clarification`), because a question with no options cannot be answered.
+- **Multi-part instructions** ("A, then B") are resolved against the same starting timeline and applied as ONE undo group; parts that cannot be applied are named in `warnings`.
+- **Errors are not stored for idempotency**: a request that failed with an error can be retried with the same key; only successful responses are replayed.
+- Added `GET /api/v1/sessions/{id}` and `GET /api/v1/videos/{id}` (needed to read state back).
+- Known gap kept from the design: the URL guard resolves DNS itself, then fetch resolves again (DNS rebinding not hardened).

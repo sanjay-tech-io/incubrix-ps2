@@ -9,6 +9,19 @@ docker compose up -d --build
 docker compose run --rm tests   # every test, no keys, no network
 ```
 
+## Use it
+```
+export API=http://localhost:8080          # add -H "Authorization: Bearer $API_TOKEN" when API_TOKEN is set
+curl -F file=@talk.mp4 $API/api/v1/videos                       # 202 {video_id, job_id, status_url}
+curl $API/api/v1/jobs/<job_id>                                  # queued|running|succeeded|failed, progress 0-100
+curl -H 'content-type: application/json' -d '{"video_id":"<video_id>"}' $API/api/v1/sessions
+curl -H 'content-type: application/json' -d '{"say":"cut the first 30 seconds"}' $API/api/v1/sessions/<session_id>/instructions
+```
+Every POST accepts `Idempotency-Key`. Each instruction answer is `applied`, `needs_clarification` or `rejected`, states its time policy in `summary`, and carries a `manifest`. Routes: `openapi.yaml`.
+
+## Settings
+Every setting is an environment variable, validated at startup; `.env.example` lists all of them with their defaults (a test keeps the two in sync). The real speech models are the default (`ASR_PROVIDER=faster-whisper`, `DIARIZATION_PROVIDER=sherpa`); tests set `mock`.
+
 ## Error codes
 Every error is `{"error":{"code","message","retryable","details"}}`. The list below is generated from `packages/errors/src/index.ts` (`npm run docs:errors`).
 
