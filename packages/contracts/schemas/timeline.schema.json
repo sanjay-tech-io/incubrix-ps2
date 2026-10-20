@@ -1,0 +1,1039 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://incubrix.example/schemas/timeline.schema.json",
+  "$ref": "#/$defs/SessionDocument",
+  "$defs": {
+    "SessionDocument": {
+      "type": "object",
+      "properties": {
+        "schemaVersion": {
+          "type": "number",
+          "const": 1
+        },
+        "source": {
+          "$ref": "#/$defs/Source"
+        },
+        "atoms": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Atom"
+          }
+        },
+        "log": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/LogEntry"
+          }
+        },
+        "conversation": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/ConversationEntry"
+          }
+        }
+      },
+      "required": [
+        "schemaVersion",
+        "source",
+        "atoms",
+        "log",
+        "conversation"
+      ],
+      "additionalProperties": false,
+      "title": "IncuBrix session document"
+    },
+    "Source": {
+      "type": "object",
+      "properties": {
+        "sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "durationUs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "fps": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Fps"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "hasAudio": {
+          "type": "boolean"
+        },
+        "hasVideo": {
+          "type": "boolean"
+        },
+        "variableFrameRate": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "sha256",
+        "durationUs",
+        "fps",
+        "hasAudio",
+        "hasVideo",
+        "variableFrameRate"
+      ],
+      "additionalProperties": false
+    },
+    "Fps": {
+      "type": "object",
+      "properties": {
+        "num": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "den": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "num",
+        "den"
+      ],
+      "additionalProperties": false
+    },
+    "Atom": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/AtomId"
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "word",
+            "silence"
+          ]
+        },
+        "startUs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "endUs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "text": {
+          "type": "string"
+        },
+        "speaker": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "confidencePermille": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 1000
+        },
+        "lowConfidence": {
+          "type": "boolean"
+        },
+        "filler": {
+          "type": "boolean"
+        },
+        "overlapsSpeech": {
+          "type": "boolean"
+        },
+        "speakerUncertain": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "startUs",
+        "endUs",
+        "text",
+        "speaker",
+        "confidencePermille",
+        "lowConfidence",
+        "filler",
+        "overlapsSpeech",
+        "speakerUncertain"
+      ],
+      "additionalProperties": false
+    },
+    "AtomId": {
+      "type": "string",
+      "pattern": "^a_[0-9a-f]{12}$"
+    },
+    "LogEntry": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "seq": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "kind": {
+              "type": "string",
+              "const": "edit"
+            },
+            "group": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            "op": {
+              "$ref": "#/$defs/Operation"
+            }
+          },
+          "required": [
+            "seq",
+            "kind",
+            "group",
+            "op"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "seq": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "kind": {
+              "type": "string",
+              "const": "undo"
+            }
+          },
+          "required": [
+            "seq",
+            "kind"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "seq": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 9007199254740991
+            },
+            "kind": {
+              "type": "string",
+              "const": "redo"
+            }
+          },
+          "required": [
+            "seq",
+            "kind"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "Operation": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "cut"
+            },
+            "span": {
+              "$ref": "#/$defs/Span"
+            },
+            "reason": {
+              "type": "string",
+              "enum": [
+                "user",
+                "filler",
+                "silence"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "span",
+            "reason"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "keep_only"
+            },
+            "span": {
+              "$ref": "#/$defs/Span"
+            }
+          },
+          "required": [
+            "type",
+            "span"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "move"
+            },
+            "span": {
+              "$ref": "#/$defs/Span"
+            },
+            "before": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Cursor"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "span",
+            "before"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "set_speed"
+            },
+            "span": {
+              "$ref": "#/$defs/Span"
+            },
+            "rate": {
+              "$ref": "#/$defs/Rate"
+            }
+          },
+          "required": [
+            "type",
+            "span",
+            "rate"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "add_effect"
+            },
+            "effectId": {
+              "$ref": "#/$defs/EffectId"
+            },
+            "range": {
+              "$ref": "#/$defs/AtomRange"
+            },
+            "params": {
+              "$ref": "#/$defs/EffectParams"
+            }
+          },
+          "required": [
+            "type",
+            "effectId",
+            "range",
+            "params"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "update_effect"
+            },
+            "effectId": {
+              "$ref": "#/$defs/EffectId"
+            },
+            "params": {
+              "$ref": "#/$defs/EffectParams"
+            }
+          },
+          "required": [
+            "type",
+            "effectId",
+            "params"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "remove_effect"
+            },
+            "effectId": {
+              "$ref": "#/$defs/EffectId"
+            }
+          },
+          "required": [
+            "type",
+            "effectId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "auto_caption"
+            },
+            "style": {
+              "$ref": "#/$defs/CaptionStyle"
+            }
+          },
+          "required": [
+            "type",
+            "style"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "set_music"
+            },
+            "music": {
+              "$ref": "#/$defs/MusicParams"
+            }
+          },
+          "required": [
+            "type",
+            "music"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "clear_music"
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "protect_pause"
+            },
+            "range": {
+              "$ref": "#/$defs/AtomRange"
+            }
+          },
+          "required": [
+            "type",
+            "range"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "unprotect_pause"
+            },
+            "range": {
+              "$ref": "#/$defs/AtomRange"
+            }
+          },
+          "required": [
+            "type",
+            "range"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "restore"
+            },
+            "targetGroup": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            }
+          },
+          "required": [
+            "type",
+            "targetGroup"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "Span": {
+      "type": "object",
+      "properties": {
+        "start": {
+          "$ref": "#/$defs/Cursor"
+        },
+        "end": {
+          "$ref": "#/$defs/Cursor"
+        }
+      },
+      "required": [
+        "start",
+        "end"
+      ],
+      "additionalProperties": false
+    },
+    "Cursor": {
+      "type": "object",
+      "properties": {
+        "atom": {
+          "$ref": "#/$defs/AtomId"
+        },
+        "offsetUs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "atom",
+        "offsetUs"
+      ],
+      "additionalProperties": false
+    },
+    "Rate": {
+      "type": "object",
+      "properties": {
+        "num": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "den": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "num",
+        "den"
+      ],
+      "additionalProperties": false
+    },
+    "EffectId": {
+      "type": "string",
+      "pattern": "^fx_[0-9]+_[0-9]+$"
+    },
+    "AtomRange": {
+      "type": "object",
+      "properties": {
+        "from": {
+          "$ref": "#/$defs/AtomId"
+        },
+        "to": {
+          "$ref": "#/$defs/AtomId"
+        }
+      },
+      "required": [
+        "from",
+        "to"
+      ],
+      "additionalProperties": false
+    },
+    "EffectParams": {
+      "oneOf": [
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "caption"
+            },
+            "text": {
+              "type": "string"
+            },
+            "style": {
+              "$ref": "#/$defs/CaptionStyle"
+            }
+          },
+          "required": [
+            "kind",
+            "text",
+            "style"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "text_overlay"
+            },
+            "text": {
+              "type": "string"
+            },
+            "style": {
+              "$ref": "#/$defs/CaptionStyle"
+            },
+            "position": {
+              "type": "string",
+              "enum": [
+                "top",
+                "center",
+                "bottom"
+              ]
+            }
+          },
+          "required": [
+            "kind",
+            "text",
+            "style",
+            "position"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "mute"
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string",
+              "const": "bleep"
+            }
+          },
+          "required": [
+            "kind"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "CaptionStyle": {
+      "type": "object",
+      "properties": {
+        "color": {
+          "$ref": "#/$defs/Color"
+        },
+        "sizePt": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        },
+        "bold": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "color",
+        "sizePt",
+        "bold"
+      ],
+      "additionalProperties": false
+    },
+    "Color": {
+      "type": "string",
+      "pattern": "^#[0-9a-f]{6}$"
+    },
+    "MusicParams": {
+      "type": "object",
+      "properties": {
+        "assetSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "gainCentiDb": {
+          "type": "integer",
+          "minimum": -9007199254740991,
+          "maximum": 9007199254740991
+        },
+        "duckCentiDb": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "attackUs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "releaseUs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "assetSha256",
+        "gainCentiDb",
+        "duckCentiDb",
+        "attackUs",
+        "releaseUs"
+      ],
+      "additionalProperties": false
+    },
+    "ConversationEntry": {
+      "type": "object",
+      "properties": {
+        "turn": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        },
+        "text": {
+          "type": "string"
+        },
+        "answer": {
+          "$ref": "#/$defs/Answer"
+        },
+        "appliedGroup": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 9007199254740991
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "pending": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/PendingQuestion"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "turn",
+        "text",
+        "answer",
+        "appliedGroup",
+        "pending"
+      ],
+      "additionalProperties": false
+    },
+    "Answer": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": [
+            "applied",
+            "needs_clarification",
+            "rejected"
+          ]
+        },
+        "operations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Operation"
+          }
+        },
+        "summary": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "question": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "timePolicy": {
+          "type": "string",
+          "enum": [
+            "current",
+            "original"
+          ]
+        },
+        "warnings": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "timelineHash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "durationUs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "status",
+        "operations",
+        "summary",
+        "question",
+        "options",
+        "reason",
+        "timePolicy",
+        "warnings",
+        "timelineHash",
+        "durationUs"
+      ],
+      "additionalProperties": false
+    },
+    "PendingQuestion": {
+      "type": "object",
+      "properties": {
+        "originalText": {
+          "type": "string"
+        },
+        "question": {
+          "type": "string"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "label": {
+                "type": "string"
+              },
+              "operations": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/Operation"
+                }
+              },
+              "warnings": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            },
+            "required": [
+              "label",
+              "operations",
+              "warnings"
+            ],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": [
+        "originalText",
+        "question",
+        "options"
+      ],
+      "additionalProperties": false
+    },
+    "Timeline": {
+      "type": "object",
+      "properties": {
+        "sourceSha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "segments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Segment"
+          }
+        },
+        "speedRegions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/SpeedRegion"
+          }
+        },
+        "effects": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/Effect"
+          }
+        },
+        "protectedPauses": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/AtomRange"
+          }
+        },
+        "music": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/MusicParams"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "autoCaption": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/CaptionStyle"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "durationUs": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "sourceSha256",
+        "segments",
+        "speedRegions",
+        "effects",
+        "protectedPauses",
+        "music",
+        "autoCaption",
+        "durationUs"
+      ],
+      "additionalProperties": false,
+      "description": "Materialized result of replay(source, atoms, log). timeline_hash is the sha256 of its canonical JSON."
+    },
+    "Segment": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/SegmentId"
+        },
+        "span": {
+          "$ref": "#/$defs/Span"
+        }
+      },
+      "required": [
+        "id",
+        "span"
+      ],
+      "additionalProperties": false
+    },
+    "SegmentId": {
+      "type": "string",
+      "pattern": "^seg_[0-9]+$"
+    },
+    "SpeedRegion": {
+      "type": "object",
+      "properties": {
+        "span": {
+          "$ref": "#/$defs/Span"
+        },
+        "rate": {
+          "$ref": "#/$defs/Rate"
+        }
+      },
+      "required": [
+        "span",
+        "rate"
+      ],
+      "additionalProperties": false
+    },
+    "Effect": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "$ref": "#/$defs/EffectId"
+        },
+        "range": {
+          "$ref": "#/$defs/AtomRange"
+        },
+        "params": {
+          "$ref": "#/$defs/EffectParams"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "active",
+            "inactive"
+          ]
+        },
+        "partial": {
+          "type": "boolean"
+        },
+        "createdInGroup": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 9007199254740991
+        }
+      },
+      "required": [
+        "id",
+        "range",
+        "params",
+        "state",
+        "partial",
+        "createdInGroup"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

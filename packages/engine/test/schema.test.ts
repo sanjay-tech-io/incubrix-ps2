@@ -1,10 +1,12 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import Ajv2020 from "ajv/dist/2020.js";
+import { SessionDocument as SessionDocumentZ } from "@incubrix/contracts";
 import type { SessionDocument } from "../src/types";
 
-const schema = JSON.parse(readFileSync(new URL("../schemas/timeline.schema.json", import.meta.url), "utf8"));
+const schema = JSON.parse(readFileSync(new URL("../../contracts/schemas/timeline.schema.json", import.meta.url), "utf8"));
 const validate = new Ajv2020({ strict: true }).compile(schema);
+const sampleCheck = (doc: unknown) => SessionDocumentZ.safeParse(doc).success;
 
 // Typed as SessionDocument so the compiler checks types.ts against this sample.
 const sample: SessionDocument = {
@@ -29,6 +31,7 @@ const sample: SessionDocument = {
 describe("timeline.schema.json", () => {
   it("compiles under strict mode and accepts a sample session document", () => {
     expect(validate(sample), JSON.stringify(validate.errors)).toBe(true);
+    expect(sampleCheck(sample)).toBe(true);
   });
 
   it("rejects float times (time must be integer microseconds)", () => {
@@ -66,6 +69,7 @@ describe("the schema accepts what the engine really produces", () => {
 
     const doc: SessionDocument = { schemaVersion: 1, source, atoms, log: [...s.log], conversation: [...s.conversation] };
     expect(validate(doc), JSON.stringify(validate.errors?.slice(0, 3))).toBe(true);
+    expect(SessionDocumentZ.safeParse(doc).success).toBe(true); // zod (the source of truth) agrees
 
     const ajv = new Ajv2020({ strict: true });
     ajv.addSchema(schema);
