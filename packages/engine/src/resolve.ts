@@ -16,6 +16,14 @@ export function formatTime(us: Micros): string {
   return `${m}:${String(s).padStart(2, "0")}.${String(ms).padStart(3, "0")}`;
 }
 
+function offGrid(ctx: EngineContext, us: Micros): boolean {
+  return ctx.fps !== null && us > 0 && us < ctx.index.durationUs && snapToFrameUs(us, ctx.fps) !== us;
+}
+
+function offGridWarning(us: Micros): string {
+  return `The cut point at ${formatTime(us)} is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).`;
+}
+
 export interface SnapResult {
   us: Micros;
   warning?: string;
@@ -32,7 +40,10 @@ export function snapPoint(ctx: EngineContext, t: Micros): SnapResult {
   if (t <= 0) return { us: 0 };
   if (t >= idx.durationUs) return { us: idx.durationUs };
   const atom = atomAt(idx, t);
-  if (t === atom.startUs) return { us: snapBoundaryUs(idx, t, ctx.fps) };
+  if (t === atom.startUs) {
+    const us = snapBoundaryUs(idx, t, ctx.fps);
+    return offGrid(ctx, us) ? { us, warning: offGridWarning(us) } : { us };
+  }
 
   if (atom.kind === "silence") {
     if (!ctx.fps) return { us: t };

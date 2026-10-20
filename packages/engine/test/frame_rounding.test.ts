@@ -193,3 +193,15 @@ describe("a rate that does not divide the frame count still gives whole frames (
     expect(pieces.reduce((a, p) => a + (p.outE - p.outS), 0)).toBe(pieces.at(-1)!.outE);
   });
 });
+
+describe("the cut rule warns when a boundary cannot be put on the frame grid", () => {
+  it("between two touching words on a 29.97 fps source: a warning; on-grid and silence boundaries: none", async () => {
+    const { snapPoint } = await import("../src/resolve");
+    const hiEnd = ntsc.atoms.find((a) => a.text === "Hi")!.endUs; // 2.4 s, "Hi" | "everyone"
+    const touching = snapPoint(ntsc.ctx, hiEnd);
+    expect(touching.us).toBe(hiEnd);
+    expect(touching.warning).toMatch(/between two words.*not on a frame boundary/);
+    expect(snapPoint(ntsc.ctx, FACTS.honestly.startUs).warning).toBeUndefined(); // silence | word: moved into the silence, no warning
+    expect(snapPoint(fx30.ctx, 2_400_000).warning).toBeUndefined(); // 30 fps: 2.4 s is on the grid
+  });
+});
