@@ -21,7 +21,7 @@ Updated at the end of every milestone. Last update: end of M1b (2026-10-20). Eve
 Latest `npm test` (root): contracts 4 passed; engine 174 passed, 1 skipped (the render step, "needs M3"). Last update of this file: end of M1b (2026-10-20).
 
 ## Not verified (not built or not run)
-Docker / docker compose (Docker is not installed on the dev machine); rendering and A/V sync (M3); worked example step 8; API, jobs, idempotency, errors, health, manifest, docker compose (M2); real ASR and diarization; LLM adapters; reorder, filler and silence removal, music ducking, mute/bleep audio; multi-speaker handling; OTIO export; performance and 60-minute scale; any real video; any metric; CI.
+Docker / docker compose (Docker is not installed on the dev machine); rendering and A/V sync (M3); worked example step 8; API, jobs, idempotency, errors, health, manifest, docker compose (M2); real ASR and diarization; LLM adapters; reorder, filler and silence removal, music ducking, mute/bleep audio; multi-speaker handling; OTIO export; performance on a real 60-minute video or through the API (only a synthetic source on one laptop is measured); any real video; any metric; CI.
 
 ## Decisions
 Full list: `CLAUDE.md` section "Decisions" and `docs/DESIGN.md`. Headlines: Node 22; real ASR/diarization in the demo and mocks for tests only; cursor = (atom, offset) with offset only inside silences and on the frame grid; partial-cut rule and inactive effects; 0.7 s minimum caption time; speed range 0.25x-4x (`MAX_SPEED`); later speed change replaces the earlier rate; restore is a new op that points at a group; effect ids count edit ops only; sha256 from @noble/hashes; no React UI (M7 = Swagger UI/Redoc from openapi.yaml).
@@ -65,7 +65,7 @@ Full list: `CLAUDE.md` section "Decisions" and `docs/DESIGN.md`. Headlines: Node
 | 23 | Time policy "original" vs "current" | `search_resolve.test.ts`, answers carry `timePolicy` | yes (policy detection from text is parser work, not built) |
 | 24 | Render accuracy, A/V sync, length within 1 frame | none | **no** (M3) |
 | 25 | Reorder, filler removal, silence removal, music ducking, mute/bleep audio | not implemented (`move` throws NOT_IMPLEMENTED) | **no** |
-| 26 | Instruction latency, 60-minute scale | not measured | **no** |
+| 26 | Instruction latency, 60-minute scale | superseded by row 32 (synthetic source only; real 60-minute video, API and database path not measured) | partly |
 | 27 | Real ASR, diarization, API, jobs, idempotency, compose, OTIO | not built | **no** |
 | 28 | Any metric (latency, cost, clipping, clarification quality) | none produced; nothing is under `test-pack/` | **no** |
 | 29 | `registry=https://registry.npmjs.org/` is pinned and the lockfile has no mirror URLs | `.npmrc`; `grep -c npmmirror package-lock.json` = 0; `npm ci` then `npm test` exit 0 (REVIEW_M1B section 1) | yes |
