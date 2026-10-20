@@ -2,7 +2,7 @@ import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import { appendEdit, appendRedo, appendUndo, type Log } from "../src/log";
 import { materialize } from "../src/replay";
-import { buildPieces, effectDisplay, editedToSource, sourceToEdited, timelinePieces } from "../src/timemap";
+import { autoCaptionCues, buildPieces, effectDisplay, editedToSource, sourceToEdited, timelinePieces } from "../src/timemap";
 import { timelineHash } from "../src/hash";
 import { atomEndingAt, atomStartingAt, FACTS, makeFixture, SOURCE_SHA } from "./fixtures/transcript";
 import { captionOp, cutOp, span, speedOp } from "./helpers";
@@ -192,5 +192,19 @@ describe("log replay edge cases", () => {
       [2_000_000, 4_000_000, 2_000_000, 3_000_000],
       [4_000_000, 10_000_000, 3_000_000, 9_000_000],
     ]);
+  });
+});
+
+describe("auto-caption text is derived from the words that survive", () => {
+  it("shows a sentence as one cue at its edited time, and drops cut words from the text", () => {
+    const base = edit([], cutOp(ctx, 0, 30_000_000));
+    const cues = autoCaptionCues(ctx, materialize(ctx, base)).filter((c) => c.startUs >= 12_000_000 && c.startUs < 15_000_000);
+    expect(cues).toEqual([{ text: "welcome to the channel.", startUs: 12_000_000, endUs: 14_000_000 }]);
+    // cut just the word "welcome" (42.0-42.5): its text must disappear from the cue
+    const welcome = atomStartingAt(atoms, 42_000_000);
+    const to = atomStartingAt(atoms, 42_500_000);
+    const cutWord = edit(base, { type: "cut", reason: "user", span: { start: { atom: welcome.id, offsetUs: 0 }, end: { atom: to.id, offsetUs: 0 } } });
+    const after = autoCaptionCues(ctx, materialize(ctx, cutWord)).filter((c) => c.startUs >= 11_000_000 && c.startUs < 15_000_000);
+    expect(after).toEqual([{ text: "to the channel.", startUs: 12_000_000, endUs: 13_500_000 }]);
   });
 });

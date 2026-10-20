@@ -3,7 +3,7 @@ import { cursorToUs } from "../src/cursor";
 import { appendEdit, type Log } from "../src/log";
 import { materialize } from "../src/replay";
 import { findTopicParts, phraseRanges } from "../src/search";
-import { formatTime, resolveEditedRange, snapPoint } from "../src/resolve";
+import { formatTime, resolveEditedRange, resolveOriginalRange, snapPoint } from "../src/resolve";
 import { atomEndingAt, atomStartingAt, FACTS, makeFixture } from "./fixtures/transcript";
 import { cutOp, speedOp } from "./helpers";
 import type { Operation } from "../src/types";
@@ -142,5 +142,20 @@ describe("formatTime", () => {
     expect(formatTime(42_000_000)).toBe("0:42.000");
     expect(formatTime(200_000_000)).toBe("3:20.000");
     expect(formatTime(61_500_000)).toBe("1:01.500");
+  });
+});
+
+describe("resolveOriginalRange (time policy 'original')", () => {
+  it("refers to the untouched source even after the first 30 s were cut", () => {
+    const tl = materialize(ctx, edit([], cutOp(ctx, 0, 30_000_000)));
+    // 'original 0:42-0:44' is still source 42-44 although it plays at 0:12-0:14 now.
+    const r = resolveOriginalRange(ctx, 42_000_000, 44_000_000);
+    expect(r.spans.map((s) => [cursorToUs(ctx.index, s.start, ctx.fps), cursorToUs(ctx.index, s.end, ctx.fps, "end")])).toEqual([[42_000_000, 44_000_000]]);
+    // while the SAME numbers under the current-time policy mean something else (edited 0:42 = source 1:12)
+    const current = resolveEditedRange(ctx, tl, 42_000_000, 44_000_000);
+    expect(cursorToUs(ctx.index, current.spans[0]!.start, ctx.fps)).toBe(72_000_000);
+  });
+  it("rejects times beyond the original video", () => {
+    expect(() => resolveOriginalRange(ctx, 100_000_000, 300_000_000)).toThrow(/3:20\.000/);
   });
 });
