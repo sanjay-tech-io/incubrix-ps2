@@ -8,6 +8,7 @@ COPY packages/engine/package.json packages/engine/
 COPY packages/config/package.json packages/config/
 COPY packages/db/package.json packages/db/
 COPY packages/storage/package.json packages/storage/
+COPY packages/media/package.json packages/media/
 COPY apps/api/package.json apps/api/
 COPY apps/worker/package.json apps/worker/
 RUN npm ci
