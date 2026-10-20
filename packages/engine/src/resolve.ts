@@ -4,7 +4,7 @@ import { usToCursor, type Interval } from "./cursor";
 import { EngineError } from "./errors";
 import { divRound, snapToFrameUs } from "./frames";
 import { timelinePieces } from "./timemap";
-import type { Micros, Span, Timeline } from "./types";
+import type { Effect, Micros, Span, Timeline } from "./types";
 
 /** m:ss.mmm, for answers and warnings. */
 export function formatTime(us: Micros): string {
@@ -120,4 +120,20 @@ export function resolveOriginalRange(ctx: EngineContext, startUs: Micros, endUs:
   const warnings = [a.warning, b.warning].filter((w): w is string => w !== undefined);
   if (b.us <= a.us) throw new EngineError("INVALID_SPAN", "after moving the cut points off the words, nothing is left in that range");
   return { spans: [{ start: usToCursor(ctx.index, a.us, ctx.fps), end: usToCursor(ctx.index, b.us, ctx.fps) }], warnings };
+}
+
+/**
+ * "that caption", "the caption": resolve a reference to an effect of one kind.
+ *  - exactly one active effect of that kind -> it is the answer;
+ *  - none -> `none` (the caller rejects, e.g. "make it bigger" with no caption);
+ *  - several -> `ambiguous`, and the caller must ask which (never guess).
+ * Inactive effects (all words cut) are not candidates.
+ */
+export type EffectLookup = { kind: "one"; effect: Effect } | { kind: "none" } | { kind: "ambiguous"; candidates: Effect[] };
+
+export function findEffect(tl: Timeline, effectKind: Effect["params"]["kind"]): EffectLookup {
+  const found = tl.effects.filter((e) => e.state === "active" && e.params.kind === effectKind);
+  if (found.length === 0) return { kind: "none" };
+  if (found.length === 1) return { kind: "one", effect: found[0]! };
+  return { kind: "ambiguous", candidates: found };
 }
