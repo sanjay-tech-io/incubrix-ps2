@@ -288,3 +288,22 @@ export function answerClarification(ctx: EngineContext, state: SessionState, tex
   }
   return submitOperations(ctx, state, text, picked.operations, { ...opts, warnings: [...picked.warnings, ...(opts.warnings ?? [])] });
 }
+
+/**
+ * Submit what a planner produced (planRemoveFillers, planRemoveSilences, planMoveEdited...): its warnings
+ * (grid, kept fillers, pinned pauses) become part of the answer. A plan with no operations is a normal
+ * rejection saying there was nothing to do, never an empty edit.
+ */
+export function submitPlan(
+  ctx: EngineContext,
+  state: SessionState,
+  text: string,
+  plan: { operations: readonly Operation[]; warnings: readonly string[] },
+  opts: TurnOptions & { nothingToDo?: string } = {},
+): Turn {
+  if (plan.operations.length === 0) {
+    const why = opts.nothingToDo ?? "There is nothing to change: no matching material was found.";
+    return reject(ctx, state, text, plan.warnings.length > 0 ? `${why} ${plan.warnings.join(" ")}` : why, opts.timePolicy ?? "current");
+  }
+  return submitOperations(ctx, state, text, plan.operations, { ...opts, warnings: [...plan.warnings, ...(opts.warnings ?? [])] });
+}

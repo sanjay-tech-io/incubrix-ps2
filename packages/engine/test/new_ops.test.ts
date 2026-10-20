@@ -379,3 +379,22 @@ describe("keep only a range", () => {
     expect(RED.color).not.toBe(WHITE.color);
   });
 });
+
+describe("submitPlan", () => {
+  it("passes planner warnings into the answer", async () => {
+    const { submitPlan } = await import("../src/session");
+    const um = atoms.find((a) => a.text === "Uh")!;
+    const withBleep = materialize(ctx, edit([], planMuteOrBleep([], { from: um.id, to: um.id }, "bleep")));
+    const t = submitPlan(ctx, newSession(), "remove the fillers", planRemoveFillers(ctx, withBleep));
+    expect(t.answer.status).toBe("applied");
+    expect(t.answer.warnings.join(" ")).toMatch(/Kept the filler "Uh"/);
+  });
+  it("an empty plan is a normal rejection, not an empty edit; repeating a removal ends up here", async () => {
+    const { submitPlan } = await import("../src/session");
+    const first = submitPlan(ctx, newSession(), "remove the fillers", planRemoveFillers(ctx, materialize(ctx, [])));
+    const again = submitPlan(ctx, first.state, "remove the fillers", planRemoveFillers(ctx, currentTimeline(ctx, first.state)), { nothingToDo: "There are no filler words left." });
+    expect(again.answer.status).toBe("rejected");
+    expect(again.answer.reason).toBe("There are no filler words left.");
+    expect(again.state.log).toEqual(first.state.log);
+  });
+});
