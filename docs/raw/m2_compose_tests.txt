@@ -1,0 +1,225 @@
+ Container incubrix-ps2-postgres-1 Running 
+ Container incubrix-ps2-s3-1 Running 
+ Container incubrix-ps2-asr-tests-1 Creating 
+ Container incubrix-ps2-init-1 Recreate 
+ Container incubrix-ps2-asr-tests-1 Created 
+ Container incubrix-ps2-init-1 Recreated 
+ Container incubrix-ps2-postgres-1 Waiting 
+ Container incubrix-ps2-s3-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Starting 
+ Container incubrix-ps2-asr-tests-1 Started 
+ Container incubrix-ps2-postgres-1 Healthy 
+ Container incubrix-ps2-s3-1 Healthy 
+ Container incubrix-ps2-init-1 Starting 
+ Container incubrix-ps2-init-1 Started 
+ Container incubrix-ps2-asr-tests-1 Waiting 
+ Container incubrix-ps2-init-1 Waiting 
+ Container incubrix-ps2-init-1 Exited 
+ Container incubrix-ps2-asr-tests-1 Exited 
+ Container incubrix-ps2-tests-run-892c84da5faf Creating 
+ Container incubrix-ps2-tests-run-892c84da5faf Created 
+
+> incubrix@0.0.0 test
+> npm test --workspaces --if-present
+
+
+> @incubrix/config@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/config
+
+ ✓ test/config.test.ts (9 tests) 37ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  12:16:21
+   Duration  734ms (transform 154ms, setup 0ms, collect 233ms, tests 37ms, environment 0ms, prepare 156ms)
+
+
+> @incubrix/contracts@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/contracts
+
+ ✓ test/schema.test.ts (4 tests) 387ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  12:16:22
+   Duration  1.24s (transform 169ms, setup 0ms, collect 412ms, tests 387ms, environment 0ms, prepare 132ms)
+
+
+> @incubrix/db@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/db
+
+ ✓ test/files.test.ts (5 tests) 13ms
+ ✓ test/postgres.test.ts (8 tests) 574ms
+
+ Test Files  2 passed (2)
+      Tests  13 passed (13)
+   Start at  12:16:24
+   Duration  1.11s (transform 158ms, setup 0ms, collect 228ms, tests 587ms, environment 1ms, prepare 248ms)
+
+
+> @incubrix/engine@0.0.0 test
+> eslint . && vitest run
+
+
+ RUN  v2.1.9 /app/packages/engine
+
+ ✓ test/session.test.ts (30 tests) 110ms
+ ✓ test/new_ops.test.ts (39 tests) 126ms
+ ✓ test/reorder.test.ts (26 tests) 218ms
+ ✓ test/replay.test.ts (23 tests) 41ms
+ ✓ test/frame_rounding.test.ts (14 tests) 211ms
+ ✓ test/worked_example.test.ts (11 tests | 1 skipped) 62ms
+ ✓ test/search_resolve.test.ts (21 tests) 77ms
+ ✓ test/atoms.test.ts (21 tests) 36ms
+ ✓ test/grid_warnings.test.ts (11 tests) 61ms
+ ✓ test/mutants.test.ts (14 tests) 32ms
+ ✓ test/canonical.test.ts (18 tests) 27ms
+ ✓ test/hard_cases.test.ts (6 tests) 2789ms
+   ✓ property: incremental application equals a full replay > after every command of a random edit/undo/redo sequence, snapshots agree with replaying the log 484ms
+   ✓ property: the session path (caches, incremental priming) equals a fresh full replay > after every turn of a random session (edits, undo, redo, restore, rejected turns), the cached timeline equals a replay on a brand-new engine 2244ms
+ ✓ test/schema.test.ts (4 tests) 393ms
+   ✓ the schema accepts what the engine really produces > a real session (caption, cut, question, answer, speed, restore, undo, recolour) validates, and so does its materialized timeline 365ms
+ ✓ test/lint_guard.test.ts (12 tests) 1047ms
+   ✓ engine purity lint rules > forbids Date in packages/engine/src 957ms
+
+ Test Files  14 passed (14)
+      Tests  249 passed | 1 skipped (250)
+   Start at  12:16:30
+   Duration  6.53s (transform 1.26s, setup 0ms, collect 4.25s, tests 5.23s, environment 6ms, prepare 2.26s)
+
+
+> @incubrix/errors@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/errors
+
+ ✓ test/errors.test.ts (3 tests) 8ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  12:16:37
+   Duration  497ms (transform 92ms, setup 0ms, collect 81ms, tests 8ms, environment 0ms, prepare 106ms)
+
+
+> @incubrix/media@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/media
+
+ ✓ test/pure.test.ts (17 tests) 17ms
+ ✓ test/ffmpeg.test.ts (8 tests) 2534ms
+
+ Test Files  2 passed (2)
+      Tests  25 passed (25)
+   Start at  12:16:38
+   Duration  3.11s (transform 169ms, setup 0ms, collect 287ms, tests 2.55s, environment 1ms, prepare 245ms)
+
+
+> @incubrix/nlu@0.0.0 test
+> eslint . && vitest run
+
+
+ RUN  v2.1.9 /app/packages/nlu
+
+ ✓ test/time.test.ts (19 tests) 22ms
+ ✓ test/rules.test.ts (23 tests) 229ms
+ ✓ test/lint_guard.test.ts (9 tests) 989ms
+   ✓ nlu purity lint rules > forbids Date in packages/nlu/src 933ms
+
+ Test Files  3 passed (3)
+      Tests  51 passed (51)
+   Start at  12:16:43
+   Duration  2.01s (transform 595ms, setup 0ms, collect 1.20s, tests 1.24s, environment 1ms, prepare 557ms)
+
+
+> @incubrix/storage@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/storage
+
+ ✓ test/s3.test.ts (4 tests) 158ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  12:16:45
+   Duration  1.09s (transform 107ms, setup 0ms, collect 431ms, tests 158ms, environment 0ms, prepare 102ms)
+
+
+> @incubrix/store@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/store
+
+ ✓ test/log.test.ts (2 tests) 16ms
+ ✓ test/urlguard.test.ts (18 tests) 26ms
+ ✓ test/store.test.ts (18 tests) 737ms
+
+ Test Files  3 passed (3)
+      Tests  38 passed (38)
+   Start at  12:16:47
+   Duration  1.72s (transform 356ms, setup 0ms, collect 1.32s, tests 778ms, environment 1ms, prepare 476ms)
+
+
+> @incubrix/api@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/api
+
+ ✓ test/ratelimit.test.ts (5 tests) 10ms
+ ✓ test/e2e.test.ts (5 tests) 5914ms
+   ✓ worked example over HTTP (mock ASR) > uploads the clip, the job runs with progress and succeeds, the original is stored untouched 5146ms
+ ✓ test/api.test.ts (20 tests) 19127ms
+   ✓ API behaviour > openapi.yaml matches the running service > real responses validate against their schemas 2735ms
+   ✓ API behaviour > errors > a session on a video that is not ready is 409 VIDEO_NOT_READY (retryable) 478ms
+   ✓ API behaviour > errors > a video without audio fails its job with NO_AUDIO_TRACK and cannot start a session 652ms
+   ✓ API behaviour > errors > a private URL is refused when private addresses are not allowed (the SSRF guard) 379ms
+   ✓ API behaviour > idempotency (every POST) > videos: same key + same file -> same ids, one video, one job, one stored object 1121ms
+   ✓ API behaviour > idempotency (every POST) > sessions: same key + same body -> same session; different body -> 409 341ms
+   ✓ API behaviour > idempotency (every POST) > instructions: a repeated key replays the answer and does NOT apply the edit twice 347ms
+   ✓ API behaviour > jobs, cache, hints, warnings > progress goes 0 -> 100, never down; a job is queued until a worker takes it 315ms
+   ✓ API behaviour > jobs, cache, hints, warnings > the same file again is a transcript cache HIT (ASR not called); a different ASR model is a MISS 3824ms
+   ✓ API behaviour > jobs, cache, hints, warnings > num_speakers reaches the ASR/diarization call and changes the cache key 4202ms
+   ✓ API behaviour > jobs, cache, hints, warnings > variable frame rate is accepted with a warning in the job manifest and on the video 1977ms
+   ✓ API behaviour > jobs, cache, hints, warnings > a URL source is downloaded, stored byte-identical and transcribed; callback is signed and delivered 641ms
+   ✓ auth, rate limit, correlation id > API_TOKEN protects everything except /health and /ready; the token is never logged 538ms
+   ✓ auth, rate limit, correlation id > rate limit: the N+1th request in a minute is 429 RATE_LIMITED with Retry-After 552ms
+   ✓ auth, rate limit, correlation id > X-Correlation-Id is echoed, or generated when missing 413ms
+
+ Test Files  3 passed (3)
+      Tests  30 passed (30)
+   Start at  12:16:49
+   Duration  21.30s (transform 1.23s, setup 0ms, collect 3.58s, tests 25.05s, environment 2ms, prepare 602ms)
+
+
+> @incubrix/worker@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/worker
+
+ ✓ test/callback.test.ts (3 tests) 165ms
+ ✓ test/atoms.test.ts (5 tests) 50ms
+
+ Test Files  2 passed (2)
+      Tests  8 passed (8)
+   Start at  12:17:12
+   Duration  2.51s (transform 1.34s, setup 0ms, collect 1.67s, tests 214ms, environment 1ms, prepare 895ms)
+
+
+real	1m2.064s
+user	0m0.177s
+sys	0m0.140s

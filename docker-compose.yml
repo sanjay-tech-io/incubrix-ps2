@@ -1,4 +1,4 @@
-# docker compose up            -> postgres, s3, init (migrations + bucket), api, worker, asr
+# docker compose up            -> postgres, s3, init (migrations + bucket), api, worker, asr (REAL models by default)
 # docker compose run --rm tests -> npm test with real Postgres and S3 (integration tests included)
 x-env: &env
   env_file:
@@ -50,7 +50,8 @@ services:
 
   api:
     <<: *app
-    command: ["node", "apps/api/src/main.ts"]
+    # tsx: the engine imports without file extensions and uses TS parameter properties, which plain `node` type stripping cannot run.
+    command: ["node", "--import", "tsx", "apps/api/src/main.ts"]
     ports: ["8080:8080"]
     depends_on:
       init: { condition: service_completed_successfully }
@@ -62,24 +63,35 @@ services:
 
   worker:
     <<: *app
-    command: ["node", "apps/worker/src/main.ts"]
+    command: ["node", "--import", "tsx", "apps/worker/src/main.ts"]
     depends_on:
       init: { condition: service_completed_successfully }
+      asr: { condition: service_healthy }
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://localhost:8081/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 3s
       timeout: 3s
       retries: 20
 
+  # Real faster-whisper + sherpa-onnx by default (ASR_PROVIDER / DIARIZATION_PROVIDER in .env.example).
+  # /models is a named volume: it is filled from the image (base.en and the diarization models are baked in at build
+  # time) on first start and kept across restarts, so nothing is downloaded again. Another ASR_MODEL downloads into it once.
   asr:
     <<: *env
     build: ./services/asr
     restart: unless-stopped
+    volumes: [models:/models]
     healthcheck:
       test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/health').status==200 else 1)"]
       interval: 3s
       timeout: 3s
       retries: 20
+
+  # Python tests of services/asr (mock adapters only, no model is loaded). `tests` waits for it.
+  asr-tests:
+    build: { context: ./services/asr, target: test }
+    profiles: ["test"]
+    restart: "no"
 
   tests:
     <<: *app
@@ -90,9 +102,15 @@ services:
       # Admin database of the compose Postgres: the db tests create and drop their own databases.
       TEST_DATABASE_URL: postgres://incubrix:incubrix-dev@postgres:5432/postgres
       TEST_S3: "1"
+      # Tests never use the real models: mock providers, set explicitly.
+      ASR_PROVIDER: mock
+      DIARIZATION_PROVIDER: mock
+      LLM_PROVIDER: rules
     depends_on:
       init: { condition: service_completed_successfully }
+      asr-tests: { condition: service_completed_successfully }
 
 volumes:
   pgdata:
   s3data:
+  models:

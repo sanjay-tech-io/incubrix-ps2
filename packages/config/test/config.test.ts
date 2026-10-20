@@ -54,6 +54,11 @@ describe("loadConfig", () => {
     }
   });
 
+  it("accepts sherpa as a diarization provider and rejects unknown ones", () => {
+    expect(loadConfig({ ...good, DIARIZATION_PROVIDER: "sherpa" }).DIARIZATION_PROVIDER).toBe("sherpa");
+    expect(() => loadConfig({ ...good, DIARIZATION_PROVIDER: "pyannote" })).toThrow();
+  });
+
   it("treats empty strings as unset (so a blank line in .env uses the default)", () => {
     expect(loadConfig({ ...good, PORT: "" }).PORT).toBe(8080);
   });
@@ -66,7 +71,7 @@ describe(".env.example", () => {
     const text = readFileSync(new URL("../../../.env.example", import.meta.url), "utf8");
     const listed = [...text.matchAll(/^#?\s*([A-Z][A-Z0-9_]+)=/gm)].map((m) => m[1]!);
     // Compose-only variables (not read by the Node config loader) are allowed extras.
-    const extra = new Set(["POSTGRES_USER", "POSTGRES_PASSWORD", "POSTGRES_DB", "ASR_ADAPTER", "WHISPER_MODEL", "WHISPER_COMPUTE_TYPE", "WHISPER_INITIAL_PROMPT"]);
+    const extra = new Set(["POSTGRES_USER", "POSTGRES_PASSWORD", "POSTGRES_DB", "WHISPER_COMPUTE_TYPE", "WHISPER_INITIAL_PROMPT", "DIARIZATION_MODEL_DIR", "DIARIZATION_NUM_SPEAKERS", "DIARIZATION_CLUSTER_THRESHOLD", "DIARIZATION_UNCERTAIN_BELOW", "DIARIZATION_OVERLAP_MIN_FRACTION"]);
     expect(CONFIG_KEYS.filter((k) => !listed.includes(k))).toEqual([]);
     expect(listed.filter((k) => !CONFIG_KEYS.includes(k) && !extra.has(k))).toEqual([]);
   });

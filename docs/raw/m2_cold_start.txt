@@ -1,0 +1,15 @@
+$ docker compose down -v   (volumes were removed and verified gone first)
+volumes, containers verified empty before this run (docker volume ls | grep incubrix: none)
+$ time docker compose up -d --build   (images already built; models come from the image)
+ Container incubrix-ps2-api-1 Starting 
+ Container incubrix-ps2-worker-1 Starting 
+ Container incubrix-ps2-api-1 Started 
+ Container incubrix-ps2-worker-1 Started 
+all 5 long-running services healthy after 64.3 s
+SERVICE    STATUS
+api        Up 4 seconds (healthy)
+asr        Up 12 seconds (healthy)
+postgres   Up 12 seconds (healthy)
+s3         Up 12 seconds (healthy)
+worker     Up 4 seconds (healthy)
+done

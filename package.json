@@ -13,6 +13,10 @@
   "scripts": {
     "test": "npm test --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
-    "mutation-check": "node scripts/mutation-check.mjs"
+    "mutation-check": "node scripts/mutation-check.mjs",
+    "docs:errors": "tsx scripts/gen-error-docs.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.23.15"
   }
 }

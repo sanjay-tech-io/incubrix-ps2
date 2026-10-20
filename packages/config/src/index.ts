@@ -32,7 +32,7 @@ const base = z.object({
 
     ASR_PROVIDER: z.enum(["mock", "faster-whisper"]).default("mock"),
     ASR_URL: z.url().default("http://asr:8000"),
-    DIARIZATION_PROVIDER: z.enum(["mock", "none"]).default("mock"),
+    DIARIZATION_PROVIDER: z.enum(["sherpa", "mock", "none"]).default("mock"),
     LLM_PROVIDER: z.enum(["rules", "mock", "groq", "gemini"]).default("rules"),
     LLM_TIMEOUT_MS: z.coerce.number().int().min(100).max(30000).default(1500),
     GROQ_API_KEY: z.string().min(1).optional(),
@@ -41,6 +41,27 @@ const base = z.object({
     // Engine receives these as parameters (it cannot read env). Min speed is fixed at 0.25x.
     MAX_SPEED: z.coerce.number().min(1).max(16).default(4),
     CALLBACK_HMAC_SECRET: z.string().min(16).optional(),
+
+    // --- M2: API / worker ---
+    WORKER_PORT: z.coerce.number().int().min(1).max(65535).default(8081),
+    // Bearer token for everything except /health and /ready. Unset = open API (local development only).
+    API_TOKEN: z.string().min(16).optional(),
+    RATE_LIMIT_PER_MIN: z.coerce.number().int().min(1).max(100000).default(120),
+    MAX_UPLOAD_MB: z.coerce.number().int().min(1).max(20000).default(2048),
+    // Only for tests: allow video URLs that point to loopback/private addresses.
+    URL_ALLOW_PRIVATE: bool.default(false),
+    // A running job with no progress update for this long belonged to a crashed worker and is re-queued.
+    JOB_STALE_S: z.coerce.number().int().min(5).max(86400).default(300),
+    WORKER_POLL_MS: z.coerce.number().int().min(50).max(60000).default(500),
+    // Host:port clients can reach, used in presigned download links. Blank = S3_ENDPOINT.
+    S3_PUBLIC_ENDPOINT: z.url().optional(),
+    ASR_MODEL: z.string().min(1).default("base.en"),
+    ASR_TIMEOUT_S: z.coerce.number().int().min(10).max(86400).default(3600),
+    // Silence detection and word clamping (the values are part of the transcript cache key).
+    SILENCE_NOISE_DB: z.coerce.number().int().min(-90).max(-10).default(-35),
+    SILENCE_MIN_MS: z.coerce.number().int().min(50).max(10000).default(300),
+    CLAMP_MIN_WORD_MS: z.coerce.number().int().min(1).max(1000).default(20),
+    LOW_CONFIDENCE_PERMILLE: z.coerce.number().int().min(0).max(1000).default(600),
 });
 
 const schema = base.superRefine((c, ctx) => {

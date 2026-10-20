@@ -51,6 +51,23 @@ run("migrations against Postgres", () => {
     await expect(c.query("delete from operation_log where session_id='s1'")).rejects.toThrow(/append-only/);
   });
 
+  it("0002: undo/redo markers fit the log, edits still need a group, and the log stays append-only", async () => {
+    await c.query(`insert into operation_log(session_id, seq, group_no, kind, op) values ('s1', 2, 0, 'undo', '{}')`);
+    await expect(c.query(`insert into operation_log(session_id, seq, group_no, kind, op) values ('s1', 3, 0, 'cut', '{}')`)).rejects.toThrow(/check/);
+    await expect(c.query(`insert into operation_log(session_id, seq, group_no, kind, op) values ('s1', 4, 1, 'undo', '{}')`)).rejects.toThrow(/check/);
+    await expect(c.query("update operation_log set op='{\"x\":1}' where session_id='s1' and seq=2")).rejects.toThrow(/append-only/);
+    await expect(c.query("delete from operation_log where session_id='s1' and seq=2")).rejects.toThrow(/append-only/);
+   
+  });
+
+  it("0002: videos, transcripts and jobs.video_id exist; an intake job needs no session", async () => {
+    await c.query("insert into videos(id) values ('v1')");
+    await c.query("insert into jobs(id, type, video_id) values ('j9','ingest','v1')");
+    await c.query("insert into transcripts(cache_key, source_sha256, settings, atoms, manifest) values (repeat('b',64), repeat('a',64), '{}', '[]', '{}')");
+    const { rows } = await c.query("select status from videos where id='v1'");
+    expect(rows[0].status).toBe("processing");
+  });
+
   it("idempotency key is unique per (scope, key)", async () => {
     const ins = "insert into idempotency_keys(scope, key, request_hash) values ('POST /sessions','k1','h')";
     await c.query(ins);

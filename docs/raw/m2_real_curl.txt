@@ -1,0 +1,191 @@
+# Real run: ASR_PROVIDER=faster-whisper (base.en), DIARIZATION_PROVIDER=sherpa, LLM_PROVIDER=rules, compose stack, no mocks.
+# Clip: scripts/make_demo_clip.sh (espeak-ng speech = AI-generated, ffmpeg testsrc picture), 59.15 s, sha256 70338fed16c7c47ceedffc795f31164481415e7d19b0b502fae41b165fcfef53
+$ curl -s localhost:8080/health ; curl -s localhost:8080/ready
+{"status":"ok","service":"api"}
+{"status":"ready","service":"api"}
+$ curl -i -F file=@demo.mp4 -F num_speakers=1 -H "Idempotency-Key: demo-up-5" localhost:8080/api/v1/videos
+HTTP/1.1 202 Accepted
+x-correlation-id: 737b1051-2a54-4713-8a87-c797295561f9
+{"video_id":"vid_596d3a5a7fdc4dea9d76","job_id":"job_6429e0ac907e4c26a3cc","status_url":"/api/v1/jobs/job_6429e0ac907e4c26a3cc"}
+$ poll GET /api/v1/jobs/job_6429e0ac907e4c26a3cc
+t+0s queued 0
+t+3s running 37
+t+6s running 40
+t+9s running 44
+t+13s running 47
+t+16s running 50
+t+19s running 54
+t+22s running 57
+t+25s running 60
+t+28s running 63
+t+31s succeeded 100
+{
+ "status": "succeeded",
+ "progress": 100,
+ "links": {
+  "video": "/api/v1/videos/vid_596d3a5a7fdc4dea9d76",
+  "create_session": "/api/v1/sessions"
+ },
+ "duration_s": 59.15,
+ "words": 112,
+ "speakers_found": 1,
+ "transcript_cache": "miss",
+ "warnings": [],
+ "providers": {
+  "asr": {
+   "cache": "miss",
+   "model": "base.en",
+   "version": "faster-whisper 1.2.1 / ctranslate2 4.8.3",
+   "provider": "faster-whisper"
+  },
+  "media": {
+   "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers"
+  },
+  "diarization": {
+   "version": "sherpa-onnx 1.13.8 + pyannote-segmentation-3.0 + wespeaker_en_voxceleb_resnet34",
+   "provider": "sherpa"
+  }
+ },
+ "timings": {
+  "asr_s": 28.895,
+  "probe_s": 0.26,
+  "total_s": 29.79,
+  "silence_s": 0.453,
+  "fetch_original_s": 0.018
+ },
+ "cpu_seconds": 28.872,
+ "error": null
+}
+
+$ same upload, SAME Idempotency-Key -> same ids, no new job
+HTTP/1.1 202 Accepted
+idempotent-replayed: true
+{"job_id":"job_6429e0ac907e4c26a3cc","video_id":"vid_596d3a5a7fdc4dea9d76","status_url":"/api/v1/jobs/job_6429e0ac907e4c26a3cc"}
+
+$ same key, DIFFERENT body -> 409
+HTTP/1.1 409 Conflict
+{"error":{"code":"IDEMPOTENCY_KEY_REUSED","message":"This Idempotency-Key was already used with a different request body.","retryable":false,"details":{"scope":"POST /api/v1/videos"}}}
+
+$ POST /api/v1/sessions
+{"session_id":"ses_527dea88cff840bdadb2","video_id":"vid_596d3a5a7fdc4dea9d76","duration_s":59.16,"timeline_hash":"7ccce8565a7000972d6f217beb05fa357201425f87fadb4d369bbee83a966292","warnings":[]}
+
+$ POST /api/v1/sessions/ses_527dea88cff840bdadb2/instructions   say: add a caption "Welcome!" on "welcome to the channel"
+{
+ "status": "applied",
+ "operations": [
+  [
+   "add_effect",
+   "fx_0_0"
+  ]
+ ],
+ "summary": "Length 0:59.160 -> 0:59.160 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+ "question": null,
+ "options": [],
+ "reason": null,
+ "time_policy": "current",
+ "warnings": [],
+ "timeline_hash": "732600757c572fea98057222cb82c38ef621c83eb0b319a532b9d0905427f19d",
+ "duration_s": 59.16,
+ "duration_us": 59160000,
+ "turn": 1,
+ "manifest": {
+  "providers": {
+   "parser": {
+    "name": "rules",
+    "version": "1"
+   },
+   "engine": {
+    "name": "incubrix-engine",
+    "version": "0.0.0"
+   },
+   "llm": "none (no LLM was called)"
+  },
+  "timings": {
+   "instruction_ms": 3.24
+  }
+ }
+}
+
+$ POST /api/v1/sessions/ses_527dea88cff840bdadb2/instructions   say: cut the first 30 seconds
+{
+ "status": "applied",
+ "operations": [
+  [
+   "cut",
+   null
+  ]
+ ],
+ "summary": "Length 0:59.160 -> 0:29.160 (-0:30.000). caption \"Welcome!\" moved from 0:31.002 to 0:01.002. Time policy: current (times refer to the edited timeline as it is now).",
+ "question": null,
+ "options": [],
+ "reason": null,
+ "time_policy": "current",
+ "warnings": [
+  "This edit touches words the transcript is unsure about: \"cannot\" (low confidence). Check the result."
+ ],
+ "timeline_hash": "bdbcb46aca5014d3b8e11b3fee20ecfd60acebf999831893caca5001e1ae4405",
+ "duration_s": 29.16,
+ "duration_us": 29160000,
+ "turn": 2,
+ "manifest": {
+  "providers": {
+   "parser": {
+    "name": "rules",
+    "version": "1"
+   },
+   "engine": {
+    "name": "incubrix-engine",
+    "version": "0.0.0"
+   },
+   "llm": "none (no LLM was called)"
+  },
+  "timings": {
+   "instruction_ms": 3.25
+  }
+ }
+}
+
+$ POST /api/v1/sessions/ses_527dea88cff840bdadb2/instructions   say: remove the part about pricing
+{
+ "status": "needs_clarification",
+ "operations": [],
+ "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+ "question": "\"pricing\" is mentioned 3 times. Which part should I remove?",
+ "options": [
+  "#1 at 0:03.229: \"Now let us talk about pricing,\"",
+  "#2 at 0:12.691: \"the pricing for teams is different,\"",
+  "#3 at 0:23.326: \"one last word on pricing,\""
+ ],
+ "reason": null,
+ "time_policy": "current",
+ "warnings": [],
+ "timeline_hash": "bdbcb46aca5014d3b8e11b3fee20ecfd60acebf999831893caca5001e1ae4405",
+ "duration_s": 29.16,
+ "duration_us": 29160000,
+ "turn": 3,
+ "manifest": {
+  "providers": {
+   "parser": {
+    "name": "rules",
+    "version": "1"
+   },
+   "engine": {
+    "name": "incubrix-engine",
+    "version": "0.0.0"
+   },
+   "llm": "none (no LLM was called)"
+  },
+  "timings": {
+   "instruction_ms": 2.13
+  }
+ }
+}
+
+$ step 3 sent AGAIN with the same Idempotency-Key -> stored answer, nothing repeated
+HTTP/1.1 200 OK
+idempotent-replayed: true
+{"turn":3,"reason":null,"status":"needs_clarification","options":["#1 at 0:03.229: \"Now let us talk about pricing,\"","#2 at 0:12.691: \"the pricing for teams is different,\"","#3 at 0:23.326: \"one last word on pricing,\""],"summary":"Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).","manifest":{"seed":null,"rights":{"software":{"engine":"own code","sherpa-onnx":"Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked","faster-whisper":"MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked"},"reference":"SOURCES.md","source_media":"not stated by the uploader"},"timings":{"instruction_ms":2.13},"settings":{"max_speed":4,"min_speed":0.25,"randomness":"none","time_policy":"current","llm_provider":"rules"},"warnings":[],"providers":{"llm":"none (no LLM was called)","engine":{"name":"incubrix-engine","version":"0.0.0"},"parser":{"name":"rules","version":"1"}},"ai_generated":{"llm_used":false,"transcript_words":true,"input_media_marked_ai_generated":false},"cost_estimate":{"usd":null,"note":"No price per CPU second is configured, so no money figure is given.","basis":"CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)","cpu_seconds":0.001}},"question":"\"pricing\" is mentioned 3 times. Which part should I remove?","warnings":[],"duration_s":29.16,"operations":[],"duration_us":29160000,"time_policy":"current","timeline_hash":"bdbcb46aca5014d3b8e11b3fee20ecfd60acebf999831893caca5001e1ae4405"}
+
+$ GET conversation (turn count; the replay did not add a turn)
+3 ['applied', 'applied', 'needs_clarification']
+done

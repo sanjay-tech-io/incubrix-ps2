@@ -1,0 +1,14 @@
+75d8295 M2 docs: API design amendments, README usage, STATUS (incl. VFR note for M3), SOURCES, demo clip script, raw outputs of the real run
+a6da4ba Compose: tsx for api/worker, models volume, real providers by default, mock for tests, espeak-ng for test clips
+ecc9f2f API: openapi.yaml 3.1 first, Fastify routes, idempotency, errors, auth, rate limit, correlation id, sessions via rules parser; e2e worked example over HTTP
+72526a3 Worker: SKIP LOCKED job loop, intake pipeline (store original, probe, ASR+diarization, silence clamp, atoms, cache), signed callbacks
+a238252 Store: URL guard (SSRF), manifest builder, JSON logger with redaction, job view; storage file helpers
+1fe0de4 Config: API token, rate limit, upload cap, silence/clamp settings; real ASR providers are the default
+eea9e0c ASR service: per-request num_speakers hint, ASR_PROVIDER as the shared switch
+da1bd5f Add packages/nlu: deterministic rules parser (times, worked example, hard cases), mock parser, purity lint
+f2367f9 Add packages/store: idempotency, SKIP LOCKED job claim, transcript cache key, session persistence
+1eb37c3 Migration 0002: videos, transcripts, jobs.video_id, undo/redo rows in operation_log (still append-only, tested)
+5932732 Add packages/errors: one list of API error codes, README table generated from it
+851b61b Add M2 API design for approval
+1f89918 Merge branch 'infra' (B2: real ASR image, diarization, presigned URLs, licences)
+02ef86c Document B2: ASR service README, REVIEW_INFRA B2 section, STATUS, raw outputs

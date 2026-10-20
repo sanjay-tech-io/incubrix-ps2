@@ -1,6 +1,6 @@
 # Project status (project memory)
 
-Updated at the end of every milestone. Last update: infra workstream (2026-10-20), on top of M1c. Everything below was run, not assumed; "not verified" means exactly that.
+Updated at the end of every milestone. Last update: M2 (2026-10-20), on top of the infra workstream and M1c. Everything below was run, not assumed; "not verified" means exactly that.
 
 ## Done and verified
 | Item | Proof (command) |
@@ -28,10 +28,42 @@ Updated at the end of every milestone. Last update: infra workstream (2026-10-20
 | Real ASR spike on a public-domain clip (RTF base.en 0.21, small.en 0.51, medium.en 1.33) | docs/SPIKE_ASR.md |
 | Diarization licence evaluation; default candidate sherpa-onnx + pyannote-seg-3.0 ONNX + WeSpeaker | docs/REVIEW_INFRA.md section 5 (training-data licences and accuracy NOT verified) |
 
+### B2 additions (details and raw output in docs/REVIEW_INFRA.md section "B2")
+| Item | Proof |
+|---|---|
+| Real faster-whisper (base.en) runs inside the ASR image, models baked at build time, deps pinned, `ASR_MODEL` env | docs/raw/b2_asr_container_health.txt, b2_container_nasa120_nodiar.json |
+| Diarization wired into the ASR service (sherpa / mock / none), per-word speaker, `speaker_uncertain`, `overlaps_speech` | `python -m pytest` in services/asr: 26 passed, 2 skipped; real-model test 1 passed |
+| Diarization accuracy: **default settings found 1 speaker of 2 on the synthetic clip (58.8% words correct)**; 100% only with `NUM_SPEAKERS=2` or a threshold chosen on that clip | docs/raw/b2_two_voice_scores.txt |
+| SOURCES.md: code / weights / training-data licence columns, evidence files | docs/licence-evidence/ |
+| Presigned S3 PUT/GET, migrations from empty volumes, all services healthy | docs/raw/b2_health.txt, b2_fresh_up.txt |
+| `docker compose run --rm tests` passes incl. the Python ASR tests (`asr-tests` service) | docs/raw/b2_compose_tests.txt (exit 0) |
+| AI_USE.md | file at repo root (gaps marked for the candidate) |
+
+### M2: the real API (branch `m2`, details and raw output in docs/REVIEW_M2.md)
+| Item | Proof |
+|---|---|
+| openapi.yaml (3.1) written first; test: served routes == documented routes both ways; real responses validate against its schemas | `apps/api/test/api.test.ts` (compose) |
+| Jobs on the `jobs` table with FOR UPDATE SKIP LOCKED, progress, stale re-queue, signed HMAC callback | `packages/store/test/store.test.ts`, `apps/worker/test/callback.test.ts`, `api.test.ts` |
+| Idempotency-Key on every POST: same key+body replays and repeats no work; different body -> 409 `IDEMPOTENCY_KEY_REUSED`; concurrent duplicates run once | `store.test.ts`, `api.test.ts` |
+| One error-code list, README table generated, test fails when stale | `packages/errors/test` |
+| Intake: upload or URL, original stored untouched (sha256 checked byte for byte), probe, no audio -> `NO_AUDIO_TRACK`, VFR accepted with a warning, real ASR + diarization, silence + clamp, atoms, `num_speakers` hint | `api.test.ts`; real run: docs/raw/m2_real_curl.txt |
+| Transcript cache key includes ASR provider/model, diarization provider, num_speakers, silence/clamp settings; changed model misses | `store.test.ts`, `api.test.ts` |
+| Sessions, instructions, timeline / history / conversation; restart rebuilds by replay with identical hash | `e2e.test.ts`; real run: docs/raw/m2_restart_checks.txt |
+| Rules parser: worked example steps 1-7, hard cases, same output 3x, purity lint | `packages/nlu/test` (51 tests) |
+| Worked example steps 1-7 over HTTP, hash == engine-only replay of the returned operations | `apps/api/test/e2e.test.ts` |
+| Every summary names the time policy (Change B) | `ratelimit.test.ts`, `e2e.test.ts` |
+| Manifest on every job result and instruction answer | `e2e.test.ts` |
+| Token, rate limit, correlation id, JSON logs with redaction | `api.test.ts`, `packages/store/test/log.test.ts` |
+| Real providers are the compose default; models volume; cold start 64.3 s with images built | docs/raw/m2_cold_start.txt |
+
+**M3 MUST handle variable-frame-rate sources** (record from the M2 decision): a VFR source is accepted with a warning, and the engine's frame grid for it is the nominal `r_frame_rate` from ffprobe. The renderer must build a constant-frame-rate proxy from the original AT THAT SAME RATE and render from the proxy; the original is never changed. Until then the warning in the answer and the manifest says frame-exact cuts are not guaranteed on VFR sources.
+
 Latest `npm test` (root): see docs/REVIEW_M1C.md section 2. Last update of this file: end of M1c (2026-10-20).
 
 ## Not verified (not built or not run)
-Infra additions not done: real api/worker, compose end-to-end test, diarization integration and accuracy, disfluency-prompt effect on labelled human speech (see REVIEW_INFRA.md section 8). Older list follows; its Docker item is now outdated (Docker works on the GCP VM).
+M2 leftovers: render (501 stub), the real LLM provider (interface only), reorder/mute/bleep/captions by voice-of-speaker ("what the guest says"), music by text, batch runner CLI, deploy, a worker crash mid-job end to end (stale re-queue is tested at store level only), in-memory rate limit (one process only), API_TOKEN is unset in the default compose (open API), DNS-rebinding hardening, ASR service has no auth (internal network only). Older list follows.
+
+Infra additions not done: real api/worker, compose end-to-end test, diarization accuracy on real speech (default settings failed on the synthetic clip), training-data licences (all unchecked), a failing-pytest-fails-compose check, disfluency-prompt effect on labelled human speech (see REVIEW_INFRA.md section 8). Older list follows; its Docker item is now outdated (Docker works on the GCP VM).
 Docker / docker compose (Docker is not installed on the dev machine); rendering and A/V sync (M3); worked example step 8; instruction parsing; audio mixing of music/bleeps; API, jobs, idempotency, errors, health, manifest, docker compose (M2); real ASR and diarization; LLM adapters; reorder, filler and silence removal, music ducking, mute/bleep audio; multi-speaker handling; OTIO export; performance on a real 60-minute video or through the API (only a synthetic source on one laptop is measured); any real video; any metric; CI.
 
 ## Decisions

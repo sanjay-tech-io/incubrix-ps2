@@ -1,0 +1,35 @@
+$ curl api /health /ready
+{"status":"ok","service":"api"}
+{"status":"ready","service":"api"}
+--- worker
+--- asr
+--- postgres
+--- s3
+$ worker /ready (inside)
+200 {"status":"ready","service":"worker"}
+$ asr /health (inside)
+{"status":"ok","service":"asr","adapter":"mock","diarization":"mock"}
+$ postgres
+/var/run/postgresql:5432 - accepting connections
+$ s3 cluster status
+{"IsLeader":true,"Leader":"172.18.0.4:9333.19333","MaxVolumeId":8}
+$ migrations
+ version | name |                             checksum                             |          applied_at          
+---------+------+------------------------------------------------------------------+------------------------------
+       1 | init | 5055d081c9215a7de42a63ec3b85d529ce1eaf3e9b3ffa7492794752d3648656 | 2026-10-20 10:29:28.31914+00
+(1 row)
+
+               List of relations
+ Schema |       Name        | Type  |  Owner   
+--------+-------------------+-------+----------
+ public | conversation_log  | table | incubrix
+ public | idempotency_keys  | table | incubrix
+ public | jobs              | table | incubrix
+ public | llm_cache         | table | incubrix
+ public | operation_log     | table | incubrix
+ public | schema_migrations | table | incubrix
+ public | sessions          | table | incubrix
+ public | source_assets     | table | incubrix
+(8 rows)
+
+init-1  | {"level":"info","msg":"init done","applied":[],"bucket":"incubrix"}

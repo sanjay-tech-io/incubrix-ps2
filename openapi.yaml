@@ -1,0 +1,351 @@
+openapi: 3.1.0
+info:
+  title: IncuBrix prompt-based video editing API
+  version: 0.2.0
+  description: |
+    Upload a video, wait for its transcription job, open a session, then edit it with plain-language instructions.
+    Every instruction gets exactly one answer: `applied`, `needs_clarification` or `rejected` (a normal 200, not an HTTP error).
+    Source of truth for the routes: a test compares this file with the routes the server registers, in both directions.
+    Every `summary` states which time policy was used ("current" = the edited timeline, "original" = the untouched source).
+servers:
+  - url: http://localhost:8080
+security:
+  - bearerAuth: []
+tags:
+  - name: videos
+  - name: sessions
+  - name: jobs
+  - name: ops
+paths:
+  /health:
+    get:
+      tags: [ops]
+      operationId: health
+      summary: Liveness
+      security: []
+      responses:
+        "200": { description: Process is up, content: { application/json: { schema: { $ref: "#/components/schemas/Health" } } } }
+  /ready:
+    get:
+      tags: [ops]
+      operationId: ready
+      summary: Readiness (database reachable)
+      security: []
+      responses:
+        "200": { description: Ready, content: { application/json: { schema: { $ref: "#/components/schemas/Health" } } } }
+        "503": { $ref: "#/components/responses/Error" }
+  /api/v1/videos:
+    post:
+      tags: [videos]
+      operationId: createVideo
+      summary: Upload a video (multipart) or give a URL (JSON). Returns a transcription job.
+      description: |
+        The original is stored in S3-compatible storage untouched; its sha256 is recorded. Then a job probes it
+        (duration, exact fps, audio, variable frame rate), transcribes (ASR + diarization), detects silence, clamps word
+        times and builds the atoms. A video without audio fails the job with `NO_AUDIO_TRACK`. Variable frame rate is accepted
+        with a warning.
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required: [file]
+              properties:
+                file: { type: string, format: binary, description: MP4 or MOV }
+                num_speakers: { type: integer, minimum: 1, description: Optional hint passed to diarization }
+                callback_url: { type: string, format: uri }
+                rights: { type: string, description: Licence or consent note, recorded in the manifest }
+                ai_generated: { type: boolean }
+          application/json:
+            schema: { $ref: "#/components/schemas/CreateVideoUrl" }
+      responses:
+        "202": { description: Accepted, content: { application/json: { schema: { $ref: "#/components/schemas/VideoAccepted" } } } }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "413": { $ref: "#/components/responses/Error" }
+        "415": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /api/v1/videos/{video_id}:
+    get:
+      tags: [videos]
+      operationId: getVideo
+      summary: Facts about a video, warnings and a download link for the original
+      parameters:
+        - { name: video_id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200": { description: The video, content: { application/json: { schema: { $ref: "#/components/schemas/Video" } } } }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/sessions:
+    post:
+      tags: [sessions]
+      operationId: createSession
+      summary: Open an editing session on a ready video
+      parameters:
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              required: [video_id]
+              additionalProperties: false
+              properties:
+                video_id: { type: string }
+      responses:
+        "201": { description: Session created, content: { application/json: { schema: { $ref: "#/components/schemas/Session" } } } }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /api/v1/sessions/{session_id}:
+    get:
+      tags: [sessions]
+      operationId: getSession
+      summary: Session facts and the current hash
+      parameters:
+        - { $ref: "#/components/parameters/SessionId" }
+      responses:
+        "200": { description: The session, content: { application/json: { schema: { $ref: "#/components/schemas/Session" } } } }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/sessions/{session_id}/instructions:
+    post:
+      tags: [sessions]
+      operationId: postInstruction
+      summary: Send one instruction; get exactly one answer
+      description: |
+        Synchronous. `say` is the instruction in plain language. `answer` replies to an open question (1-based option
+        number or text such as "the second one"); a reply may also be sent as `say`. A clarification turn changes
+        nothing and keeps the same `timeline_hash`. One applied instruction is one undo group.
+      parameters:
+        - { $ref: "#/components/parameters/SessionId" }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/InstructionRequest" }
+      responses:
+        "200": { description: The answer, content: { application/json: { schema: { $ref: "#/components/schemas/Answer" } } } }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
+  /api/v1/sessions/{session_id}/timeline:
+    get:
+      tags: [sessions]
+      operationId: getTimeline
+      summary: The materialized timeline (replay of the log) and its hash
+      parameters:
+        - { $ref: "#/components/parameters/SessionId" }
+      responses:
+        "200": { description: Timeline, content: { application/json: { schema: { $ref: "#/components/schemas/TimelineResponse" } } } }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/sessions/{session_id}/history:
+    get:
+      tags: [sessions]
+      operationId: getHistory
+      summary: The append-only operation log (resolved atom ranges, never seconds)
+      parameters:
+        - { $ref: "#/components/parameters/SessionId" }
+      responses:
+        "200": { description: Operation log, content: { application/json: { schema: { $ref: "#/components/schemas/HistoryResponse" } } } }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/sessions/{session_id}/conversation:
+    get:
+      tags: [sessions]
+      operationId: getConversation
+      summary: Every turn with its answer, including clarification turns
+      parameters:
+        - { $ref: "#/components/parameters/SessionId" }
+      responses:
+        "200": { description: Conversation log, content: { application/json: { schema: { $ref: "#/components/schemas/ConversationResponse" } } } }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/sessions/{session_id}/render:
+    post:
+      tags: [sessions]
+      operationId: renderSession
+      summary: Render the edited video (NOT IMPLEMENTED until M3)
+      description: Always answers 501 `NOT_IMPLEMENTED` for now. M3 replaces it with a 202 job.
+      parameters:
+        - { $ref: "#/components/parameters/SessionId" }
+        - $ref: "#/components/parameters/IdempotencyKey"
+      responses:
+        "501": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/v1/jobs/{job_id}:
+    get:
+      tags: [jobs]
+      operationId: getJob
+      summary: Job status, progress and result links
+      parameters:
+        - { name: job_id, in: path, required: true, schema: { type: string } }
+      responses:
+        "200": { description: The job, content: { application/json: { schema: { $ref: "#/components/schemas/Job" } } } }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+components:
+  securitySchemes:
+    bearerAuth: { type: http, scheme: bearer, description: "Set API_TOKEN to require it. /health and /ready never need it." }
+  parameters:
+    IdempotencyKey:
+      name: Idempotency-Key
+      in: header
+      required: false
+      description: Same key + same body returns the stored response and repeats no work. Same key + different body is 409 IDEMPOTENCY_KEY_REUSED.
+      schema: { type: string, minLength: 1, maxLength: 200 }
+    SessionId:
+      name: session_id
+      in: path
+      required: true
+      schema: { type: string }
+  responses:
+    Error:
+      description: Error. The body is always this shape; `code` is one of the codes listed in README.md.
+      content: { application/json: { schema: { $ref: "#/components/schemas/ErrorBody" } } }
+  schemas:
+    Health: { type: object, required: [status, service], properties: { status: { type: string }, service: { type: string } } }
+    ErrorBody:
+      type: object
+      required: [error]
+      properties:
+        error:
+          type: object
+          required: [code, message, retryable, details]
+          properties:
+            code: { type: string, pattern: "^[A-Z][A-Z0-9_]*$" }
+            message: { type: string }
+            retryable: { type: boolean }
+            details: { type: object, additionalProperties: true }
+    CreateVideoUrl:
+      type: object
+      required: [url]
+      additionalProperties: false
+      properties:
+        url: { type: string, format: uri, description: "http(s) URL of an MP4 or MOV. Private/loopback addresses are refused." }
+        num_speakers: { type: integer, minimum: 1 }
+        callback_url: { type: string, format: uri }
+        rights: { type: string }
+        ai_generated: { type: boolean }
+    VideoAccepted:
+      type: object
+      required: [video_id, job_id, status_url]
+      properties:
+        video_id: { type: string }
+        job_id: { type: string }
+        status_url: { type: string, description: "/api/v1/jobs/{job_id}" }
+    Video:
+      type: object
+      required: [video_id, status, warnings]
+      properties:
+        video_id: { type: string }
+        status: { type: string, enum: [processing, ready, failed] }
+        sha256: { type: [string, "null"] }
+        filename: { type: [string, "null"] }
+        size_bytes: { type: [integer, "null"] }
+        probe: { type: [object, "null"], additionalProperties: true }
+        warnings: { type: array, items: { type: string } }
+        download_url: { type: [string, "null"], description: Presigned link to the untouched original }
+    Session:
+      type: object
+      required: [session_id, video_id, duration_s, timeline_hash]
+      properties:
+        session_id: { type: string }
+        video_id: { type: string }
+        duration_s: { type: number }
+        timeline_hash: { type: string }
+        warnings: { type: array, items: { type: string } }
+    InstructionRequest:
+      type: object
+      additionalProperties: false
+      properties:
+        say: { type: string, minLength: 1, maxLength: 2000 }
+        answer: { oneOf: [{ type: integer, minimum: 1 }, { type: string }], description: Reply to the open question }
+      anyOf:
+        - required: [say]
+        - required: [answer]
+    Answer:
+      type: object
+      required: [status, operations, summary, question, options, reason, time_policy, warnings, timeline_hash, duration_s, manifest]
+      properties:
+        status: { type: string, enum: [applied, needs_clarification, rejected] }
+        operations: { type: array, items: { type: object, additionalProperties: true } }
+        summary: { type: string, description: "Always present; always names the time policy used." }
+        question: { type: [string, "null"] }
+        options: { type: array, items: { type: string } }
+        reason: { type: [string, "null"] }
+        time_policy: { type: string, enum: [current, original] }
+        warnings: { type: array, items: { type: string } }
+        timeline_hash: { type: string, pattern: "^[0-9a-f]{64}$" }
+        duration_s: { type: number }
+        duration_us: { type: integer }
+        turn: { type: integer }
+        manifest: { $ref: "#/components/schemas/Manifest" }
+    Manifest:
+      type: object
+      description: What produced this result (providers, models, versions, settings, timings, cost estimate, rights, AI flags).
+      required: [providers, settings, timings, cost_estimate, warnings, rights, ai_generated]
+      properties:
+        providers: { type: object, additionalProperties: true }
+        settings: { type: object, additionalProperties: true }
+        seed: { type: [integer, "null"] }
+        timings: { type: object, additionalProperties: true }
+        cost_estimate: { type: object, additionalProperties: true }
+        warnings: { type: array, items: { type: string } }
+        rights: { type: object, additionalProperties: true }
+        ai_generated: { type: object, additionalProperties: true }
+    TimelineResponse:
+      type: object
+      required: [session_id, timeline, timeline_hash, duration_s]
+      properties:
+        session_id: { type: string }
+        timeline: { type: object, additionalProperties: true }
+        timeline_hash: { type: string }
+        duration_s: { type: number }
+        effects: { type: array, items: { type: object, additionalProperties: true }, description: Effects with their edited-time position }
+    HistoryResponse:
+      type: object
+      required: [session_id, entries]
+      properties:
+        session_id: { type: string }
+        entries:
+          type: array
+          items:
+            type: object
+            required: [seq, kind, group]
+            properties:
+              seq: { type: integer }
+              kind: { type: string }
+              group: { type: integer, description: "Undo group; 0 for undo/redo markers" }
+              op: { type: [object, "null"], additionalProperties: true }
+    ConversationResponse:
+      type: object
+      required: [session_id, turns]
+      properties:
+        session_id: { type: string }
+        turns: { type: array, items: { type: object, additionalProperties: true } }
+    Job:
+      type: object
+      required: [job_id, type, status, progress]
+      properties:
+        job_id: { type: string }
+        type: { type: string }
+        status: { type: string, enum: [queued, running, succeeded, failed] }
+        progress: { type: integer, minimum: 0, maximum: 100 }
+        result: { type: [object, "null"], additionalProperties: true }
+        links: { type: object, additionalProperties: { type: string }, description: "Result links (e.g. video, session create)" }
+        error: { oneOf: [{ $ref: "#/components/schemas/ErrorBody" }, { type: "null" }] }
+        created_at: { type: string, format: date-time }
+        updated_at: { type: string, format: date-time }

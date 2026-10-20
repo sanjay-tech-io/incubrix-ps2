@@ -1,0 +1,186 @@
+ Image incubrix-ps2-asr Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 528B done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 730B done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/python:3.12-slim
+#3 DONE 1.5s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 2B done
+#4 DONE 0.0s
+
+#5 [internal] load build context
+#5 transferring context: 32.27kB done
+#5 DONE 0.0s
+
+#6 [1/7] FROM docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1
+#6 resolve docker.io/library/python:3.12-slim@sha256:a6e34c598f2467ed0e9a8d349809fcd8b5c603269512df273a0bb1784edc11b1 0.0s done
+#6 DONE 0.0s
+
+#7 [2/7] WORKDIR /app
+#7 CACHED
+
+#8 [3/7] COPY requirements.txt .
+#8 DONE 0.0s
+
+#9 [4/7] RUN pip install --no-cache-dir -r requirements.txt
+#9 3.976 Collecting faster-whisper==1.2.1 (from -r requirements.txt (line 1))
+#9 4.102   Downloading faster_whisper-1.2.1-py3-none-any.whl.metadata (16 kB)
+#9 4.284 Collecting ctranslate2==4.8.3 (from -r requirements.txt (line 2))
+#9 4.314   Downloading ctranslate2-4.8.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (11 kB)
+#9 4.407 Collecting av==16.1.0 (from -r requirements.txt (line 3))
+#9 4.437   Downloading av-16.1.0-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (4.6 kB)
+#9 4.581 Collecting onnxruntime==1.31.0 (from -r requirements.txt (line 4))
+#9 4.608   Downloading onnxruntime-1.31.0-cp312-cp312-manylinux_2_28_x86_64.whl.metadata (5.7 kB)
+#9 4.962 Collecting numpy==2.5.4 (from -r requirements.txt (line 5))
+#9 4.993   Downloading numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl.metadata (6.6 kB)
+#9 5.091 Collecting huggingface_hub==2.2.0 (from -r requirements.txt (line 6))
+#9 5.121   Downloading huggingface_hub-2.2.0-py3-none-any.whl.metadata (16 kB)
+#9 5.368 Collecting tokenizers==0.23.3 (from -r requirements.txt (line 7))
+#9 5.398   Downloading tokenizers-0.23.3-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (9.8 kB)
+#9 5.805 Collecting sherpa-onnx==1.13.8 (from -r requirements.txt (line 8))
+#9 5.836   Downloading sherpa_onnx-1.13.8-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (53 kB)
+#9 5.971 Collecting fastapi==0.151.0 (from -r requirements.txt (line 9))
+#9 6.005   Downloading fastapi-0.151.0-py3-none-any.whl.metadata (26 kB)
+#9 6.082 Collecting starlette==1.9.0 (from -r requirements.txt (line 10))
+#9 6.113   Downloading starlette-1.9.0-py3-none-any.whl.metadata (6.6 kB)
+#9 6.279 Collecting pydantic==2.14.1 (from -r requirements.txt (line 11))
+#9 6.309   Downloading pydantic-2.14.1-py3-none-any.whl.metadata (133 kB)
+#9 6.405 Collecting uvicorn==0.54.0 (from -r requirements.txt (line 12))
+#9 6.435   Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+#9 6.518 Collecting python-multipart==0.0.32 (from -r requirements.txt (line 13))
+#9 6.548   Downloading python_multipart-0.0.32-py3-none-any.whl.metadata (2.1 kB)
+#9 6.647 Collecting tqdm (from faster-whisper==1.2.1->-r requirements.txt (line 1))
+#9 6.677   Downloading tqdm-4.70.1-py3-none-any.whl.metadata (57 kB)
+#9 6.752 Collecting pyyaml<7,>=5.3 (from ctranslate2==4.8.3->-r requirements.txt (line 2))
+#9 6.782   Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl.metadata (2.4 kB)
+#9 6.820 Collecting flatbuffers (from onnxruntime==1.31.0->-r requirements.txt (line 4))
+#9 6.850   Downloading flatbuffers-25.12.19-py2.py3-none-any.whl.metadata (1.0 kB)
+#9 6.901 Collecting packaging (from onnxruntime==1.31.0->-r requirements.txt (line 4))
+#9 6.931   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+#9 7.152 Collecting protobuf>=4.25.8 (from onnxruntime==1.31.0->-r requirements.txt (line 4))
+#9 7.182   Downloading protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl.metadata (595 bytes)
+#9 7.228 Collecting click<9.0.0,>=8.4.2 (from huggingface_hub==2.2.0->-r requirements.txt (line 6))
+#9 7.258   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+#9 7.317 Collecting filelock>=3.10.0 (from huggingface_hub==2.2.0->-r requirements.txt (line 6))
+#9 7.347   Downloading filelock-4.2.4-py3-none-any.whl.metadata (2.0 kB)
+#9 7.396 Collecting fsspec>=2023.5.0 (from huggingface_hub==2.2.0->-r requirements.txt (line 6))
+#9 7.427   Downloading fsspec-2026.9.0-py3-none-any.whl.metadata (10 kB)
+#9 7.540 Collecting hf-xet<2.0.0,>=1.6.0 (from huggingface_hub==2.2.0->-r requirements.txt (line 6))
+#9 7.571   Downloading hf_xet-1.7.0-cp38-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (4.9 kB)
+#9 7.608 Collecting httpx2<3,>=2.0.0 (from huggingface_hub==2.2.0->-r requirements.txt (line 6))
+#9 7.639   Downloading httpx2-2.15.1-py3-none-any.whl.metadata (9.6 kB)
+#9 7.710 Collecting typing-extensions>=4.1.0 (from huggingface_hub==2.2.0->-r requirements.txt (line 6))
+#9 7.741   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#9 7.870 Collecting sherpa-onnx-core==1.13.8 (from sherpa-onnx==1.13.8->-r requirements.txt (line 8))
+#9 7.901   Downloading sherpa_onnx_core-1.13.8-py3-none-manylinux2014_x86_64.whl.metadata (628 bytes)
+#9 7.984 Collecting typing-inspection>=0.4.2 (from fastapi==0.151.0->-r requirements.txt (line 9))
+#9 8.014   Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+#9 8.046 Collecting annotated-doc>=0.0.2 (from fastapi==0.151.0->-r requirements.txt (line 9))
+#9 8.076   Downloading annotated_doc-0.0.5-py3-none-any.whl.metadata (6.5 kB)
+#9 8.124 Collecting opentelemetry-api>=1.44.0 (from fastapi==0.151.0->-r requirements.txt (line 9))
+#9 8.154   Downloading opentelemetry_api-1.45.1-py3-none-any.whl.metadata (1.4 kB)
+#9 8.206 Collecting anyio<5,>=4.0.0 (from starlette==1.9.0->-r requirements.txt (line 10))
+#9 8.236   Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+#9 8.278 Collecting annotated-types>=0.6.0 (from pydantic==2.14.1->-r requirements.txt (line 11))
+#9 8.308   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+#9 9.308 Collecting pydantic-core==2.50.1 (from pydantic==2.14.1->-r requirements.txt (line 11))
+#9 9.338   Downloading pydantic_core-2.50.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.5 kB)
+#9 9.386 Collecting h11>=0.8 (from uvicorn==0.54.0->-r requirements.txt (line 12))
+#9 9.416   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#9 9.463 Collecting idna>=2.8 (from anyio<5,>=4.0.0->starlette==1.9.0->-r requirements.txt (line 10))
+#9 9.493   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+#9 9.549 Collecting httpcore2==2.15.1 (from httpx2<3,>=2.0.0->huggingface_hub==2.2.0->-r requirements.txt (line 6))
+#9 9.579   Downloading httpcore2-2.15.1-py3-none-any.whl.metadata (27 kB)
+#9 9.626 Collecting truststore>=0.10 (from httpx2<3,>=2.0.0->huggingface_hub==2.2.0->-r requirements.txt (line 6))
+#9 9.657   Downloading truststore-0.10.5-py3-none-any.whl.metadata (4.5 kB)
+#9 9.733 Downloading faster_whisper-1.2.1-py3-none-any.whl (1.1 MB)
+#9 9.825    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.1/1.1 MB 14.1 MB/s eta 0:00:00
+#9 9.856 Downloading ctranslate2-4.8.3-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (40.3 MB)
+#9 10.87    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 40.3/40.3 MB 40.1 MB/s eta 0:00:00
+#9 10.90 Downloading av-16.1.0-cp312-cp312-manylinux_2_28_x86_64.whl (41.2 MB)
+#9 11.26    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 41.2/41.2 MB 115.7 MB/s eta 0:00:00
+#9 11.29 Downloading onnxruntime-1.31.0-cp312-cp312-manylinux_2_28_x86_64.whl (23.8 MB)
+#9 11.48    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 23.8/23.8 MB 129.7 MB/s eta 0:00:00
+#9 11.51 Downloading numpy-2.5.4-cp312-cp312-manylinux_2_27_x86_64.manylinux_2_28_x86_64.whl (16.7 MB)
+#9 11.64    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 16.7/16.7 MB 140.7 MB/s eta 0:00:00
+#9 11.67 Downloading huggingface_hub-2.2.0-py3-none-any.whl (839 kB)
+#9 11.68    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 839.9/839.9 kB 171.1 MB/s eta 0:00:00
+#9 11.71 Downloading tokenizers-0.23.3-cp310-abi3-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (3.4 MB)
+#9 11.73    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 3.4/3.4 MB 237.2 MB/s eta 0:00:00
+#9 11.76 Downloading sherpa_onnx-1.13.8-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (4.4 MB)
+#9 11.79    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.4/4.4 MB 148.2 MB/s eta 0:00:00
+#9 11.82 Downloading fastapi-0.151.0-py3-none-any.whl (145 kB)
+#9 11.85 Downloading starlette-1.9.0-py3-none-any.whl (80 kB)
+#9 11.88 Downloading pydantic-2.14.1-py3-none-any.whl (488 kB)
+#9 11.92 Downloading uvicorn-0.54.0-py3-none-any.whl (87 kB)
+#9 11.95 Downloading python_multipart-0.0.32-py3-none-any.whl (30 kB)
+#9 11.98 Downloading pydantic_core-2.50.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.2 MB)
+#9 11.99    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 214.1 MB/s eta 0:00:00
+#9 12.02 Downloading sherpa_onnx_core-1.13.8-py3-none-manylinux2014_x86_64.whl (10.6 MB)
+#9 12.10    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 10.6/10.6 MB 148.7 MB/s eta 0:00:00
+#9 12.13 Downloading annotated_doc-0.0.5-py3-none-any.whl (5.3 kB)
+#9 12.16 Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+#9 12.19 Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+#9 12.22 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+#9 12.26 Downloading filelock-4.2.4-py3-none-any.whl (162 kB)
+#9 12.29 Downloading fsspec-2026.9.0-py3-none-any.whl (221 kB)
+#9 12.32 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#9 12.35 Downloading hf_xet-1.7.0-cp38-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (4.2 MB)
+#9 12.38    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 4.2/4.2 MB 146.3 MB/s eta 0:00:00
+#9 12.42 Downloading httpx2-2.15.1-py3-none-any.whl (96 kB)
+#9 12.45 Downloading httpcore2-2.15.1-py3-none-any.whl (85 kB)
+#9 12.48 Downloading opentelemetry_api-1.45.1-py3-none-any.whl (60 kB)
+#9 12.51 Downloading packaging-26.3-py3-none-any.whl (129 kB)
+#9 12.54 Downloading protobuf-7.36.2-cp310-abi3-manylinux2014_x86_64.whl (343 kB)
+#9 12.58 Downloading pyyaml-6.0.3-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl (807 kB)
+#9 12.59    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 807.9/807.9 kB 171.4 MB/s eta 0:00:00
+#9 12.62 Downloading tqdm-4.70.1-py3-none-any.whl (80 kB)
+#9 12.65 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+#9 12.68 Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+#9 12.71 Downloading flatbuffers-25.12.19-py2.py3-none-any.whl (26 kB)
+#9 12.74 Downloading idna-3.20-py3-none-any.whl (69 kB)
+#9 12.77 Downloading truststore-0.10.5-py3-none-any.whl (19 kB)
+#9 13.49 Installing collected packages: sherpa-onnx-core, flatbuffers, typing-extensions, truststore, tqdm, sherpa-onnx, pyyaml, python-multipart, protobuf, packaging, numpy, idna, hf-xet, h11, fsspec, filelock, click, av, annotated-types, annotated-doc, uvicorn, typing-inspection, pydantic-core, opentelemetry-api, onnxruntime, httpcore2, ctranslate2, anyio, starlette, pydantic, httpx2, huggingface_hub, fastapi, tokenizers, faster-whisper
+#9 26.20 Successfully installed annotated-doc-0.0.5 annotated-types-0.8.0 anyio-4.15.1 av-16.1.0 click-8.5.0 ctranslate2-4.8.3 fastapi-0.151.0 faster-whisper-1.2.1 filelock-4.2.4 flatbuffers-25.12.19 fsspec-2026.9.0 h11-0.16.0 hf-xet-1.7.0 httpcore2-2.15.1 httpx2-2.15.1 huggingface_hub-2.2.0 idna-3.20 numpy-2.5.4 onnxruntime-1.31.0 opentelemetry-api-1.45.1 packaging-26.3 protobuf-7.36.2 pydantic-2.14.1 pydantic-core-2.50.1 python-multipart-0.0.32 pyyaml-6.0.3 sherpa-onnx-1.13.8 sherpa-onnx-core-1.13.8 starlette-1.9.0 tokenizers-0.23.3 tqdm-4.70.1 truststore-0.10.5 typing-extensions-4.16.0 typing-inspection-0.4.4 uvicorn-0.54.0
+#9 26.20 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#9 26.39 
+#9 26.39 [notice] A new release of pip is available: 25.0.1 -> 26.2.1
+#9 26.39 [notice] To update, run: pip install --upgrade pip
+#9 DONE 29.9s
+
+#10 [5/7] COPY fetch_models.py .
+#10 DONE 0.1s
+
+#11 [6/7] RUN ASR_MODEL=base.en python fetch_models.py
+#11 6.556 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+#11 11.04 whisper model downloaded to /models/hf/hub/models--Systran--faster-whisper-base.en/snapshots/3d3d5dee26484f91867d81cb899cfcf72b96be6c
+#11 DONE 11.2s
+
+#12 [7/7] COPY asr ./asr
+#12 DONE 0.0s
+
+#13 exporting to image
+#13 exporting layers
+#13 exporting layers 30.6s done
+#13 exporting manifest sha256:391b428ee785ebb5cf06b1e6898233c989a53b9f18fa91be0ebb42fdd895cd92 0.0s done
+#13 exporting config sha256:04eac7b62675bc5e34c15173ebfc1904a28b9c8012619aa0cd4fb6822c87f975 0.0s done
+#13 exporting attestation manifest sha256:83459f952f1f75c6629078dae533577fe98c84587948e68223ea24dc09cfb353 0.0s done
+#13 exporting manifest list sha256:ec1580399be8e86b2ad544cac745931380dba52b3b61870e83cbb146ff8a5cdc 0.0s done
+#13 naming to docker.io/library/incubrix-ps2-asr:latest done
+#13 unpacking to docker.io/library/incubrix-ps2-asr:latest
+#13 unpacking to docker.io/library/incubrix-ps2-asr:latest 8.7s done
+#13 DONE 39.4s
+
+#14 resolving provenance for metadata file
+#14 DONE 0.0s
+ Image incubrix-ps2-asr Built 
+
+real	1m22.957s
+user	0m0.685s
+sys	0m0.350s
