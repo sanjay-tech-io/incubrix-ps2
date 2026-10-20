@@ -1,27 +1,26 @@
 # Project status (project memory)
 
-Updated at the end of every milestone. Last update: end of M1b (2026-10-20). Everything below was run, not assumed; "not verified" means exactly that.
+Updated at the end of every milestone. Last update: end of M1c (2026-10-20). Everything below was run, not assumed; "not verified" means exactly that.
 
 ## Done and verified
 | Item | Proof (command) |
 |---|---|
 | npm workspaces (engine, contracts), strict TypeScript, vitest, ESLint purity rules | `npm test` exit 0; `npm run typecheck` exit 0 |
-| Clean install from the public registry; lockfile has no mirror URLs | `grep -c npmmirror package-lock.json` = 0; `npm ci` then `npm test` exit 0 |
-| zod contracts are the source of truth; JSON Schema generated and compared with the committed file | `npm test` (packages/contracts: 4 tests; engine `schema.test.ts`) |
-| Canonical JSON, pure-JS SHA-256 | `npm test` (`canonical.test.ts`) |
-| Atoms, cursors, frame grid, snapping into silence | `npm test` (`atoms.test.ts`, `frame_rounding.test.ts`) |
-| Output frames by cumulative rounding (odd counts, property test) | `npm test` (`frame_rounding.test.ts`) |
-| Replay, undo/redo/restore, time mapping, speed rules, effect states | `npm test` (`replay.test.ts`, `session.test.ts`) |
-| Worked example steps 1-7 on the synthetic fixture | `npm test` (`worked_example.test.ts`) |
-| Incremental == full replay; cached session path == fresh replay | `npm test` (`hard_cases.test.ts`) |
-| Engine purity rules actually fire | `npm test` (`lint_guard.test.ts`) |
-| Surviving mutants killed; 15 of 15 hand-picked mutants die | `npm test` (`mutants.test.ts`); `npm run mutation-check` |
+| Clean install from the public registry; lockfile has no mirror URLs | `grep -c npmmirror package-lock.json` = 0; `npm ci` then `npm test` exit 0 (M1b) |
+| zod contracts are the source of truth; JSON Schema generated and compared | `npm test` (packages/contracts; engine `schema.test.ts`) |
+| Canonical JSON, pure-JS SHA-256, atoms, cursors, frame grid, cumulative frame rounding | `npm test` (`canonical`, `atoms`, `frame_rounding` tests) |
+| Replay, undo/redo/restore, time mapping, speed rules, effect states | `npm test` (`replay`, `session`, `worked_example`, `hard_cases`) |
+| Reorder with two piece indexes; speed/effects anchored to source; runs rule; cut/undo/restore after reorder | `npm test` (`reorder.test.ts`) |
+| Fillers, deterministic "like" rule, silences > N with pad, pinned pauses, mute/bleep warnings, caption edits, keep only, music ducking envelope, hard cases | `npm test` (`new_ops.test.ts`) |
+| Grid warnings on every span-building path (touching words, 29.97 fps) | `npm test` (`grid_warnings.test.ts`) |
+| Property tests run on deep-frozen inputs, incl. random moves; cached session path == fresh replay | `npm test` (`hard_cases.test.ts`, `reorder.test.ts`, `frame_rounding.test.ts`) |
+| 40 hand-picked mutants all die | `npm run mutation-check` (see REVIEW_M1C.md section 5 for the raw output of the final run) |
 | Performance targets on a synthetic 60-minute source | `npm run bench -w @incubrix/engine` (docs/PERF_ENGINE.md) |
 
-Latest `npm test` (root): contracts 4 passed; engine 174 passed, 1 skipped (the render step, "needs M3"). Last update of this file: end of M1b (2026-10-20).
+Latest `npm test` (root): see docs/REVIEW_M1C.md section 2. Last update of this file: end of M1c (2026-10-20).
 
 ## Not verified (not built or not run)
-Docker / docker compose (Docker is not installed on the dev machine); rendering and A/V sync (M3); worked example step 8; API, jobs, idempotency, errors, health, manifest, docker compose (M2); real ASR and diarization; LLM adapters; reorder, filler and silence removal, music ducking, mute/bleep audio; multi-speaker handling; OTIO export; performance on a real 60-minute video or through the API (only a synthetic source on one laptop is measured); any real video; any metric; CI.
+Docker / docker compose (Docker is not installed on the dev machine); rendering and A/V sync (M3); worked example step 8; instruction parsing; audio mixing of music/bleeps; API, jobs, idempotency, errors, health, manifest, docker compose (M2); real ASR and diarization; LLM adapters; reorder, filler and silence removal, music ducking, mute/bleep audio; multi-speaker handling; OTIO export; performance on a real 60-minute video or through the API (only a synthetic source on one laptop is measured); any real video; any metric; CI.
 
 ## Decisions
 Full list: `CLAUDE.md` section "Decisions" and `docs/DESIGN.md`. Headlines: Node 22; real ASR/diarization in the demo and mocks for tests only; cursor = (atom, offset) with offset only inside silences and on the frame grid; partial-cut rule and inactive effects; 0.7 s minimum caption time; speed range 0.25x-4x (`MAX_SPEED`); later speed change replaces the earlier rate; restore is a new op that points at a group; effect ids count edit ops only; sha256 from @noble/hashes; no React UI (M7 = Swagger UI/Redoc from openapi.yaml).
@@ -31,10 +30,10 @@ Full list: `CLAUDE.md` section "Decisions" and `docs/DESIGN.md`. Headlines: Node
 - Decide how to resolve "the intro"/"that caption" style references (parser/history lookup, M2/M4).
 - Boundaries between two touching words cannot be frame-snapped; check the drift once M3 can render (REVIEW_M1B doubt 2).
 - Install/verify Docker on the GCP VM before M2.
-- Reorder (M4) must add a separate source index: binary search in the engine assumes output order == source order.
-- `npm audit` reports 6 vulnerabilities in dev dependencies; not investigated.
+- Reorder now has two piece indexes (done in M1c); cuts on an unsorted segment list use a linear scan.
+- `npm audit`: 6 findings, all in the dev-only vitest 2.x tree (vitest critical, tinypool critical, vite high, esbuild moderate, vite-node moderate, @vitest/mocker moderate); production tree: 0. No non-breaking fix exists (only `vitest@5`, a major upgrade). Left as is; decide on upgrading vitest (a major version) later. Raw: REVIEW_M1C.md section 3.
 - Add `.gitattributes` for line endings (needs approval).
-- Reorder (`move`), filler/silence removal, music, multi-speaker: M4.
+- Multi-speaker handling (diarization labels, 'what the guest says'), meaning-based search, OTIO export, 60-minute real-video timing: M4/M5.
 - No `test-pack/` exists yet; no metric may be quoted until real runs are saved there.
 
 ## Claims ledger (claim -> evidence -> verified)
@@ -64,7 +63,7 @@ Full list: `CLAUDE.md` section "Decisions" and `docs/DESIGN.md`. Headlines: Node
 | 22 | Auto-caption text comes from surviving words | `replay.test.ts` | yes (cue grouping is simple; rendering **no**) |
 | 23 | Time policy "original" vs "current" | `search_resolve.test.ts`, answers carry `timePolicy` | yes (policy detection from text is parser work, not built) |
 | 24 | Render accuracy, A/V sync, length within 1 frame | none | **no** (M3) |
-| 25 | Reorder, filler removal, silence removal, music ducking, mute/bleep audio | not implemented (`move` throws NOT_IMPLEMENTED) | **no** |
+| 25 | Reorder, filler removal, silence removal, music ducking envelope, mute/bleep as timeline data | implemented in M1c: see rows 37-47 | yes (engine only; **no** audio mixing/rendering: M3) |
 | 26 | Instruction latency, 60-minute scale | superseded by row 32 (synthetic source only; real 60-minute video, API and database path not measured) | partly |
 | 27 | Real ASR, diarization, API, jobs, idempotency, compose, OTIO | not built | **no** |
 | 28 | Any metric (latency, cost, clipping, clarification quality) | none produced; nothing is under `test-pack/` | **no** |
@@ -76,3 +75,20 @@ Full list: `CLAUDE.md` section "Decisions" and `docs/DESIGN.md`. Headlines: Node
 | 34 | Music, protected pauses, auto-caption style are in the timeline and hash; effect ids count edit entries only | `mutants.test.ts`; 4 original surviving mutants killed (without these tests 4 of 9 survived) | yes |
 | 35 | zod contracts are the source of truth; committed JSON Schema equals the generated one | `packages/contracts/test/schema.test.ts` | yes |
 | 36 | Docker works on the dev machine / compose runs | `docker --version`: command not found on this machine | **no** |
+| 37 | Reorder: move a span before a point or to the end; output order and source order independent; two piece indexes | `reorder.test.ts` (order, time mapping both ways, to-end, into-itself rejected, target in cut material, move-and-back hash, property: 100 seeded random move sequences keep all material, disjoint, round-trip mapping; inputs deep-frozen) | yes (engine; not rendered) |
+| 38 | Speed regions stay attached to source atoms after a move | `reorder.test.ts` (a) | yes |
+| 39 | Effects after a reorder: a caption on moved words follows them; a split effect shows on its first run with a warning; mute/bleep apply to every run | `reorder.test.ts` (b); mutant "split effect treated as one run" killed | yes |
+| 40 | Cut spanning moved material; undo and restore after a reorder | `reorder.test.ts` (c)(d) | yes |
+| 41 | Remove fillers: um/uh and a deterministic "like" rule ("I like this tool" is kept); a filler inside a bleep/mute is kept with a warning | `new_ops.test.ts` (R1-R4 tests, 4 fillers in fixture, bleep overlap) | yes on the fixture and synthetic phrases; the "like" rule is a heuristic **not measured on real speech** |
+| 42 | Remove silences > N with a pad setting; pinned pauses survive | `new_ops.test.ts` (26 cuts, exact numbers, strict "longer than", pinned count, pad setting) | yes (fixture) |
+| 43 | Mute and bleep as timeline effects; low-confidence words warn | `new_ops.test.ts` | yes (data and warnings only; no audio) |
+| 44 | Caption edits: text, colour, size, bold, position | `new_ops.test.ts` | yes |
+| 45 | Auto-caption cues from surviving words in output order, deterministic chunking | `replay.test.ts`, `reorder.test.ts` (swapped sentences) | yes (no rendering) |
+| 46 | Music track op + ducking envelope as a pure function of the final speech | `new_ops.test.ts` (exact keyframes, edge cases, merge rule, follows cuts/speed) | yes (no audio mixing) |
+| 47 | Keep only a range (with captions on kept words) | `new_ops.test.ts` | yes |
+| 48 | Every span-building path returns the same grid warning as snapPoint, and the answer includes it | `grid_warnings.test.ts` (findTopicParts single and clarification path, edited/original range incl. segment-edge start, fillers, move; control: none for silence-bounded) | yes (29.97 fps touching words) |
+| 49 | Property tests with deep-frozen inputs | `test/freeze.ts`; mutant "cut edits previous state in place" killed only by frozen runs | yes |
+| 50 | Performance with the new operations; findTopicParts with 40 captions and 4,000 segments | PERF_ENGINE.md M1c table | yes on this laptop, synthetic; a ~12,000-op instruction is above 300 ms (reported) |
+| 51 | Boundary agreement with ffmpeg | none | **NOT VERIFIED until M3** |
+| 52 | 40 mutants killed | REVIEW_M1C.md section 5 | yes |
+| 53 | npm audit findings | REVIEW_M1C.md section 3: 6 dev-only, 0 in production, only fix is a major vitest upgrade (not applied) | documented, **not fixed** |

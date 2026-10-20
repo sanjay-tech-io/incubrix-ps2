@@ -70,3 +70,38 @@ Raw JSON of every run is in `docs/REVIEW_M1B.md`.
 - Caches are keyed by object identity and assume logs are never mutated in place (the API returns new arrays). A caller that mutates a log array after using it would get stale results.
 - Memory: caches are WeakMaps, so they are released with the log.
 - Not measured: effects count in the thousands, 60-minute `findTopicParts` (still scans all sentences linearly), and any path through the future API/database.
+
+## M1c: the new operations (reorder, fillers, silences, music, topic search)
+Same machine, same synthetic 60-minute source (the generator now also puts a sentence end every 12th word, "pricing" every 300th word and an "um" every 50th word, which does not change the earlier scenarios). Raw JSON: docs/REVIEW_M1C.md section 4. Planned operations: 240 filler cuts, 12001 silence cuts. `findTopicParts("pricing")` found 40 matches.
+
+| Scenario | median ms | max ms | runs |
+|---|---|---|---|
+| one cut, empty session | 0.2 | 3.2 | 20 |
+| one cut after 1,500 cuts - cold | 24.9 | 51.6 | 10 |
+| one cut after 1,500 cuts - warm | 7.4 | 11.5 | 10 |
+| one cut with 4,000 segments - cold | 69.1 | 82.8 | 5 |
+| one cut with 4,000 segments - warm | 19.1 | 19.8 | 5 |
+| undo with 4,000 segments - cold | 30.4 | 33.9 | 5 |
+| current timeline with 4,000 segments - cold | 25.8 | 29.1 | 5 |
+| resolve an edited range with 4,000 segments | 1.5 | 1.9 | 5 |
+| add a caption with 4,000 segments - cold | 66.4 | 90.2 | 5 |
+| add a caption with 4,000 segments - warm | 19.9 | 21 | 5 |
+| one instruction carrying 4,000 cut ops | 49.6 | 53.7 | 3 |
+| reorder: move 40 atoms to the end with 4,000 segments - cold | 77.3 | 97.1 | 5 |
+| reorder: move 40 atoms to the end with 4,000 segments - warm | 20.6 | 23.4 | 5 |
+| plan: remove fillers (240 'um' in 12,000 words) | 3.1 | 3.6 | 5 |
+| apply: remove fillers as one instruction - cold | 2.9 | 4.3 | 3 |
+| plan: remove silences > 50 ms (pad 20 ms) = about 12,000 cuts | 16.7 | 24.5 | 3 |
+| apply: remove silences as ONE instruction of about 12,000 ops | 319.3 | 326.5 | 3 |
+| plan: move edited 10 minutes to the end (4,000 segments) | 3.9 | 4.9 | 5 |
+| ducking envelope, 4,000 segments | 2.5 | 8.5 | 5 |
+| auto-caption cues, 4,000 segments | 7.1 | 12.3 | 5 |
+| 40 captions + 4,000 segments: effect displays (all 40) | 0.1 | 0.3 | 5 |
+| findTopicParts('pricing'), 40 captions + 4,000 segments | 3.5 | 6.1 | 5 |
+| a caption instruction on top of 40 captions + 4,000 segments - cold | 65.3 | 78.2 | 5 |
+
+Reading it:
+- Every single-operation instruction, cold or warm, stays under 300 ms (the worst row is 97 ms), and the 4,000-op instruction is about 50 ms, with reorder in the code path (the first scenarios of the table are the earlier ones re-measured).
+- The silence-removal instruction carries about 12001 cut operations in ONE instruction. That is three times the 4,000-op target size; its time is in the table and is above 300 ms. It is outside the stated target, reported for honesty, not claimed as meeting it.
+- Follow-up 4 (reviewer): `findTopicParts` with 40 captions and 4,000 segments is the row "findTopicParts('pricing'), 40 captions + 4,000 segments". It is still a linear scan over all sentences on every call (nothing is cached); it is fast enough here, and was measured, not assumed.
+- Segment lookups after a reorder: a cut on a reordered (unsorted) segment list falls back to a linear scan; the 4,000-segment reorder rows include that.
