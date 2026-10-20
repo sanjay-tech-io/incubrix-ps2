@@ -1,0 +1,44 @@
+$ docker run -d --name asr-real -p 8001:8000 -e ASR_ADAPTER=faster-whisper -e DIARIZATION_PROVIDER=sherpa incubrix-ps2-asr
+f7a1facf8900b7200f5663906c157f475a49fd2ceec359baaa438b189236bc1b
+$ curl /health
+{"status":"ok","service":"asr","adapter":"faster-whisper","diarization":"sherpa"}
+--- pip freeze (container)
+av==16.1.0
+ctranslate2==4.8.3
+fastapi==0.151.0
+faster-whisper==1.2.1
+huggingface_hub==2.2.0
+numpy==2.5.4
+onnxruntime==1.31.0
+pydantic==2.14.1
+pydantic_core==2.50.1
+sherpa-onnx-core==1.13.8
+sherpa_onnx==1.13.8
+tokenizers==0.23.3
+uvicorn==0.54.0
+--- python / models in image
+Python 3.12.15
+142M	/models/hf
+33M	/models/diarization
+/models/diarization:
+total 25928
+drwxr-xr-x 3 root root     4096 Oct 20 10:56 .
+drwxr-xr-x 4 root root     4096 Oct 20 10:56 ..
+drwxr-xr-x 2 root root     4096 Oct  8  2024 sherpa-onnx-pyannote-segmentation-3-0
+-rw-r--r-- 1 root root 26534365 Oct 20 10:56 wespeaker_en_voxceleb_resnet34.onnx
+
+/models/diarization/sherpa-onnx-pyannote-segmentation-3-0:
+total 7424
+drwxr-xr-x 2 root root    4096 Oct  8  2024 .
+drwxr-xr-x 3 root root    4096 Oct 20 10:56 ..
+-rw-r--r-- 1 root root    1061 Oct  8  2024 LICENSE
+-rw-r--r-- 1 root root     115 Oct  8  2024 README.md
+-rwxr-xr-x 1 root root    3953 Oct  8  2024 export-onnx.py
+-rw-r--r-- 1 root root 1540506 Oct  8  2024 model.int8.onnx
+-rw-r--r-- 1 root root 5992913 Oct  8  2024 model.onnx
+-rwxr-xr-x 1 root root    1985 Oct  8  2024 run.sh
+-rwxr-xr-x 1 root root     857 Oct  8  2024 show-onnx.py
+-rwxr-xr-x 1 root root   15204 Oct  8  2024 speaker-diarization-onnx.py
+-rwxr-xr-x 1 root root    2306 Oct  8  2024 speaker-diarization-torch.py
+-rwxr-xr-x 1 root root    6883 Oct  8  2024 vad-onnx.py
+-rwxr-xr-x 1 root root    1029 Oct  8  2024 vad-torch.py

@@ -1,0 +1,7 @@
+{"words_scored": 85, "words_correct": 50, "accuracy": 0.588, "speakers_expected": 2, "speakers_found": 1, "mapping": {"SPEAKER_00": "B"}, "uncertain": 1, "overlaps": 0}
+== num2
+{"words_scored": 85, "words_correct": 85, "accuracy": 1.0, "speakers_expected": 2, "speakers_found": 2, "mapping": {"SPEAKER_00": "A", "SPEAKER_01": "B"}, "uncertain": 1, "overlaps": 0}
+== thr03
+{"words_scored": 85, "words_correct": 85, "accuracy": 1.0, "speakers_expected": 2, "speakers_found": 2, "mapping": {"SPEAKER_00": "A", "SPEAKER_01": "B"}, "uncertain": 1, "overlaps": 0}
+== thr015
+{"words_scored": 85, "words_correct": 85, "accuracy": 1.0, "speakers_expected": 2, "speakers_found": 2, "mapping": {"SPEAKER_00": "A", "SPEAKER_01": "B"}, "uncertain": 1, "overlaps": 0}
