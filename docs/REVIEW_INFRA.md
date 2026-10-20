@@ -144,6 +144,10 @@ See `docs/SPIKE_ASR.md` (RTF 0.21 for base.en end to end, 715 MB RSS, 2.2 s load
 
 ## 7. Git log and untouched packages
 ```
+2325e8a Add REVIEW_INFRA.md and update STATUS.md for the infra workstream
+ddf5f85 Add ASR spike report with raw outputs
+04a641d Record sources and licence evidence (clips, packages, diarization options)
+ecb3517 Add model benchmark, download-size and sherpa-onnx diarization spike scripts; share one app image in compose
 ebcc1c1 Add media tools: ffprobe wrapper (exact fps, VFR), audio silencedetect, clamp word times to detected silence
 788b93c Add ASR spike scripts: synthetic clip generator and disfluency prompt test
 81723b7 Add ASR service: faster-whisper (CPU int8, word timestamps, VAD) and mock adapters, integer us / permille wire format
