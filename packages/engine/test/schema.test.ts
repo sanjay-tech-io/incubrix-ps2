@@ -43,3 +43,34 @@ describe("timeline.schema.json", () => {
     expect(validate(bad)).toBe(false);
   });
 });
+
+describe("the schema accepts what the engine really produces", () => {
+  it("a real session (caption, cut, question, answer, speed, restore, undo, recolour) validates, and so does its materialized timeline", async () => {
+    const { makeFixture } = await import("./fixtures/transcript");
+    const { answerClarification, askClarification, currentTimeline, newSession, submitOperations, submitUndo } = await import("../src/session");
+    const { captionOp, cutOp, speedOp, RED } = await import("./helpers");
+    const { ctx, source, atoms } = makeFixture();
+    const U = 1_000_000;
+    const welcome = atoms.find((a) => a.startUs === 42 * U)!;
+    const channel = atoms.find((a) => a.endUs === 44 * U)!;
+
+    let s = submitOperations(ctx, newSession(), "caption", [captionOp("fx_0_0", welcome.id, channel.id, "Welcome!")]).state;
+    s = submitOperations(ctx, s, "cut", [cutOp(ctx, 0, 30 * U)]).state;
+    s = askClarification(ctx, s, "remove pricing", "Which?", [{ label: "second", operations: [cutOp(ctx, 108 * U, 113 * U)], warnings: [] }]).state;
+    s = answerClarification(ctx, s, "the second one", 0).state;
+    s = submitOperations(ctx, s, "speed", [speedOp(ctx, 90 * U, 108 * U, 2)]).state;
+    s = submitOperations(ctx, s, "intro back", [{ type: "restore", targetGroup: 2 }]).state;
+    s = submitUndo(ctx, s, "undo").state;
+    s = submitOperations(ctx, s, "red", [{ type: "update_effect", effectId: "fx_0_0", params: { kind: "caption", text: "Welcome!", style: RED } }]).state;
+    s = submitOperations(ctx, s, "speed 10x", [speedOp(ctx, 90 * U, 108 * U, 10)]).state; // rejected: still logged in the conversation
+
+    const doc: SessionDocument = { schemaVersion: 1, source, atoms, log: [...s.log], conversation: [...s.conversation] };
+    expect(validate(doc), JSON.stringify(validate.errors?.slice(0, 3))).toBe(true);
+
+    const ajv = new Ajv2020({ strict: true });
+    ajv.addSchema(schema);
+    const validateTimeline = ajv.getSchema(`${schema.$id}#/$defs/Timeline`)!;
+    const tl = currentTimeline(ctx, s);
+    expect(validateTimeline(tl), JSON.stringify(validateTimeline.errors?.slice(0, 3))).toBe(true);
+  });
+});
