@@ -174,3 +174,73 @@ $ git diff origin/main --stat -- packages/engine packages/contracts
 - SeaweedFS image is `:latest`; MinIO stays unusable here (pull denied).
 - `npm audit` findings and `AI_USE.md` are untouched.
 - Migrations are tested forward only; there is no down/rollback.
+
+---
+
+# B2: infra leftovers (branch `infra`, 2026-10-20)
+
+All outputs below were produced in this pass; raw files are `docs/raw/b2_*`. Branch checked first: `git branch -a` showed `infra` (current), `origin/infra`, `origin/main`.
+
+## B2.1 AI_USE.md
+Written at the repo root. Lists Claude Code (coding in this repo; 40 commits carry `Co-Authored-By: Claude Sonnet 5.5`) and Claude chat (reviewer/planner, taken from your instruction; nothing in the repo proves it). Everything I could not know is marked `TO BE COMPLETED BY THE CANDIDATE`.
+
+## B2.2 Real ASR inside Docker
+`docker compose build asr` (`docs/raw/b2_asr_build.txt`, 83 s wall, models fetched during the build; image 1.22 GB on disk, Python 3.12.15).
+```
+$ docker run -d --name asr-real -p 8001:8000 -e ASR_ADAPTER=faster-whisper -e DIARIZATION_PROVIDER=sherpa incubrix-ps2-asr
+$ curl localhost:8001/health
+{"status":"ok","service":"asr","adapter":"faster-whisper","diarization":"sherpa"}
+```
+Pinned in `services/asr/requirements.txt` (versions confirmed with `pip freeze` inside the container, `docs/raw/b2_asr_container_health.txt`): faster-whisper 1.2.1, ctranslate2 4.8.3, **av 16.1.0**, onnxruntime 1.31.0, numpy 2.5.4, huggingface_hub 2.2.0, tokenizers 0.23.3, sherpa-onnx 1.13.8, fastapi 0.151.0, starlette 1.9.0, pydantic 2.14.1, uvicorn 0.54.0, python-multipart 0.0.32. Transitive dependencies not listed there are NOT pinned (no lockfile).
+
+Real transcription of the 120 s NASA clip through the container over HTTP (`curl -F file=@nasa_120s.wav localhost:8001/transcribe?diarize=false`, `docs/raw/b2_container_nasa120_nodiar.json`): adapter `faster-whisper`, model `base.en`, 388 words, model load 1.54 s, transcribe 24.2 s, RTF 0.20, 26 s wall for the HTTP call. Same word count as the host-venv spike (388 for base.en), so the container reproduces the spike; I did not diff the texts.
+
+Model download: **at build time** (`services/asr/fetch_models.py`), into `/models/hf` (Whisper, 142 MB on disk) and `/models/diarization` (33 MB). A different `ASR_MODEL` at run time downloads on first use into `/models/hf` (mount a volume to keep it). `ASR_MODEL` is an env setting, default `base.en` (renamed from `WHISPER_MODEL`; `.env.example` and the config test updated). Documented in `services/asr/README.md`, which also states that small.en vs base.en is **not proven** on real speech. I did not re-benchmark.
+
+## B2.3 Diarization (sherpa-onnx + pyannote-3.0 ONNX + WeSpeaker)
+Wired behind a `Diarizer` interface (`asr/diarize.py`) with `sherpa`, `mock` and `none` (`DIARIZATION_PROVIDER`; the Node config enum now accepts `sherpa`). Each word gets the speaker with the largest overlap (union of that speaker's turns inside the word; ties go to the smaller label). `overlaps_speech` = a second speaker covers >= `DIARIZATION_OVERLAP_MIN_FRACTION` (0.2) of the word; `speaker_uncertain` = the best speaker covers < `DIARIZATION_UNCERTAIN_BELOW` (0.6) of it, or no speaker covers it. Wire names are snake_case (engine atoms use camelCase; the mapping is the caller's job). `DIARIZATION_NUM_SPEAKERS` and `DIARIZATION_CLUSTER_THRESHOLD` are exposed. **min/max speakers are not exposed: sherpa-onnx offers only a fixed count or a threshold.** The 0.6 / 0.2 defaults are my choices, not tuned on anything.
+
+Tests (written first): 15 new Python tests in `tests/test_diarize.py` (pure assignment, ties, duplicate turns, zero-length words, settings validation, mock diarizer, service wiring), 1 real-model test in `tests/test_sherpa_integration.py`, run inside the test image on the two-voice clip: `1 passed in 10.89s` (`docs/raw/b2_sherpa_integration_test.txt`).
+
+Synthetic two-voice clip (`services/asr/spike/make_two_voice.sh`; espeak-ng voices `en-us` and `en-gb-x-rp+f3`, 6 lines, 33.7 s, truth by construction in `docs/raw/b2_two_voice_truth.json`; marked AI-generated in SOURCES.md). Scoring: `spike/score_two_voice.py`, word counted correct if its speaker matches the line containing its midpoint, labels mapped by best assignment. Real service in the container, `docs/raw/b2_two_voice_scores.txt`:
+
+| Setting | Speakers found (expected 2) | Words correct |
+|---|---|---|
+| **default** (threshold 0.5, count auto) | **1** | 50 / 85 (58.8%) |
+| `DIARIZATION_NUM_SPEAKERS=2` | 2 | 85 / 85 |
+| `DIARIZATION_CLUSTER_THRESHOLD=0.3` | 2 | 85 / 85 |
+| `DIARIZATION_CLUSTER_THRESHOLD=0.15` | 2 | 85 / 85 |
+
+**Plain reading: with default settings it failed on this clip (merged the two voices).** The 100% rows need either the known speaker count or a threshold I picked after seeing the result on this same clip, so they are not evidence of accuracy on real speech. The clip is clean formant TTS, no overlap, no noise, identical gaps, so it is also an easy case for the segmentation. `overlaps_speech` never fired on it (0 words), so the overlap path is tested only with unit tests, not with a model.
+
+Real speech (NASA 120 s, `docs/raw/b2_container_nasa120_diar.json`): the library found 3 speakers in 13 turns; words got only 2 labels (SPEAKER_00 356 words, SPEAKER_01 32 words), 1 word `speaker_uncertain`, 18 `overlaps_speech`. I believe the podcast has 2 speakers, but I have no reference labels, so accuracy there is unknown and a 92/8 split looks suspicious.
+
+Cost in the container: diarization 10.4 s for the 33.7 s clip (RTF 0.31), 48.9 s for the 120 s clip (RTF 0.41); ASR + diarization for 120 s = 73 s wall over HTTP (not concurrent). Diarization adds about 2x the ASR time on 4 CPUs.
+
+## B2.4 SOURCES.md
+Library table (code licence) and model table (code / weights / training data) rewritten. Training-data status is `unchecked` for every model. Evidence added: `python-package-metadata.txt` (licence fields read from the installed packages in the container), `systran-base-en-card.json`, `espeak-ng-debian-copyright.txt`. Still not saved as evidence: licences of the Node packages (read from installed metadata in an earlier session) and the PostgreSQL licence; the table says so.
+
+## B2.5 Whole-stack check
+`docker compose up -d --build` (`docs/raw/b2_compose_up.txt`), then health (`docs/raw/b2_health.txt`):
+```
+api    {"status":"ok","service":"api"}  /ready {"status":"ready","service":"api"}
+worker /ready 200 {"status":"ready","service":"worker"}
+asr    {"status":"ok","service":"asr","adapter":"mock","diarization":"mock"}
+postgres accepting connections;  s3 /cluster/status {"IsLeader":true,...}
+```
+Migrations from empty volumes (`docker compose down -v` then `up -d`, `docs/raw/b2_fresh_up.txt`): init log `{"msg":"init done","applied":["0001_init.sql"],"bucket":"incubrix"}`, `schema_migrations` has version 1, all five long-running services healthy.
+
+S3 presigned URLs: new `presignGet` / `presignPut` in `packages/storage` (adds `@aws-sdk/s3-request-presigner` 3.1153.0, Apache-2.0, same version as client-s3), with two tests (PUT then GET through plain `fetch`, and a 404 for a missing key). **The first run failed**: the SDK put a CRC32 of the empty body in the presigned PUT URL and SeaweedFS answered `400 BadDigest`. Fixed with `requestChecksumCalculation: "WHEN_REQUIRED"` on the client. A second failure was mine: `docker compose run` does not rebuild the image, so the fix was not in it until `docker compose build tests`.
+
+`docker compose run --rm tests` after the fix: exit 0, 26.9 s (`docs/raw/b2_compose_tests.txt`): config 9, contracts 4, db 11, engine 249 passed + 1 skipped, media 25, storage 4 (incl. presigned PUT/GET).
+
+Python ASR tests are part of that command: new `asr-tests` service (Dockerfile stage `test`, profile `test`) that `tests` depends on with `service_completed_successfully`. It was cheap because it reuses the ASR image layers (the models are cached). Its log: `26 passed, 2 skipped` (`docs/raw/b2_asr_tests_in_compose.txt`; the log holds one line per run). **Not verified:** that a failing pytest makes `docker compose run --rm tests` fail (I did not inject a failure). The 2 skips are the real-model tests.
+
+## B2.6 Not verified / known problems
+- Diarization accuracy on real speech: unknown. Default settings failed on the synthetic two-voice clip.
+- Whether the sherpa-onnx WeSpeaker file equals the licensed Wespeaker HF artefact; all training-data licences.
+- small.en vs base.en accuracy on real speech.
+- Transitive Python dependencies are unpinned; SeaweedFS image is still `:latest`.
+- The real adapters are not what `docker compose up` runs by default (`ASR_ADAPTER=mock`, `DIARIZATION_PROVIDER=mock` from `.env.example`); I ran the real ones with `docker run -e ...`. Switch with a `.env` override before the demo.
+- Presigned URLs were tested inside the compose network (`http://s3:8333`); a URL usable from outside would need a public endpoint setting, not built.
+- The api and worker are still placeholders (M2).
