@@ -81,6 +81,12 @@ services:
       timeout: 3s
       retries: 20
 
+  # Python tests of services/asr (mock adapters only, no model is loaded). `tests` waits for it.
+  asr-tests:
+    build: { context: ./services/asr, target: test }
+    profiles: ["test"]
+    restart: "no"
+
   tests:
     <<: *app
     profiles: ["test"]
@@ -92,6 +98,7 @@ services:
       TEST_S3: "1"
     depends_on:
       init: { condition: service_completed_successfully }
+      asr-tests: { condition: service_completed_successfully }
 
 volumes:
   pgdata:

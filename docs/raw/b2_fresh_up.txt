@@ -1,0 +1,21 @@
+$ docker compose down -v   (fresh volumes: proves migrations from empty)
+ Volume incubrix-ps2_pgdata Removed 
+ Volume incubrix-ps2_s3data Removed 
+ Network incubrix-ps2_default Removed 
+$ docker compose up -d
+ Container incubrix-ps2-worker-1 Starting 
+ Container incubrix-ps2-api-1 Started 
+ Container incubrix-ps2-worker-1 Started 
+SERVICE    STATUS
+api        Up 4 seconds (healthy)
+asr        Up 12 seconds (healthy)
+postgres   Up 12 seconds (healthy)
+s3         Up 12 seconds (healthy)
+worker     Up 3 seconds (healthy)
+$ docker compose logs init
+init-1  | {"level":"info","msg":"init done","applied":["0001_init.sql"],"bucket":"incubrix"}
+ version | name 
+---------+------
+       1 | init
+(1 row)
+

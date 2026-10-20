@@ -1,0 +1,23 @@
+{
+ "source": "https://huggingface.co/api/models/Systran/faster-whisper-base.en",
+ "cardData": {
+  "language": [
+   "en"
+  ],
+  "tags": [
+   "audio",
+   "automatic-speech-recognition"
+  ],
+  "license": "mit",
+  "library_name": "ctranslate2"
+ },
+ "tags": [
+  "ctranslate2",
+  "audio",
+  "automatic-speech-recognition",
+  "en",
+  "license:mit",
+  "region:us"
+ ],
+ "gated": false
+}

@@ -1,6 +1,6 @@
 # Project status (project memory)
 
-Updated at the end of every milestone. Last update: infra workstream (2026-10-20), on top of M1c. Everything below was run, not assumed; "not verified" means exactly that.
+Updated at the end of every milestone. Last update: infra workstream B2 (2026-10-20), on top of M1c. Everything below was run, not assumed; "not verified" means exactly that.
 
 ## Done and verified
 | Item | Proof (command) |
@@ -28,10 +28,21 @@ Updated at the end of every milestone. Last update: infra workstream (2026-10-20
 | Real ASR spike on a public-domain clip (RTF base.en 0.21, small.en 0.51, medium.en 1.33) | docs/SPIKE_ASR.md |
 | Diarization licence evaluation; default candidate sherpa-onnx + pyannote-seg-3.0 ONNX + WeSpeaker | docs/REVIEW_INFRA.md section 5 (training-data licences and accuracy NOT verified) |
 
+### B2 additions (details and raw output in docs/REVIEW_INFRA.md section "B2")
+| Item | Proof |
+|---|---|
+| Real faster-whisper (base.en) runs inside the ASR image, models baked at build time, deps pinned, `ASR_MODEL` env | docs/raw/b2_asr_container_health.txt, b2_container_nasa120_nodiar.json |
+| Diarization wired into the ASR service (sherpa / mock / none), per-word speaker, `speaker_uncertain`, `overlaps_speech` | `python -m pytest` in services/asr: 26 passed, 2 skipped; real-model test 1 passed |
+| Diarization accuracy: **default settings found 1 speaker of 2 on the synthetic clip (58.8% words correct)**; 100% only with `NUM_SPEAKERS=2` or a threshold chosen on that clip | docs/raw/b2_two_voice_scores.txt |
+| SOURCES.md: code / weights / training-data licence columns, evidence files | docs/licence-evidence/ |
+| Presigned S3 PUT/GET, migrations from empty volumes, all services healthy | docs/raw/b2_health.txt, b2_fresh_up.txt |
+| `docker compose run --rm tests` passes incl. the Python ASR tests (`asr-tests` service) | docs/raw/b2_compose_tests.txt (exit 0) |
+| AI_USE.md | file at repo root (gaps marked for the candidate) |
+
 Latest `npm test` (root): see docs/REVIEW_M1C.md section 2. Last update of this file: end of M1c (2026-10-20).
 
 ## Not verified (not built or not run)
-Infra additions not done: real api/worker, compose end-to-end test, diarization integration and accuracy, disfluency-prompt effect on labelled human speech (see REVIEW_INFRA.md section 8). Older list follows; its Docker item is now outdated (Docker works on the GCP VM).
+Infra additions not done: real api/worker, compose end-to-end test, diarization accuracy on real speech (default settings failed on the synthetic clip), training-data licences (all unchecked), a failing-pytest-fails-compose check, disfluency-prompt effect on labelled human speech (see REVIEW_INFRA.md section 8). Older list follows; its Docker item is now outdated (Docker works on the GCP VM).
 Docker / docker compose (Docker is not installed on the dev machine); rendering and A/V sync (M3); worked example step 8; instruction parsing; audio mixing of music/bleeps; API, jobs, idempotency, errors, health, manifest, docker compose (M2); real ASR and diarization; LLM adapters; reorder, filler and silence removal, music ducking, mute/bleep audio; multi-speaker handling; OTIO export; performance on a real 60-minute video or through the API (only a synthetic source on one laptop is measured); any real video; any metric; CI.
 
 ## Decisions

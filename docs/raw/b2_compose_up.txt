@@ -1,0 +1,23 @@
+$ docker compose up -d --build
+ Container incubrix-ps2-s3-1 Started 
+ Container incubrix-ps2-postgres-1 Waiting 
+ Container incubrix-ps2-s3-1 Waiting 
+ Container incubrix-ps2-postgres-1 Healthy 
+ Container incubrix-ps2-s3-1 Healthy 
+ Container incubrix-ps2-init-1 Starting 
+ Container incubrix-ps2-init-1 Started 
+ Container incubrix-ps2-init-1 Waiting 
+ Container incubrix-ps2-init-1 Waiting 
+ Container incubrix-ps2-init-1 Exited 
+ Container incubrix-ps2-worker-1 Starting 
+ Container incubrix-ps2-init-1 Exited 
+ Container incubrix-ps2-api-1 Starting 
+ Container incubrix-ps2-worker-1 Started 
+ Container incubrix-ps2-api-1 Started 
+$ docker compose ps
+NAME                      IMAGE                        COMMAND                  SERVICE    CREATED              STATUS                        PORTS
+incubrix-ps2-api-1        incubrix-app                 "docker-entrypoint.s…"   api        About a minute ago   Up 45 seconds (healthy)       0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp
+incubrix-ps2-asr-1        incubrix-ps2-asr             "uvicorn asr.server:…"   asr        About a minute ago   Up About a minute (healthy)   
+incubrix-ps2-postgres-1   postgres:16                  "docker-entrypoint.s…"   postgres   About a minute ago   Up About a minute (healthy)   5432/tcp
+incubrix-ps2-s3-1         chrislusf/seaweedfs:latest   "/bin/sh -c 'export …"   s3         About a minute ago   Up About a minute (healthy)   7333/tcp, 8080/tcp, 8333/tcp, 8888/tcp, 9333/tcp, 18080/tcp, 18888/tcp, 19333/tcp
+incubrix-ps2-worker-1     incubrix-app                 "docker-entrypoint.s…"   worker     About a minute ago   Up 45 seconds (healthy)       

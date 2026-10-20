@@ -1,0 +1,5 @@
+26 passed, 2 skipped in 1.03s
+.......................s...s                                             [100%]
+26 passed, 2 skipped in 1.00s
+.......................s...s                                             [100%]
+26 passed, 2 skipped in 1.05s
