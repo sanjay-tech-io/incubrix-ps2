@@ -17,7 +17,7 @@ A cut needs a position that may lie inside a long silence ("cut the first 30 s" 
 - offset is a whole number, `0 <= offset < atom length`;
 - inside a **word**, the offset must be 0, so a cut can never split a word;
 - inside a **silence**, a non-zero offset must sit on a frame boundary;
-- offset 0 is a content boundary and is exempt from the frame grid (the renderer does the final rounding);
+- source-side cut boundaries lie on the frame grid: a boundary between a silence and a word moves *into the silence* (earlier if the silence is before the word, later if after), never into the word. Only a boundary between two touching words, or a silence too short to hold a grid point, stays off-grid and the answer warns;
 - the end of the video is written *(last atom, its length)* and is allowed only as the end of a span.
 A boundary between two atoms has one spelling: *(next atom, 0)*.
 
@@ -31,7 +31,7 @@ The log is append-only. One user instruction becomes one **group** (its operatio
 `timeline = replay(log)`: start with one segment covering the whole source, then apply each operation of each group in effect. The result (segments, speed regions, effects, protected pauses, music, auto-caption style, duration) is the **timeline**. `IncrementalTimeline` computes the same thing with per-group snapshots and is checked against the full replay by a property test.
 
 ## Time mapping
-The edited video is a list of *pieces*: a stretch of source played at one rate. Original-to-edited and back are one multiply/divide inside the right piece. Each piece's length is rounded to the nearest microsecond (error at most 0.5 us per piece). Instructions use the **current edited timeline** unless the user says "original"; every answer states the policy. An edited range that crosses a removed gap becomes several source spans (the gap is skipped).
+The edited video is a list of *pieces*: a stretch of source played at one rate. Original-to-edited and back are one multiply/divide inside the right piece. The output is a whole number of frames: pieces get frames by *cumulative rounding* (frames = round(exact cumulative frames) minus the previous round), so the total is round(exact total) and each piece is within 1 frame of its exact length. Instructions use the **current edited timeline** unless the user says "original"; every answer states the policy. An edited range that crosses a removed gap becomes several source spans (the gap is skipped).
 
 ## The cut rule
 A cut point inside a silence is exact (snapped to the frame grid). A cut point inside a word moves to the edge of a nearby silence, and the answer warns. A point already on an atom boundary is left alone.
