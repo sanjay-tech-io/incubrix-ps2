@@ -11,8 +11,8 @@ const sample: SessionDocument = {
   schemaVersion: 1,
   source: { sha256: "a".repeat(64), durationUs: 3_000_000, fps: { num: 30000, den: 1001 }, hasAudio: true, hasVideo: true, variableFrameRate: false },
   atoms: [
-    { id: "a_000000000001", kind: "word", startUs: 0, endUs: 1_000_000, text: "welcome", speaker: "S1", confidencePermille: 950, lowConfidence: false, filler: false, overlapsSpeech: false },
-    { id: "a_000000000002", kind: "silence", startUs: 1_000_000, endUs: 3_000_000, text: "", speaker: null, confidencePermille: 1000, lowConfidence: false, filler: false, overlapsSpeech: false },
+    { id: "a_000000000001", kind: "word", startUs: 0, endUs: 1_000_000, text: "welcome", speaker: "S1", confidencePermille: 950, lowConfidence: false, filler: false, overlapsSpeech: false, speakerUncertain: false },
+    { id: "a_000000000002", kind: "silence", startUs: 1_000_000, endUs: 3_000_000, text: "", speaker: null, confidencePermille: 1000, lowConfidence: false, filler: false, overlapsSpeech: false, speakerUncertain: false },
   ],
   log: [
     { seq: 0, kind: "edit", group: 1, op: { type: "add_effect", effectId: "fx_0_0", range: { from: "a_000000000001", to: "a_000000000001" }, params: { kind: "caption", text: "Welcome!", style: { color: "#ffffff", sizePt: 32, bold: true } } } },
@@ -22,7 +22,7 @@ const sample: SessionDocument = {
     { seq: 4, kind: "edit", group: 3, op: { type: "restore", targetGroup: 2 } },
   ],
   conversation: [
-    { turn: 0, text: "caption welcome", answer: { status: "applied", summary: "Added caption", question: null, options: [], reason: null, timePolicy: "current", warnings: [], timelineHash: "b".repeat(64), durationUs: 3_000_000 }, appliedGroup: 1, pending: null },
+    { turn: 0, text: "caption welcome", answer: { status: "applied", operations: [], summary: "Added caption", question: null, options: [], reason: null, timePolicy: "current", warnings: [], timelineHash: "b".repeat(64), durationUs: 3_000_000 }, appliedGroup: 1, pending: null },
   ],
 };
 

@@ -64,6 +64,8 @@ export interface Atom {
   filler: boolean;
   /** Word overlaps another speaker's speech. Edits touching it produce a warning. */
   overlapsSpeech: boolean;
+  /** Diarization is unsure who said this (possible label swap). Edits touching it produce a warning. */
+  speakerUncertain: boolean;
 }
 
 // ---------------------------------------------------------------------------
@@ -121,10 +123,10 @@ export interface CaptionStyle {
 export interface MusicParams {
   /** Reference to a stored music asset (by content hash), never a path. */
   assetSha256: string;
-  /** Music level in dB relative to its source. */
-  gainDb: number;
-  /** How far music drops while someone speaks, in dB (positive number). */
-  duckDb: number;
+  /** Music level in centi-dB (hundredths of a dB) relative to its source. Integer so the hash has no floats. */
+  gainCentiDb: number;
+  /** How far music drops while someone speaks, in centi-dB (non-negative integer). */
+  duckCentiDb: number;
   attackUs: Micros;
   releaseUs: Micros;
 }
@@ -232,10 +234,10 @@ export interface Effect {
   params: EffectParams;
   /**
    * active: at least one anchored atom is in the output.
-   * dormant: every anchored atom is currently cut. It is kept (not deleted), so
+   * inactive: every anchored atom is currently cut. It is kept (not deleted), so
    * restoring the cut brings the caption back, and the user is told it is hidden.
    */
-  state: "active" | "dormant";
+  state: "active" | "inactive";
   /**
    * Partial-cut rule (proposed): if only some anchored atoms survive, the effect
    * stays on the survivors and `partial` is true so the answer can warn.
@@ -267,6 +269,8 @@ export type AnswerStatus = "applied" | "needs_clarification" | "rejected";
 /** Mirrors the answer contract in CLAUDE.md. Operations are not repeated here; the group points to them. */
 export interface Answer {
   status: AnswerStatus;
+  /** Operations logged by this answer (empty unless applied). */
+  operations: Operation[];
   summary: string | null;
   question: string | null;
   options: string[];

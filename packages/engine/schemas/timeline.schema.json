@@ -51,7 +51,7 @@
     "Atom": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["id", "kind", "startUs", "endUs", "text", "speaker", "confidencePermille", "lowConfidence", "filler", "overlapsSpeech"],
+      "required": ["id", "kind", "startUs", "endUs", "text", "speaker", "confidencePermille", "lowConfidence", "filler", "overlapsSpeech", "speakerUncertain"],
       "properties": {
         "id": { "$ref": "#/$defs/AtomId" },
         "kind": { "enum": ["word", "silence"] },
@@ -62,7 +62,8 @@
         "confidencePermille": { "type": "integer", "minimum": 0, "maximum": 1000 },
         "lowConfidence": { "type": "boolean" },
         "filler": { "type": "boolean" },
-        "overlapsSpeech": { "type": "boolean" }
+        "overlapsSpeech": { "type": "boolean" },
+        "speakerUncertain": { "type": "boolean" }
       }
     },
 
@@ -116,11 +117,11 @@
     "MusicParams": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["assetSha256", "gainDb", "duckDb", "attackUs", "releaseUs"],
+      "required": ["assetSha256", "gainCentiDb", "duckCentiDb", "attackUs", "releaseUs"],
       "properties": {
         "assetSha256": { "$ref": "#/$defs/Sha256" },
-        "gainDb": { "type": "number" },
-        "duckDb": { "type": "number", "minimum": 0 },
+        "gainCentiDb": { "type": "integer" },
+        "duckCentiDb": { "type": "integer", "minimum": 0 },
         "attackUs": { "$ref": "#/$defs/Micros" },
         "releaseUs": { "$ref": "#/$defs/Micros" }
       }
@@ -282,9 +283,10 @@
     "Answer": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["status", "summary", "question", "options", "reason", "timePolicy", "warnings", "timelineHash", "durationUs"],
+      "required": ["status", "operations", "summary", "question", "options", "reason", "timePolicy", "warnings", "timelineHash", "durationUs"],
       "properties": {
         "status": { "enum": ["applied", "needs_clarification", "rejected"] },
+        "operations": { "type": "array", "items": { "$ref": "#/$defs/Operation" } },
         "summary": { "type": ["string", "null"] },
         "question": { "type": ["string", "null"] },
         "options": { "type": "array", "items": { "type": "string" } },
@@ -349,7 +351,7 @@
         "id": { "$ref": "#/$defs/EffectId" },
         "range": { "$ref": "#/$defs/AtomRange" },
         "params": { "$ref": "#/$defs/EffectParams" },
-        "state": { "enum": ["active", "dormant"] },
+        "state": { "enum": ["active", "inactive"] },
         "partial": { "type": "boolean" },
         "createdInGroup": { "type": "integer", "minimum": 1 }
       }
