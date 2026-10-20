@@ -9,6 +9,9 @@ COPY packages/config/package.json packages/config/
 COPY packages/db/package.json packages/db/
 COPY packages/storage/package.json packages/storage/
 COPY packages/media/package.json packages/media/
+COPY packages/errors/package.json packages/errors/
+COPY packages/nlu/package.json packages/nlu/
+COPY packages/store/package.json packages/store/
 COPY apps/api/package.json apps/api/
 COPY apps/worker/package.json apps/worker/
 RUN npm ci
