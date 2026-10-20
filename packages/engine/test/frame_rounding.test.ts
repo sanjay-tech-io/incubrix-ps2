@@ -9,6 +9,7 @@ import { timelinePieces } from "../src/timemap";
 import type { Operation } from "../src/types";
 import { FACTS, makeFixture } from "./fixtures/transcript";
 import { speedOp } from "./helpers";
+import { deepFreeze } from "./freeze";
 
 const NTSC = { num: 30000, den: 1001 };
 const fx30 = makeFixture();
@@ -146,9 +147,9 @@ describe("property: sum of piece frames equals round(total), pieces within 1 fra
           if (e <= s) continue;
           const sp = { start: usToCursor(idx, s, NTSC), end: usToCursor(idx, e, NTSC) };
           const op: Operation = c.t === "cut" ? { type: "cut", span: sp, reason: "user" } : { type: "set_speed", span: sp, rate: RATES[c.r]! };
-          log = edit(log, op);
+          log = deepFreeze(edit(log, deepFreeze(op)));
         }
-        const tl = materialize(ntsc.ctx, log);
+        const tl = deepFreeze(materialize(ntsc.ctx, log));
         const pieces = timelinePieces(ntsc.ctx, tl);
 
         // exact cumulative frames computed independently, as a fraction

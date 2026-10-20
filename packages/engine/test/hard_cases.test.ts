@@ -8,8 +8,13 @@ import { currentTimeline, newSession, submitOperations, submitUndo } from "../sr
 import { effectDisplay } from "../src/timemap";
 import { atomEndingAt, atomStartingAt, FACTS, makeFixture } from "./fixtures/transcript";
 import { captionOp, cutOp, span, WHITE } from "./helpers";
+import { deepFreeze } from "./freeze";
+import { EngineError } from "../src/errors";
 
 const { ctx, atoms } = makeFixture();
+// All inputs below are deep-frozen: any in-place mutation inside the engine becomes a TypeError and fails the test.
+deepFreeze(ctx.source);
+deepFreeze(atoms);
 const U = 1_000_000;
 
 describe("hard case: caption added, its sentence cut, the cut restored", () => {
@@ -74,6 +79,7 @@ type Cmd =
   | { t: "speed"; a: number; b: number; r: number }
   | { t: "caption"; a: number; b: number }
   | { t: "recolor"; pick: number }
+  | { t: "move"; a: number; b: number; to: number }
   | { t: "undo" }
   | { t: "redo" };
 
@@ -92,6 +98,7 @@ const cmdArb: fc.Arbitrary<Cmd> = fc.oneof(
   { weight: 3, arbitrary: fc.tuple(pair, fc.integer({ min: 0, max: RATES.length - 1 })).map(([[a, b], r]) => ({ t: "speed" as const, a, b, r })) },
   { weight: 3, arbitrary: pair.map(([a, b]) => ({ t: "caption" as const, a, b: Math.min(b - 1, atoms.length - 1) })).filter((c) => c.a <= c.b) },
   { weight: 1, arbitrary: fc.nat(10).map((pick) => ({ t: "recolor" as const, pick })) },
+  { weight: 3, arbitrary: fc.tuple(pair, fc.integer({ min: 0, max: atoms.length })).map(([[a, b], to]) => ({ t: "move" as const, a, b, to })) },
   { weight: 2, arbitrary: fc.constant({ t: "undo" as const }) },
   { weight: 2, arbitrary: fc.constant({ t: "redo" as const }) },
 );
@@ -109,11 +116,12 @@ describe("property: incremental application equals a full replay", () => {
             // The incremental engine must agree on WHETHER the step is possible (e.g. redo after a new edit is not).
             expect(c.t === "undo" ? inc.undo() : inc.redo()).toBe(possible);
             if (!possible) continue; // the session layer rejects these before logging
-            log = c.t === "undo" ? appendUndo(log) : appendRedo(log);
+            log = deepFreeze(c.t === "undo" ? appendUndo(log) : appendRedo(log));
           } else {
             let op: Operation;
             if (c.t === "cut") op = { type: "cut", span: { start: cursorAt(c.a), end: cursorAt(c.b) }, reason: "user" };
             else if (c.t === "speed") op = { type: "set_speed", span: { start: cursorAt(c.a), end: cursorAt(c.b) }, rate: RATES[c.r]! };
+            else if (c.t === "move") op = { type: "move", span: { start: cursorAt(c.a), end: cursorAt(c.b) }, before: c.to >= atoms.length ? null : cursorAt(c.to) };
             else if (c.t === "caption") op = captionOp(nextEffectId(log), atoms[c.a]!.id, atoms[c.b]!.id, `c${c.a}`, WHITE);
             else {
               const effects = materialize(ctx, log).effects;
@@ -121,11 +129,18 @@ describe("property: incremental application equals a full replay", () => {
               const e = effects[c.pick % effects.length]!;
               op = { type: "update_effect", effectId: e.id, params: { kind: "caption", text: "recolored", style: { ...WHITE, color: "#ff0000" }, position: "bottom" } };
             }
+            deepFreeze(op);
             const appended = appendEdit(log, [op]);
-            log = appended.log;
+            try {
+              materialize(ctx, appended.log);
+            } catch (e) {
+              if (e instanceof EngineError) continue; // the session layer would reject this op before logging it
+              throw e;
+            }
+            log = deepFreeze(appended.log);
             expect(inc.edit([op])).toBe(appended.group);
           }
-          expect(inc.timeline()).toEqual(materialize(ctx, log));
+          expect(inc.timeline()).toEqual(deepFreeze(materialize(ctx, log)));
         }
       }),
       { numRuns: 150, seed: 20261020 },
@@ -161,23 +176,24 @@ describe("property: the session path (caches, incremental priming) equals a fres
       fc.property(fc.array(sCmd, { minLength: 1, maxLength: 20 }), (cmds) => {
         let s = newSession();
         for (const c of cmds) {
-          if (c.t === "undo") s = submitUndo(ctx, s, "undo").state;
-          else if (c.t === "redo") s = submitRedo(ctx, s, "redo").state;
+          if (c.t === "undo") s = deepFreeze(submitUndo(ctx, s, "undo")).state;
+          else if (c.t === "redo") s = deepFreeze(submitRedo(ctx, s, "redo")).state;
           else {
             let op: Operation;
             if (c.t === "restore") op = { type: "restore", targetGroup: c.g };
             else if (c.t === "cut") op = { type: "cut", span: { start: cursorAt(c.a), end: cursorAt(c.b) }, reason: "user" };
             else if (c.t === "speed") op = { type: "set_speed", span: { start: cursorAt(c.a), end: cursorAt(c.b) }, rate: RATES[c.r]! };
+            else if (c.t === "move") op = { type: "move", span: { start: cursorAt(c.a), end: cursorAt(c.b) }, before: c.to >= atoms.length ? null : cursorAt(c.to) };
             else if (c.t === "caption") op = captionOp(nextEffectId(s.log), atoms[c.a]!.id, atoms[c.b]!.id, `c${c.a}`, WHITE);
             else {
               const effects = currentTimeline(ctx, s).effects;
               if (effects.length === 0) continue;
               op = { type: "update_effect", effectId: effects[c.pick % effects.length]!.id, params: { kind: "caption", text: "r", style: { ...WHITE, color: "#ff0000" }, position: "bottom" } };
             }
-            s = submitOperations(ctx, s, "x", [op]).state;
+            s = deepFreeze(submitOperations(ctx, s, "x", [deepFreeze(op)])).state;
           }
           const fresh = makeFixture().ctx; // different context object: no cache can be shared
-          expect(currentTimeline(ctx, s)).toEqual(materialize(fresh, [...s.log]));
+          expect(deepFreeze(currentTimeline(ctx, s))).toEqual(materialize(fresh, [...s.log]));
         }
       }),
       { numRuns: 100, seed: 424242 },
