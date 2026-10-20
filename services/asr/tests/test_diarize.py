@@ -103,3 +103,16 @@ def test_service_can_skip_diarization_per_request():
 def test_health_reports_the_diarizer():
     assert TestClient(create_app(MockAdapter(), MockDiarizer())).get("/health").json()["diarization"] == "mock"
     assert TestClient(create_app(MockAdapter(), None)).get("/health").json()["diarization"] == "none"
+
+
+def test_num_speakers_hint_reaches_the_diarizer_and_is_reported():
+    c = TestClient(create_app(MockAdapter(), MockDiarizer()))
+    body = c.post("/transcribe?num_speakers=1", files={"file": ("a.wav", b"x", "audio/wav")}).json()
+    assert {x["speaker"] for x in body["words"]} == {"SPEAKER_00"}
+    assert body["settings"]["diarization"]["num_speakers_hint"] == 1
+
+
+def test_bad_num_speakers_is_a_structured_error():
+    c = TestClient(create_app(MockAdapter(), MockDiarizer()))
+    r = c.post("/transcribe?num_speakers=0", files={"file": ("a.wav", b"x", "audio/wav")})
+    assert r.status_code == 400 and r.json()["error"]["code"] == "BAD_NUM_SPEAKERS"

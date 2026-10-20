@@ -15,7 +15,8 @@ def error(status: int, code: str, message: str, retryable: bool = False) -> JSON
 
 
 def build_adapter(name: Optional[str] = None) -> Adapter:
-    name = name or os.environ.get("ASR_ADAPTER", "mock")
+    # ASR_PROVIDER is the shared switch (same variable the Node services read); ASR_ADAPTER is the old name.
+    name = name or os.environ.get("ASR_PROVIDER") or os.environ.get("ASR_ADAPTER", "mock")
     if name == "mock":
         from asr.adapters.mock import MockAdapter
 
@@ -62,6 +63,7 @@ def create_app(adapter: Optional[Adapter] = None, diarizer: Optional[Diarizer] =
         initial_prompt: Optional[str] = None,
         vad_filter: bool = True,
         diarize: bool = True,
+        num_speakers: Optional[int] = None,
     ):
         audio = await file.read()
         if not audio:
@@ -69,10 +71,12 @@ def create_app(adapter: Optional[Adapter] = None, diarizer: Optional[Diarizer] =
         prompt = initial_prompt if initial_prompt is not None else (os.environ.get("WHISPER_INITIAL_PROMPT") or None)
         t = adp.transcribe(audio, initial_prompt=prompt, vad_filter=vad_filter)
         if dia is not None and diarize:
-            turns = dia.diarize(audio)
+            if num_speakers is not None and num_speakers < 1:
+                return error(400, "BAD_NUM_SPEAKERS", "num_speakers must be >= 1")
+            turns = dia.diarize(audio, num_speakers)
             t.words = assign_speakers(t.words, turns, dia_settings)
             t.settings["diarization"] = {**dia.describe(), "uncertain_below": dia_settings.uncertain_below, "overlap_min_fraction": dia_settings.overlap_min,
-                                         "speakers_found": len({x.speaker for x in turns}), "turns": len(turns)}
+                                         "speakers_found": len({x.speaker for x in turns}), "turns": len(turns), "num_speakers_hint": num_speakers}
             t.timings["diarization"] = getattr(dia, "last_timings", {})
         return t
 

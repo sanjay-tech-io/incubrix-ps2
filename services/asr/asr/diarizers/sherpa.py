@@ -1,5 +1,6 @@
 import os
 import resource
+from typing import Optional
 import time
 
 from asr.audio import decode_mono_16k
@@ -22,11 +23,12 @@ class SherpaDiarizer:
         self.model_dir = model_dir
         self.settings = settings
         self.num_threads = num_threads
-        self._sd = None
+        self._sds: dict = {}  # one diarizer per requested speaker count (the count is part of its config)
         self.load_s = None
+        self.last_timings: dict = {}
 
-    def _load(self):
-        if self._sd is None:
+    def _load(self, num_speakers: int):
+        if num_speakers not in self._sds:
             import sherpa_onnx
 
             seg = os.path.join(self.model_dir, SEGMENTATION_MODEL)
@@ -38,17 +40,18 @@ class SherpaDiarizer:
                 segmentation=sherpa_onnx.OfflineSpeakerSegmentationModelConfig(
                     pyannote=sherpa_onnx.OfflineSpeakerSegmentationPyannoteModelConfig(model=seg), num_threads=self.num_threads),
                 embedding=sherpa_onnx.SpeakerEmbeddingExtractorConfig(model=emb, num_threads=self.num_threads),
-                clustering=sherpa_onnx.FastClusteringConfig(num_clusters=self.settings.num_speakers, threshold=self.settings.cluster_threshold),
+                clustering=sherpa_onnx.FastClusteringConfig(num_clusters=num_speakers, threshold=self.settings.cluster_threshold),
                 min_duration_on=0.3,
                 min_duration_off=0.5,
             )
             t0 = time.perf_counter()
-            self._sd = sherpa_onnx.OfflineSpeakerDiarization(cfg)
+            self._sds[num_speakers] = sherpa_onnx.OfflineSpeakerDiarization(cfg)
             self.load_s = round(time.perf_counter() - t0, 3)
-        return self._sd
+        return self._sds[num_speakers]
 
-    def diarize(self, audio: bytes) -> list[Turn]:
-        sd = self._load()
+    def diarize(self, audio: bytes, num_speakers: Optional[int] = None) -> list[Turn]:
+        # A per-request count (the API's num_speakers hint) wins over DIARIZATION_NUM_SPEAKERS.
+        sd = self._load(num_speakers if num_speakers is not None else self.settings.num_speakers)
         samples = decode_mono_16k(audio)
         t0 = time.perf_counter()
         result = sd.process(samples).sort_by_start_time()

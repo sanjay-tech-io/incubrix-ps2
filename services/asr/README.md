@@ -6,7 +6,7 @@ Words come back with integer microseconds, integer permille confidence and, when
 ## Settings (env, all listed in `/.env.example`)
 | Variable | Default | Meaning |
 |---|---|---|
-| `ASR_ADAPTER` | `mock` | `mock` (fixture transcript, tests) or `faster-whisper` |
+| `ASR_PROVIDER` | `mock` | `mock` (fixture transcript, tests) or `faster-whisper` (shared with the Node services; `ASR_ADAPTER` is the old name) |
 | `ASR_MODEL` | `base.en` | faster-whisper model name (`tiny.en`, `base.en`, `small.en`, ...) |
 | `WHISPER_COMPUTE_TYPE` | `int8` | CTranslate2 compute type |
 | `DIARIZATION_PROVIDER` | `none` in the service, `mock` in `.env.example` | `sherpa` (real) / `mock` / `none` |
