@@ -1,0 +1,12 @@
+ Container incubrix-ps2-asr-run-c44af84beb90 Creating 
+ Container incubrix-ps2-asr-run-c44af84beb90 Created 
+base.en vad plain words 290 fillers 0
+base.en vad prompt words 292 fillers 2
+base.en novad plain words 296 fillers 0
+base.en novad prompt words 299 fillers 2
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+small.en vad plain words 294 fillers 0
+small.en vad prompt words 299 fillers 3
+small.en novad plain words 299 fillers 0
+small.en novad prompt words 304 fillers 3
+exit=0

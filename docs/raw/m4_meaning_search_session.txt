@@ -1,0 +1,10 @@
+
+> incubrix@0.0.0 session
+> node --import tsx apps/cli/src/session.ts sessions/21_meaning_search_pricing.yaml --out docs/raw/m4_meaning_search_session
+
+[21_meaning_search_pricing] video vid_b958116d63784ad7be7d, job job_94e45639ee244c2a8a33
+[21_meaning_search_pricing] step 1: needs_clarification ok
+[21_meaning_search_pricing] step 2: needs_clarification ok
+[21_meaning_search_pricing] step 3: needs_clarification ok
+[21_meaning_search_pricing] step 4: applied ok
+PASS 21_meaning_search_pricing  -> /home/g23m143/incubrix-ps2/docs/raw/m4_meaning_search_session

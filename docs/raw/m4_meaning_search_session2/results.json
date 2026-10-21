@@ -1,0 +1,97 @@
+{
+  "name": "22_meaning_search_beyond_the_words",
+  "video": "media/test_single.mp4",
+  "passed": false,
+  "video_id": "vid_2eae47fe5ee640a18840",
+  "session_id": "ses_60b9d24c46b24f669287",
+  "intake": {
+    "job_id": "job_48b5db4fde644ccf8826",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped.",
+      "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 5360
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "remove the part about money",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": false,
+      "http_status": 200,
+      "status": "rejected",
+      "operations": [],
+      "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": "No part of the current video mentions \"money\" or is about it by meaning.",
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 53,
+      "note": null,
+      "failure": "expected needs_clarification, got rejected: No part of the current video mentions \"money\" or is about it by meaning.",
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "remove the part about paying every month",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "No part says \"month\", but 6 passages are about it by meaning. Which part should I remove?",
+      "options": [
+        "#1 at 0:39.501 [meaning match 34%]: \"welcome to our channel, let's say, pricing plans in Cloud Code.\"",
+        "#2 at 0:46.051 [meaning match 27%]: \"So the pricing plans in Cloud will be differing from each plan.\"",
+        "#3 at 1:11.360 [meaning match 31%]: \"or premium it just has only three plants free pro and max plan and after that you know the pricing in all the three plants will be extraordinarily clear and\"",
+        "#4 at 1:28.120 [meaning match 28%]: \"you know I chose I chose cloud pro plan pricing for my for building my project.\"",
+        "#5 at 1:39.720 [meaning match 34%]: \"So what I am trying to tell is like the cost or subscription fee of each plan will be meaning based the search.\"",
+        "#6 at 2:05.410 [meaning match 31%]: \"everything will be mentioned in the cloud cloud subscriptions and their pricing page.\""
+      ],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 37,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "remove the part about the weather",
+      "answer_sent": null,
+      "expected": "rejected",
+      "passed": true,
+      "http_status": 200,
+      "status": "rejected",
+      "operations": [],
+      "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": "No part of the current video mentions \"weather\" or is about it by meaning.",
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 31,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+    "duration_s": 180.3
+  },
+  "error": null
+}

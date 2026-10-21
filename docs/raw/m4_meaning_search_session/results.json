@@ -1,0 +1,153 @@
+{
+  "name": "21_meaning_search_pricing",
+  "video": "media/test_single.mp4",
+  "passed": true,
+  "video_id": "vid_b958116d63784ad7be7d",
+  "session_id": "ses_954bbd195efa4cfcb48e",
+  "intake": {
+    "job_id": "job_94e45639ee244c2a8a33",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped.",
+      "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 95227
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "remove the part about pricing",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "\"pricing\" is mentioned 7 times. Which part should I remove?",
+      "options": [
+        "#1 at 0:39.501 [exact word]: \"welcome to our channel, let's say, pricing plans in Cloud Code.\"",
+        "#2 at 0:46.051 [exact word]: \"So the pricing plans in Cloud will be differing from each plan.\"",
+        "#3 at 0:50.958 [exact word]: \"So we have to choose each plan accordingly to our use and each plan will be having more of its slot features and it's not like chargey bd go plus or premium it just has only three plants free pro and max plan and after that you know the pricing in all the three plants will be extraordinarily clear and you know I chose I chose cloud pro plan pricing for my for building my project.\"",
+        "#4 at 1:39.720 [exact word]: \"So what I am trying to tell is like the cost or subscription fee of each plan will be meaning based the search.\"",
+        "#5 at 2:05.410 [exact word]: \"everything will be mentioned in the cloud cloud subscriptions and their pricing page.\"",
+        "#6 at 2:15.220 [exact word]: \"us say, let us see what are the plans that are mentioned in the pro pricing plan.\"",
+        "#7 at 2:26.080 [exact word]: \"and it's not like chargey video, so chargey video will be having different types of pricing and those things, those start -off stuffs and I\""
+      ],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 110,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "remove the part about how much it costs",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "\"costs\" is mentioned 7 times. Which part should I remove?",
+      "options": [
+        "#1 at 0:39.501 [exact word]: \"welcome to our channel, let's say, pricing plans in Cloud Code.\"",
+        "#2 at 0:46.051 [exact word]: \"So the pricing plans in Cloud will be differing from each plan.\"",
+        "#3 at 0:50.958 [exact word]: \"So we have to choose each plan accordingly to our use and each plan will be having more of its slot features and it's not like chargey bd go plus or premium it just has only three plants free pro and max plan and after that you know the pricing in all the three plants will be extraordinarily clear and you know I chose I chose cloud pro plan pricing for my for building my project.\"",
+        "#4 at 1:39.720 [exact word]: \"So what I am trying to tell is like the cost or subscription fee of each plan will be meaning based the search.\"",
+        "#5 at 2:05.410 [exact word]: \"everything will be mentioned in the cloud cloud subscriptions and their pricing page.\"",
+        "#6 at 2:15.220 [exact word]: \"us say, let us see what are the plans that are mentioned in the pro pricing plan.\"",
+        "#7 at 2:26.080 [exact word]: \"and it's not like chargey video, so chargey video will be having different types of pricing and those things, those start -off stuffs and I\""
+      ],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 36,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "remove the part about price",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "\"price\" is mentioned 7 times. Which part should I remove?",
+      "options": [
+        "#1 at 0:39.501 [exact word]: \"welcome to our channel, let's say, pricing plans in Cloud Code.\"",
+        "#2 at 0:46.051 [exact word]: \"So the pricing plans in Cloud will be differing from each plan.\"",
+        "#3 at 0:50.958 [exact word]: \"So we have to choose each plan accordingly to our use and each plan will be having more of its slot features and it's not like chargey bd go plus or premium it just has only three plants free pro and max plan and after that you know the pricing in all the three plants will be extraordinarily clear and you know I chose I chose cloud pro plan pricing for my for building my project.\"",
+        "#4 at 1:39.720 [exact word]: \"So what I am trying to tell is like the cost or subscription fee of each plan will be meaning based the search.\"",
+        "#5 at 2:05.410 [exact word]: \"everything will be mentioned in the cloud cloud subscriptions and their pricing page.\"",
+        "#6 at 2:15.220 [exact word]: \"us say, let us see what are the plans that are mentioned in the pro pricing plan.\"",
+        "#7 at 2:26.080 [exact word]: \"and it's not like chargey video, so chargey video will be having different types of pricing and those things, those start -off stuffs and I\""
+      ],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 34,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 4,
+      "say": "the first one",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_00a50a65284e",
+              "offsetUs": 5640000
+            },
+            "end": {
+              "atom": "a_97e2198b92c0",
+              "offsetUs": 593333
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:00.300 -> 2:53.767 (-0:06.533). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [
+        "This edit touches words the transcript is unsure about: \"welcome\" (low confidence), \"pricing\" (low confidence), \"plans\" (low confidence), \"Cloud\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "d52573f9cd886e1e6054d0845564532dbbc3ec68d2a1a94f766a04582dbb94e1",
+      "duration_s": 173.766667,
+      "ms": 20,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "d52573f9cd886e1e6054d0845564532dbbc3ec68d2a1a94f766a04582dbb94e1",
+    "duration_s": 173.766667
+  },
+  "error": null
+}

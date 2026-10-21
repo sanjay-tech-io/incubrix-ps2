@@ -1,0 +1,14 @@
+# Meaning-based search (item 4). "remove the part about pricing" must list the exact "pricing" sentences AND passages that are
+# about it by meaning (cost, subscription fee, ...) with their times, before anything is cut. Asked three ways; each only asks.
+name: 21_meaning_search_pricing
+video: media/test_single.mp4
+num_speakers: 1
+steps:
+  - say: remove the part about pricing
+    expect: needs_clarification
+  - say: remove the part about how much it costs
+    expect: needs_clarification
+  - say: remove the part about price
+    expect: needs_clarification
+  - say: the first one
+    expect: applied

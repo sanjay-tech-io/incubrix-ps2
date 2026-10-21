@@ -1,0 +1,9 @@
+
+> incubrix@0.0.0 session
+> node --import tsx apps/cli/src/session.ts sessions/22_meaning_search_beyond_the_words.yaml --out docs/raw/m4_meaning_search_session2
+
+[22_meaning_search_beyond_the_words] video vid_2eae47fe5ee640a18840, job job_48b5db4fde644ccf8826
+[22_meaning_search_beyond_the_words] step 1: rejected FAILED expected needs_clarification, got rejected: No part of the current video mentions "money" or is about it by meaning.
+[22_meaning_search_beyond_the_words] step 2: needs_clarification ok
+[22_meaning_search_beyond_the_words] step 3: rejected ok
+FAIL 22_meaning_search_beyond_the_words  -> /home/g23m143/incubrix-ps2/docs/raw/m4_meaning_search_session2
