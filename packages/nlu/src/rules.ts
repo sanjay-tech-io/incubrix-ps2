@@ -5,6 +5,7 @@ import {
   type Atom, type AtomRange, type CaptionPatch, type Effect, type EngineContext, type Operation, type PendingQuestion, type Span, type TimePolicy, type Timeline,
 } from "@incubrix/engine";
 import { findRange, findTimeAfter, parseTimeAt, tokenize, wordsToDigits } from "./time.ts";
+import { buildPassages } from "./passages.ts";
 import type { InstructionParser, ParseInput, Parsed, PossibleFiller, SemanticHit } from "./types.ts";
 
 /**
@@ -262,6 +263,8 @@ export function topicRequest(text: string): string | null {
   const stripped = text.trim().replace(/["“]([^"”]+)["”]/g, (_m, q: string) => (quoted.push(q.trim()), "§"));
   const body = stripped.toLowerCase().replace(/\s+/g, " ").trim().replace(/[.!?]+$/, "");
   if (!CUT_VERB.test(body) || /\beverything (after|before)\b/.test(body)) return null;
+  const sp = speakerTopic(body, quoted);
+  if (sp) return sp.topic;
   const m = TOPIC_RE.exec(body);
   if (!m) return null;
   const phrase = quoted[0] ?? m[1]!;
@@ -385,6 +388,172 @@ function handleFillers(env: Env): Parsed {
     markerOptions(env, possible),
   );
 }
+
+// ---------------------------------------------------------------------------------------------------------------------
+// vague references: never guessed, always asked with concrete options
+// ---------------------------------------------------------------------------------------------------------------------
+
+/** Length of the material the cut operations remove, in microseconds. */
+function savedUs(env: Env, ops: readonly Operation[]): number {
+  let t = 0;
+  for (const o of ops) if (o.type === "cut") t += cursorToUs(env.ctx.index, o.span.end, env.ctx.fps, "end") - cursorToUs(env.ctx.index, o.span.start, env.ctx.fps);
+  return t;
+}
+const secs = (us: number): string => (us / 1e6).toFixed(1);
+
+/** "make it shorter": the measurable things that can go without changing what is said (fillers, long pauses), each with the time it saves. */
+function handleShorter(env: Env): Parsed {
+  const fillers = planRemoveFillers(env.ctx, env.tl);
+  const long = planRemoveSilences(env.ctx, env.tl, { minUs: 1_000_000 });
+  const options: PendingQuestion["options"] = [];
+  if (fillers.operations.length > 0) options.push({ label: `remove the ${fillers.operations.length} filler word${fillers.operations.length === 1 ? "" : "s"} (saves about ${secs(savedUs(env, fillers.operations))} s)`, operations: fillers.operations, warnings: fillers.warnings });
+  if (long.operations.length > 0) options.push({ label: `remove the ${long.operations.length} silence${long.operations.length === 1 ? "" : "s"} longer than 1 s (saves about ${secs(savedUs(env, long.operations))} s)`, operations: long.operations, warnings: long.warnings });
+  if (fillers.operations.length > 0 && long.operations.length > 0) {
+    const both = [...fillers.operations, ...long.operations];
+    options.push({ label: `both of the above (saves about ${secs(savedUs(env, both))} s)`, operations: both, warnings: [...fillers.warnings, ...long.warnings] });
+  }
+  if (options.length === 0) return reject(env, "There are no filler words and no silences longer than 1 s to remove, so I do not know what to cut. Say what to remove (a time range, a topic or a phrase).");
+  return clarify(env, `Shorter by removing what? These can go without changing what is said (nothing is cut until you choose; ${secs(env.tl.durationUs)} s now):`, options);
+}
+
+/**
+ * "the boring part": I cannot know what is boring. I offer stretches chosen by stated, measurable signals (the longest pause,
+ * the slowest speech, the most filler or low-confidence words) and say so. The user picks; nothing is cut before.
+ */
+function handleBoring(env: Env): Parsed {
+  const idx = env.ctx.index;
+  const pieces = timelinePieces(env.ctx, env.tl);
+  const alive = (a: number, b: number): boolean => sourceToEdited(pieces, a) !== null && sourceToEditedEnd(pieces, b) !== null;
+  const cands: { label: string; startUs: number; endUs: number }[] = [];
+  const silences = idx.atoms.filter((a) => a.kind === "silence" && a.endUs - a.startUs >= 1_000_000 && alive(a.startUs, a.endUs));
+  const longest = [...silences].sort((a, b) => b.endUs - b.startUs - (a.endUs - a.startUs) || a.startUs - b.startUs)[0];
+  if (longest) cands.push({ label: `the longest pause, ${formatTime(longest.startUs)}-${formatTime(longest.endUs)} (${secs(longest.endUs - longest.startUs)} s of silence)`, startUs: longest.startUs, endUs: longest.endUs });
+  const W = 15_000_000;
+  const words = idx.atoms.filter((a) => a.kind === "word");
+  let slow: { rate: number; a: number; n: number } | null = null;
+  let messy: { score: number; a: number } | null = null;
+  for (let a = 0; a + W <= idx.durationUs; a += 5_000_000) {
+    if (!alive(a, a + W)) continue;
+    const inside = words.filter((w) => w.startUs >= a && w.endUs <= a + W);
+    if (inside.length === 0) continue;
+    const rate = inside.length / (W / 1e6);
+    if (!slow || rate < slow.rate) slow = { rate, a, n: inside.length };
+    const score = inside.filter((w) => w.filler || w.lowConfidence).length;
+    if (score >= 2 && (!messy || score > messy.score)) messy = { score, a };
+  }
+  if (slow) cands.push({ label: `the slowest stretch of speech, ${formatTime(slow.a)}-${formatTime(slow.a + W)} (${slow.n} words in 15 s, ${slow.rate.toFixed(1)} words/s)`, startUs: slow.a, endUs: slow.a + W });
+  if (messy) cands.push({ label: `the stretch with the most filler or low-confidence words, ${formatTime(messy.a)}-${formatTime(messy.a + W)} (${messy.score} such words)`, startUs: messy.a, endUs: messy.a + W });
+  if (cands.length === 0) return reject(env, "I cannot judge what is boring and no stretch stands out (no long pause, no slow or messy stretch). Say what to remove: a time range, a topic or a phrase.");
+  const options = cands.map((c, i) => {
+    const r = resolveOriginalRange(env.ctx, c.startUs, c.endUs);
+    return { label: `#${i + 1} ${c.label}`, operations: r.spans.map((span): Operation => ({ type: "cut", span, reason: "user" })), warnings: r.warnings };
+  });
+  return clarify(env, "I cannot judge what is boring. Assumption: you mean a stretch that stands out by one of these measurable signals. Which one should I remove? (Nothing is cut until you choose.)", options);
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// speaker-aware removal
+// ---------------------------------------------------------------------------------------------------------------------
+
+const SPEAKER_RE = /\b(?:everything|anything|all)?\s*(?:that\s+)?(?:the\s+)?(guest|host|interviewer|interviewee|speaker\s+[a-z0-9]+)\s+(?:says?|said|talks?|talking|speaks?|mentions?)\s+(?:about|on|regarding)\s+(.+)$/;
+const PRONOUNS = ["their", "his", "her", "its", "the", "a", "an", "my", "our", "that", "those", "these", "this"];
+
+/** The topic words of a speaker-scoped removal ("their old job" -> "old job"), or null. */
+function speakerTopic(body: string, quoted: string[]): { who: string; topic: string } | null {
+  const m = SPEAKER_RE.exec(body);
+  if (!m) return null;
+  const phrase = quoted[0] ?? m[2]!;
+  const words = phrase.split(/\s+/).filter((w) => w && !PRONOUNS.includes(w));
+  return words.length > 0 ? { who: m[1]!.replace(/\s+/g, " "), topic: words.join(" ") } : null;
+}
+
+/** Speaker labels in order of first appearance: the first one heard is "Speaker A", the next "Speaker B"... */
+function speakerNames(ctx: EngineContext): Map<string, string> {
+  const out = new Map<string, string>();
+  for (const a of ctx.index.atoms) if (a.kind === "word" && a.speaker && !out.has(a.speaker)) out.set(a.speaker, `Speaker ${String.fromCharCode(65 + out.size)}`);
+  return out;
+}
+
+function handleSpeakerTopic(env: Env, who: string, topic: string): Parsed {
+  const names = speakerNames(env.ctx);
+  if (names.size <= 1) return reject(env, "Only one speaker was found in this video, so I cannot tell a guest from a host. Say what to remove by time, topic or phrase.");
+  const labelOf = (name: string): string | null => [...names.entries()].find(([, n]) => n.toLowerCase() === name.toLowerCase())?.[0] ?? null;
+  const sample = (label: string): string => {
+    const first = buildPassages(env.ctx.index.atoms).find((p) => p.speaker === label);
+    return first ? `"${first.text.slice(0, 70)}"` : "";
+  };
+  const words = topic.split(/\s+/);
+  const term = normalizeForMatch(words[words.length - 1]!);
+  const semantic = (env.input.side?.semantic?.hits ?? []) as readonly SemanticHit[];
+  const passages = buildPassages(env.ctx.index.atoms);
+  const pieces = timelinePieces(env.ctx, env.tl);
+  const alive = (p: { startUs: number; endUs: number }): boolean => sourceToEdited(pieces, p.startUs) !== null;
+  const matchesFor = (label: string) =>
+    passages.filter((p) => p.speaker === label && alive(p) && (p.text.toLowerCase().split(/[^a-z0-9']+/).map(normalizeForMatch).includes(term) || semantic.some((h) => h.startUs < p.endUs && h.endUs > p.startUs)));
+
+  const cutOps = (list: readonly { startUs: number; endUs: number }[]) => {
+    const operations: Operation[] = [];
+    const warnings: string[] = [];
+    for (const p of list) {
+      const sp = passageSpan(env, { startUs: p.startUs, endUs: p.endUs, text: "", scorePermille: 0, speaker: null });
+      operations.push({ type: "cut", span: sp.span, reason: "user" });
+      warnings.push(...sp.warnings);
+    }
+    return { operations, warnings };
+  };
+  const when = (p: { startUs: number }): string => formatTime(sourceToEdited(pieces, p.startUs) ?? p.startUs);
+  const note = env.input.side?.semanticNote ? [env.input.side.semanticNote] : [];
+
+  // Which speaker? "speaker B" is explicit; "the guest" / "the host" are roles.
+  const explicit = /^speaker\s+/.test(who) ? labelOf(`Speaker ${who.split(/\s+/)[1]!.toUpperCase()}`) : null;
+  const order = [...names.keys()];
+  let target: string | null = explicit;
+  let assumption: string | null = null;
+  if (/^speaker\s+/.test(who) && !explicit) return reject(env, `There is no ${who} in this video. The speakers are ${[...names.values()].join(", ")}.`);
+  if (!target) {
+    if (names.size > 2) {
+      const all = order.map((l) => ({ l, m: matchesFor(l) })).filter((x) => x.m.length > 0);
+      const asked = `Which speaker is the ${who}: ${[...names.values()].slice(0, -1).join(", ")} or ${[...names.values()].at(-1)}? Each option removes that speaker's lines about "${topic}" (nothing is cut until you choose).`;
+      if (all.length === 0) return reject(env, `Nobody is recorded talking about "${topic}".`, note);
+      return clarify(env, asked, all.map((x) => ({ label: `${names.get(x.l)}, ${x.m.length} line${x.m.length === 1 ? "" : "s"} about it, for example ${sample(x.l)}`, ...cutOps(x.m) })), note);
+    }
+    // Two speakers: the first one heard is assumed to be the host (said in the answer); the guest is the other.
+    const host = order[0]!;
+    const guest = order[1]!;
+    target = /host|interviewer/.test(who) ? host : guest;
+    assumption = `Assuming ${names.get(host)} (the first speaker I heard) is the host and ${names.get(guest)} is the guest.`;
+  }
+  const matched = matchesFor(target);
+  if (matched.length === 0) return reject(env, `${names.get(target)} is not recorded talking about "${topic}" in the current video.`, note);
+
+  const targetName = names.get(target)!;
+  const lines = `${matched.length} line${matched.length === 1 ? "" : "s"}`;
+  const ws = env.ctx.index.atoms.filter((a) => a.kind === "word" && matched.some((p) => a.startUs >= p.startUs && a.endUs <= p.endUs));
+  const warns = [...note];
+  const unsure = ws.filter((w) => w.speakerUncertain).length;
+  const overlap = ws.filter((w) => w.overlapsSpeech).length;
+  if (unsure > 0) warns.push(`${unsure} word(s) in these lines have an uncertain speaker label (the diarization may have swapped the speakers there); check ${targetName}'s lines before relying on this.`);
+  if (overlap > 0) warns.push(`${overlap} word(s) in these lines overlap another speaker; cutting them also removes part of what the other person says.`);
+
+  // The host's lead-in: the passage of ANOTHER speaker right before the first matched line.
+  const firstIdx = passages.findIndex((p) => p === matched[0]);
+  const prev = passages[firstIdx - 1];
+  const lead = prev && prev.speaker !== target && alive(prev) && matched[0]!.startUs - prev.endUs <= 5_000_000 ? prev : null;
+  const only = cutOps(matched);
+  if (!lead) return plan(env, only.operations, [...(assumption ? [assumption] : []), ...only.warnings, ...warns]);
+  const withLead = cutOps([lead, ...matched]);
+  return clarify(
+    env,
+    `${assumption ? assumption + " " : ""}${targetName} talks about "${topic}" in ${lines}. The question just before it (the lead-in) is "${lead.text}" at ${when(lead)}. Should I remove the lead-in too? (Nothing is cut until you choose.)`,
+    [
+      { label: `only ${explicit ? targetName : `the ${who}`}'s${explicit ? "" : ` (${targetName})`} ${lines} about "${topic}" (${matched.map(when).join(", ")}); keep the lead-in`, operations: only.operations, warnings: only.warnings },
+      { label: `also the lead-in question "${lead.text}" at ${when(lead)}`, operations: withLead.operations, warnings: withLead.warnings },
+    ],
+    warns,
+  );
+}
+
+const normalizeForMatch = (w: string): string => w.toLowerCase().replace(/[^a-z0-9']/g, "");
 
 function handleSilences(env: Env, tokens: string[]): Parsed {
   const t = findTimeAfter(tokens, ["than", "over", "above", "exceeding", "beyond"]) ?? findTimeAfter(tokens, ["longer"]);
@@ -541,8 +710,14 @@ function parseOne(input: ParseInput, offset: number): Parsed {
   // 8. move
   if (/\bmove\b/.test(body)) return handleMove(env, tokens);
 
+  // 8b. vague references
+  if (/^make (it|this|that|the (video|clip))( a bit| a little| much)? (shorter|quicker|tighter)$/.test(body) || /^(shorten|trim) (it|the (video|clip))$/.test(body) || /^(cut|trim) (it|this) down$/.test(body)) return handleShorter(env);
+  if (CUT_VERB.test(body) && /\b(boring|dull|slow|dead|pointless|useless)\b (part|bit|section|stretch|portion|stuff)s?\b/.test(body)) return handleBoring(env);
+
   // 9. removal by topic / phrase / range
   if (CUT_VERB.test(body)) {
+    const sp = speakerTopic(body, quoted);
+    if (sp) return handleSpeakerTopic(env, sp.who, sp.topic);
     const ev = /\beverything (after|before)\b\s*(.*)$/.exec(body);
     if (ev) {
       const phrase = quoted[0] ?? ev[2]!.replace(/^(i|we|you|he|she|they)\s+(say|says|said|saying|mention|mentions)\s*/, "").replace(/^(when|the (word|phrase|words)|where)\s+/, "").replace(/\s*§$/, "").trim();
