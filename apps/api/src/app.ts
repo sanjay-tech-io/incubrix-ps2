@@ -17,7 +17,7 @@ import { ApiError, ERRORS, errorBody } from "@incubrix/errors";
 import { runInstruction, type InstructionParser } from "@incubrix/nlu";
 import { presignGet, putFile } from "@incubrix/storage";
 import {
-  appendTurn, assertUrlAllowed, createJob, createSession, createVideo, getJob, getSession, getVideo, jobView, lockSession, requestHash, tx, withIdempotency,
+  appendTurn, assertUrlAllowed, findStoredOriginal, createJob, createSession, createVideo, getJob, getSession, getVideo, jobView, lockSession, requestHash, tx, withIdempotency,
   type Logger,
 } from "@incubrix/store";
 import Fastify, { type FastifyInstance, type FastifyReply, type FastifyRequest } from "fastify";
@@ -217,8 +217,9 @@ export async function buildApp(d: ApiDeps): Promise<FastifyInstance & { routeTab
           sha256: f.sha256, filename: f.filename, sizeBytes: f.size, mimeType: ext === ".mov" ? "video/quicktime" : "video/mp4",
           ...(meta.num_speakers ? { numSpeakers: meta.num_speakers } : {}), ...(meta.rights ? { rights: meta.rights } : {}), aiGenerated: meta.ai_generated === "true",
         });
-        const key = `videos/${videoId}/original${ext}`;
-        await putFile(d.s3, cfg.S3_BUCKET, key, f.path, ext === ".mov" ? "video/quicktime" : "video/mp4");
+        // The same bytes are stored once: a second upload of an identical file points at the first object.
+        const key = (await findStoredOriginal(pool, f.sha256)) ?? `videos/${videoId}/original${ext}`;
+        if (key === `videos/${videoId}/original${ext}`) await putFile(d.s3, cfg.S3_BUCKET, key, f.path, ext === ".mov" ? "video/quicktime" : "video/mp4");
         await pool.query("update videos set storage_key=$2 where id=$1", [videoId, key]);
         const jobId = await createJob(pool, { type: "ingest", videoId, callbackUrl: meta.callback_url ?? null });
         return { status: 202, body: { video_id: videoId, job_id: jobId, status_url: `/api/v1/jobs/${jobId}` } };

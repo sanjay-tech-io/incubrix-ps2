@@ -12,7 +12,7 @@ import { ApiError, errorBody, type ErrorCode } from "@incubrix/errors";
 import { detectSilence, probe } from "@incubrix/media";
 import { getToFile, putFile } from "@incubrix/storage";
 import {
-  buildManifest, failJob, getJob, getTranscript, getVideo, jobView, putTranscript, setProgress, succeedJob, transcriptCacheKey, updateVideo,
+  buildManifest, failJob, findStoredOriginal, getJob, getTranscript, getVideo, jobView, putTranscript, setProgress, succeedJob, transcriptCacheKey, updateVideo,
   type JobRow, type Logger, type TranscriptSettings,
 } from "@incubrix/store";
 import type pg from "pg";
@@ -98,8 +98,9 @@ export async function runIntake(d: WorkerDeps, job: JobRow): Promise<void> {
       if (!looksLikeMp4OrMov(await readHead(original))) throw new ApiError("UNSUPPORTED_MEDIA_TYPE", "The downloaded file is not an MP4 or MOV video.");
       sha256 = got.sha256;
       const ext = /\.mov(\?|$)/i.test(video.source_url!) ? ".mov" : ".mp4";
-      const key = `videos/${video.id}/original${ext}`;
-      await putFile(d.s3, d.cfg.S3_BUCKET, key, original, ext === ".mov" ? "video/quicktime" : "video/mp4");
+      const own = `videos/${video.id}/original${ext}`;
+      const key = (await findStoredOriginal(d.pool, sha256)) ?? own;
+      if (key === own) await putFile(d.s3, d.cfg.S3_BUCKET, key, original, ext === ".mov" ? "video/quicktime" : "video/mp4");
       await updateVideo(d.pool, video.id, { sha256, storageKey: key, sizeBytes: got.size, mimeType: got.contentType ?? "video/mp4" });
     }
     mark = lap("fetch_original_s", mark);

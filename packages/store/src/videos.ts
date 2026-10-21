@@ -53,3 +53,12 @@ export async function updateVideo(
 export async function mergeProbe(db: Db, id: string, patch: Record<string, unknown>): Promise<void> {
   await db.query("update videos set probe = coalesce(probe, '{}'::jsonb) || $2::jsonb, updated_at=now() where id=$1", [id, JSON.stringify(patch)]);
 }
+
+/**
+ * Storage key of an already stored original with this sha256, or null. Originals are content-addressed in practice: the same
+ * bytes are stored once and every video row for them points at that object (the object is never modified or deleted).
+ */
+export async function findStoredOriginal(db: Db, sha256: string): Promise<string | null> {
+  const { rows } = await db.query<{ storage_key: string }>("select storage_key from videos where sha256=$1 and storage_key is not null order by created_at limit 1", [sha256]);
+  return rows[0]?.storage_key ?? null;
+}

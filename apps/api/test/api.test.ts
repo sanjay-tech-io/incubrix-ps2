@@ -127,6 +127,21 @@ describe.skipIf(!integration)("API behaviour", () => {
   });
 
   describe("idempotency (every POST)", () => {
+    it("the same bytes uploaded twice (different keys) are stored ONCE: both videos point at the same object", async () => {
+      const f = clip();
+      const a = await s.upload(f, {}, { "idempotency-key": "dup-a" });
+      const b = await s.upload(f, {}, { "idempotency-key": "dup-b" });
+      expect(a.body.video_id).not.toBe(b.body.video_id);
+      const rows = (await s.pool.query("select id, storage_key, sha256 from videos where id = any($1)", [[a.body.video_id, b.body.video_id]])).rows;
+      expect(rows[0].storage_key).toBe(rows[1].storage_key);
+      expect(rows[0].sha256).toBe(rows[1].sha256);
+      // the object belongs to the FIRST video that uploaded these bytes (maybe an earlier test), never to the second one
+      expect(rows[0].storage_key).not.toBe(`videos/${b.body.video_id}/original.mp4`);
+      await s.drain();
+      const dl = await s.call("GET", `/api/v1/videos/${b.body.video_id}`);
+      expect(dl.body.status).toBe("ready");
+    });
+
     it("videos: same key + same file -> same ids, one video, one job, one stored object", async () => {
       const f = clip();
       const a = await s.upload(f, {}, { "idempotency-key": "up-1" });

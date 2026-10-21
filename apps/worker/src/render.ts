@@ -7,7 +7,7 @@ import { ApiError, errorBody, type ErrorCode } from "@incubrix/errors";
 import {
   RenderError, childCpuSeconds, decideProxy, ffmpegVersion, makeProxy, probeStreams, renderTimeline, sha256File, type RenderResult,
 } from "@incubrix/render";
-import { copyObject, getTextOrNull, getToFile, presignGet, putFile, putText, sha256OfObject } from "@incubrix/storage";
+import { getTextOrNull, getToFile, presignGet, putFile, putText, sha256OfObject } from "@incubrix/storage";
 import {
   buildManifest, contextOf, failJob, getSession, getTranscript, getVideo, mergeProbe, setProgress, succeedJob,
   type JobRow, type VideoRow,
@@ -30,7 +30,6 @@ interface ProxyInfo {
   created_by: string;
   warnings: string[];
   source_sha256?: string;
-  video_key?: string;
 }
 
 function failureOf(e: unknown): { code: ErrorCode; body: ReturnType<typeof errorBody> } {
@@ -95,9 +94,9 @@ export async function runRender(d: WorkerDeps, job: JobRow): Promise<void> {
     let videoOffsetUs = aligned ? 0 : startGapUs;
     let videoBaseUs = facts.videoStartUs;
     if (decision.needed) {
-      // The proxy depends only on the ORIGINAL's bytes and the frame grid, so it is cached by source sha256: uploading the same
+      // The proxy depends only on the ORIGINAL's bytes and the frame grid, so it is stored next to the original, and identical uploads share one original (see findStoredOriginal): uploading the same
       // file again (a new video row) does not repeat the ~5 minute HEVC decode.
-      const proxyKey = `proxies/${video.sha256}/cfr_${fps.num}-${fps.den}_v1.mp4`;
+      const proxyKey = `${video.storage_key.slice(0, video.storage_key.lastIndexOf("/"))}/proxy_cfr_${fps.num}-${fps.den}_v1.mp4`; // next to the original
       const metaKey = proxyKey.replace(/\.mp4$/, ".json");
       const proxyPath = join(dir, "proxy_cfr.mp4");
       const metaText = await getTextOrNull(d.s3, bucket, metaKey);
@@ -120,10 +119,6 @@ export async function runRender(d: WorkerDeps, job: JobRow): Promise<void> {
         await putText(d.s3, bucket, metaKey, JSON.stringify(proxyInfo));
         log.info({ video_id: video.id, reasons: made.decision.reasons }, "CFR proxy created");
       }
-      // ...and a copy next to this video's original (videos/<id>/), so the proxy is found where the original is.
-      const videoKey = `videos/${video.id}/proxy_cfr.mp4`;
-      await copyObject(d.s3, bucket, proxyKey, videoKey);
-      proxyInfo = { ...proxyInfo, video_key: videoKey };
       await mergeProbe(d.pool, video.id, { proxy: proxyInfo });
       warnings.push(...proxyInfo.warnings);
       videoFile = proxyPath;
