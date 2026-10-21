@@ -1,0 +1,6 @@
+SERVICE    IMAGE                                                                     STATUS
+api        sha256:c077fdcc25332c4d9ee15cb08ec79192800caf05a0bd199ec8ea897bb0dce4cd   Up 3 minutes (healthy)
+asr        incubrix-ps2-asr                                                          Up 3 minutes (healthy)
+postgres   postgres:16                                                               Up 17 minutes (healthy)
+s3         chrislusf/seaweedfs:latest                                                Up 17 minutes (healthy)
+worker     sha256:c077fdcc25332c4d9ee15cb08ec79192800caf05a0bd199ec8ea897bb0dce4cd   Up 3 minutes (healthy)

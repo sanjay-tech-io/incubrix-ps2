@@ -20,5 +20,4 @@ CMD ["python", "-m", "pytest", "-q"]
 
 # Last stage = what `docker compose up` runs.
 FROM base AS runtime
-ENV ASR_ADAPTER=mock
 CMD ["uvicorn", "asr.server:app_factory", "--factory", "--host", "0.0.0.0", "--port", "8000"]

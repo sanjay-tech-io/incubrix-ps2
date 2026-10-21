@@ -1,13 +1,24 @@
-// PLACEHOLDER (worker): validates config, connects to Postgres and answers /health and /ready.
-// The real worker arrives in milestone M2.
 import http from "node:http";
 import pg from "pg";
 import { loadConfig } from "@incubrix/config";
+import { makeS3 } from "@incubrix/storage";
+import { makeLogger } from "@incubrix/store";
+import { DEFAULT_MOCK_WORDS, HttpAsrClient, MockAsrClient, type AsrClient } from "./asr.ts";
+import { workerLoop } from "./worker.ts";
 
 const cfg = loadConfig(process.env);
-const port = Number(process.env.WORKER_PORT ?? 8081);
-const pool = new pg.Pool({ connectionString: cfg.DATABASE_URL, max: 2 });
-const log = (msg: string, extra: object = {}) => console.log(JSON.stringify({ timestamp: new Date().toISOString(), level: "info", service: "worker", msg, ...extra }));
+const log = makeLogger("worker", cfg.LOG_LEVEL);
+const pool = new pg.Pool({ connectionString: cfg.DATABASE_URL, max: 4 });
+const s3 = makeS3(cfg);
+
+// ASR_PROVIDER=mock never calls the ASR service (tests); anything else goes over HTTP and the service runs its own engine.
+const asr: AsrClient =
+  cfg.ASR_PROVIDER === "mock"
+    ? new MockAsrClient(DEFAULT_MOCK_WORDS, cfg.DIARIZATION_PROVIDER)
+    : new HttpAsrClient({ url: cfg.ASR_URL, provider: cfg.ASR_PROVIDER, model: cfg.ASR_MODEL, diarizationProvider: cfg.DIARIZATION_PROVIDER, timeoutS: cfg.ASR_TIMEOUT_S });
+
+const abort = new AbortController();
+for (const sig of ["SIGTERM", "SIGINT"] as const) process.on(sig, () => abort.abort());
 
 http
   .createServer(async (req, res) => {
@@ -21,6 +32,10 @@ http
         return send(503, { status: "not_ready", service: "worker" });
       }
     }
-    send(404, { error: { code: "NOT_FOUND", message: "placeholder service", retryable: false, details: {} } });
+    send(404, { error: { code: "NOT_FOUND", message: "no such route", retryable: false, details: {} } });
   })
-  .listen(port, () => log("listening", { port, placeholder: true }));
+  .listen(cfg.WORKER_PORT, () => log.info({ port: cfg.WORKER_PORT, asr: asr.provider, diarization: asr.diarizationProvider }, "worker listening"));
+
+await workerLoop({ pool, s3, cfg, asr, log }, abort.signal);
+await pool.end();
+process.exit(0);

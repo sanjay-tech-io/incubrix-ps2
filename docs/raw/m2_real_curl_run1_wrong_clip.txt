@@ -1,0 +1,220 @@
+# Real run: ASR_PROVIDER=faster-whisper (base.en), DIARIZATION_PROVIDER=sherpa, LLM_PROVIDER=rules; compose stack as started above
+$ curl -s localhost:8080/health ; curl -s localhost:8080/ready
+{"status":"ok","service":"api"}
+{"status":"ready","service":"api"}
+$ curl -i -F file=@demo.mp4 -H "Idempotency-Key: demo-up-1" localhost:8080/api/v1/videos
+HTTP/1.1 202 Accepted
+x-correlation-id: 5a9670bd-83ce-46c5-934c-d9d18ea3220e
+content-type: application/json; charset=utf-8
+Date: Tue, 20 Oct 2026 12:00:51 GMT
+Connection: keep-alive
+Keep-Alive: timeout=72
+
+{"video_id":"vid_b0453bef462d45fa898f","job_id":"job_660da5a5ea5044908fc8","status_url":"/api/v1/jobs/job_660da5a5ea5044908fc8"}
+$ poll GET /api/v1/jobs/job_660da5a5ea5044908fc8 until it finishes (status, progress)
+t+0s running 43
+t+4s running 49
+t+8s running 54
+t+12s running 61
+t+16s running 66
+t+20s running 72
+t+24s succeeded 100
+$ curl localhost:8080/api/v1/jobs/job_660da5a5ea5044908fc8 (result abridged)
+{
+ "status": "succeeded",
+ "progress": 100,
+ "links": {
+  "video": "/api/v1/videos/vid_b0453bef462d45fa898f",
+  "create_session": "/api/v1/sessions"
+ },
+ "duration_s": 46.968,
+ "words": 96,
+ "speakers_found": 1,
+ "transcript_cache": "miss",
+ "warnings": [],
+ "providers": {
+  "asr": {
+   "cache": "miss",
+   "model": "base.en",
+   "version": "faster-whisper 1.2.1 / ctranslate2 4.8.3",
+   "provider": "faster-whisper"
+  },
+  "media": {
+   "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers"
+  },
+  "diarization": {
+   "version": "sherpa-onnx 1.13.8 + pyannote-segmentation-3.0 + wespeaker_en_voxceleb_resnet34",
+   "provider": "sherpa"
+  }
+ },
+ "timings": {
+  "asr_s": 28.093,
+  "probe_s": 0.564,
+  "total_s": 29.315,
+  "silence_s": 0.432,
+  "fetch_original_s": 0.053
+ },
+ "cost_estimate": {
+  "usd": null,
+  "note": "No price per CPU second is configured, so no money figure is given.",
+  "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+  "cpu_seconds": 25.245
+ },
+ "error": null
+}
+
+$ same upload again with the SAME Idempotency-Key (must return the same ids, no new job)
+HTTP/1.1 202 Accepted
+idempotent-replayed: true
+{"job_id":"job_660da5a5ea5044908fc8","video_id":"vid_b0453bef462d45fa898f","status_url":"/api/v1/jobs/job_660da5a5ea5044908fc8"}
+
+$ POST /api/v1/sessions
+{"session_id":"ses_43ec8863536d46d58109","video_id":"vid_b0453bef462d45fa898f","duration_s":46.96,"timeline_hash":"9e191d464a95b4ce9e5183a59f71b9e932156b8371068dafda0ce85d85386c2d","warnings":[]}
+
+$ say: add a caption "Welcome!" on "welcome to the channel"
+{
+ "status": "applied",
+ "operations": [
+  {
+   "type": "add_effect",
+   "effectId": "fx_0_0",
+   "range": {
+    "from": "a_de97002cb133",
+    "to": "a_9eac38615701"
+   },
+   "params": {
+    "kind": "caption",
+    "text": "Welcome!",
+    "style": {
+     "color": "#ffffff",
+     "sizePt": 32,
+     "bold": true
+    },
+    "position": "bottom"
+   }
+  }
+ ],
+ "summary": "Length 0:46.960 -> 0:46.960 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+ "question": null,
+ "options": [],
+ "reason": null,
+ "time_policy": "current",
+ "warnings": [],
+ "timeline_hash": "b54fa6b4ed261eeca2ed4a621f6277600cf8ffd40b352ae42bd5bff53da2b663",
+ "duration_s": 46.96,
+ "duration_us": 46960000,
+ "turn": 1,
+ "manifest": {
+  "providers": {
+   "parser": {
+    "name": "rules",
+    "version": "1"
+   },
+   "engine": {
+    "name": "incubrix-engine",
+    "version": "0.0.0"
+   },
+   "llm": "none (no LLM was called)"
+  },
+  "timings": {
+   "instruction_ms": 12.47
+  }
+ }
+}
+
+$ say: cut the first 30 seconds
+{
+ "status": "applied",
+ "operations": [
+  {
+   "type": "cut",
+   "span": {
+    "start": {
+     "atom": "a_6e1920117e85",
+     "offsetUs": 0
+    },
+    "end": {
+     "atom": "a_dad7611257f9",
+     "offsetUs": 2160000
+    }
+   },
+   "reason": "user"
+  }
+ ],
+ "summary": "Length 0:46.960 -> 0:16.960 (-0:30.000). Time policy: current (times refer to the edited timeline as it is now).",
+ "question": null,
+ "options": [],
+ "reason": null,
+ "time_policy": "current",
+ "warnings": [
+  "caption \"Welcome!\" is hidden because all of its words were cut. It stays in the history; restoring those words brings it back.",
+  "This edit touches words the transcript is unsure about: \"Hi\" (low confidence), \"out.\" (low confidence), \"teams\" (low confidence). Check the result."
+ ],
+ "timeline_hash": "12a83bbca8004a36f69397542707f65a3e8e8d089ebcc13e433a2dc3355ab99e",
+ "duration_s": 16.96,
+ "duration_us": 16960000,
+ "turn": 2,
+ "manifest": {
+  "providers": {
+   "parser": {
+    "name": "rules",
+    "version": "1"
+   },
+   "engine": {
+    "name": "incubrix-engine",
+    "version": "0.0.0"
+   },
+   "llm": "none (no LLM was called)"
+  },
+  "timings": {
+   "instruction_ms": 7.66
+  }
+ }
+}
+
+$ say: remove the part about pricing
+{
+ "status": "applied",
+ "operations": [
+  {
+   "type": "cut",
+   "span": {
+    "start": {
+     "atom": "a_45ffb00f7da7",
+     "offsetUs": 1200000
+    },
+    "end": {
+     "atom": "a_036daeca8b49",
+     "offsetUs": 1220000
+    }
+   },
+   "reason": "user"
+  }
+ ],
+ "summary": "Length 0:16.960 -> 0:14.280 (-0:02.680). Time policy: current (times refer to the edited timeline as it is now).",
+ "question": null,
+ "options": [],
+ "reason": null,
+ "time_policy": "current",
+ "warnings": [],
+ "timeline_hash": "d05eff8f4bbd1e900f3a2b48d881b01c85e666a7ffd8855dc8b11a77a79b1474",
+ "duration_s": 14.28,
+ "duration_us": 14280000,
+ "turn": 3,
+ "manifest": {
+  "providers": {
+   "parser": {
+    "name": "rules",
+    "version": "1"
+   },
+   "engine": {
+    "name": "incubrix-engine",
+    "version": "0.0.0"
+   },
+   "llm": "none (no LLM was called)"
+  },
+  "timings": {
+   "instruction_ms": 4.66
+  }
+ }
+}

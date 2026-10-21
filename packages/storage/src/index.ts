@@ -33,3 +33,21 @@ export function presignGet(s3: S3Client, bucket: string, key: string, expiresInS
 export function presignPut(s3: S3Client, bucket: string, key: string, expiresInS: number): Promise<string> {
   return getSignedUrl(s3, new PutObjectCommand({ Bucket: bucket, Key: key }), { expiresIn: expiresInS });
 }
+
+// File helpers: streams, so a multi-GB original never sits in memory.
+import { createReadStream, createWriteStream, statSync } from "node:fs";
+import { pipeline } from "node:stream/promises";
+import type { Readable } from "node:stream";
+
+export async function putFile(s3: S3Client, bucket: string, key: string, path: string, contentType?: string): Promise<void> {
+  await s3.send(new PutObjectCommand({ Bucket: bucket, Key: key, Body: createReadStream(path), ContentLength: statSync(path).size, ...(contentType ? { ContentType: contentType } : {}) }));
+}
+
+export async function getToFile(s3: S3Client, bucket: string, key: string, path: string): Promise<void> {
+  const r = await s3.send(new GetObjectCommand({ Bucket: bucket, Key: key }));
+  await pipeline(r.Body as Readable, createWriteStream(path));
+}
+
+export async function putText(s3: S3Client, bucket: string, key: string, body: string, contentType = "application/json"): Promise<void> {
+  await s3.send(new PutObjectCommand({ Bucket: bucket, Key: key, Body: body, ContentType: contentType }));
+}

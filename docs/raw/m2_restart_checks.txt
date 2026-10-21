@@ -1,0 +1,18 @@
+# Restart checks on the real stack (session ses_527dea88cff840bdadb2)
+$ GET timeline hash before
+bdbcb46aca5014d3b8e11b3fee20ecfd60acebf999831893caca5001e1ae4405
+$ docker compose restart api worker
+ Container incubrix-ps2-api-1 Started 
+ Container incubrix-ps2-worker-1 Started 
+$ GET timeline hash after (state rebuilt by replay from Postgres)
+bdbcb46aca5014d3b8e11b3fee20ecfd60acebf999831893caca5001e1ae4405
+IDENTICAL
+$ answer the open question after the restart: "the second one"
+applied 26.16 Length 0:29.160 -> 0:26.160 (-0:03.000). Time policy: current (times refer to the edited t
+
+$ models volume: docker compose restart asr; does it download anything?
+ Container incubrix-ps2-asr-1 Started 
+no download lines in the asr log after restart
+local     incubrix-ps2_models
+141.1M	/m/hf
+32.6M	/m/diarization
