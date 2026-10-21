@@ -7,7 +7,7 @@ import { tempDb } from "./db.ts";
 const SHA = "a".repeat(64);
 const settings: TranscriptSettings = {
   asrProvider: "faster-whisper", asrModel: "base.en", diarizationProvider: "sherpa", numSpeakers: null,
-  silenceNoiseDb: -35, silenceMinUs: 300_000, clampMinWordUs: 20_000, lowConfidencePermille: 600,
+  silenceNoiseDb: -35, silenceMinUs: 300_000, clampMinWordUs: 20_000, lowConfidencePermille: 600, voicedGapMinUs: 150_000, voicedGapMaxUs: 1_200_000,
 };
 
 describe("transcript cache key (pure)", () => {

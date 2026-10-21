@@ -34,10 +34,10 @@ describe("loadConfig", () => {
     expect(() => loadConfig({ ...good, ASR_PROVIDER: "whispr" })).toThrow(/ASR_PROVIDER/);
   });
 
-  it("requires the API key of a selected cloud LLM provider", () => {
+  it("groq needs its API key; gemini does NOT (M4: no key = the language-model fallback is off and answers say so)", () => {
     expect(() => loadConfig({ ...good, LLM_PROVIDER: "groq" })).toThrow(/GROQ_API_KEY/);
     expect(loadConfig({ ...good, LLM_PROVIDER: "groq", GROQ_API_KEY: "k" }).LLM_PROVIDER).toBe("groq");
-    expect(() => loadConfig({ ...good, LLM_PROVIDER: "gemini" })).toThrow(/GEMINI_API_KEY/);
+    expect(loadConfig({ ...good, LLM_PROVIDER: "gemini" }).GEMINI_API_KEY).toBeUndefined();
   });
 
   it("enforces the documented speed range (min 0.25x, MAX_SPEED >= 1)", () => {

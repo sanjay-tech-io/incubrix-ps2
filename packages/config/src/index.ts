@@ -34,7 +34,11 @@ const base = z.object({
     ASR_URL: z.url().default("http://asr:8000"),
     DIARIZATION_PROVIDER: z.enum(["sherpa", "mock", "none"]).default("mock"),
     LLM_PROVIDER: z.enum(["rules", "mock", "groq", "gemini"]).default("rules"),
-    LLM_TIMEOUT_MS: z.coerce.number().int().min(100).max(30000).default(1500),
+    LLM_TIMEOUT_MS: z.coerce.number().int().min(100).max(30000).default(2500),
+    GEMINI_MODEL: z.string().min(1).optional(),
+    // Estimate only: USD per 1M tokens, the PAID-tier rates of gemini-3.5-flash-lite on 2026-10-21 (SOURCES.md). 0 for a model with no price.
+    LLM_PRICE_INPUT_PER_M: z.coerce.number().min(0).default(0.3),
+    LLM_PRICE_OUTPUT_PER_M: z.coerce.number().min(0).default(2.5),
     GROQ_API_KEY: z.string().min(1).optional(),
     GEMINI_API_KEY: z.string().min(1).optional(),
 
@@ -92,8 +96,8 @@ const base = z.object({
 });
 
 const schema = base.superRefine((c, ctx) => {
+    // A missing GEMINI_API_KEY is NOT an error: the language-model fallback is simply off, and an instruction the rules cannot read says so.
     if (c.LLM_PROVIDER === "groq" && !c.GROQ_API_KEY) ctx.addIssue({ code: "custom", path: ["GROQ_API_KEY"], message: "required when LLM_PROVIDER=groq" });
-    if (c.LLM_PROVIDER === "gemini" && !c.GEMINI_API_KEY) ctx.addIssue({ code: "custom", path: ["GEMINI_API_KEY"], message: "required when LLM_PROVIDER=gemini" });
   });
 
 export type Config = z.infer<typeof schema>;

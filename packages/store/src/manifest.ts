@@ -10,6 +10,9 @@ export interface ManifestInput {
   rights: string | null;
   aiGeneratedInput: boolean;
   aiFlags: Record<string, boolean>;
+  /** Money estimate when one exists (a language-model call); omitted = null with the usual note. */
+  usd?: number;
+  usdBasis?: string;
 }
 
 // Licence facts, copied from SOURCES.md (where the evidence files are named). "unchecked" is kept as it is there.
@@ -29,8 +32,8 @@ export function buildManifest(i: ManifestInput) {
     cost_estimate: {
       basis: "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
       cpu_seconds: Math.round(i.cpuSeconds * 1000) / 1000,
-      usd: null,
-      note: "No price per CPU second is configured, so no money figure is given.",
+      usd: i.usd ?? null,
+      note: i.usd !== undefined ? (i.usdBasis ?? "") : "No price per CPU second is configured, so no money figure is given.",
     },
     warnings: i.warnings,
     rights: { source_media: i.rights ?? "not stated by the uploader", software: SOFTWARE_LICENCES, reference: "SOURCES.md" },

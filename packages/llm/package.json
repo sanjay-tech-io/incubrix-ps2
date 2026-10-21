@@ -1,0 +1,11 @@
+{
+  "name": "@incubrix/llm",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": { "test": "vitest run", "typecheck": "tsc -p tsconfig.json" },
+  "dependencies": { "@incubrix/config": "*", "@incubrix/engine": "*", "@incubrix/nlu": "*", "@incubrix/store": "*", "zod": "^4.6.7" },
+  "devDependencies": { "typescript": "^5.6.0", "vitest": "^2.1.0", "@types/node": "^22.0.0" }
+}

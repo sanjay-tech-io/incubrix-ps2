@@ -406,7 +406,7 @@ function handleCutRange(env: Env, tokens: string[]): Parsed {
     return plan(env, res.spans.map((span) => ({ type: "cut", span, reason: "user" })), res.warnings);
   }
   const range = findRange(tokens, durationOf(env));
-  if (!range) return reject(env, "I did not understand what to remove. Give a time range (remove 0:30-0:40, cut the first 30 seconds), a topic (remove the part about pricing) or a phrase (remove everything after \"thanks\").");
+  if (!range) return { kind: "reject", reason: "I did not understand what to remove. Give a time range (remove 0:30-0:40, cut the first 30 seconds), a topic (remove the part about pricing) or a phrase (remove everything after \"thanks\").", timePolicy: env.policy, warnings: [], unparsed: true };
   const res = spansFor(env, range.startUs, range.endUs);
   return plan(env, res.spans.map((span) => ({ type: "cut", span, reason: "user" })), [...range.warnings, ...res.warnings]);
 }

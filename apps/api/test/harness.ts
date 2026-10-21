@@ -4,6 +4,7 @@ import type { S3Client } from "@aws-sdk/client-s3";
 import { loadConfig, type Config } from "@incubrix/config";
 import { createParser } from "@incubrix/nlu";
 import { createSemantic } from "@incubrix/semantic";
+import type { LlmFallback } from "@incubrix/llm";
 import { ensureBucket, makeS3 } from "@incubrix/storage";
 import { makeLogger } from "@incubrix/store";
 import type { FastifyInstance } from "fastify";
@@ -29,10 +30,12 @@ export interface Stack {
   upload: (file: string, fields?: Record<string, string>, headers?: Record<string, string>) => Promise<{ status: number; body: any; headers: Headers }>;
   /** Stop the API and start a NEW one on the same database: what a restart does. */
   restartApi: () => Promise<void>;
+  /** Swap the language-model fallback at run time (the model is built from the stack's own pool). */
+  setLlm: (llm: LlmFallback | null) => void;
   stop: () => Promise<void>;
 }
 
-export async function startStack(o: { asr?: AsrClient; words?: AsrWord[]; env?: Record<string, string>; logDest?: import("pino").DestinationStream } = {}): Promise<Stack> {
+export async function startStack(o: { llm?: LlmFallback | null; asr?: AsrClient; words?: AsrWord[]; env?: Record<string, string>; logDest?: import("pino").DestinationStream } = {}): Promise<Stack> {
   const db = await tempDb();
   const cfg = loadConfig({
     ...process.env,
@@ -46,10 +49,11 @@ export async function startStack(o: { asr?: AsrClient; words?: AsrWord[]; env?: 
   const log = makeLogger("test", o.logDest ? "debug" : (process.env.TEST_LOG ?? "silent"), o.logDest);
   const parser = createParser(cfg.LLM_PROVIDER);
 
+  let currentLlm: LlmFallback | null = o.llm ?? null;
   let app!: Stack["app"];
   let base = "";
   const start = async () => {
-    app = await buildApp({ pool: db.pool, s3, s3Public: s3, cfg, log, parser, semantic: createSemantic(cfg, db.pool) });
+    app = await buildApp({ pool: db.pool, s3, s3Public: s3, cfg, log, parser, semantic: createSemantic(cfg, db.pool), get llm() { return currentLlm; } });
     await app.listen({ port: 0, host: "127.0.0.1" });
     base = `http://127.0.0.1:${(app.server.address() as AddressInfo).port}`;
   };
@@ -73,6 +77,9 @@ export async function startStack(o: { asr?: AsrClient; words?: AsrWord[]; env?: 
       form.append("file", new Blob([readFileSync(file)], { type: "video/mp4" }), file.split("/").pop()!);
       for (const [k, v] of Object.entries(fields)) form.append(k, v);
       return read(await fetch(`${base}/api/v1/videos`, { method: "POST", headers: auth(headers), body: form }));
+    },
+    setLlm: (l) => {
+      currentLlm = l;
     },
     restartApi: async () => {
       await app.close();

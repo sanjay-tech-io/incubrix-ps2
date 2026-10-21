@@ -16,6 +16,7 @@ import {
 import { ApiError, ERRORS, errorBody } from "@incubrix/errors";
 import { applyParsed, topicRequest, type InstructionParser, type SideData } from "@incubrix/nlu";
 import type { SemanticService } from "@incubrix/semantic";
+import type { CallInfo, LlmFallback } from "@incubrix/llm";
 import { presignGet, putFile } from "@incubrix/storage";
 import {
   appendTurn, assertUrlAllowed, findStoredOriginal, createJob, createSession, createVideo, getJob, getSession, getVideo, jobView, lockSession, requestHash, tx, withIdempotency,
@@ -38,6 +39,8 @@ export interface ApiDeps {
   parser: InstructionParser;
   /** Meaning search (null = off: exact words only, and the answer says so). */
   semantic?: SemanticService | null;
+  /** Language-model fallback (null = off). Used only when the rules parser does not understand an instruction. */
+  llm?: LlmFallback | null;
   now?: () => number;
 }
 
@@ -297,7 +300,19 @@ export async function buildApp(d: ApiDeps): Promise<FastifyInstance & { routeTab
         const cpu0 = process.cpuUsage();
         const text = body.say ?? String(body.answer);
         const input = { text, side: { ...side, possibleFillers: rt.possibleFillers }, ...(body.answer === undefined ? {} : { answer: body.answer }) };
-        const parsed = d.parser.parse({ ctx: rt.ctx, state: rt.state, ...input });
+        let parsed = d.parser.parse({ ctx: rt.ctx, state: rt.state, ...input });
+        let llmCall: CallInfo | null = null;
+        let llmOffNote: string | null = null;
+        if (parsed.kind === "reject" && parsed.unparsed && body.answer === undefined) {
+          if (d.llm) {
+            const r = await d.llm.translate(rt.ctx, rt.state, text);
+            parsed = r.parsed;
+            llmCall = r.call;
+          } else if (cfg.LLM_PROVIDER === "gemini") {
+            llmOffNote = "GEMINI_API_KEY is empty";
+            parsed = { ...parsed, reason: `${parsed.reason} The language-model fallback is off (GEMINI_API_KEY is empty), so only the built-in instructions work.` };
+          }
+        }
         const turn = applyParsed(rt.ctx, rt.state, text, parsed);
         await appendTurn(c, session_id, rt.state, turn.state);
         const cpu = process.cpuUsage(cpu0);
@@ -305,7 +320,7 @@ export async function buildApp(d: ApiDeps): Promise<FastifyInstance & { routeTab
         runtimes.set({ ...rt, state: turn.state, counts: { log: turn.state.log.length, conversation: turn.state.conversation.length } });
         const manifest = instructionManifest({
           parser: d.parser, llmProvider: cfg.LLM_PROVIDER, maxSpeed: cfg.MAX_SPEED, timePolicy: turn.answer.timePolicy, instructionMs: ms,
-          cpuSeconds: (cpu.user + cpu.system) / 1e6, warnings: turn.answer.warnings, rights: rt.video.rights, aiGenerated: rt.video.ai_generated, semantic,
+          cpuSeconds: (cpu.user + cpu.system) / 1e6, warnings: turn.answer.warnings, rights: rt.video.rights, aiGenerated: rt.video.ai_generated, semantic, llm: llmCall, llmOffNote,
         });
         d.log.info({ session_id, status: turn.answer.status, instruction_ms: Math.round(ms) }, "instruction answered");
         return answerView(turn.answer, { turn: turn.state.conversation.length, manifest });

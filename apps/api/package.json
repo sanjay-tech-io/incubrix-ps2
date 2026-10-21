@@ -15,6 +15,7 @@
     "@incubrix/contracts": "*",
     "@incubrix/engine": "*",
     "@incubrix/errors": "*",
+    "@incubrix/llm": "*",
     "@incubrix/nlu": "*",
     "@incubrix/semantic": "*",
     "@incubrix/storage": "*",

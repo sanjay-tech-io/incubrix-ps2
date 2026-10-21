@@ -37,7 +37,9 @@ export type ParserName = "rules" | "mock";
 export function createParser(provider: string): InstructionParser {
   if (provider === "rules") return new RulesParser();
   if (provider === "mock") return new MockParser();
-  throw new Error(`LLM_PROVIDER=${provider} is not implemented yet; use "rules" or "mock"`);
+  // gemini: the RULES parser still goes first; the language model is only the fallback and lives in packages/llm (it needs I/O).
+  if (provider === "gemini") return new RulesParser();
+  throw new Error(`LLM_PROVIDER=${provider} is not implemented yet; use "rules", "mock" or "gemini"`);
 }
 
 export { submitOperations };

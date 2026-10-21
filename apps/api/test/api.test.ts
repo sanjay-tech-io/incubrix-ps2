@@ -417,3 +417,76 @@ describe.skipIf(!integration)("meaning search through the API (mock embeddings)"
     }
   }, 120_000);
 });
+
+
+import { LlmFallback, MockLlmProvider } from "@incubrix/llm";
+import { getLlmCache, putLlmCache } from "@incubrix/store";
+import { RulesParser } from "@incubrix/nlu";
+describe.skipIf(!integration)("language-model fallback through the API (mock model)", () => {
+  const SAYS = "tidy up that bit near the half minute mark";
+  const make = (script: ConstructorParameters<typeof MockLlmProvider>[0]) => {
+    const provider = new MockLlmProvider(script);
+    return { provider, build: (pool: Stack["pool"]) => new LlmFallback({ provider, cache: { get: (k) => getLlmCache(pool, k), put: (k, r) => putLlmCache(pool, { cache_key: k, ...r }) }, rules: new RulesParser(), timeoutMs: 1000, price: { inputPerM: 0.3, outputPerM: 2.5 } }) };
+  };
+
+  async function session(st: Stack) {
+    const { videoId } = await ingest(st, makeClip({ seconds: 60 }));
+    return (await st.call("POST", "/api/v1/sessions", { video_id: videoId })).body.session_id as string;
+  }
+
+  it("is used only for text the rules cannot read; the engine applies the result; the manifest has tokens and cost; a repeat is a cache hit with no model call", async () => {
+    const { provider, build } = make({ "*": { commands: [{ op: "cut", start_s: 30, end_s: 35 }], usage: { inputTokens: 900, outputTokens: 30 } } });
+    const st = await startStack();
+    try {
+      const llm = build(st.pool);
+      st.setLlm(llm);
+      const id = await session(st);
+      const ok = (await st.call("POST", `/api/v1/sessions/${id}/instructions`, { say: "cut 0:10-0:12" })).body;
+      expect(ok.manifest.providers.llm).toMatch(/none/);
+      expect(provider.calls).toBe(0); // the rules understood it
+      const a = (await st.call("POST", `/api/v1/sessions/${id}/instructions`, { say: SAYS })).body;
+      expect(a.status).toBe("applied");
+      expect(a.warnings.join(" ")).toMatch(/Interpreted by the language model.*cut 0:30\.000-0:35\.000/);
+      expect(a.manifest.providers.llm).toMatchObject({ provider: "mock", cache: "miss", input_tokens: 900, output_tokens: 30 });
+      expect(a.manifest.cost_estimate.usd).toBeCloseTo((900 * 0.3 + 30 * 2.5) / 1e6, 9);
+      expect(a.manifest.ai_generated.llm_used).toBe(true);
+      await st.call("POST", `/api/v1/sessions/${id}/instructions`, { say: "undo" });
+      const b = (await st.call("POST", `/api/v1/sessions/${id}/instructions`, { say: SAYS })).body;
+      expect(b.manifest.providers.llm.cache).toBe("hit");
+      expect(b.manifest.cost_estimate.usd).toBe(0);
+      expect(provider.calls).toBe(1);
+      expect(b.timeline_hash).toBe(a.timeline_hash); // a replay gives the identical timeline
+    } finally {
+      await st.stop();
+    }
+  }, 120_000);
+
+  it("a model reply that is not valid commands is a rejection and the timeline does not change", async () => {
+    const { build } = make({ "*": { raw: "Sure! I deleted the video." } });
+    const st = await startStack();
+    try {
+      st.setLlm(build(st.pool));
+      const id = await session(st);
+      const before = (await st.call("GET", `/api/v1/sessions/${id}/timeline`)).body.timeline_hash;
+      const a = (await st.call("POST", `/api/v1/sessions/${id}/instructions`, { say: SAYS })).body;
+      expect(a.status).toBe("rejected");
+      expect(a.reason).toMatch(/not valid JSON/);
+      expect(a.timeline_hash).toBe(before);
+    } finally {
+      await st.stop();
+    }
+  }, 120_000);
+
+  it("LLM_PROVIDER=gemini with an empty key: the fallback is off and the answer says so", async () => {
+    const st = await startStack({ env: { LLM_PROVIDER: "gemini", GEMINI_API_KEY: "", GEMINI_MODEL: "gemini-3.5-flash-lite" } });
+    try {
+      const id = await session(st);
+      const a = (await st.call("POST", `/api/v1/sessions/${id}/instructions`, { say: SAYS })).body;
+      expect(a.status).toBe("rejected");
+      expect(a.reason).toMatch(/language-model fallback is off \(GEMINI_API_KEY is empty\)/);
+      expect(a.manifest.providers.llm).toMatch(/off/);
+    } finally {
+      await st.stop();
+    }
+  }, 120_000);
+});
