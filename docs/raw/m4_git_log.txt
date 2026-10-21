@@ -1,0 +1,14 @@
+fe9588a Sessions 24-25 (repeats are safe, vague captions and restore); sessions 13 and 20 now pass on the unchanged expectations; raw outputs
+1ecb6bb Advanced behaviours in the rules parser: 'make it shorter', 'the boring part', speaker-scoped removal with the host assumption and lead-in question, possible label swap and overlap warnings
+9f8856c Session 23 (Gemini fallback) with raw outputs: 3 runs, latency probe (0.75-36 s), cost per call, cache replay
+7f93307 LLM fallback (Gemini): commands validated with zod, translated to sentences the rules parser and engine apply, cached in llm_cache, cost in the manifest, off with an empty key; config test updated for the new gemini rule
+ee194e6 SOURCES: Gemini API terms (free tier data may be used to improve products) and pricing with evidence
+8232ac1 Sessions 21-22 (meaning search on the old recording) and their raw outputs
+0567bf2 Meaning-based search: MiniLM ONNX /embed in the ASR service, packages/semantic (passages, ranking, cached vectors in Postgres), 'remove the part about X' lists exact and meaning matches before cutting
+333b2aa Possible fillers: untranscribed voiced gaps detected at intake (transcript cache key v2), 'remove the ums' lists them and asks before cutting; ASR check of small.en and the disfluency prompt on the old recording
+6efa325 SOURCES: ffmpeg (GPL build) and libx264 with evidence; retention (RETENTION_DAYS) for renders and proxies, startup disk check, vacuum call
+14c6bca Merge branch 'main' of github.com:sanjay-tech-io/incubrix-ps2
+f9d15cd REVIEW_M3: mention --resume and the kept log of the cut-off batch
+2371486 Add docs/REVIEW_M3.md, update STATUS, raw outputs and test-pack results of the real batch
+3c36cf4 Render: named stereo layout after aeval/aevalsrc (mute alone failed in AAC), ffmpeg stderr in RENDER_FAILED details; sessions 02b, 17 anchored to the real footage
+0dd03c2 Store identical uploads once (findStoredOriginal), keep the CFR proxy next to the original, SeaweedFS volume.max=80 (40 volumes were full of repeated 200 MB uploads)

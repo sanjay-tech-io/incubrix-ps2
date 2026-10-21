@@ -1,6 +1,6 @@
 # Project status (project memory)
 
-Updated at the end of every milestone. Last update: M3 (2026-10-21), on top of M2, the infra workstream and M1c. Everything below was run, not assumed; "not verified" means exactly that.
+Updated at the end of every milestone. Last update: M4 (2026-10-21), on top of M3, M2, the infra workstream and M1c. Everything below was run, not assumed; "not verified" means exactly that.
 
 ## Done and verified
 | Item | Proof (command) |
@@ -72,6 +72,18 @@ Latest `npm test` (root): see docs/REVIEW_M1C.md section 2. Last update of this 
 
 M3 decisions: pieces are grouped (30 per seeked input pair, max 64 pairs) inside the one ffmpeg run; a CFR H.264 proxy is made for VFR, 10-bit/HDR/wide-gamut or non-H.264 sources and stored next to the original; the music asset is the generated built-in track; the render snapshots the timeline when asked.
 M3 NOT done or not verified: see REVIEW_M3.md section 9 (tone-map and late-video paths untested, real-footage A/V offset not measured by flash/beep, graphs above 361 pieces untested, no storage cleanup, speaker-aware edits and vague references not built).
+
+### M4 (details and raw output: docs/REVIEW_M4.md)
+| Item | Proof |
+|---|---|
+| ffmpeg (GPL build) and libx264 (GPL-2+) in SOURCES.md with evidence; Gemini API terms/pricing and MiniLM model licence recorded | `docs/licence-evidence/` |
+| Retention (renders, proxies; originals kept), startup disk check, SeaweedFS capacity raised | `packages/storage/test/retention.test.ts`, `api.test.ts` |
+| Possible fillers (untranscribed voiced gaps) stored at intake; "remove the ums" asks before cutting them | `packages/media/test/voiced.test.ts`, `packages/nlu/test/fillers.test.ts`; 29 markers on the old recording |
+| Meaning-based search (MiniLM ONNX, cached vectors) with the mock and the real model | `packages/semantic/test`, `services/asr/tests/test_embed.py`, sessions 21-22 |
+| Gemini fallback (closed command list, zod, llm_cache, cost in manifest, off without key) | `packages/llm/test` (12), `api.test.ts`, session 23 (3 runs) |
+| Vague references, speaker-scoped removal with host assumption and lead-in question, repeats safe; sessions 13 and 20 pass | `packages/nlu/test/advanced.test.ts`, sessions 13, 20, 24, 25 |
+
+M4 NOT done: item 7 (needs the new recordings), filler ground truth, Gemini job path (latency up to 36 s observed), batch not re-run. See REVIEW_M4.md section 7.
 
 ## Not verified (not built or not run)
 M3 leftovers: see REVIEW_M3.md section 9. The M2 list below is partly outdated: render, batch runner and the worker are built now.
