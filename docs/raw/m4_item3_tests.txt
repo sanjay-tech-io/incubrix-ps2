@@ -1,0 +1,95 @@
+ Container incubrix-ps2-postgres-1 Recreate 
+ Container incubrix-ps2-s3-1 Recreate 
+ Container incubrix-ps2-postgres-1 Recreated 
+ Container incubrix-ps2-s3-1 Recreated 
+ Container incubrix-ps2-init-1 Recreate 
+ Container incubrix-ps2-init-1 Recreated 
+ Container incubrix-ps2-s3-1 Starting 
+ Container incubrix-ps2-asr-tests-1 Starting 
+ Container incubrix-ps2-postgres-1 Starting 
+ Container incubrix-ps2-s3-1 Started 
+ Container incubrix-ps2-asr-tests-1 Started 
+ Container incubrix-ps2-postgres-1 Started 
+ Container incubrix-ps2-s3-1 Waiting 
+ Container incubrix-ps2-postgres-1 Waiting 
+ Container incubrix-ps2-postgres-1 Healthy 
+ Container incubrix-ps2-s3-1 Healthy 
+ Container incubrix-ps2-init-1 Starting 
+ Container incubrix-ps2-init-1 Started 
+ Container incubrix-ps2-init-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Exited 
+ Container incubrix-ps2-init-1 Exited 
+ Container incubrix-ps2-tests-run-54b6b51930b7 Creating 
+ Container incubrix-ps2-tests-run-54b6b51930b7 Created 
+
+> @incubrix/media@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/media
+
+ ✓ test/pure.test.ts (17 tests) 26ms
+ ✓ test/voiced.test.ts (4 tests) 251ms
+ ✓ test/music.test.ts (1 test) 252ms
+ ✓ test/ffmpeg.test.ts (8 tests) 3603ms
+   ✓ detectSilence (from the AUDIO, not from the transcript) > finds the 1 s gap with integer-microsecond bounds (within one analysis frame) 310ms
+
+ Test Files  4 passed (4)
+      Tests  30 passed (30)
+   Start at  20:09:54
+   Duration  4.50s (transform 441ms, setup 0ms, collect 926ms, tests 4.13s, environment 1ms, prepare 1.00s)
+
+
+> @incubrix/nlu@0.0.0 test
+> eslint . && vitest run
+
+
+ RUN  v2.1.9 /app/packages/nlu
+
+ ✓ test/time.test.ts (19 tests) 60ms
+ ✓ test/fillers.test.ts (5 tests) 78ms
+ ✓ test/rules.test.ts (24 tests) 654ms
+ ✓ test/lint_guard.test.ts (9 tests) 1283ms
+   ✓ nlu purity lint rules > forbids Date in packages/nlu/src 1207ms
+
+ Test Files  4 passed (4)
+      Tests  57 passed (57)
+   Start at  20:10:03
+   Duration  4.04s (transform 1.57s, setup 0ms, collect 3.61s, tests 2.08s, environment 2ms, prepare 1.37s)
+
+
+> @incubrix/api@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/api
+
+ ✓ test/api.test.ts (23 tests) 21232ms
+   ✓ API behaviour > openapi.yaml matches the running service > real responses validate against their schemas 4256ms
+   ✓ API behaviour > possible fillers reach the parser > markers stored in the transcript manifest turn 'remove the ums' into a question; nothing is cut before the answer 459ms
+   ✓ API behaviour > errors > a session on a video that is not ready is 409 VIDEO_NOT_READY (retryable) 302ms
+   ✓ API behaviour > errors > a video without audio fails its job with NO_AUDIO_TRACK and cannot start a session 489ms
+   ✓ API behaviour > idempotency (every POST) > the same bytes uploaded twice (different keys) are stored ONCE: both videos point at the same object 605ms
+   ✓ API behaviour > idempotency (every POST) > videos: same key + same file -> same ids, one video, one job, one stored object 879ms
+   ✓ API behaviour > idempotency (every POST) > sessions: same key + same body -> same session; different body -> 409 309ms
+   ✓ API behaviour > idempotency (every POST) > instructions: a repeated key replays the answer and does NOT apply the edit twice 309ms
+   ✓ API behaviour > jobs, cache, hints, warnings > the same file again is a transcript cache HIT (ASR not called); a different ASR model is a MISS 2698ms
+   ✓ API behaviour > jobs, cache, hints, warnings > num_speakers reaches the ASR/diarization call and changes the cache key 2066ms
+   ✓ API behaviour > jobs, cache, hints, warnings > variable frame rate is accepted with a warning in the job manifest and on the video 1179ms
+   ✓ retention (real storage) > an expired render is deleted with its manifest, the job says expired and has no links, the original stays 5414ms
+ ✓ test/e2e.test.ts (5 tests) 8088ms
+   ✓ worked example over HTTP (mock ASR) > uploads the clip, the job runs with progress and succeeds, the original is stored untouched 3547ms
+   ✓ worked example over HTTP (mock ASR) > step 8: render is a background job; the file matches the timeline length; the original is untouched (sha256 before and after) 3903ms
+ ✓ test/runner.test.ts (5 tests) 14316ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > determinism: the same session run 3 times through the runner gives the same timeline_hash at every step 12239ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a step that does not match its expectation fails the session, and the failure is kept in results.json 355ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a video without audio stops at intake with NO_AUDIO_TRACK and the session says so 572ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > batch: runs every file in a folder, one result folder each, summary.json lists pass and fail 741ms
+ ✓ test/ratelimit.test.ts (5 tests) 7ms
+
+ Test Files  4 passed (4)
+      Tests  38 passed (38)
+   Start at  20:10:08
+   Duration  48.38s (transform 1.11s, setup 0ms, collect 3.42s, tests 43.64s, environment 1ms, prepare 400ms)
+

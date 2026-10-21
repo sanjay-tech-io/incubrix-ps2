@@ -11,10 +11,13 @@ export interface TranscriptSettings {
   silenceMinUs: number;
   clampMinWordUs: number;
   lowConfidencePermille: number;
+  /** Range of untranscribed voiced gaps kept as possible fillers (packages/media findVoicedGaps). */
+  voicedGapMinUs: number;
+  voicedGapMaxUs: number;
 }
 
 export function transcriptCacheKey(sourceSha256: string, s: TranscriptSettings): string {
-  return sha256Text(canonicalJson({ v: 1, sourceSha256, ...s }));
+  return sha256Text(canonicalJson({ v: 2, sourceSha256, ...s }));
 }
 
 export interface TranscriptRow {

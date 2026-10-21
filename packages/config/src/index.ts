@@ -61,6 +61,9 @@ const base = z.object({
     SILENCE_NOISE_DB: z.coerce.number().int().min(-90).max(-10).default(-35),
     SILENCE_MIN_MS: z.coerce.number().int().min(50).max(10000).default(300),
     CLAMP_MIN_WORD_MS: z.coerce.number().int().min(1).max(1000).default(20),
+    // Untranscribed voiced stretches inside gaps between words are kept as POSSIBLE fillers (part of the transcript cache key).
+    VOICED_GAP_MIN_MS: z.coerce.number().int().min(20).max(5000).default(150),
+    VOICED_GAP_MAX_MS: z.coerce.number().int().min(100).max(10000).default(1200),
     LOW_CONFIDENCE_PERMILLE: z.coerce.number().int().min(0).max(1000).default(600),
 
     // --- M3: render ---

@@ -1,11 +1,11 @@
 import {
   EngineError, analyzeLog, checkSpeed, atomAt, atomPos, cursorToUs, editedToSource, findEffect, findTopicParts, formatTime, nextEffectId, phraseRanges,
   planMoveEdited, planProtectPause, planRemoveFillers, planRemoveSilences, planUpdateCaption, resolveEditedRange, resolveOriginalRange, snapPoint, sourceToEdited,
-  timelinePieces, usToCursor, currentTimeline,
+  timelinePieces, usToCursor, currentTimeline, sourceToEditedEnd,
   type Atom, type AtomRange, type CaptionPatch, type Effect, type EngineContext, type Operation, type PendingQuestion, type Span, type TimePolicy, type Timeline,
 } from "@incubrix/engine";
 import { findRange, findTimeAfter, parseTimeAt, tokenize, wordsToDigits } from "./time.ts";
-import type { InstructionParser, ParseInput, Parsed } from "./types.ts";
+import type { InstructionParser, ParseInput, Parsed, PossibleFiller } from "./types.ts";
 
 /**
  * The deterministic rule-based parser: no network, no key, no clock. Same text + same session state => same output.
@@ -291,6 +291,55 @@ function handleEverything(env: Env, dir: "after" | "before", phrase: string): Pa
   return rangeOptions(env, usable, `"${phrase}"`, (r) => make(r) as { operations: Operation[]; warnings: string[] });
 }
 
+/**
+ * Possible fillers: voiced stretches inside gaps that no transcribed word covers (they exist because Whisper drops "um"/"uh").
+ * Rule: they are NEVER cut by "remove the fillers" itself. Transcribed fillers are cut; the possible ones are listed with their
+ * times and offered as a question (all of them / only the likelier ones). This is the "never destructive without asking" rule.
+ */
+function liveFillers(env: Env): PossibleFiller[] {
+  const all = env.input.side?.possibleFillers ?? [];
+  if (all.length === 0) return [];
+  const pieces = timelinePieces(env.ctx, env.tl);
+  return all.filter((m) => sourceToEdited(pieces, m.startUs) !== null && sourceToEditedEnd(pieces, m.endUs) !== null);
+}
+
+const markerLabel = (m: PossibleFiller): string => `${formatTime(m.startUs)}-${formatTime(m.endUs)} (${((m.endUs - m.startUs) / 1e6).toFixed(2)} s, ${m.levelDb} dB vs speech, confidence ${Math.round(m.confidencePermille / 10)}%)`;
+
+function markerOptions(env: Env, ms: PossibleFiller[]): PendingQuestion["options"] {
+  const cutAll = (list: PossibleFiller[]) => {
+    const ops: Operation[] = [];
+    const warnings: string[] = [];
+    for (const m of list) {
+      const r = resolveOriginalRange(env.ctx, m.startUs, m.endUs);
+      ops.push(...r.spans.map((span): Operation => ({ type: "cut", span, reason: "filler" })));
+      warnings.push(...r.warnings);
+    }
+    return { operations: ops, warnings };
+  };
+  const strong = ms.filter((m) => m.confidencePermille >= 350);
+  const options: PendingQuestion["options"] = [{ label: `cut all ${ms.length}: ${ms.map(markerLabel).join("; ")}`, ...cutAll(ms) }];
+  if (strong.length > 0 && strong.length < ms.length) options.push({ label: `cut only the ${strong.length} likelier ones (confidence 35% or more): ${strong.map(markerLabel).join("; ")}`, ...cutAll(strong) });
+  return options;
+}
+
+function handleFillers(env: Env): Parsed {
+  const possible = liveFillers(env);
+  const asksPossible = /\b(possible|untranscribed|unheard|undetected|missed|dropped|hidden)\b/.test(env.body);
+  const p = asksPossible ? { operations: [] as Operation[], warnings: [] as string[] } : planRemoveFillers(env.ctx, env.tl);
+  if (p.operations.length > 0) {
+    const note = possible.length > 0
+      ? [`${possible.length} possible untranscribed filler(s) were NOT cut (the speech-to-text dropped them, or they are breaths, laughs or coughs): ${possible.map(markerLabel).join("; ")}. Say "remove the possible fillers" to choose.`]
+      : [];
+    return plan(env, p.operations, [...p.warnings, ...note]);
+  }
+  if (possible.length === 0) return plan(env, [], [], "No filler words were found.");
+  return clarify(
+    env,
+    `${asksPossible ? "" : "No transcribed filler words were found. "}${possible.length} possible untranscribed filler(s) found (voiced sounds that no word covers; they may also be breaths, laughs or coughs). Cut them?`,
+    markerOptions(env, possible),
+  );
+}
+
 function handleSilences(env: Env, tokens: string[]): Parsed {
   const t = findTimeAfter(tokens, ["than", "over", "above", "exceeding", "beyond"]) ?? findTimeAfter(tokens, ["longer"]);
   if (t) {
@@ -385,10 +434,7 @@ function parseOne(input: ParseInput, offset: number): Parsed {
   }
 
   // 3. fillers / silences / pauses
-  if (CUT_VERB.test(body) && /\b(fillers?|filler words?|ums?|uhs?|um and uh|hesitations?)\b/.test(body)) {
-    const p = planRemoveFillers(ctx, tl);
-    return plan(env, p.operations, p.warnings, "No filler words were found.");
-  }
+  if (CUT_VERB.test(body) && /\b(fillers?|filler words?|ums?|uhs?|um and uh|hesitations?)\b/.test(body)) return handleFillers(env);
   if (/\b(keep|protect|pin|preserve)\b/.test(body) && /\bpause\b/.test(body)) {
     const at = findTimeAfter(tokens, ["at"]);
     if (!at) return reject(env, "Say which pause to keep, for example: keep the pause at 0:12.");

@@ -69,6 +69,26 @@ describe.skipIf(!integration)("API behaviour", () => {
     });
   });
 
+  describe("possible fillers reach the parser", () => {
+    it("markers stored in the transcript manifest turn 'remove the ums' into a question; nothing is cut before the answer", async () => {
+      const { videoId } = await ingest(s, clip());
+      // the mock transcript has no filler word; add two voiced-gap markers to the stored manifest (what intake writes)
+      await s.pool.query(
+        "update transcripts set manifest = manifest || $2::jsonb where cache_key = (select transcript_key from videos where id=$1)",
+        [videoId, JSON.stringify({ voiced_gaps: { markers: [{ startUs: 5_000_000, endUs: 5_300_000, levelDb: -3, zcr: 0.07, touchesWord: false, confidencePermille: 450 }], too_long: 0, stats: {} } })],
+      );
+      const id = (await s.call("POST", "/api/v1/sessions", { video_id: videoId })).body.session_id;
+      const before = (await s.call("GET", `/api/v1/sessions/${id}/timeline`)).body.timeline_hash;
+      const q = (await s.call("POST", `/api/v1/sessions/${id}/instructions`, { say: "remove the ums" })).body;
+      expect(q.status).toBe("needs_clarification");
+      expect(q.question).toMatch(/possible untranscribed filler/);
+      expect(q.timeline_hash).toBe(before);
+      const a = (await s.call("POST", `/api/v1/sessions/${id}/instructions`, { answer: 1 })).body;
+      expect(a.status).toBe("applied");
+      expect(a.timeline_hash).not.toBe(before);
+    });
+  });
+
   describe("errors", () => {
     const shape = (b: any) => {
       expect(Object.keys(b)).toEqual(["error"]);

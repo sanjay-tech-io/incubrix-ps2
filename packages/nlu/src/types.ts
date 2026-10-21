@@ -1,6 +1,37 @@
 import type { EngineContext, Operation, PendingQuestion, SessionState, TimePolicy } from "@incubrix/engine";
 
+/** A voiced stretch no ASR word covers (packages/media findVoicedGaps). A POSSIBLE filler: never cut without asking. */
+export interface PossibleFiller {
+  startUs: number;
+  endUs: number;
+  levelDb: number;
+  zcr: number;
+  touchesWord: boolean;
+  confidencePermille: number;
+}
+
+/** A passage of the transcript whose meaning is close to the query (cosine similarity of sentence embeddings). */
+export interface SemanticHit {
+  startUs: number;
+  endUs: number;
+  text: string;
+  /** 0..1000 (similarity x 1000, rounded): an integer so it can sit in logs and hashes. */
+  scorePermille: number;
+  speaker: string | null;
+}
+
+/**
+ * Data the caller computed BEFORE parsing because it needs I/O (this package stays pure): untranscribed sounds read
+ * from the transcript manifest, and the meaning-search hits for the topic of the instruction.
+ */
+export interface SideData {
+  possibleFillers?: readonly PossibleFiller[];
+  semantic?: { topic: string; hits: readonly SemanticHit[] } | null;
+}
+
 export interface ParseInput {
+  /** See SideData. Absent = none available (the rules still work on exact words). */
+  side?: SideData;
   text: string;
   ctx: EngineContext;
   state: SessionState;
@@ -18,7 +49,7 @@ export type Parsed =
   | { kind: "redo"; timePolicy: TimePolicy; warnings: string[] }
   | { kind: "choose"; choice: number; timePolicy: TimePolicy }
   | { kind: "clarify"; question: string; options: PendingQuestion["options"]; timePolicy: TimePolicy; warnings: string[] }
-  | { kind: "reject"; reason: string; timePolicy: TimePolicy; warnings: string[] };
+  | { kind: "reject"; reason: string; timePolicy: TimePolicy; warnings: string[]; /** The text was not recognised at all (an LLM fallback may try); false/absent = understood but refused. */ unparsed?: boolean };
 
 export interface InstructionParser {
   readonly name: string;

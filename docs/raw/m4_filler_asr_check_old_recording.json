@@ -1,0 +1,138 @@
+{
+ "audio": "/out/_old_recording_16k.wav",
+ "prompt": "Umm, let me think, like, hmm... okay, so, uh, here is what I think.",
+ "results": [
+  {
+   "model": "base.en",
+   "vad_filter": true,
+   "prompt": false,
+   "words": 290,
+   "fillers": 0,
+   "filler_list": [],
+   "prompt_echoed": false,
+   "rtf": 0.1215,
+   "text": "Hello guys, I am Sanjay. Today, we will be discussing about cloud and its features. So What can I say? I really like this tool and it's like really useful for project building and everything and For the for the guys who are watching this I would like to thank you for joining. So, thanks for joining so So thanks, so welcome to our channel, let's say pricing plans in Cloud Code. So the pricing plans in Cloud will be differing from each plan. So we have to choose each plan accordingly to our use and each plan will be having more of its slot features and it's not like charge B .D. Go plus or premium. It just has only three plans, three pro and max plan. And after that, you know, the pricing in all the three plans will be extraordinarily clear and you know I chose I chose cloud pro plan pricing for my for building my project. So what I am trying to tell is like the cost or subscription fee of each plan will be meaning based the search. So, like what I say, everything will be mentioned in the cloud cloud subscriptions and their pricing page. So, let's say, let's see what are the plans that are mentioned in the pro pricing plan. so let's see what are the features are mentioned in it and it's not like chargey video, so chargey video will be having different types of pricing and those things those start -off stuffs and I want you to clear like so thank you for watching and I'm really thanks thanks you people to staying here for this much time and once again, once again, thanks for watching, thanks for watching."
+  },
+  {
+   "model": "base.en",
+   "vad_filter": true,
+   "prompt": true,
+   "words": 292,
+   "fillers": 2,
+   "filler_list": [
+    [
+     "Umm,",
+     7280000
+    ],
+    [
+     "uh,",
+     10040000
+    ]
+   ],
+   "prompt_echoed": false,
+   "rtf": 0.1248,
+   "text": "Hello guys, I am Sanjay. Today we will be discussing about cloud and its features. Umm, so, uh, what can I say? I really like this tool and it's like really useful for project building and everything and for the guys who are watching this, I would like to thank you for joining. So, thanks for joining. So, thanks. So, welcome to our channel. Let's say, pricing plans in cloud code. So, the pricing plans in cloud will be differing from each plan. So, we have to choose each plan accordingly to our use and each plan will be having more of its slot features and it is not like charge GPD, go plus or premium, it just has only 3 plans, 3 pro and max plan and after that you know the pricing in all the three plants will be extraordinarily clear and you know I chose I chose cloud pro plan pricing for my for building my project. So, what I am trying to tell is like the cost or subscription fee of each plan will be meaning based search. So, like what can I say, everything will will be mentioned in the cloud cloud subscriptions and their pricing page. So let's say let's see what are the plans that are mentioned in the pro pricing plan. So let's see what are the features are mentioned in it and it's not like charge if we do not So it will be having different types of pricing and those things, those start of stuffs. And I want you to clear life. So thank you for watching and I am really thank you people for staying here for this much time. and once again, once again, thanks for watching. Thanks for watching."
+  },
+  {
+   "model": "base.en",
+   "vad_filter": false,
+   "prompt": false,
+   "words": 296,
+   "fillers": 0,
+   "filler_list": [],
+   "prompt_echoed": false,
+   "rtf": 0.1377,
+   "text": "hello guys I am Sanjay today we will be discussing about cloud and its features so what can I say I really like this tool and it's like really useful for project building and everything and for the guys who are watching this I would like to thank you for joining. So, thanks for joining. So, thanks. So, okay, welcome to our channel. Let's say, pricing plans in cloud code. So, the pricing plans in cloud will be differing from each plan. So we have to choose each plan accordingly to the to our use and each plan will be having more of its slot features and it's not like charge GPD, Go plus or premium, it just has only three plans, three pro and max plan and after that, you know, the pricing in all the three plans will be extraordinarily clear and you know I chose I chose cloud pro plan pricing for my for building my project. So what I am trying to tell is like the cost or subscription fee of each plan will be meaning best meaning based the search. So, like what can I say, everything will be mentioned in the cloud cloud subscriptions and their pricing page. So, let us say, let us see what are the plans that are mentioned in the pro pricing plan. So let's see what are the features are mentioned in it and it's not like chargey bid, you know. So chargey bid will be having different types of pricing and those things, those start -off stuffs and I want you to clear like. So thank you for watching and I am really thanks you people to staying here for this much time and once again once again thanks for watching thanks for watching"
+  },
+  {
+   "model": "base.en",
+   "vad_filter": false,
+   "prompt": true,
+   "words": 299,
+   "fillers": 2,
+   "filler_list": [
+    [
+     "Umm,",
+     7460000
+    ],
+    [
+     "uh,",
+     10120000
+    ]
+   ],
+   "prompt_echoed": false,
+   "rtf": 0.1204,
+   "text": "Hello guys, I am Sanjay. Today we will be discussing about Cloud and its features. Umm, so, uh, what can I say? I really like this tool and it's like really useful for project building and everything. And for the guys who are watching this, I would like to thank you for joining. So, thanks for joining. So, thanks, so welcome to our channel, let's say, pricing plans in cloud code. So the pricing plans in cloud will be differing from each plan, so we have to choose each each plant accordingly to the to our use and each plan will be having more of its cloth features and neither it's not like chargey PD go plus or premium it just has only three plants three pro and max plan and after that you know the pricing in all the three plants will be extraordinarily clear and you know I chose I chose cloud pro plan pricing for my for building my project so what I am trying to tell is like the cost or subscription fee of each plan will be meaning best meaning based the search. So, like what can I say, everything will be mentioned in the cloud cloud subscriptions and their pricing page. So, let us say, let us see what are the plans that are mentioned in the pro pricing plan. So let's see what are the features are mentioned in it and it's not like chargey bid, you know. So chargey bid will be having different types of pricing and those things, those start -off stuffs and I want you to clear like. So thank you for watching and I am really thanks you people to staying here for this much time and once again once again thanks for watching thanks for watching"
+  },
+  {
+   "model": "small.en",
+   "vad_filter": true,
+   "prompt": false,
+   "words": 294,
+   "fillers": 0,
+   "filler_list": [],
+   "prompt_echoed": false,
+   "rtf": 0.3221,
+   "text": "Hello guys, I am Sanjay. Today we will be discussing about cloud and its features. So, what can I say? I really like this tool and it's like really useful for project building and everything. And for the guys who are watching this, I would like to thank you for joining. so thanks for joining so thanks is so okay welcome to our channel let's say pricing plans in cloud code so the pricing plans in cloud will be differing from each plan so we have to we have to choose each plan accordingly to the two hour use and each plan will be having more of its cloud features and it's not like Chagibidi, Go Plus or Premium, it just has only three plans, 3 Pro and Max plan and after that you know the pricing in all the three plans will be extraordinarily clear and you know I chose I chose clock pro plan pricing for my for building my project so what I am trying to tell is like the cost or subscription fee of each plan will be meaning based search so like what can I say everything will be mentioned in the cloud subscriptions and their pricing page so let's say let's Let's see what are the plans that are mentioned in the pro pricing plan so let's see what are the features are mentioned in it and It's not like chagipity, you know, so it is chagipity will be having different types of pricing and those things those sort of stuffs and I Want you to clear like so thank you for watching and I'm really thanks thanks you people to staying here for this much time and once again once again thanks for watching thanks for watching"
+  },
+  {
+   "model": "small.en",
+   "vad_filter": true,
+   "prompt": true,
+   "words": 299,
+   "fillers": 3,
+   "filler_list": [
+    [
+     "Umm,",
+     7540000
+    ],
+    [
+     "uh,",
+     10400000
+    ],
+    [
+     "uh,",
+     19500000
+    ]
+   ],
+   "prompt_echoed": false,
+   "rtf": 0.5424,
+   "text": "Hello guys, I am Sanjay. Today we will be discussing about cloud and its features. Umm, so, uh, what can I say? I really like this tool and it's, like, really useful for project building and everything. And, uh, for the, for the guys who are watching this, I would like to thank you for joining. so thanks for joining so thanks is so okay welcome to our channel let's say pricing plans in Claude code so the pricing plans in Claude will be differing from each plan so we have to we have to choose each plan accordingly to the two hour use and each plan will be having more of its cloud features and it's not like Chagibidi, Go Plus or Premium, it just has only three plans, 3 Pro and Max plan and after that you know the pricing in all the three plans will be extraordinarily clear and you know I chose I chose clock pro plan pricing for my for building my project so what I am trying to tell is like the cost or subscription fee of each plan will be meaning based search so like what can I say everything will be mentioned in the cloud subscriptions and their pricing page so let's say let's Let's see what are the plans that are mentioned in the pro pricing plan so let's see what are the features are mentioned in it and It's not like chagipity, you know, so it is chagipity will be having different types of pricing and those things those sort of stuffs and I Want you to clear like so thank you for watching and I'm really thanks thanks you people to staying here for this much time and once again once again thanks for watching thanks for watching"
+  },
+  {
+   "model": "small.en",
+   "vad_filter": false,
+   "prompt": false,
+   "words": 299,
+   "fillers": 0,
+   "filler_list": [],
+   "prompt_echoed": false,
+   "rtf": 0.5292,
+   "text": "hello guys I am Sanjay today we will be discussing about cloud and its features so what can I say I really like this tool and it's like really useful for project building and everything and for the for the guys who are watching this I would like to thank you for joining so thanks for joining so thanks is so okay welcome to our channel let's say pricing plans in plot code so the pricing plans in cloud will be differing from each plan so we have to we have to choose each plan accordingly to the to our use and each plan will be having more of its cloud features and neither it's not it's not like chad GPD go plus or premium it It just has only three plans, free pro and max plan and after that, you know, the pricing in all the three plans will be extraordinarily clear and you know, I chose, I chose clock pro plan pricing for my, for building my project. So, what I am trying to tell is like the cost or subscription fee of each plan will be meaning based search. So, like what can I say, everything will be mentioned in the clock code subscriptions and their pricing page, so let's say, let's see what are the plans that are mentioned in the pro pricing plan so let's see what are the features or mentioned in it and it's not like chajibiti you know so chajibiti will be having different types of pricing and those things those sort of stuffs and i want you to clear like so thank you for watching and i'm really thanks thanks you people to staying here for this much time and once again once again thanks for watching thanks for watching"
+  },
+  {
+   "model": "small.en",
+   "vad_filter": false,
+   "prompt": true,
+   "words": 304,
+   "fillers": 3,
+   "filler_list": [
+    [
+     "Umm,",
+     7560000
+    ],
+    [
+     "uh,",
+     10480000
+    ],
+    [
+     "uh,",
+     19480000
+    ]
+   ],
+   "prompt_echoed": false,
+   "rtf": 0.5267,
+   "text": "Hello guys, I am Sanjay. Today we will be discussing about cloud and its features. Umm, so, uh, what can I say? I really like this tool and it's, like, really useful for project building and everything. And, uh, for the, for the guys who are watching this, I would like to thank you for joining so thanks for joining so thanks is so okay welcome to our channel let's say pricing plans in plot code so the pricing plans in plot will be differing from each plan so we have to we have to choose each plan accordingly to the to our use and each plan will be having more of its cloud features and neither it's not like chat GPD go plus or premium it just has only three plans free pro and max plan and after that you know the pricing in all the three plans will be extraordinarily clear and you know I chose I chose Claude pro plan pricing for my for building my project so what I am trying to tell is like the cost or subscription fee of each plan will be meaning based search so like what can I say everything will be mentioned in the clock code subscriptions and their pricing page so let's say let's say let's see what are the plans that are mentioned in the pro pricing plan so let's see what are the features are mentioned in it and it's not like charge if you know so it charge if it will be having different types of pricing and those things those startup stuffs and I want you to clear like so thank you for watching and I'm really thanks thanks you people to staying here for this much time and once again once again thanks for watching thanks for watching"
+  }
+ ]
+}

@@ -7,7 +7,7 @@ import { RulesParser } from "./rules.ts";
 import type { InstructionParser, ParseInput } from "./types.ts";
 
 /** Parse, then hand the result to the engine. All timeline logic happens in the engine's session functions. */
-export function runInstruction(ctx: EngineContext, state: SessionState, input: Pick<ParseInput, "text" | "answer">, parser: InstructionParser): Turn {
+export function runInstruction(ctx: EngineContext, state: SessionState, input: Pick<ParseInput, "text" | "answer" | "side">, parser: InstructionParser): Turn {
   const p = parser.parse({ ctx, state, ...input });
   const text = input.text;
   switch (p.kind) {

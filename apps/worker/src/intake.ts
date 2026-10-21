@@ -9,7 +9,7 @@ import type { S3Client } from "@aws-sdk/client-s3";
 import type { Config } from "@incubrix/config";
 import type { Atom, Source } from "@incubrix/contracts";
 import { ApiError, errorBody, type ErrorCode } from "@incubrix/errors";
-import { detectSilence, probe } from "@incubrix/media";
+import { detectSilence, findVoicedGaps, probe, readWavPcm16 } from "@incubrix/media";
 import { getToFile, putFile } from "@incubrix/storage";
 import {
   buildManifest, failJob, findStoredOriginal, getJob, getTranscript, getVideo, jobView, putTranscript, setProgress, succeedJob, transcriptCacheKey, updateVideo,
@@ -125,17 +125,20 @@ export async function runIntake(d: WorkerDeps, job: JobRow): Promise<void> {
     const settings: TranscriptSettings = {
       asrProvider: d.asr.provider, asrModel: d.asr.model, diarizationProvider: d.asr.diarizationProvider, numSpeakers: video.num_speakers_hint,
       silenceNoiseDb: d.cfg.SILENCE_NOISE_DB, silenceMinUs: d.cfg.SILENCE_MIN_MS * 1000, clampMinWordUs: d.cfg.CLAMP_MIN_WORD_MS * 1000, lowConfidencePermille: d.cfg.LOW_CONFIDENCE_PERMILLE,
+      voicedGapMinUs: d.cfg.VOICED_GAP_MIN_MS * 1000, voicedGapMaxUs: d.cfg.VOICED_GAP_MAX_MS * 1000,
     };
     const cacheKey = transcriptCacheKey(sha256, settings);
     let atoms: Atom[];
     let cache: "hit" | "miss" = "miss";
     let asrManifest: Record<string, unknown> = {};
     let asrSeconds = 0;
+    let voiced: unknown = null;
     const cached = await getTranscript(d.pool, cacheKey);
     if (cached) {
       cache = "hit";
       atoms = cached.atoms;
       asrManifest = (cached.manifest.asr as Record<string, unknown> | undefined) ?? {};
+      voiced = cached.manifest.voiced_gaps ?? null;
       warnings.push(...(((cached.manifest.warnings as string[] | undefined) ?? []).filter((w) => !warnings.includes(w))));
       await setProgress(d.pool, job.id, 90);
     } else {
@@ -164,17 +167,27 @@ export async function runIntake(d: WorkerDeps, job: JobRow): Promise<void> {
       mark = lap("silence_s", mark);
       const built = atomsFromAsr(sha256, p.durationUs, asr.words, silences, { clampMinWordUs: settings.clampMinWordUs, lowConfidencePermille: settings.lowConfidencePermille });
       atoms = built.atoms;
+      // Possible fillers the ASR dropped: voiced stretches inside the gaps between words (never cut without asking).
+      const pcm = readWavPcm16(await readFile(wav));
+      const vg = findVoicedGaps({
+        samples: pcm.samples, sampleRate: pcm.sampleRate, words: atoms.filter((a) => a.kind === "word"), gaps: atoms.filter((a) => a.kind === "silence"),
+        minUs: settings.voicedGapMinUs, maxUs: settings.voicedGapMaxUs,
+      });
+      voiced = { markers: vg.markers, too_long: vg.tooLong, stats: vg.stats };
       warnings.push(...built.warnings);
       const speakers = new Set(atoms.map((a) => a.speaker).filter((s) => s !== null));
       asrManifest = { provider: asr.provider, model: asr.model, speakers_found: asr.speakersFound ?? speakers.size, silences_found: silences.length, stats: built.stats, service_timings: asr.timings };
       await putTranscript(d.pool, {
         cache_key: cacheKey, source_sha256: sha256, settings,
-        atoms, manifest: { asr: asrManifest, warnings: built.warnings, created_with: { pinned: PINNED } },
+        atoms, manifest: { asr: asrManifest, warnings: built.warnings, voiced_gaps: voiced, created_with: { pinned: PINNED } },
       });
     }
     const speakersFound = new Set(atoms.map((a) => a.speaker).filter((s) => s !== null)).size;
     if (speakersFound > 1 && video.num_speakers_hint === null) warnings.push(`${speakersFound} speakers were detected; if that is wrong, upload again with the num_speakers hint.`);
     if (atoms.some((a) => a.overlapsSpeech)) warnings.push("Some words overlap another speaker; edits touching them will warn.");
+
+    const nPossible = ((voiced as { markers?: unknown[] } | null)?.markers ?? []).length;
+    if (nPossible > 0) warnings.push(`${nPossible} untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them.`);
 
     // 4. done
     await updateVideo(d.pool, video.id, {

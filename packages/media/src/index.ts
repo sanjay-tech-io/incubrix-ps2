@@ -3,3 +3,4 @@ export { type AudioInfo, type ProbeResult, type VideoInfo, detectVfr, probe } fr
 export { type Interval, detectSilence, parseSilenceDetect } from "./silence.ts";
 export { type Adjustment, type ClampResult, type TimedWord, clampWordsToSilence } from "./clamp.ts";
 export { BUILTIN_MUSIC_SHA256, MUSIC_RATE, MUSIC_SECONDS, builtinMusicWav } from "./music.ts";
+export { type VoicedGap, type VoicedGapResult, VOICED_DEFAULTS, findVoicedGaps, readWavPcm16 } from "./voiced.ts";

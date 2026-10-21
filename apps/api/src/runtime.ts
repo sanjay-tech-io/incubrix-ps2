@@ -1,3 +1,4 @@
+import type { PossibleFiller } from "@incubrix/nlu";
 import { newSession, type EngineContext, type SessionState } from "@incubrix/engine";
 import type { Atom, Source } from "@incubrix/contracts";
 import { ApiError } from "@incubrix/errors";
@@ -9,6 +10,8 @@ export interface Runtime {
   videoId: string;
   video: VideoRow;
   ctx: EngineContext;
+  /** Untranscribed voiced sounds from the transcript manifest (possible fillers). */
+  possibleFillers: PossibleFiller[];
   state: SessionState;
   counts: { log: number; conversation: number };
 }
@@ -43,15 +46,17 @@ export class RuntimeCache {
     if (!session) throw new ApiError("SESSION_NOT_FOUND", `session ${sessionId} does not exist`);
     let ctx = hit?.ctx;
     let video = hit?.video;
+    let possibleFillers = hit?.possibleFillers ?? [];
     if (!ctx || !video) {
       const v = await getVideo(db, session.video_id);
       const t = v?.transcript_key ? await getTranscript(db, v.transcript_key) : null;
       if (!v || !t) throw new ApiError("VIDEO_NOT_READY", "the session's video has no transcript");
       ctx = contextOf(v, t.atoms as Atom[], this.maxSpeed);
       video = v;
+      possibleFillers = ((t.manifest.voiced_gaps as { markers?: PossibleFiller[] } | null | undefined)?.markers ?? []) as PossibleFiller[];
     }
     const state = counts.log === 0 && counts.conversation === 0 ? newSession() : await loadSessionState(db, sessionId);
-    const rt: Runtime = { sessionId, videoId: session.video_id, video, ctx, state, counts };
+    const rt: Runtime = { sessionId, videoId: session.video_id, video, ctx, possibleFillers, state, counts };
     this.set(rt);
     return rt;
   }

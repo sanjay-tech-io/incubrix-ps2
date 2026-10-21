@@ -275,7 +275,7 @@ export async function buildApp(d: ApiDeps): Promise<FastifyInstance & { routeTab
         const t0 = performance.now();
         const cpu0 = process.cpuUsage();
         const text = body.say ?? String(body.answer);
-        const turn = runInstruction(rt.ctx, rt.state, body.answer === undefined ? { text } : { text, answer: body.answer }, d.parser);
+        const turn = runInstruction(rt.ctx, rt.state, body.answer === undefined ? { text, side: { possibleFillers: rt.possibleFillers } } : { text, answer: body.answer, side: { possibleFillers: rt.possibleFillers } }, d.parser);
         await appendTurn(c, session_id, rt.state, turn.state);
         const cpu = process.cpuUsage(cpu0);
         const ms = performance.now() - t0;
