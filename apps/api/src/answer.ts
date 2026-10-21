@@ -33,11 +33,11 @@ export function answerView(a: Answer, extra: { turn?: number; manifest?: Manifes
   };
 }
 
-export function instructionManifest(o: { parser: { name: string; version: string }; llmProvider: string; maxSpeed: number; timePolicy: TimePolicy; instructionMs: number; cpuSeconds: number; warnings: string[]; rights: string | null; aiGenerated: boolean }) {
+export function instructionManifest(o: { parser: { name: string; version: string }; llmProvider: string; maxSpeed: number; timePolicy: TimePolicy; instructionMs: number; cpuSeconds: number; warnings: string[]; rights: string | null; aiGenerated: boolean; semantic?: { model: string; ms: number; hits: number; passages: string; query: string } | null }) {
   return buildManifest({
-    providers: { parser: { name: o.parser.name, version: o.parser.version }, engine: { name: "incubrix-engine", version: "0.0.0" }, llm: o.llmProvider === "rules" || o.llmProvider === "mock" ? "none (no LLM was called)" : o.llmProvider },
+    providers: { parser: { name: o.parser.name, version: o.parser.version }, engine: { name: "incubrix-engine", version: "0.0.0" }, embedding: o.semantic ? { model: o.semantic.model, hits: o.semantic.hits, passages: o.semantic.passages, query_vector: o.semantic.query } : "none (no meaning search was needed)", llm: o.llmProvider === "rules" || o.llmProvider === "mock" ? "none (no LLM was called)" : o.llmProvider },
     settings: { llm_provider: o.llmProvider, time_policy: o.timePolicy, max_speed: o.maxSpeed, min_speed: 0.25, randomness: "none" },
-    timings: { instruction_ms: Math.round(o.instructionMs * 100) / 100 },
+    timings: { instruction_ms: Math.round(o.instructionMs * 100) / 100, ...(o.semantic ? { semantic_ms: o.semantic.ms } : {}) },
     cpuSeconds: o.cpuSeconds,
     warnings: o.warnings,
     rights: o.rights,

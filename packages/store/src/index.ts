@@ -8,3 +8,4 @@ export * from "./urlguard.ts";
 export * from "./manifest.ts";
 export * from "./log.ts";
 export * from "./context.ts";
+export * from "./embeddings.ts";

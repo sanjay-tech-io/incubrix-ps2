@@ -14,7 +14,8 @@ import {
   currentTimeline, effectDisplay, timelineHash, materialize, formatTime, type Effect,
 } from "@incubrix/engine";
 import { ApiError, ERRORS, errorBody } from "@incubrix/errors";
-import { runInstruction, type InstructionParser } from "@incubrix/nlu";
+import { applyParsed, topicRequest, type InstructionParser, type SideData } from "@incubrix/nlu";
+import type { SemanticService } from "@incubrix/semantic";
 import { presignGet, putFile } from "@incubrix/storage";
 import {
   appendTurn, assertUrlAllowed, findStoredOriginal, createJob, createSession, createVideo, getJob, getSession, getVideo, jobView, lockSession, requestHash, tx, withIdempotency,
@@ -35,6 +36,8 @@ export interface ApiDeps {
   cfg: Config;
   log: Logger;
   parser: InstructionParser;
+  /** Meaning search (null = off: exact words only, and the answer says so). */
+  semantic?: SemanticService | null;
   now?: () => number;
 }
 
@@ -268,6 +271,24 @@ export async function buildApp(d: ApiDeps): Promise<FastifyInstance & { routeTab
     const body = parseBody(InstructionBody, req.body);
     if (!(await getSession(pool, session_id))) throw new ApiError("SESSION_NOT_FOUND", `session ${session_id} does not exist`);
     return idem(req, reply, `POST /api/v1/sessions/${session_id}/instructions`, requestHash(body), async () => {
+      // Needs I/O, so it runs BEFORE the transaction and the per-session lock: the meaning-search hits of the instruction's topic.
+      const side: SideData = {};
+      let semantic: { model: string; ms: number; hits: number; passages: string; query: string } | null = null;
+      const topic = body.answer === undefined && body.say ? topicRequest(body.say) : null;
+      if (topic) {
+        const rt0 = await runtimes.get(pool, session_id);
+        if (!d.semantic) side.semanticNote = "Meaning search is off (EMBED_PROVIDER=none); only exact words were searched.";
+        else {
+          try {
+            const r = await d.semantic.search(rt0.video.transcript_key!, rt0.ctx.index.atoms, topic);
+            side.semantic = { topic: r.topic, hits: r.hits.map((h) => ({ startUs: h.startUs, endUs: h.endUs, text: h.text, scorePermille: h.scorePermille, speaker: h.speaker })) };
+            semantic = { model: r.modelId, ms: r.timings.ms, hits: r.hits.length, passages: r.timings.passages, query: r.timings.query };
+          } catch (e) {
+            d.log.warn({ err: (e as Error).message }, "meaning search unavailable");
+            side.semanticNote = "Meaning search is unavailable (the embedding service did not answer); only exact words were searched.";
+          }
+        }
+      }
       const result = await tx(pool, async (c) => {
         // One instruction at a time per session, across processes; the state is re-read under the lock.
         await lockSession(c, session_id);
@@ -275,14 +296,16 @@ export async function buildApp(d: ApiDeps): Promise<FastifyInstance & { routeTab
         const t0 = performance.now();
         const cpu0 = process.cpuUsage();
         const text = body.say ?? String(body.answer);
-        const turn = runInstruction(rt.ctx, rt.state, body.answer === undefined ? { text, side: { possibleFillers: rt.possibleFillers } } : { text, answer: body.answer, side: { possibleFillers: rt.possibleFillers } }, d.parser);
+        const input = { text, side: { ...side, possibleFillers: rt.possibleFillers }, ...(body.answer === undefined ? {} : { answer: body.answer }) };
+        const parsed = d.parser.parse({ ctx: rt.ctx, state: rt.state, ...input });
+        const turn = applyParsed(rt.ctx, rt.state, text, parsed);
         await appendTurn(c, session_id, rt.state, turn.state);
         const cpu = process.cpuUsage(cpu0);
         const ms = performance.now() - t0;
         runtimes.set({ ...rt, state: turn.state, counts: { log: turn.state.log.length, conversation: turn.state.conversation.length } });
         const manifest = instructionManifest({
           parser: d.parser, llmProvider: cfg.LLM_PROVIDER, maxSpeed: cfg.MAX_SPEED, timePolicy: turn.answer.timePolicy, instructionMs: ms,
-          cpuSeconds: (cpu.user + cpu.system) / 1e6, warnings: turn.answer.warnings, rights: rt.video.rights, aiGenerated: rt.video.ai_generated,
+          cpuSeconds: (cpu.user + cpu.system) / 1e6, warnings: turn.answer.warnings, rights: rt.video.rights, aiGenerated: rt.video.ai_generated, semantic,
         });
         d.log.info({ session_id, status: turn.answer.status, instruction_ms: Math.round(ms) }, "instruction answered");
         return answerView(turn.answer, { turn: turn.state.conversation.length, manifest });

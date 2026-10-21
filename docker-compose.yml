@@ -108,6 +108,7 @@ services:
       ASR_PROVIDER: mock
       DIARIZATION_PROVIDER: mock
       LLM_PROVIDER: rules
+      EMBED_PROVIDER: mock
     depends_on:
       init: { condition: service_completed_successfully }
       asr-tests: { condition: service_completed_successfully }

@@ -5,6 +5,7 @@ from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
 
 from asr.adapters.base import Adapter
+from asr.embed import Embedder, build_embedder
 from asr.diarize import DiarizationSettings, Diarizer, assign_speakers
 from asr.schema import Transcript
 
@@ -46,16 +47,29 @@ def build_diarizer(name: Optional[str] = None, settings: Optional[DiarizationSet
     raise ValueError(f"unknown DIARIZATION_PROVIDER {name!r} (sherpa | mock | none)")
 
 
-def create_app(adapter: Optional[Adapter] = None, diarizer: Optional[Diarizer] = None) -> FastAPI:
+def create_app(adapter: Optional[Adapter] = None, diarizer: Optional[Diarizer] = None, embedder: Optional[Embedder] = None) -> FastAPI:
     app = FastAPI(title="incubrix-asr")
     adp = adapter or build_adapter()
     dia_settings = DiarizationSettings.from_env(os.environ)
     # Passing an adapter (tests) without a diarizer means "no diarization", never "read the env".
     dia = diarizer if (adapter is not None or diarizer is not None) else build_diarizer(settings=dia_settings)
 
+    # Like the diarizer: passing an adapter (tests) without an embedder means "no embedder", never "read the env".
+    emb = embedder if (adapter is not None or embedder is not None) else build_embedder()
+
+    @app.post("/embed")
+    async def embed(body: dict):
+        """{ "texts": [...] } -> unit-length vectors for meaning search. At most 256 texts per call."""
+        texts = body.get("texts")
+        if emb is None:
+            return error(503, "EMBED_UNAVAILABLE", "no embedding model is configured (EMBED_PROVIDER=none)", retryable=False)
+        if not isinstance(texts, list) or not all(isinstance(t, str) for t in texts) or len(texts) > 256:
+            return error(400, "BAD_TEXTS", "texts must be a list of at most 256 strings")
+        return {"model": emb.model, "version": emb.version, "dim": emb.dim, "vectors": emb.embed(texts)}
+
     @app.get("/health")
     def health():
-        return {"status": "ok", "service": "asr", "adapter": adp.name, "diarization": dia.name if dia else "none"}
+        return {"status": "ok", "service": "asr", "adapter": adp.name, "diarization": dia.name if dia else "none", "embedder": emb.name if emb else "none"}
 
     @app.post("/transcribe", response_model=Transcript, response_model_exclude_none=True)
     async def transcribe(

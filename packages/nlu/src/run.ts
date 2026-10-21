@@ -4,12 +4,15 @@ import {
 } from "@incubrix/engine";
 import { MockParser } from "./mock.ts";
 import { RulesParser } from "./rules.ts";
-import type { InstructionParser, ParseInput } from "./types.ts";
+import type { InstructionParser, ParseInput, Parsed } from "./types.ts";
 
 /** Parse, then hand the result to the engine. All timeline logic happens in the engine's session functions. */
 export function runInstruction(ctx: EngineContext, state: SessionState, input: Pick<ParseInput, "text" | "answer" | "side">, parser: InstructionParser): Turn {
-  const p = parser.parse({ ctx, state, ...input });
-  const text = input.text;
+  return applyParsed(ctx, state, input.text, parser.parse({ ctx, state, ...input }));
+}
+
+/** The second half of runInstruction: lets a caller parse first (and, say, ask an LLM when the rules did not understand). */
+export function applyParsed(ctx: EngineContext, state: SessionState, text: string, p: Parsed): Turn {
   switch (p.kind) {
     case "plan":
       return p.nothingToDo !== undefined

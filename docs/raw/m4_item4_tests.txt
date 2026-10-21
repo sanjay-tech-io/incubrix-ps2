@@ -1,0 +1,114 @@
+ Container incubrix-ps2-postgres-1 Running 
+ Container incubrix-ps2-s3-1 Running 
+ Container incubrix-ps2-init-1 Recreate 
+ Container incubrix-ps2-init-1 Recreated 
+ Container incubrix-ps2-asr-tests-1 Starting 
+ Container incubrix-ps2-postgres-1 Waiting 
+ Container incubrix-ps2-s3-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Started 
+ Container incubrix-ps2-postgres-1 Healthy 
+ Container incubrix-ps2-s3-1 Healthy 
+ Container incubrix-ps2-init-1 Starting 
+ Container incubrix-ps2-init-1 Started 
+ Container incubrix-ps2-init-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Waiting 
+ Container incubrix-ps2-init-1 Exited 
+ Container incubrix-ps2-asr-tests-1 Exited 
+ Container incubrix-ps2-tests-run-bd445f16b6b9 Creating 
+ Container incubrix-ps2-tests-run-bd445f16b6b9 Created 
+
+> @incubrix/semantic@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/semantic
+
+ ✓ test/semantic.test.ts (3 tests) 27ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  20:24:03
+   Duration  1.09s (transform 411ms, setup 0ms, collect 646ms, tests 27ms, environment 0ms, prepare 109ms)
+
+
+> @incubrix/nlu@0.0.0 test
+> eslint . && vitest run
+
+
+ RUN  v2.1.9 /app/packages/nlu
+
+ ✓ test/fillers.test.ts (5 tests) 66ms
+ ✓ test/semantic.test.ts (5 tests) 115ms
+ ✓ test/rules.test.ts (24 tests) 638ms
+ ✓ test/time.test.ts (19 tests) 21ms
+ ✓ test/lint_guard.test.ts (9 tests) 888ms
+   ✓ nlu purity lint rules > forbids Date in packages/nlu/src 835ms
+
+ Test Files  5 passed (5)
+      Tests  62 passed (62)
+   Start at  20:24:07
+   Duration  3.01s (transform 751ms, setup 0ms, collect 2.06s, tests 1.73s, environment 2ms, prepare 711ms)
+
+
+> @incubrix/api@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/api
+
+ ✓ test/api.test.ts (24 tests) 19163ms
+   ✓ API behaviour > openapi.yaml matches the running service > real responses validate against their schemas 3356ms
+   ✓ API behaviour > possible fillers reach the parser > markers stored in the transcript manifest turn 'remove the ums' into a question; nothing is cut before the answer 316ms
+   ✓ API behaviour > errors > a video without audio fails its job with NO_AUDIO_TRACK and cannot start a session 434ms
+   ✓ API behaviour > idempotency (every POST) > the same bytes uploaded twice (different keys) are stored ONCE: both videos point at the same object 587ms
+   ✓ API behaviour > idempotency (every POST) > videos: same key + same file -> same ids, one video, one job, one stored object 854ms
+   ✓ API behaviour > idempotency (every POST) > instructions: a repeated key replays the answer and does NOT apply the edit twice 320ms
+   ✓ API behaviour > jobs, cache, hints, warnings > the same file again is a transcript cache HIT (ASR not called); a different ASR model is a MISS 2769ms
+   ✓ API behaviour > jobs, cache, hints, warnings > num_speakers reaches the ASR/diarization call and changes the cache key 2150ms
+   ✓ API behaviour > jobs, cache, hints, warnings > variable frame rate is accepted with a warning in the job manifest and on the video 1136ms
+   ✓ retention (real storage) > an expired render is deleted with its manifest, the job says expired and has no links, the original stays 2860ms
+   ✓ meaning search through the API (mock embeddings) > a meaning match is listed with its time before anything is cut; a repeated query uses the cached vector 1736ms
+ ✓ test/e2e.test.ts (5 tests) 7958ms
+   ✓ worked example over HTTP (mock ASR) > uploads the clip, the job runs with progress and succeeds, the original is stored untouched 3637ms
+   ✓ worked example over HTTP (mock ASR) > step 8: render is a background job; the file matches the timeline length; the original is untouched (sha256 before and after) 3698ms
+ ✓ test/runner.test.ts (5 tests) 14426ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > determinism: the same session run 3 times through the runner gives the same timeline_hash at every step 12306ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a step that does not match its expectation fails the session, and the failure is kept in results.json 378ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a video without audio stops at intake with NO_AUDIO_TRACK and the session says so 582ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > batch: runs every file in a folder, one result folder each, summary.json lists pass and fail 754ms
+ ✓ test/ratelimit.test.ts (5 tests) 6ms
+
+ Test Files  4 passed (4)
+      Tests  39 passed (39)
+   Start at  20:24:10
+   Duration  45.97s (transform 1.02s, setup 0ms, collect 3.24s, tests 41.55s, environment 1ms, prepare 375ms)
+
+
+> @incubrix/db@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/db
+
+ ✓ test/files.test.ts (5 tests) 14ms
+ ✓ test/postgres.test.ts (8 tests) 396ms
+
+ Test Files  2 passed (2)
+      Tests  13 passed (13)
+   Start at  20:24:57
+   Duration  1.03s (transform 135ms, setup 0ms, collect 215ms, tests 410ms, environment 1ms, prepare 323ms)
+
+
+> @incubrix/config@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/config
+
+ ✓ test/config.test.ts (9 tests) 32ms
+
+ Test Files  1 passed (1)
+      Tests  9 passed (9)
+   Start at  20:24:58
+   Duration  611ms (transform 91ms, setup 0ms, collect 167ms, tests 32ms, environment 0ms, prepare 101ms)
+

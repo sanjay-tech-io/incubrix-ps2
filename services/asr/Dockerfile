@@ -5,7 +5,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Models live in /models (HF_HOME for Whisper, /models/diarization for the ONNX files).
 # They are downloaded at BUILD time (sha256-checked) so the container needs no network at run time.
 # A different ASR_MODEL at run time is downloaded on first use into /models (mount a volume to keep it).
-ENV HF_HOME=/models/hf DIARIZATION_MODEL_DIR=/models/diarization
+ENV HF_HOME=/models/hf DIARIZATION_MODEL_DIR=/models/diarization EMBED_MODEL_DIR=/opt/embed EMBED_MODEL_REVISION=1110a243fdf4706b3f48f1d95db1a4f5529b4d41
 ARG ASR_MODEL=base.en
 COPY fetch_models.py .
 RUN ASR_MODEL=$ASR_MODEL python fetch_models.py

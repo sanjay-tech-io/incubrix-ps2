@@ -61,6 +61,12 @@ const base = z.object({
     SILENCE_NOISE_DB: z.coerce.number().int().min(-90).max(-10).default(-35),
     SILENCE_MIN_MS: z.coerce.number().int().min(50).max(10000).default(300),
     CLAMP_MIN_WORD_MS: z.coerce.number().int().min(1).max(1000).default(20),
+    // Meaning-based search (embeddings): http = the ASR service's /embed (all-MiniLM-L6-v2 on CPU), mock = tests, none = exact words only.
+    EMBED_PROVIDER: z.enum(["http", "mock", "none"]).default("http"),
+    EMBED_URL: z.url().optional(),
+    // A passage is a meaning match when its cosine similarity x 1000 is at least this (tuned on ONE recording, see docs/REVIEW_M4.md).
+    EMBED_THRESHOLD_PERMILLE: z.coerce.number().int().min(0).max(1000).default(250),
+    EMBED_MAX_HITS: z.coerce.number().int().min(1).max(50).default(8),
     // Untranscribed voiced stretches inside gaps between words are kept as POSSIBLE fillers (part of the transcript cache key).
     VOICED_GAP_MIN_MS: z.coerce.number().int().min(20).max(5000).default(150),
     VOICED_GAP_MAX_MS: z.coerce.number().int().min(100).max(10000).default(1200),

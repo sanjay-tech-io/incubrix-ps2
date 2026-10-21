@@ -2,6 +2,7 @@ import http from "node:http";
 import pg from "pg";
 import { loadConfig } from "@incubrix/config";
 import { makeS3, verifyBucketWritable } from "@incubrix/storage";
+import { createSemantic } from "@incubrix/semantic";
 import { assertFreeDisk, makeLogger } from "@incubrix/store";
 import { DEFAULT_MOCK_WORDS, HttpAsrClient, MockAsrClient, type AsrClient } from "./asr.ts";
 import { workerLoop } from "./worker.ts";
@@ -39,6 +40,6 @@ http
   })
   .listen(cfg.WORKER_PORT, () => log.info({ port: cfg.WORKER_PORT, asr: asr.provider, diarization: asr.diarizationProvider }, "worker listening"));
 
-await workerLoop({ pool, s3, s3Public, cfg, asr, log }, abort.signal);
+await workerLoop({ pool, s3, s3Public, cfg, asr, log, semantic: createSemantic(cfg, pool, log) }, abort.signal);
 await pool.end();
 process.exit(0);

@@ -3,6 +3,7 @@ import type { AddressInfo } from "node:net";
 import type { S3Client } from "@aws-sdk/client-s3";
 import { loadConfig, type Config } from "@incubrix/config";
 import { createParser } from "@incubrix/nlu";
+import { createSemantic } from "@incubrix/semantic";
 import { ensureBucket, makeS3 } from "@incubrix/storage";
 import { makeLogger } from "@incubrix/store";
 import type { FastifyInstance } from "fastify";
@@ -35,7 +36,7 @@ export async function startStack(o: { asr?: AsrClient; words?: AsrWord[]; env?: 
   const db = await tempDb();
   const cfg = loadConfig({
     ...process.env,
-    DATABASE_URL: db.url, ASR_PROVIDER: "mock", DIARIZATION_PROVIDER: "mock", LLM_PROVIDER: "rules", URL_ALLOW_PRIVATE: "true",
+    DATABASE_URL: db.url, ASR_PROVIDER: "mock", DIARIZATION_PROVIDER: "mock", LLM_PROVIDER: "rules", EMBED_PROVIDER: "mock", URL_ALLOW_PRIVATE: "true",
     API_TOKEN: "", RATE_LIMIT_PER_MIN: "100000", WORKER_POLL_MS: "50", ...o.env,
   });
   const s3 = makeS3(cfg);
@@ -48,7 +49,7 @@ export async function startStack(o: { asr?: AsrClient; words?: AsrWord[]; env?: 
   let app!: Stack["app"];
   let base = "";
   const start = async () => {
-    app = await buildApp({ pool: db.pool, s3, s3Public: s3, cfg, log, parser });
+    app = await buildApp({ pool: db.pool, s3, s3Public: s3, cfg, log, parser, semantic: createSemantic(cfg, db.pool) });
     await app.listen({ port: 0, host: "127.0.0.1" });
     base = `http://127.0.0.1:${(app.server.address() as AddressInfo).port}`;
   };
@@ -62,7 +63,7 @@ export async function startStack(o: { asr?: AsrClient; words?: AsrWord[]; env?: 
     get app() { return app; },
     drain: async () => {
       let n = 0;
-      while (await processOneJob({ pool: db.pool, s3, cfg, asr, log })) n++;
+      while (await processOneJob({ pool: db.pool, s3, cfg, asr, log, semantic: createSemantic(cfg, db.pool) })) n++;
       return n;
     },
     call: async (method, path, body, headers = {}) =>

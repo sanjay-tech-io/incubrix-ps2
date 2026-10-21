@@ -15,6 +15,9 @@ EMBEDDING = (f"{BASE}/speaker-recongition-models/wespeaker_en_voxceleb_resnet34.
 SEGMENTATION = (f"{BASE}/speaker-segmentation-models/sherpa-onnx-pyannote-segmentation-3-0.tar.bz2", "24615ee884c897d9d2ba09bb4d30da6bb1b15e685065962db5b02e76e4996488")
 
 
+EMBED_REVISION = "1110a243fdf4706b3f48f1d95db1a4f5529b4d41"
+
+
 def fetch(url: str, sha: str, dest: str) -> None:
     urllib.request.urlretrieve(url, dest)
     got = hashlib.sha256(open(dest, "rb").read()).hexdigest()
@@ -31,6 +34,19 @@ def main() -> None:
     with tarfile.open(tar) as t:
         t.extractall(out, filter="data")
     os.remove(tar)
+
+    # Meaning search model, pinned to one revision of the Hugging Face repo (Apache-2.0 per the model card). It goes to /opt/embed,
+    # NOT /models: /models is a named volume that is filled once and would hide files added to the image later.
+    from huggingface_hub import hf_hub_download
+
+    revision = os.environ.get("EMBED_MODEL_REVISION", EMBED_REVISION)
+    edir = os.environ.get("EMBED_MODEL_DIR", "/opt/embed")
+    os.makedirs(edir, exist_ok=True)
+    for remote, local in (("onnx/model.onnx", "model.onnx"), ("tokenizer.json", "tokenizer.json"), ("README.md", "MODEL_CARD.md")):
+        src = hf_hub_download("sentence-transformers/all-MiniLM-L6-v2", remote, revision=revision)
+        with open(src, "rb") as f, open(os.path.join(edir, local), "wb") as g:
+            g.write(f.read())
+    print("embedding model downloaded to", edir, "revision", revision)
 
     from faster_whisper.utils import download_model
 

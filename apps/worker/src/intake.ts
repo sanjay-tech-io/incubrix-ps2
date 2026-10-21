@@ -16,6 +16,7 @@ import {
   type JobRow, type Logger, type TranscriptSettings,
 } from "@incubrix/store";
 import type pg from "pg";
+import type { SemanticService } from "@incubrix/semantic";
 import type { AsrClient } from "./asr.ts";
 import { atomsFromAsr } from "./atoms.ts";
 import { sendCallback } from "./callback.ts";
@@ -31,6 +32,8 @@ export interface WorkerDeps {
   cfg: Config;
   asr: AsrClient;
   log: Logger;
+  /** Meaning search: passage vectors are computed at intake so the first instruction needs only the query vector. */
+  semantic?: SemanticService | null;
 }
 
 // Versions pinned in services/asr/requirements.txt; reported in the manifest.
@@ -181,6 +184,16 @@ export async function runIntake(d: WorkerDeps, job: JobRow): Promise<void> {
         cache_key: cacheKey, source_sha256: sha256, settings,
         atoms, manifest: { asr: asrManifest, warnings: built.warnings, voiced_gaps: voiced, created_with: { pinned: PINNED } },
       });
+    }
+    if (d.semantic) {
+      // Not fatal: without vectors the first meaning search computes them (or answers "exact words only").
+      try {
+        const e = await d.semantic.ensurePassages(cacheKey, atoms);
+        log.info({ passages: e.passages.length, vectors: e.from }, "passage vectors ready");
+      } catch (err) {
+        log.warn({ err: (err as Error).message }, "passage vectors not computed");
+      }
+      mark = lap("embed_s", mark);
     }
     const speakersFound = new Set(atoms.map((a) => a.speaker).filter((s) => s !== null)).size;
     if (speakersFound > 1 && video.num_speakers_hint === null) warnings.push(`${speakersFound} speakers were detected; if that is wrong, upload again with the num_speakers hint.`);

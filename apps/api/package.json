@@ -16,6 +16,7 @@
     "@incubrix/engine": "*",
     "@incubrix/errors": "*",
     "@incubrix/nlu": "*",
+    "@incubrix/semantic": "*",
     "@incubrix/storage": "*",
     "@incubrix/store": "*",
     "fastify": "^5.12.7",

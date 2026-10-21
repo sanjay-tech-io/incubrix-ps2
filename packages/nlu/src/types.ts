@@ -27,6 +27,8 @@ export interface SemanticHit {
 export interface SideData {
   possibleFillers?: readonly PossibleFiller[];
   semantic?: { topic: string; hits: readonly SemanticHit[] } | null;
+  /** Set when meaning search was wanted but could not run: the answer says exact words only were searched. */
+  semanticNote?: string;
 }
 
 export interface ParseInput {

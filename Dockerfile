@@ -13,6 +13,7 @@ COPY packages/errors/package.json packages/errors/
 COPY packages/nlu/package.json packages/nlu/
 COPY packages/store/package.json packages/store/
 COPY packages/render/package.json packages/render/
+COPY packages/semantic/package.json packages/semantic/
 COPY apps/api/package.json apps/api/
 COPY apps/worker/package.json apps/worker/
 COPY apps/cli/package.json apps/cli/

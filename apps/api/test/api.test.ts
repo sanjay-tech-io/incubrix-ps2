@@ -387,3 +387,33 @@ describe.skipIf(!integration)("retention (real storage)", () => {
     }
   }, 120_000);
 });
+
+
+describe.skipIf(!integration)("meaning search through the API (mock embeddings)", () => {
+  const say = (text: string, startS: number, speaker = "S1") =>
+    text.split(" ").map((w, i) => ({ text: w, start_us: Math.round((startS + i * 0.4) * 1e6), end_us: Math.round((startS + i * 0.4 + 0.35) * 1e6), confidence_permille: 950, speaker }));
+  const words = [...say("Hello and welcome everybody.", 1), ...say("The pricing is simple.", 6), ...say("Ten dollars a month.", 9), ...say("I walked my dog today.", 12)];
+
+  it("a meaning match is listed with its time before anything is cut; a repeated query uses the cached vector", async () => {
+    const st = await startStack({ words });
+    try {
+      const { videoId } = await ingest(st, makeClip({ seconds: 30 }));
+      const id = (await st.call("POST", "/api/v1/sessions", { video_id: videoId })).body.session_id;
+      const before = (await st.call("GET", `/api/v1/sessions/${id}/timeline`)).body.timeline_hash;
+      const q = (await st.call("POST", `/api/v1/sessions/${id}/instructions`, { say: "remove the part about pricing" })).body;
+      expect(q.status).toBe("needs_clarification");
+      expect(q.options).toHaveLength(2);
+      expect(q.options[0]).toMatch(/#1 at 0:06\.\d+ \[exact word\]/);
+      expect(q.options[1]).toMatch(/#2 at 0:09\.\d+ \[meaning match \d+%\].*Ten dollars a month/);
+      expect(q.timeline_hash).toBe(before);
+      expect(q.manifest.providers.embedding.model).toBe("mock-bow@1");
+      const again = (await st.call("POST", `/api/v1/sessions/${id}/instructions`, { say: "remove the part about the pricing" })).body;
+      expect(again.manifest.providers.embedding.query_vector).toBe("cache"); // same normalized query: no model call
+      expect(again.manifest.timings.semantic_ms).toBeLessThan(3000);
+      const done = (await st.call("POST", `/api/v1/sessions/${id}/instructions`, { answer: 2 })).body;
+      expect(done.status).toBe("applied");
+    } finally {
+      await st.stop();
+    }
+  }, 120_000);
+});

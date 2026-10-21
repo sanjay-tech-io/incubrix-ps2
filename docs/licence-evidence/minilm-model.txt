@@ -1,0 +1,79 @@
+ Container incubrix-ps2-asr-tests-run-b69a171ad703 Creating 
+ Container incubrix-ps2-asr-tests-run-b69a171ad703 Created 
+---
+base_model:
+  - nreimers/MiniLM-L6-H384-uncased
+language: en
+license: apache-2.0
+library_name: sentence-transformers
+tags:
+- sentence-transformers
+- feature-extraction
+- sentence-similarity
+- transformers
+datasets:
+----
+dcd602d2fd35c203a247304a06fec6654a12f7941b739f9221a064fe8dc3b7f0  /opt/embed/MODEL_CARD.md
+6fd5d72fe4589f189f8ebc006442dbb529bb7ce38f8082112682524616046452  /opt/embed/model.onnx
+be50c3628f2bf5bb5e3a7f17b1f74611b2561a3a27eeab05e5aa30f411572037  /opt/embed/tokenizer.json
+total 88764
+drwxr-xr-x 2 root root     4096 Oct 21 20:12 .
+drwxr-xr-x 1 root root     4096 Oct 21 20:12 ..
+-rw-r--r-- 1 root root    10502 Oct 21 20:12 MODEL_CARD.md
+-rw-r--r-- 1 root root 90405214 Oct 21 20:12 model.onnx
+-rw-r--r-- 1 root root   466247 Oct 21 20:12 tokenizer.json
+{
+ "id": "sentence-transformers/all-MiniLM-L6-v2",
+ "sha": "1110a243fdf4706b3f48f1d95db1a4f5529b4d41",
+ "lastModified": "2026-06-01T06:29:13.000Z",
+ "tags": [
+  "sentence-transformers",
+  "pytorch",
+  "tf",
+  "rust",
+  "onnx",
+  "safetensors",
+  "openvino",
+  "bert",
+  "feature-extraction",
+  "sentence-similarity",
+  "transformers",
+  "en",
+  "dataset:s2orc",
+  "dataset:flax-sentence-embeddings/stackexchange_xml",
+  "dataset:ms_marco",
+  "dataset:gooaq",
+  "dataset:yahoo_answers_topics",
+  "dataset:code_search_net",
+  "dataset:search_qa",
+  "dataset:eli5",
+  "dataset:snli",
+  "dataset:multi_nli",
+  "dataset:wikihow",
+  "dataset:natural_questions",
+  "dataset:trivia_qa",
+  "dataset:embedding-data/sentence-compression",
+  "dataset:embedding-data/flickr30k-captions",
+  "dataset:embedding-data/altlex",
+  "dataset:embedding-data/simple-wiki",
+  "dataset:embedding-data/QQP",
+  "dataset:embedding-data/SPECTER",
+  "dataset:embedding-data/PAQ_pairs",
+  "dataset:embedding-data/WikiAnswers",
+  "arxiv:1904.06472",
+  "arxiv:2102.07033",
+  "arxiv:2104.08727",
+  "arxiv:1704.05179",
+  "arxiv:1810.09305",
+  "base_model:nreimers/MiniLM-L6-H384-uncased",
+  "base_model:quantized:nreimers/MiniLM-L6-H384-uncased",
+  "license:apache-2.0",
+  "eval-results",
+  "text-embeddings-inference",
+  "endpoints_compatible",
+  "deploy:sagemaker",
+  "deploy:azure",
+  "region:us"
+ ],
+ "license": "apache-2.0"
+}

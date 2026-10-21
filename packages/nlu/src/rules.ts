@@ -1,11 +1,11 @@
 import {
   EngineError, analyzeLog, checkSpeed, atomAt, atomPos, cursorToUs, editedToSource, findEffect, findTopicParts, formatTime, nextEffectId, phraseRanges,
   planMoveEdited, planProtectPause, planRemoveFillers, planRemoveSilences, planUpdateCaption, resolveEditedRange, resolveOriginalRange, snapPoint, sourceToEdited,
-  timelinePieces, usToCursor, currentTimeline, sourceToEditedEnd,
+  timelinePieces, usToCursor, currentTimeline, sourceToEditedEnd, snapBoundaryUs, gridWarnings,
   type Atom, type AtomRange, type CaptionPatch, type Effect, type EngineContext, type Operation, type PendingQuestion, type Span, type TimePolicy, type Timeline,
 } from "@incubrix/engine";
 import { findRange, findTimeAfter, parseTimeAt, tokenize, wordsToDigits } from "./time.ts";
-import type { InstructionParser, ParseInput, Parsed, PossibleFiller } from "./types.ts";
+import type { InstructionParser, ParseInput, Parsed, PossibleFiller, SemanticHit } from "./types.ts";
 
 /**
  * The deterministic rule-based parser: no network, no key, no clock. Same text + same session state => same output.
@@ -253,19 +253,65 @@ function handleMove(env: Env, tokens: string[]): Parsed {
   return plan(env, p.operations, [...range.warnings, ...p.warnings]);
 }
 
+const TOPIC_STOP = ["the", "a", "an", "my", "our", "i", "we", "talk", "talking", "about", "on", "of"];
+const TOPIC_RE = /\b(?:part|parts|section|sections|bit|bits|segment|portion|mention|mentions)\b.*?\b(?:about|on|regarding|mentioning|where i talk about|where i mention)\s+(.+)$/;
+
+/** "the part about how much it costs" -> "how much it costs" (stop words at the edges dropped). Null when the text is not a topic removal. */
+export function topicRequest(text: string): string | null {
+  const quoted: string[] = [];
+  const stripped = text.trim().replace(/["“]([^"”]+)["”]/g, (_m, q: string) => (quoted.push(q.trim()), "§"));
+  const body = stripped.toLowerCase().replace(/\s+/g, " ").trim().replace(/[.!?]+$/, "");
+  if (!CUT_VERB.test(body) || /\beverything (after|before)\b/.test(body)) return null;
+  const m = TOPIC_RE.exec(body);
+  if (!m) return null;
+  const phrase = quoted[0] ?? m[1]!;
+  const words = phrase.split(/\s+/).filter((w) => w && !TOPIC_STOP.includes(w));
+  return words.length > 0 ? words.join(" ") : null;
+}
+
+/** Cut span for a passage found by meaning: the passage plus the silence after it, snapped to the frame grid like an exact topic part. */
+function passageSpan(env: Env, h: SemanticHit): { span: Span; warnings: string[] } {
+  const idx = env.ctx.index;
+  const last = atomAt(idx, Math.max(0, h.endUs - 1));
+  const next = idx.atoms[atomPos(idx, last.id) + 1];
+  const endUs = next && next.kind === "silence" ? next.endUs : last.endUs;
+  const startSnapped = snapBoundaryUs(idx, atomAt(idx, h.startUs).startUs, env.ctx.fps);
+  const endSnapped = snapBoundaryUs(idx, endUs, env.ctx.fps);
+  return { span: { start: usToCursor(idx, startSnapped, env.ctx.fps), end: usToCursor(idx, endSnapped, env.ctx.fps) }, warnings: gridWarnings(env.ctx, [startSnapped, endSnapped]) };
+}
+
 function handleTopicRemove(env: Env, topicText: string): Parsed {
-  const words = topicText.split(/\s+/).filter((w) => w && !["the", "a", "an", "my", "our", "i", "we", "talk", "talking", "about", "on", "of"].includes(w));
+  const words = topicText.split(/\s+/).filter((w) => w && !TOPIC_STOP.includes(w));
   const topic = words[words.length - 1];
   if (!topic) return reject(env, "Say what the part is about, for example: remove the part about pricing.");
-  const parts = findTopicParts(env.ctx, env.tl, topic);
-  if (parts.length === 0) return reject(env, `No part of the current video mentions "${topic}".`);
-  const op = (p: (typeof parts)[number]): Operation => ({ type: "cut", span: p.span, reason: "user" });
-  if (parts.length === 1) return plan(env, [op(parts[0]!)], parts[0]!.warnings);
-  return clarify(
-    env,
-    `"${topic}" is mentioned ${parts.length} times. Which part should I remove?`,
-    parts.map((p) => ({ label: `#${p.index} at ${formatTime(p.editedStartUs)}: "${p.snippet}"`, operations: [op(p)], warnings: p.warnings })),
+  const idx = env.ctx.index;
+  const exact = findTopicParts(env.ctx, env.tl, topic);
+  const exactWindows = exact.map((p) => ({ a: p.originalStartUs, b: idx.atoms[atomPos(idx, p.range.to)]!.endUs }));
+  // meaning matches that still play and do not overlap an exact mention
+  const pieces = timelinePieces(env.ctx, env.tl);
+  const sem = (env.input.side?.semantic?.hits ?? []).filter(
+    (h) => sourceToEdited(pieces, h.startUs) !== null && !exactWindows.some((w) => h.startUs < w.b && h.endUs > w.a),
   );
+  const note = env.input.side?.semanticNote ? [env.input.side.semanticNote] : [];
+  const op = (span: Span): Operation => ({ type: "cut", span, reason: "user" });
+
+  if (sem.length === 0) {
+    if (exact.length === 0) return reject(env, `No part of the current video mentions "${topic}"${env.input.side?.semantic ? " or is about it by meaning" : ""}.`, note);
+    if (exact.length === 1) return { ...plan(env, [op(exact[0]!.span)], [...exact[0]!.warnings, ...note]) };
+  }
+  type Item = { startUs: number; label: string; operations: Operation[]; warnings: string[] };
+  const items: Item[] = [
+    ...exact.map((p): Item => ({ startUs: p.originalStartUs, label: `at ${formatTime(p.editedStartUs)} [exact word]: "${p.snippet}"`, operations: [op(p.span)], warnings: p.warnings })),
+    ...sem.map((h): Item => {
+      const sp = passageSpan(env, h);
+      const e = sourceToEdited(pieces, h.startUs)!;
+      return { startUs: h.startUs, label: `at ${formatTime(e)} [meaning match ${Math.round(h.scorePermille / 10)}%]: "${h.text}"`, operations: [op(sp.span)], warnings: sp.warnings };
+    }),
+  ].sort((x, y) => x.startUs - y.startUs);
+  const what = exact.length > 0
+    ? `"${topic}" is mentioned ${exact.length} time${exact.length === 1 ? "" : "s"}${sem.length > 0 ? ` and ${sem.length} more passage${sem.length === 1 ? " is" : "s are"} about it by meaning` : ""}.`
+    : `No part says "${topic}", but ${sem.length} passage${sem.length === 1 ? " is" : "s are"} about it by meaning.`;
+  return clarify(env, `${what} Which part should I remove?`, items.map((it, i) => ({ label: `#${i + 1} ${it.label}`, operations: it.operations, warnings: it.warnings })), note);
 }
 
 function handleEverything(env: Env, dir: "after" | "before", phrase: string): Parsed {
@@ -502,12 +548,12 @@ function parseOne(input: ParseInput, offset: number): Parsed {
       const phrase = quoted[0] ?? ev[2]!.replace(/^(i|we|you|he|she|they)\s+(say|says|said|saying|mention|mentions)\s*/, "").replace(/^(when|the (word|phrase|words)|where)\s+/, "").replace(/\s*§$/, "").trim();
       if (phrase && phrase !== "§" && !findRange(tokens, durationOf(env)) && !parseTimeAt(tokens, tokens.indexOf(ev[1]!) + 1)) return handleEverything(env, ev[1] as "after" | "before", phrase);
     }
-    const topic = /\b(?:part|parts|section|sections|bit|bits|segment|portion|mention|mentions)\b.*?\b(?:about|on|regarding|mentioning|where i talk about|where i mention)\s+(.+)$/.exec(body);
+    const topic = TOPIC_RE.exec(body);
     if (topic) return handleTopicRemove(env, quoted[0] ?? topic[1]!);
     return handleCutRange(env, tokens);
   }
 
-  return reject(env, `I did not understand "${raw}". Examples: cut 0:30-0:40; remove the part about pricing; speed up 1:00-1:30 by 2x; add a caption "Hi" on "welcome"; make that caption red; remove filler words; undo.`);
+  return { kind: "reject", reason: `I did not understand "${raw}". Examples: cut 0:30-0:40; remove the part about pricing; speed up 1:00-1:30 by 2x; add a caption "Hi" on "welcome"; make that caption red; remove filler words; undo.`, timePolicy: env.policy, warnings: [], unparsed: true };
 }
 
 const SPLIT = /\s*(?:;|\.\s+(?=[A-Za-z])|,?\s+and then\s+|,?\s+then\s+|,\s+and\s+(?=(?:cut|remove|delete|speed|slow|add|make|mute|bleep|move|keep)\b))\s*/i;
