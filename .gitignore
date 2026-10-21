@@ -7,3 +7,4 @@ coverage/
 test-pack/**/*.mp4
 test-pack/**/*.mov
 test-pack/**/*.png
+media/
