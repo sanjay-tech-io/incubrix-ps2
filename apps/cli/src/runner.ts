@@ -37,6 +37,10 @@ export interface StepResult {
   duration_s: number | null;
   ms: number;
   note: string | null;
+  /** Manifest facts of an instruction answer: the language model call (if any) and the estimated cost. */
+  llm: unknown;
+  cost_usd: number | null;
+  semantic_ms: number | null;
   /** Render steps only. */
   render?: {
     job_id: string;
@@ -174,7 +178,7 @@ export async function runSession(doc: SessionDoc, name: string, o: RunOptions): 
       const base = {
         step: i + 1, say: null as string | null, answer_sent: null as string | number | null, expected: step.expect ?? null, passed: true, http_status: 0, status: null as string | null,
         operations: null as unknown[] | null, summary: null as string | null, question: null as string | null, options: null as unknown[] | null, reason: null as string | null,
-        time_policy: null as string | null, warnings: null as string[] | null, timeline_hash: null as string | null, duration_s: null as number | null, ms: 0, note: step.note ?? null,
+        llm: null as unknown, cost_usd: null as number | null, semantic_ms: null as number | null, time_policy: null as string | null, warnings: null as string[] | null, timeline_hash: null as string | null, duration_s: null as number | null, ms: 0, note: step.note ?? null,
         failure: null as string | null,
       };
       if (isRender(step)) {
@@ -229,6 +233,7 @@ export async function runSession(doc: SessionDoc, name: string, o: RunOptions): 
         ...base, kind: "say", say: step.say ?? null, answer_sent: step.answer ?? null, http_status: r.status, status: a.status ?? null, operations: a.operations ?? null,
         summary: a.summary ?? null, question: a.question ?? null, options: a.options ?? null, reason: a.reason ?? null, time_policy: a.time_policy ?? null,
         warnings: a.warnings ?? null, timeline_hash: a.timeline_hash ?? null, duration_s: a.duration_s ?? null, ms: Date.now() - started,
+        llm: a.manifest?.providers?.llm ?? null, cost_usd: a.manifest?.cost_estimate?.usd ?? null, semantic_ms: a.manifest?.timings?.semantic_ms ?? null,
       };
       if (r.status !== 200) {
         sr.passed = false;

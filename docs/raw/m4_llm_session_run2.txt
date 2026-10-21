@@ -1,0 +1,10 @@
+
+> incubrix@0.0.0 session
+> node --import tsx apps/cli/src/session.ts sessions/23_llm_fallback.yaml --out docs/raw/m4_llm_session
+
+[23_llm_fallback] video vid_d43d578a6c25419ba1b5, job job_efbc11aec88d493c8ac7
+[23_llm_fallback] step 1: applied ok
+[23_llm_fallback] step 2: applied ok
+[23_llm_fallback] step 3: rejected ok
+[23_llm_fallback] step 4: rejected FAILED expected applied, got rejected: I did not understand that, and the language model did not answer within 2.5 s. Nothing was changed. Say it again in a few seconds: its answer will be ready then.
+FAIL 23_llm_fallback  -> /home/g23m143/incubrix-ps2/docs/raw/m4_llm_session

@@ -1,0 +1,14 @@
+# Language-model fallback (item 5): the rules parser cannot read these sentences; the model only translates them into a short
+# command list that our parser and engine apply. The third one cannot be expressed and must be rejected, not guessed.
+name: 23_llm_fallback
+video: media/test_single.mp4
+num_speakers: 1
+steps:
+  - say: get rid of the stretch between half a minute and forty seconds
+    expect: applied
+  - say: make the clip from a minute twenty to a minute thirty run twice as fast
+    expect: applied
+  - say: put a spinning logo in the corner for the whole video
+    expect: rejected
+  - say: get rid of the stretch between half a minute and forty seconds
+    expect: applied

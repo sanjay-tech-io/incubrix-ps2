@@ -1,0 +1,10 @@
+
+> incubrix@0.0.0 session
+> node --import tsx apps/cli/src/session.ts sessions/23_llm_fallback.yaml --out docs/raw/m4_llm_session_run3
+
+[23_llm_fallback] video vid_2a2b7c3a98074fccb7fb, job job_66903ecc1b9649c58760
+[23_llm_fallback] step 1: applied ok
+[23_llm_fallback] step 2: applied ok
+[23_llm_fallback] step 3: rejected ok
+[23_llm_fallback] step 4: applied ok
+PASS 23_llm_fallback  -> /home/g23m143/incubrix-ps2/docs/raw/m4_llm_session_run3

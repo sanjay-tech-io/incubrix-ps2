@@ -1,0 +1,10 @@
+
+> incubrix@0.0.0 session
+> node --import tsx apps/cli/src/session.ts sessions/23_llm_fallback.yaml --out docs/raw/m4_llm_session
+
+[23_llm_fallback] video vid_a1ed7981f8994bc0b0a5, job job_d5217754a7904dca9b57
+[23_llm_fallback] step 1: rejected FAILED expected applied, got rejected: I did not understand that, and the language model did not answer within 2.5 s. Nothing was changed. Say it again in a few seconds: its answer will be ready then.
+[23_llm_fallback] step 2: rejected FAILED expected applied, got rejected: I did not understand that, and the language model did not answer within 2.5 s. Nothing was changed. Say it again in a few seconds: its answer will be ready then.
+[23_llm_fallback] step 3: rejected ok
+[23_llm_fallback] step 4: rejected FAILED expected applied, got rejected: I did not understand that, and the language model did not answer within 2.5 s. Nothing was changed. Say it again in a few seconds: its answer will be ready then.
+FAIL 23_llm_fallback  -> /home/g23m143/incubrix-ps2/docs/raw/m4_llm_session

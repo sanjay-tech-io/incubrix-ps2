@@ -1,0 +1,8 @@
+default        200 18357 ms in 554 out 25 thoughts 0 {"commands":[{"op":"cut","start_s":30,"end_s":40,"original":false}]}
+default        200 33887 ms in 554 out 25 thoughts 0 {"commands":[{"op":"cut","start_s":30,"end_s":40,"original":false}]}
+default        200 35929 ms in 554 out 25 thoughts 0 {"commands":[{"op":"cut","start_s":30,"end_s":40,"original":false}]}
+budget 0       400 373 ms in undefined out undefined thoughts 0 {"code":400,"message":"Request contains an invalid argument.","status":"INVALID_ARGUMENT"}
+budget 0       400 423 ms in undefined out undefined thoughts 0 {"code":400,"message":"Request contains an invalid argument.","status":"INVALID_ARGUMENT"}
+budget 0       400 413 ms in undefined out undefined thoughts 0 {"code":400,"message":"Request contains an invalid argument.","status":"INVALID_ARGUMENT"}
+level minimal  200 909 ms in 554 out 25 thoughts 0 {"commands":[{"op":"cut","start_s":30,"end_s":40,"original":false}]}
+level minimal  200 17715 ms in 554 out 54 thoughts 0 {   "commands": [     {       "op": "cut",       "start_s": 30,       "end_s": 40,       "original": false     }   ] }
