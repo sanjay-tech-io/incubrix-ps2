@@ -1,0 +1,15 @@
+
+> incubrix@0.0.0 session
+> node --import tsx apps/cli/src/session.ts sessions/25_vague_captions_and_restore.yaml --out docs/raw/m4_sessions/25_vague_captions_and_restore
+
+[25_vague_captions_and_restore] video vid_dd4b8aa17e104ca9b61a, job job_c600789d89474809bc49
+[25_vague_captions_and_restore] step 1: rejected ok
+[25_vague_captions_and_restore] step 2: applied ok
+[25_vague_captions_and_restore] step 3: applied ok
+[25_vague_captions_and_restore] step 4: needs_clarification ok
+[25_vague_captions_and_restore] step 5: applied ok
+[25_vague_captions_and_restore] step 6: applied ok
+[25_vague_captions_and_restore] step 7: applied ok
+[25_vague_captions_and_restore] step 8: needs_clarification ok
+[25_vague_captions_and_restore] step 9: applied ok
+PASS 25_vague_captions_and_restore  -> /home/g23m143/incubrix-ps2/docs/raw/m4_sessions/25_vague_captions_and_restore

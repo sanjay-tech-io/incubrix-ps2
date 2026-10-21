@@ -1,0 +1,24 @@
+# Vague references with captions and cuts: "that caption" with two captions asks which; "put back what I removed" lists each removed
+# edit; "make it bigger" with no caption is rejected with a reason (checked first, before any caption exists).
+name: 25_vague_captions_and_restore
+video: media/test_single.mp4
+num_speakers: 1
+steps:
+  - say: make it bigger
+    expect: rejected
+  - say: add a caption "One" on "welcome to our channel"
+    expect: applied
+  - say: add a caption "Two" on "pricing plans in Cloud Code"
+    expect: applied
+  - say: make that caption red
+    expect: needs_clarification
+  - say: the second one
+    expect: applied
+  - say: cut 0:50-0:55
+    expect: applied
+  - say: cut 1:00-1:05
+    expect: applied
+  - say: put back what I removed
+    expect: needs_clarification
+  - say: the first one
+    expect: applied

@@ -1,0 +1,54 @@
+{
+  "name": "13_two_speakers_guest_old_job",
+  "video": "media/two_speaker.mp4",
+  "passed": true,
+  "video_id": "vid_84af576c6c764214be5f",
+  "session_id": "ses_3439d5d7bec64ae8b751",
+  "intake": {
+    "job_id": "job_1e09f40748ed4f098d14",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "1 word(s) had no length after cleaning and were dropped.",
+      "8 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 1148
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "remove everything the guest says about their old job",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "Assuming Speaker A (the first speaker I heard) is the host and Speaker B is the guest. Speaker B talks about \"old job\" in 1 line. The question just before it (the lead-in) is \"So tell me about your old job.\" at 0:05.500. Should I remove the lead-in too? (Nothing is cut until you choose.)",
+      "options": [
+        "only the guest's (Speaker B) 1 line about \"old job\" (0:08.511); keep the lead-in",
+        "also the lead-in question \"So tell me about your old job.\" at 0:05.500"
+      ],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": 78,
+      "time_policy": "current",
+      "warnings": [
+        "1 word(s) in these lines have an uncertain speaker label (the diarization may have swapped the speakers there); check Speaker B's lines before relying on this."
+      ],
+      "timeline_hash": "b3ee2ae9a18df8c64dbb8e2aa60350345d2b6f17d9fa7e5b1ecbdf2e2f217f13",
+      "duration_s": 27.12,
+      "ms": 112,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "b3ee2ae9a18df8c64dbb8e2aa60350345d2b6f17d9fa7e5b1ecbdf2e2f217f13",
+    "duration_s": 27.12
+  },
+  "error": null
+}

@@ -1,6 +1,5 @@
-# Vague references ("make it shorter", "the boring part") must ask or state an assumption with options. The rules parser
-# only knows concrete instructions, so these are expected to be rejected today; the brief wants needs_clarification.
-# Kept as failures on purpose (docs/STATUS.md).
+# Vague references ("make it shorter", "the boring part") must ask or state an assumption with options. In M3 this session FAILED
+# (the parser rejected both); M4 builds the questions. The expectations below are unchanged.
 name: 20_vague_references
 video: media/test_single.mp4
 num_speakers: 1

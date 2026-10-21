@@ -1,0 +1,8 @@
+
+> incubrix@0.0.0 session
+> node --import tsx apps/cli/src/session.ts sessions/20_vague_references.yaml --out docs/raw/m4_sessions/20_vague_references
+
+[20_vague_references] video vid_2be353dbe6524adca5e3, job job_31513a720d1148feb8fa
+[20_vague_references] step 1: needs_clarification ok
+[20_vague_references] step 2: needs_clarification ok
+PASS 20_vague_references  -> /home/g23m143/incubrix-ps2/docs/raw/m4_sessions/20_vague_references

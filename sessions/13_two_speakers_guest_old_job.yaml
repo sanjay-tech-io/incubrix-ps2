@@ -1,6 +1,6 @@
 # Two-speaker hard case: "remove everything the guest says about their old job" removes only the guest's lines and asks
-# about the host's lead-in ("So tell me about your old job."). Speaker-aware edits are NOT built yet (docs/STATUS.md):
-# this session is expected to FAIL today and is kept as a failure on purpose.
+# about the host's lead-in ("So tell me about your old job."). In M3 this session FAILED (speaker-aware edits were not built);
+# M4 builds them. The expectation below is unchanged.
 name: 13_two_speakers_guest_old_job
 video: media/two_speaker.mp4
 num_speakers: 2

@@ -1,0 +1,7 @@
+
+> incubrix@0.0.0 session
+> node --import tsx apps/cli/src/session.ts sessions/13_two_speakers_guest_old_job.yaml --out docs/raw/m4_sessions/13_two_speakers_guest_old_job
+
+[13_two_speakers_guest_old_job] video vid_84af576c6c764214be5f, job job_1e09f40748ed4f098d14
+[13_two_speakers_guest_old_job] step 1: needs_clarification ok
+PASS 13_two_speakers_guest_old_job  -> /home/g23m143/incubrix-ps2/docs/raw/m4_sessions/13_two_speakers_guest_old_job
