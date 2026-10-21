@@ -8,7 +8,8 @@ export function args(argv: string[]) {
   const rest: string[] = [];
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i]!;
-    if (a.startsWith("--")) flags[a.slice(2)] = argv[++i] ?? "";
+    if (a === "--resume") flags.resume = "1";
+    else if (a.startsWith("--")) flags[a.slice(2)] = argv[++i] ?? "";
     else rest.push(a);
   }
   return { flags, rest };

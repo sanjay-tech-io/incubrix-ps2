@@ -1,4 +1,4 @@
-import { mkdirSync, readdirSync, statSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
 import { basename, join, resolve } from "node:path";
 import { loadSession } from "./format.ts";
 import { runSession, type SessionResult } from "./runner.ts";
@@ -18,14 +18,19 @@ export interface BatchSummary {
 }
 
 /** Run every session file, write each one's results to <out>/<name>/ and one summary.json. Failures are kept, never hidden. */
-export async function runBatch(target: string, outDir: string, o: { api: string; token?: string | undefined; baseDir?: string | undefined; log?: (l: string) => void; idle?: () => Promise<void> }): Promise<BatchSummary> {
+export async function runBatch(target: string, outDir: string, o: { resume?: boolean; api: string; token?: string | undefined; baseDir?: string | undefined; log?: (l: string) => void; idle?: () => Promise<void> }): Promise<BatchSummary> {
   const out = resolve(outDir);
   mkdirSync(out, { recursive: true });
   const summary: BatchSummary = { api: o.api, total: 0, passed: 0, failed: 0, sessions: [] };
   for (const file of sessionFiles(resolve(target))) {
     const name = basename(file).replace(/\.ya?ml$/, "");
     let r: SessionResult;
-    try {
+    const done = join(out, name, "results.json");
+    if (o.resume && existsSync(done)) {
+      // --resume: a session that already has a complete results.json is not run again (an interrupted batch continues).
+      r = JSON.parse(readFileSync(done, "utf8")) as SessionResult;
+      o.log?.(`resume: ${name} already has results.json`);
+    } else try {
       const doc = loadSession(file);
       r = await runSession(doc, doc.name ?? name, { api: o.api, token: o.token, outDir: join(out, name), baseDir: o.baseDir, ...(o.log ? { log: (l: string) => o.log!(`[${name}] ${l}`) } : {}), ...(o.idle ? { idle: o.idle } : {}) });
     } catch (e) {
@@ -53,6 +58,7 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   }
   const cwd = process.env.INIT_CWD ?? process.cwd();
   const s = await runBatch(resolve(cwd, target), resolve(cwd, flags.out), {
+    resume: "resume" in flags,
     api: flags.api ?? process.env.API_URL ?? "http://localhost:8080", token: flags.token ?? process.env.API_TOKEN, baseDir: cwd, log: (l) => console.log(l),
   });
   console.log(`\n${s.passed}/${s.total} sessions passed, ${s.failed} failed -> ${resolve(cwd, flags.out, "summary.json")}`);

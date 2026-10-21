@@ -1,0 +1,27 @@
+
+> incubrix@0.0.0 batch
+> node --import tsx apps/cli/src/batch.ts sessions --out test-pack/m3_real
+
+[01_worked_example] video vid_c8b05da4b98c4b458d90, job job_c52bc3be931c4fca89c9
+[01_worked_example] step 1: rejected FAILED expected applied, got rejected: I could not find the words "welcome to the channel" in the video, so there is nothing to put the caption on.
+[01_worked_example] step 2: applied ok
+[01_worked_example] step 3: needs_clarification ok
+[01_worked_example] step 4: applied ok
+[01_worked_example] step 5: applied ok
+[01_worked_example] step 6: applied ok
+[01_worked_example] step 7: applied ok
+[01_worked_example] step 8: rejected FAILED expected applied, got rejected: There is no caption to change (red). Add one first, for example: add a caption "Hello" on "welcome".
+FAIL 01_worked_example  fetch failed
+[01b_worked_example_as_recorded] video vid_7b816adbbefd474992dd, job job_f41f250bc05241b5905f
+Terminated
+_example_as_recorded] step 1: applied ok
+[01b_worked_example_as_recorded] step 2: applied ok
+[01b_worked_example_as_recorded] step 3: needs_clarification ok
+[01b_worked_example_as_recorded] step 4: applied ok
+[01b_worked_example_as_recorded] step 5: applied ok
+[01b_worked_example_as_recorded] step 6: applied ok
+[01b_worked_example_as_recorded] step 7: applied ok
+[01b_worked_example_as_recorded] step 8: applied ok
+Terminated
+exit=143
+exit=143
