@@ -1,0 +1,26 @@
+[
+  {
+    "size": "1920x1080",
+    "source_seconds": 120,
+    "pieces": 361,
+    "output_seconds": 84,
+    "render_s": 158.2,
+    "render_s_per_output_minute": 113,
+    "ffmpeg_peak_rss_mb": 1504,
+    "graph_script_kb": null,
+    "frames_ok": true,
+    "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1"
+  },
+  {
+    "size": "1920x1080",
+    "source_seconds": 120,
+    "pieces": 241,
+    "output_seconds": 96,
+    "render_s": 72.6,
+    "render_s_per_output_minute": 45.4,
+    "ffmpeg_peak_rss_mb": 1131,
+    "graph_script_kb": null,
+    "frames_ok": true,
+    "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1"
+  }
+]

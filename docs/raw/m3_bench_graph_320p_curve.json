@@ -1,0 +1,74 @@
+[
+  {
+    "size": "320x240",
+    "source_seconds": 80,
+    "pieces": 1,
+    "output_seconds": 80,
+    "render_s": 5.3,
+    "render_s_per_output_minute": 4,
+    "ffmpeg_peak_rss_mb": 82,
+    "graph_script_kb": null,
+    "frames_ok": true,
+    "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1"
+  },
+  {
+    "size": "320x240",
+    "source_seconds": 80,
+    "pieces": 81,
+    "output_seconds": 72,
+    "render_s": 6.7,
+    "render_s_per_output_minute": 5.6,
+    "ffmpeg_peak_rss_mb": 96,
+    "graph_script_kb": null,
+    "frames_ok": true,
+    "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1"
+  },
+  {
+    "size": "320x240",
+    "source_seconds": 80,
+    "pieces": 161,
+    "output_seconds": 64,
+    "render_s": 11.3,
+    "render_s_per_output_minute": 10.6,
+    "ffmpeg_peak_rss_mb": 111,
+    "graph_script_kb": null,
+    "frames_ok": true,
+    "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1"
+  },
+  {
+    "size": "320x240",
+    "source_seconds": 80,
+    "pieces": 241,
+    "output_seconds": 56,
+    "render_s": 21.3,
+    "render_s_per_output_minute": 22.8,
+    "ffmpeg_peak_rss_mb": 127,
+    "graph_script_kb": null,
+    "frames_ok": true,
+    "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1"
+  },
+  {
+    "size": "320x240",
+    "source_seconds": 80,
+    "pieces": 321,
+    "output_seconds": 48,
+    "render_s": 60.4,
+    "render_s_per_output_minute": 75.5,
+    "ffmpeg_peak_rss_mb": 150,
+    "graph_script_kb": null,
+    "frames_ok": true,
+    "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1"
+  },
+  {
+    "size": "320x240",
+    "source_seconds": 80,
+    "pieces": 401,
+    "output_seconds": 40,
+    "render_s": 96.9,
+    "render_s_per_output_minute": 145.4,
+    "ffmpeg_peak_rss_mb": 203,
+    "graph_script_kb": null,
+    "frames_ok": true,
+    "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1"
+  }
+]

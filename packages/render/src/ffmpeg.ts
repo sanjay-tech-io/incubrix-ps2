@@ -18,12 +18,13 @@ export async function ffmpegVersion(): Promise<string> {
  * Run ffmpeg with `-progress pipe:1`. `onProgress` gets the output position in microseconds as ffmpeg writes it.
  * stderr is kept (last 4 KB) so a failure says WHY, not just "exit 1".
  */
-export function runFfmpeg(args: string[], o: { onProgress?: (outTimeUs: number) => void; signal?: AbortSignal } = {}): Promise<{ stderr: string }> {
+export function runFfmpeg(args: string[], o: { onProgress?: (outTimeUs: number) => void; signal?: AbortSignal; onSpawn?: (pid: number) => void } = {}): Promise<{ stderr: string }> {
   return new Promise((resolve, reject) => {
     const child = spawn("ffmpeg", ["-hide_banner", "-nostdin", "-y", "-loglevel", "error", "-progress", "pipe:1", "-nostats", ...args], {
       stdio: ["ignore", "pipe", "pipe"],
       ...(o.signal ? { signal: o.signal } : {}),
     });
+    if (child.pid !== undefined) o.onSpawn?.(child.pid);
     let stderr = "";
     let buf = "";
     child.stdout.on("data", (d: Buffer) => {
@@ -125,4 +126,27 @@ export async function probeStreams(file: string): Promise<StreamFacts> {
     hasVideo: !!v,
     audioChannels: Number(a?.channels ?? 0),
   };
+}
+
+import { readFileSync } from "node:fs";
+
+/** Peak resident memory (MB) of a running process, from /proc (Linux). Poll while it runs; returns null if unreadable. */
+export function peakRssMb(pid: number): number | null {
+  try {
+    const m = /VmHWM:\s+(\d+) kB/.exec(readFileSync(`/proc/${pid}/status`, "utf8"));
+    return m ? Number(m[1]) / 1024 : null;
+  } catch {
+    return null;
+  }
+}
+
+/** CPU seconds used by this process's finished child processes (ffmpeg), from /proc/self/stat (cutime+cstime, 100 ticks/s on Linux). */
+export function childCpuSeconds(): number {
+  try {
+    const stat = readFileSync("/proc/self/stat", "utf8");
+    const f = stat.slice(stat.lastIndexOf(")") + 2).split(" ");
+    return (Number(f[13]) + Number(f[14])) / 100; // fields 16 and 17 of the whole line = index 13 and 14 after the "(comm) state" part
+  } catch {
+    return 0;
+  }
 }

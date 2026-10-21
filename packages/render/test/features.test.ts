@@ -72,7 +72,7 @@ describe("every effect the timeline holds renders", () => {
     const clip = await makeSyncClip({ fps: FPS, seconds: 12 });
     const s = scripted(clip.ctx);
     const t = s.say("slow down 0:04-0:06 by 2x");
-    expect(t.answer.status, t.answer.summary).toBe("applied");
+    expect(t.answer.status, String(t.answer.summary)).toBe("applied");
     const { out, r } = await render(clip, s.timeline());
     expect(r.output.videoFrames).toBe(14 * 25);
     const on = beepOnsets(out).onsets;

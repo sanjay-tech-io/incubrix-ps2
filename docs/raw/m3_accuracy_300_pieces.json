@@ -1,9 +1,9 @@
 {
   "pieces": 301,
-  "timeline_frames": 1900,
-  "rendered_frames": 1900,
+  "timeline_frames": 1800,
+  "rendered_frames": 1800,
   "events": 100,
   "unmatched": 0,
-  "av_offset_max_frames": 0.002604166666666667,
-  "render_ms": 15943
+  "av_offset_max_frames": 0.002604166666841934,
+  "render_ms": 6036
 }

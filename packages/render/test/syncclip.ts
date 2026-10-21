@@ -42,19 +42,21 @@ export interface SyncClipOptions {
   vfr?: boolean;
   /** Audio track exists but is digital silence (the words still exist in the transcript): lets tests measure music alone. */
   silentAudio?: boolean;
+  /** Picture size; default 320x240. */
+  size?: string;
 }
 
 export async function makeSyncClip(o: SyncClipOptions): Promise<SyncClip> {
-  const { fps, seconds, audio = true, vfr = false, silentAudio = false } = o;
-  const file = join(dir, `sync2_${seconds}s_${fpsName(fps)}_${audio ? (silentAudio ? "silent" : "av") : "video"}_${vfr ? "vfr" : "cfr"}.mp4`);
+  const { fps, seconds, audio = true, vfr = false, silentAudio = false, size = "320x240" } = o;
+  const file = join(dir, `sync2_${seconds}s_${size}_${fpsName(fps)}_${audio ? (silentAudio ? "silent" : "av") : "video"}_${vfr ? "vfr" : "cfr"}.mp4`);
   const events = eventFrames(fps, seconds);
   if (!existsSync(file)) {
     const period = Math.round(fps.num / fps.den);
     const flash = `lt(mod(n,${period}),2)`;
     const rate = `${fps.num}/${fps.den}`;
-    const vf = `drawtext=fontfile=${FONT}:text='%{frame_num}':start_number=0:x=10:y=10:fontsize=40:fontcolor=white:box=1:boxcolor=black,drawbox=x=0:y=0:w=iw:h=ih:color=white:t=fill:enable='${flash}'`;
+    const vf = `drawtext=fontfile=${FONT}:text='%{frame_num}':start_number=0:x=10:y=10:fontsize=${Math.round(Number(size.split("x")[1]) / 6)}:fontcolor=white:box=1:boxcolor=black,drawbox=x=0:y=0:w=iw:h=ih:color=white:t=fill:enable='${flash}'`;
     const keep = flash;
-    const args = ["-v", "error", "-y", "-f", "lavfi", "-i", `testsrc2=size=320x240:rate=${rate}:duration=${seconds}`];
+    const args = ["-v", "error", "-y", "-f", "lavfi", "-i", `testsrc2=size=${size}:rate=${rate}:duration=${seconds}`];
     if (audio && silentAudio) args.push("-f", "lavfi", "-i", `anullsrc=r=48000:cl=stereo:d=${seconds}`);
     else if (audio) {
       const wav = file.replace(/\.mp4$/, ".wav");

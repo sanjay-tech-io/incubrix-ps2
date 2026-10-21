@@ -22,7 +22,7 @@ describe("frame accuracy after a mix of edits (generated media, ffprobe + decode
       const clip = await makeSyncClip({ fps, seconds: 16 });
       const s = scripted(clip.ctx);
       const steps = MIX.map((t) => s.say(t));
-      for (const t of steps) expect(t.answer.status, t.answer.summary).toBe("applied");
+      for (const t of steps) expect(t.answer.status, String(t.answer.summary)).toBe("applied");
       const tl = s.timeline();
       const w = tmp(`acc-${name}`);
       const out = join(w, "out.mp4");

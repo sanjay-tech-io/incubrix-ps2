@@ -68,6 +68,10 @@ const base = z.object({
     RENDER_CRF: z.coerce.number().int().min(0).max(51).default(20),
     // 0 = keep the source height. Otherwise the output is scaled down (never up) to at most this many lines.
     RENDER_MAX_HEIGHT: z.coerce.number().int().min(0).max(4320).default(0),
+    // Pieces that share one pair of seeked inputs in the render graph (see docs/RENDER_DESIGN.md, bench in docs/raw/m3_bench_*).
+    RENDER_GROUP_PIECES: z.coerce.number().int().min(0).max(1000).default(30),
+    // Upper bound on open input pairs (memory); the group size is raised for very fragmented timelines.
+    RENDER_MAX_GROUPS: z.coerce.number().int().min(1).max(500).default(64),
     // Where ffmpeg may write its temporary files (proxy, graph script, output).
     RENDER_TMP_DIR: z.string().min(1).default("/tmp"),
 });

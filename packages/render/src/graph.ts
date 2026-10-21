@@ -19,24 +19,43 @@ const EDGE_US = 500;
 export interface RenderGraphInput {
   ctx: EngineContext;
   tl: Timeline;
-  /** ffmpeg input index of the file the VIDEO is read from (the original, or the CFR proxy). */
-  videoIndex: number;
-  /** ffmpeg input index of the file the AUDIO is read from (always the original). */
-  audioIndex: number;
-  /** ffmpeg input index of the music file, null = no music. */
-  musicIndex: number | null;
-  /** Seconds to add to the video clock so frame 0 of the video sits at atom time 0 (video start - audio start). 0 for a proxy. */
+  /** Container time (in the video / audio FILE) that corresponds to atom time 0. 0 for a CFR proxy (it is on the atom clock). */
+  videoBaseUs: number;
+  audioBaseUs: number;
+  /**
+   * Single-group mode only (groupPieces = 0): seconds to add to the video clock so frame 0 of the video sits at atom
+   * time 0 (video start - audio start), for an original whose video starts more than half a frame after its audio.
+   */
   videoOffsetUs: number;
+  /**
+   * How many pieces share one pair of seeked inputs. 0 = one group over the whole file (no seeking).
+   * Why groups: with ONE split per stream every piece branch receives EVERY frame, so the work grows with
+   * pieces x length (measured: docs/raw/m3_bench_*). A group only sees its own stretch of the source.
+   */
+  groupPieces: number;
+  /** A group is closed early when its source stretch would be longer than this (a reorder can make pieces far apart). */
+  groupMaxSpanUs: number;
   /** Channels of the original's audio: a mono voice is copied to both channels (ffmpeg's default upmix would lower it by 3 dB). */
   audioChannels: number;
-  /** Height of the video input; used for caption size and the optional scale-down. */
+  /** Size of the video input; used for caption size and the optional scale-down. */
   width: number;
   height: number;
   /** 0 = keep. */
   maxHeight: number;
+  /** Whether a music input will be supplied (it becomes the last input). */
+  hasMusic: boolean;
   /** Directory where the text files returned in `files` will be written; drawtext reads them from there. */
   workDir: string;
   fonts: { regular: string; bold: string };
+}
+
+/** One ffmpeg input, in order: the renderer turns it into `[-ss t] [-t d] -i file`. */
+export interface InputSpec {
+  role: "video" | "audio" | "music";
+  /** Container time to seek to (before the input), null = read from the start. */
+  seekUs: number | null;
+  /** How much to read after the seek, null = all. */
+  durationUs: number | null;
 }
 
 export interface GraphFile {
@@ -46,6 +65,8 @@ export interface GraphFile {
 
 export interface RenderGraph {
   script: string;
+  inputs: InputSpec[];
+  groups: number;
   /** Files to write into workDir before running ffmpeg (one per caption). */
   files: GraphFile[];
   /** Exact number of output frames and audio samples the graph produces. */
@@ -126,7 +147,7 @@ export function buildRenderGraph(inp: RenderGraphInput): RenderGraph {
   const n = pieces.length;
   const fpsText = `${fps.num}/${fps.den}`;
 
-  // ---- video: one decode, split into one branch per piece, each trimmed by FRAME NUMBER to its exact frame count ----
+  // ---- video + audio: pieces are cut by FRAME NUMBER / SAMPLE from seeked inputs, one input pair per group of pieces ----
   let outWidth = inp.width;
   let outHeight = inp.height;
   let scale = "";
@@ -136,35 +157,89 @@ export function buildRenderGraph(inp: RenderGraphInput): RenderGraph {
     scale = `,scale=${outWidth}:${outHeight}:flags=lanczos`;
   }
   const shift = inp.videoOffsetUs === 0 ? "" : `${inp.videoOffsetUs < 0 ? "-" : "+"}${sec(Math.abs(inp.videoOffsetUs))}/TB`;
-  lines.push(`[${inp.videoIndex}:v]setpts=PTS-STARTPTS${shift},fps=fps=${fpsText}:start_time=0${scale},setsar=1,${n > 1 ? `split=${n}` : "null"}${branches("vs", n)}`);
+  const frameHalfUs = Math.floor((1_000_000 * fps.den) / fps.num / 2);
+  const AUDIO_PREROLL_US = 500_000; // the AAC decoder needs a little run-up before the first sample we keep
+  const inputs: InputSpec[] = [];
 
-  const vlabels: string[] = [];
-  const alabels: string[] = [];
-  let cumFrames = 0;
-  let cumSamples = 0;
+  // piece -> group (consecutive pieces in OUTPUT order; closed by count or by source span)
+  const groups: { first: number; last: number; lo: number; hi: number }[] = [];
+  if (inp.groupPieces <= 0) groups.push({ first: 0, last: n - 1, lo: 0, hi: ctx.source.durationUs });
+  else {
+    let g = { first: 0, last: 0, lo: pieces[0]!.srcS, hi: pieces[0]!.srcE };
+    for (let i = 1; i < n; i++) {
+      const p = pieces[i]!;
+      const lo = Math.min(g.lo, p.srcS);
+      const hi = Math.max(g.hi, p.srcE);
+      if (i - g.first >= inp.groupPieces || hi - lo > inp.groupMaxSpanUs) {
+        groups.push(g);
+        g = { first: i, last: i, lo: p.srcS, hi: p.srcE };
+      } else g = { first: g.first, last: i, lo, hi };
+    }
+    groups.push(g);
+  }
+
+  const vlabels: string[] = new Array<string>(n);
+  const alabels: string[] = new Array<string>(n);
   const afterSamples = (frames: number): number => Math.round((frames * fps.den * AUDIO_RATE) / fps.num);
-  pieces.forEach((p, i) => {
-    if (p.outFrames === null) throw new Error("piece without a frame count");
-    const a = frameOf(p.srcS, fps);
-    const b = Math.max(a + 1, frameOf(p.srcE, fps));
-    const retime = p.rate.num === p.rate.den ? "" : `,setpts=PTS*${p.rate.den}/${p.rate.num},fps=fps=${fpsText}`;
-    // tpad clones the last frame if the retimed piece came out one frame short, then trim cuts to EXACTLY outFrames.
-    lines.push(`[vs${i}]trim=start_frame=${a}:end_frame=${b},setpts=PTS-STARTPTS${retime},tpad=stop_mode=clone:stop=3,trim=end_frame=${p.outFrames},setpts=PTS-STARTPTS[v${i}]`);
-    vlabels.push(`[v${i}]`);
+  // cumulative output counts per piece (exact integers, the same for every strategy)
+  const cumFramesAt: number[] = [];
+  const cumSamplesAt: number[] = [];
+  {
+    let cf = 0;
+    let cs = 0;
+    for (const p of pieces) {
+      if (p.outFrames === null) throw new Error("piece without a frame count");
+      cf += p.outFrames;
+      const cs2 = afterSamples(cf);
+      cumFramesAt.push(cf);
+      cumSamplesAt.push(cs2 - cs);
+      cs = cs2;
+    }
+  }
+  const cumFrames = cumFramesAt[n - 1]!;
+  const cumSamples = pieces.reduce((t, _p, i) => t + cumSamplesAt[i]!, 0);
 
-    cumFrames += p.outFrames;
-    const samples = afterSamples(cumFrames) - cumSamples;
-    cumSamples += samples;
-    const tempo = atempoChain(p.rate);
-    lines.push(
-      `[as${i}]atrim=start=${sec(p.srcS)}:end=${sec(p.srcE)},asetpts=PTS-STARTPTS${tempo.length ? "," + tempo.join(",") : ""},apad=whole_len=${samples},atrim=end_sample=${samples},asetpts=PTS-STARTPTS[a${i}]`,
-    );
-    alabels.push(`[a${i}]`);
+  groups.forEach((g, gi) => {
+    const count = g.last - g.first + 1;
+    let a0 = 0; // source frame number of the first decoded video frame
+    let vSeek: number | null = null;
+    let vDur: number | null = null;
+    let aSeekAtom = 0; // atom time at which the audio input starts (audio timestamps are re-based to 0 there)
+    let aSeek: number | null = null;
+    let aDur: number | null = null;
+    if (inp.groupPieces > 0) {
+      a0 = frameOf(g.lo, fps);
+      const vAtom = Math.max(0, Math.round((a0 * fps.den * 1_000_000) / fps.num) - frameHalfUs);
+      vSeek = vAtom + inp.videoBaseUs;
+      vDur = g.hi - vAtom + 3 * frameHalfUs * 2;
+      aSeekAtom = Math.max(0, g.lo - AUDIO_PREROLL_US);
+      aSeek = aSeekAtom + inp.audioBaseUs;
+      aDur = g.hi - aSeekAtom + 200_000;
+    }
+    const vIdx = inputs.length;
+    inputs.push({ role: "video", seekUs: vSeek, durationUs: vDur });
+    const aIdx = inputs.length;
+    inputs.push({ role: "audio", seekUs: aSeek, durationUs: aDur });
+    // a group's video is decoded once and split only among ITS pieces
+    lines.push(`[${vIdx}:v]setpts=PTS-STARTPTS${inp.groupPieces <= 0 ? shift : ""},fps=fps=${fpsText}:start_time=0${scale},setsar=1,${count > 1 ? `split=${count}` : "null"}${branches(`vs${gi}_`, count)}`);
+    lines.push(`[${aIdx}:a]aresample=${AUDIO_RATE},${inp.audioChannels === 1 ? "pan=stereo|c0=c0|c1=c0," : ""}aformat=sample_fmts=fltp:channel_layouts=stereo,asetpts=PTS-STARTPTS,${count > 1 ? `asplit=${count}` : "anull"}${branches(`as${gi}_`, count)}`);
+    for (let i = g.first; i <= g.last; i++) {
+      const p = pieces[i]!;
+      const k = i - g.first;
+      const a = frameOf(p.srcS, fps);
+      const b = Math.max(a + 1, frameOf(p.srcE, fps));
+      const retime = p.rate.num === p.rate.den ? "" : `,setpts=PTS*${p.rate.den}/${p.rate.num},fps=fps=${fpsText}`;
+      // tpad clones the last frame if the retimed piece came out one frame short, then trim cuts to EXACTLY outFrames.
+      lines.push(`[vs${gi}_${k}]trim=start_frame=${a - a0}:end_frame=${b - a0},setpts=PTS-STARTPTS${retime},tpad=stop_mode=clone:stop=3,trim=end_frame=${p.outFrames},setpts=PTS-STARTPTS[v${i}]`);
+      vlabels[i] = `[v${i}]`;
+      const samples = cumSamplesAt[i]!;
+      const tempo = atempoChain(p.rate);
+      lines.push(
+        `[as${gi}_${k}]atrim=start=${sec(p.srcS - aSeekAtom)}:end=${sec(p.srcE - aSeekAtom)},asetpts=PTS-STARTPTS${tempo.length ? "," + tempo.join(",") : ""},apad=whole_len=${samples},atrim=end_sample=${samples},asetpts=PTS-STARTPTS[a${i}]`,
+      );
+      alabels[i] = `[a${i}]`;
+    }
   });
-  // audio: normalise once (48 kHz, stereo, float), clock starts at the first sample = atom time 0
-  lines.unshift(
-    `[${inp.audioIndex}:a]aresample=${AUDIO_RATE}:async=1:first_pts=0,${inp.audioChannels === 1 ? "pan=stereo|c0=c0|c1=c0," : ""}aformat=sample_fmts=fltp:channel_layouts=stereo,asetpts=PTS-STARTPTS,${n > 1 ? `asplit=${n}` : "anull"}${branches("as", n)}`,
-  );
   const interleaved = pieces.map((_, i) => `${vlabels[i]}${alabels[i]}`).join("");
   lines.push(`${interleaved}concat=n=${n}:v=1:a=1[vcat][acat]`);
 
@@ -227,7 +302,9 @@ export function buildRenderGraph(inp: RenderGraphInput): RenderGraph {
 
   // ---- music: the engine's envelope, spelled as a piecewise-linear gain in centi-dB (linear between keyframes IN dB) ----
   if (tl.music) {
-    if (inp.musicIndex === null) throw new Error("the timeline has music but no music file was supplied");
+    if (!inp.hasMusic) throw new Error("the timeline has music but no music file was supplied");
+    const musicIndex = inputs.length;
+    inputs.push({ role: "music", seekUs: null, durationUs: null });
     const kf = duckingEnvelope(ctx, tl, tl.music);
     const terms: string[] = [];
     for (let i = 0; i + 1 < kf.length; i++) {
@@ -240,7 +317,7 @@ export function buildRenderGraph(inp: RenderGraphInput): RenderGraph {
     terms.push(`gte(t,${sec(last.timeUs)})*${last.gainCentiDb}`);
     // asetnsamples: gain is evaluated once per 10 ms block, so a ramp is followed to within 10 ms.
     lines.push(
-      `[${inp.musicIndex}:a]aresample=${AUDIO_RATE},aformat=sample_fmts=fltp:channel_layouts=stereo,atrim=duration=${sec(tl.durationUs)},asetpts=PTS-STARTPTS,asetnsamples=n=480:p=0,volume=volume='pow(10,(${terms.join("+")})/2000)':eval=frame[amusic]`,
+      `[${musicIndex}:a]aresample=${AUDIO_RATE},aformat=sample_fmts=fltp:channel_layouts=stereo,atrim=duration=${sec(tl.durationUs)},asetpts=PTS-STARTPTS,asetnsamples=n=480:p=0,volume=volume='pow(10,(${terms.join("+")})/2000)':eval=frame[amusic]`,
     );
     mixInputs.push("[amusic]");
   }
@@ -250,6 +327,8 @@ export function buildRenderGraph(inp: RenderGraphInput): RenderGraph {
 
   return {
     script: lines.join(";\n") + "\n",
+    inputs,
+    groups: groups.length,
     files,
     frames: cumFrames,
     samples: total,
