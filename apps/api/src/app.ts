@@ -53,6 +53,7 @@ const CreateVideoUrl = z.strictObject({
   ai_generated: z.boolean().optional(),
 });
 const CreateSession = z.strictObject({ video_id: z.string().min(1) });
+const RenderBody = z.strictObject({ callback_url: z.url().optional() });
 const InstructionBody = z
   .strictObject({ say: z.string().trim().min(1).max(2000).optional(), answer: z.union([z.number().int().min(1), z.string().trim().min(1).max(200)]).optional() })
   .refine((b) => b.say !== undefined || b.answer !== undefined, { message: "send `say` or `answer`" });
@@ -326,10 +327,19 @@ export async function buildApp(d: ApiDeps): Promise<FastifyInstance & { routeTab
     };
   });
 
-  app.post("/api/v1/sessions/:session_id/render", async (req) => {
+  // Render = a background job over a SNAPSHOT of the timeline taken now (edits made later do not change it).
+  app.post("/api/v1/sessions/:session_id/render", async (req, reply) => {
     const { session_id } = req.params as { session_id: string };
+    const body = parseBody(RenderBody, req.body ?? {});
     if (!(await getSession(pool, session_id))) throw new ApiError("SESSION_NOT_FOUND", `session ${session_id} does not exist`);
-    throw new ApiError("NOT_IMPLEMENTED", "Rendering is milestone M3 and is not built yet.");
+    if (body.callback_url) await assertUrlAllowed(body.callback_url, cfg.URL_ALLOW_PRIVATE);
+    return idem(req, reply, `POST /api/v1/sessions/${session_id}/render`, requestHash({ session_id, ...body }), async () => {
+      const rt = await runtimes.get(pool, session_id);
+      const tl = currentTimeline(rt.ctx, rt.state);
+      const hash = timelineHash(tl);
+      const jobId = await createJob(pool, { type: "render", sessionId: session_id, callbackUrl: body.callback_url ?? null, request: { session_id, timeline: tl, timeline_hash: hash } });
+      return { status: 202, body: { job_id: jobId, session_id, timeline_hash: hash, duration_s: tl.durationUs / 1e6, status_url: `/api/v1/jobs/${jobId}` } };
+    });
   });
 
   // ---- jobs ------------------------------------------------------------------------------------------------------
@@ -337,7 +347,13 @@ export async function buildApp(d: ApiDeps): Promise<FastifyInstance & { routeTab
     const { job_id } = req.params as { job_id: string };
     const j = await getJob(pool, job_id);
     if (!j) throw new ApiError("JOB_NOT_FOUND", `job ${job_id} does not exist`);
-    return jobView(j);
+    const view = jobView(j);
+    // Download links expire, so they are signed again on every read from the stored object keys.
+    const outputs = (j.result as { outputs?: { video: string; manifest: string } } | null)?.outputs;
+    if (j.status === "succeeded" && outputs) {
+      view.links = { video: await presignGet(d.s3Public, cfg.S3_BUCKET, outputs.video, 3600), manifest: await presignGet(d.s3Public, cfg.S3_BUCKET, outputs.manifest, 3600) };
+    }
+    return view;
   });
 
   return app;

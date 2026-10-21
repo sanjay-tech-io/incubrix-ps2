@@ -176,15 +176,32 @@ paths:
     post:
       tags: [sessions]
       operationId: renderSession
-      summary: Render the edited video (NOT IMPLEMENTED until M3)
-      description: Always answers 501 `NOT_IMPLEMENTED` for now. M3 replaces it with a 202 job.
+      summary: Render the edited video (background job)
+      description: |
+        Takes a snapshot of the session's current timeline (its `timeline_hash` is returned) and renders it in one ffmpeg run:
+        cuts, keep-only, reorder, speed, mute, bleep, captions, auto-captions and ducked music. Poll `GET /api/v1/jobs/{job_id}`;
+        when it succeeds, `links.video` and `links.manifest` are download links. Edits made after this call do not change the render.
+        The job fails with `RENDER_VERIFY_FAILED` if the file's frame count or audio length does not match the timeline, and with
+        `SOURCE_CHANGED` if the stored original's sha256 differs before/after.
       parameters:
         - { $ref: "#/components/parameters/SessionId" }
         - $ref: "#/components/parameters/IdempotencyKey"
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                callback_url: { type: string, format: uri, description: Signed POST (X-IncuBrix-Signature) when the job ends }
       responses:
-        "501": { $ref: "#/components/responses/Error" }
+        "202": { description: Accepted, content: { application/json: { schema: { $ref: "#/components/schemas/RenderAccepted" } } } }
+        "400": { $ref: "#/components/responses/Error" }
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+        "429": { $ref: "#/components/responses/Error" }
   /api/v1/jobs/{job_id}:
     get:
       tags: [jobs]
@@ -246,6 +263,15 @@ components:
         video_id: { type: string }
         job_id: { type: string }
         status_url: { type: string, description: "/api/v1/jobs/{job_id}" }
+    RenderAccepted:
+      type: object
+      required: [job_id, session_id, timeline_hash, duration_s, status_url]
+      properties:
+        job_id: { type: string }
+        session_id: { type: string }
+        timeline_hash: { type: string, description: sha256 of the timeline being rendered }
+        duration_s: { type: number }
+        status_url: { type: string }
     Video:
       type: object
       required: [video_id, status, warnings]

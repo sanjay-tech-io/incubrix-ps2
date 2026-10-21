@@ -1,16 +1,8 @@
-import { createContext, newSession, type EngineContext, type SessionState } from "@incubrix/engine";
+import { newSession, type EngineContext, type SessionState } from "@incubrix/engine";
 import type { Atom, Source } from "@incubrix/contracts";
 import { ApiError } from "@incubrix/errors";
-import { getSession, getTranscript, getVideo, loadSessionState, sessionCounts, type Db, type VideoRow } from "@incubrix/store";
+import { contextOf, getSession, getTranscript, getVideo, loadSessionState, sessionCounts, speedLimits, sourceOf, type Db, type VideoRow } from "@incubrix/store";
 import type pg from "pg";
-
-/** MAX_SPEED (a decimal such as 4 or 2.5) -> the exact rational the engine wants. Min speed is fixed at 1/4. */
-export function speedLimits(maxSpeed: number) {
-  const scaled = Math.round(maxSpeed * 1000);
-  const g = (a: number, b: number): number => (b === 0 ? a : g(b, a % b));
-  const d = g(scaled, 1000);
-  return { min: { num: 1, den: 4 }, max: { num: scaled / d, den: 1000 / d } };
-}
 
 export interface Runtime {
   sessionId: string;
@@ -55,7 +47,7 @@ export class RuntimeCache {
       const v = await getVideo(db, session.video_id);
       const t = v?.transcript_key ? await getTranscript(db, v.transcript_key) : null;
       if (!v || !t) throw new ApiError("VIDEO_NOT_READY", "the session's video has no transcript");
-      ctx = createContext(sourceOf(v), t.atoms as Atom[], speedLimits(this.maxSpeed));
+      ctx = contextOf(v, t.atoms as Atom[], this.maxSpeed);
       video = v;
     }
     const state = counts.log === 0 && counts.conversation === 0 ? newSession() : await loadSessionState(db, sessionId);
@@ -65,9 +57,6 @@ export class RuntimeCache {
   }
 }
 
-export function sourceOf(v: VideoRow): Source {
-  const p = v.probe as { duration_us: number; fps: { num: number; den: number } | null; has_audio: boolean; has_video: boolean; variable_frame_rate: boolean; sha256: string };
-  return { sha256: p.sha256, durationUs: p.duration_us, fps: p.fps, hasAudio: p.has_audio, hasVideo: p.has_video, variableFrameRate: p.variable_frame_rate };
-}
-
 export type PgPool = pg.Pool;
+
+export { speedLimits, sourceOf };

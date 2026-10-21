@@ -137,11 +137,40 @@ describe.skipIf(!integration)("worked example over HTTP (mock ASR)", () => {
     expect(hist.entries.find((x: any) => x.kind === "cut").op.span.start.atom).toMatch(/^a_/); // atoms, not seconds
   });
 
-  it("step 8: render is an honest 501", async () => {
-    const r = await s.call("POST", `/api/v1/sessions/${sessionId}/render`, {});
-    expect(r.status).toBe(501);
-    expect(r.body.error.code).toBe("NOT_IMPLEMENTED");
-  });
+  it("step 8: render is a background job; the file matches the timeline length; the original is untouched (sha256 before and after)", async () => {
+    const tlBefore = (await s.call("GET", `/api/v1/sessions/${sessionId}/timeline`)).body;
+    const r = await s.call("POST", `/api/v1/sessions/${sessionId}/render`, {}, { "Idempotency-Key": "render-step-8" });
+    expect(r.status).toBe(202);
+    expect(r.body.timeline_hash).toBe(tlBefore.timeline_hash);
+    const again = await s.call("POST", `/api/v1/sessions/${sessionId}/render`, {}, { "Idempotency-Key": "render-step-8" });
+    expect(again.body.job_id).toBe(r.body.job_id); // same key + same body: same job, no second render
+    expect(again.headers.get("idempotent-replayed")).toBe("true");
+    expect((await s.call("GET", `/api/v1/jobs/${r.body.job_id}`)).body.status).toBe("queued");
+    expect(await s.drain()).toBe(1);
+    const job = (await s.call("GET", `/api/v1/jobs/${r.body.job_id}`)).body;
+    expect(job.error).toBeNull();
+    expect(job).toMatchObject({ status: "succeeded", progress: 100, type: "render" });
+    const m = job.result.manifest;
+    expect(m.render.source.unchanged).toBe(true);
+    expect(m.render.source.sha256_before).toBe(m.render.source.sha256_after_stored);
+    expect(m.render.frame_difference).toBe(0);
+    expect(m.render.timeline_hash).toBe(tlBefore.timeline_hash);
+    expect(Math.abs(m.render.audio_minus_video_frames)).toBeLessThanOrEqual(1);
+    const dl = await fetch(job.links.video);
+    expect(dl.status).toBe(200);
+    const { writeFileSync, mkdtempSync } = await import("node:fs");
+    const { tmpdir } = await import("node:os");
+    const { join } = await import("node:path");
+    const { execFileSync } = await import("node:child_process");
+    const file = join(mkdtempSync(join(tmpdir(), "e2e-render-")), "out.mp4");
+    writeFileSync(file, Buffer.from(await dl.arrayBuffer()));
+    const probe = JSON.parse(execFileSync("ffprobe", ["-v", "error", "-count_frames", "-select_streams", "v:0", "-show_entries", "stream=nb_read_frames,r_frame_rate", "-of", "json", file]).toString());
+    expect(Number(probe.streams[0].nb_read_frames)).toBe(Math.round(tlBefore.duration_s * 25)); // length equals the timeline, to the frame
+    const man = await (await fetch(job.links.manifest)).json();
+    expect(man.render.job_id).toBe(r.body.job_id);
+    const v = (await s.pool.query("select sha256, storage_key from videos limit 1")).rows[0];
+    expect(m.render.source.sha256_before).toBe(v.sha256);
+  }, 180_000);
 
   it("after a restart (new API, empty memory) replay gives the identical hash, and editing continues", async () => {
     const before = (await s.call("GET", `/api/v1/sessions/${sessionId}/timeline`)).body.timeline_hash;

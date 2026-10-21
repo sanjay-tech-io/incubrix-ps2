@@ -270,3 +270,21 @@ describe("determinism", () => {
     expect(() => createParser("groq")).toThrow(/not implemented/);
   });
 });
+
+describe("background music", () => {
+  it("'add background music' sets the built-in track; 'remove the music' clears it; the sha matches packages/media", async () => {
+    const { BUILTIN_MUSIC_SHA256 } = await import("@incubrix/media");
+    const { BUILTIN_MUSIC } = await import("../src/index.ts");
+    expect(BUILTIN_MUSIC.assetSha256).toBe(BUILTIN_MUSIC_SHA256);
+    const s = session();
+    const none = s.say("remove the music");
+    expect(none.answer.status).toBe("rejected");
+    const add = s.say("add background music");
+    expect(add.answer.status).toBe("applied");
+    expect(currentTimeline(s.ctx, s.state).music?.assetSha256).toBe(BUILTIN_MUSIC_SHA256);
+    expect(add.answer.warnings.join(" ")).toMatch(/lowered by 12 dB/);
+    const off = s.say("remove the music");
+    expect(off.answer.status).toBe("applied");
+    expect(currentTimeline(s.ctx, s.state).music).toBeNull();
+  });
+});

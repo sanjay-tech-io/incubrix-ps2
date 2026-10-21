@@ -51,3 +51,12 @@ export async function getToFile(s3: S3Client, bucket: string, key: string, path:
 export async function putText(s3: S3Client, bucket: string, key: string, body: string, contentType = "application/json"): Promise<void> {
   await s3.send(new PutObjectCommand({ Bucket: bucket, Key: key, Body: body, ContentType: contentType }));
 }
+
+/** sha256 of a stored object, streamed (never held in memory). Used to prove the original did not change. */
+export async function sha256OfObject(s3: S3Client, bucket: string, key: string): Promise<string> {
+  const { createHash } = await import("node:crypto");
+  const r = await s3.send(new GetObjectCommand({ Bucket: bucket, Key: key }));
+  const h = createHash("sha256");
+  for await (const c of r.Body as Readable) h.update(c as Buffer);
+  return h.digest("hex");
+}

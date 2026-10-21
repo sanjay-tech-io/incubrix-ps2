@@ -10,6 +10,7 @@ const cfg = loadConfig(process.env);
 const log = makeLogger("worker", cfg.LOG_LEVEL);
 const pool = new pg.Pool({ connectionString: cfg.DATABASE_URL, max: 4 });
 const s3 = makeS3(cfg);
+const s3Public = cfg.S3_PUBLIC_ENDPOINT ? makeS3({ ...cfg, S3_ENDPOINT: cfg.S3_PUBLIC_ENDPOINT }) : s3;
 
 // ASR_PROVIDER=mock never calls the ASR service (tests); anything else goes over HTTP and the service runs its own engine.
 const asr: AsrClient =
@@ -36,6 +37,6 @@ http
   })
   .listen(cfg.WORKER_PORT, () => log.info({ port: cfg.WORKER_PORT, asr: asr.provider, diarization: asr.diarizationProvider }, "worker listening"));
 
-await workerLoop({ pool, s3, cfg, asr, log }, abort.signal);
+await workerLoop({ pool, s3, s3Public, cfg, asr, log }, abort.signal);
 await pool.end();
 process.exit(0);

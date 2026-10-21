@@ -48,3 +48,8 @@ export async function updateVideo(
     [id, p.sha256 ?? null, p.storageKey ?? null, p.mimeType ?? null, p.sizeBytes ?? null, p.status ?? null, p.probe ? JSON.stringify(p.probe) : null, p.warnings ? JSON.stringify(p.warnings) : null, p.transcriptKey ?? null],
   );
 }
+
+/** Add facts to videos.probe without replacing it (e.g. the CFR proxy the first render made). */
+export async function mergeProbe(db: Db, id: string, patch: Record<string, unknown>): Promise<void> {
+  await db.query("update videos set probe = coalesce(probe, '{}'::jsonb) || $2::jsonb, updated_at=now() where id=$1", [id, JSON.stringify(patch)]);
+}

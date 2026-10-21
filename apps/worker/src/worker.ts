@@ -1,6 +1,7 @@
 import { claimNextJob, failJob, requeueStale } from "@incubrix/store";
 import { errorBody } from "@incubrix/errors";
 import { runIntake, type WorkerDeps } from "./intake.ts";
+import { runRender } from "./render.ts";
 
 /** Take one queued job and run it. Returns false when the queue was empty. */
 export async function processOneJob(d: WorkerDeps): Promise<boolean> {
@@ -8,6 +9,7 @@ export async function processOneJob(d: WorkerDeps): Promise<boolean> {
   if (!job) return false;
   d.log.info({ job_id: job.id, type: job.type }, "job claimed");
   if (job.type === "ingest" || job.type === "transcribe") await runIntake(d, job);
+  else if (job.type === "render") await runRender(d, job);
   else await failJob(d.pool, job.id, errorBody("NOT_IMPLEMENTED", `jobs of type ${job.type} are not built yet`));
   return true;
 }

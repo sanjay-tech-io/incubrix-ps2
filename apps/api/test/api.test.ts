@@ -55,7 +55,16 @@ describe.skipIf(!integration)("API behaviour", () => {
       check("TimelineResponse", (await s.call("GET", `/api/v1/sessions/${id}/timeline`)).body);
       check("HistoryResponse", (await s.call("GET", `/api/v1/sessions/${id}/history`)).body);
       check("ConversationResponse", (await s.call("GET", `/api/v1/sessions/${id}/conversation`)).body);
+      const rend = await s.call("POST", `/api/v1/sessions/${id}/render`, {});
+      expect(rend.status).toBe(202);
+      check("RenderAccepted", rend.body);
+      await s.drain();
+      const rjob = (await s.call("GET", `/api/v1/jobs/${rend.body.job_id}`)).body;
+      expect(rjob.status).toBe("succeeded");
+      check("Job", rjob);
       check("ErrorBody", (await s.call("GET", "/api/v1/jobs/nope")).body);
+      expect((await s.call("POST", "/api/v1/sessions/ses_nope/render", {})).body.error.code).toBe("SESSION_NOT_FOUND");
+      expect((await s.call("POST", `/api/v1/sessions/${id}/render`, { bogus: 1 })).body.error.code).toBe("VALIDATION_FAILED");
       check("Health", (await s.call("GET", "/health")).body);
     });
   });

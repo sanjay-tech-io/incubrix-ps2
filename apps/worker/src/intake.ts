@@ -26,6 +26,8 @@ const run = promisify(execFile);
 export interface WorkerDeps {
   pool: pg.Pool;
   s3: S3Client;
+  /** Signs download links with the endpoint clients can reach (defaults to s3). */
+  s3Public?: S3Client;
   cfg: Config;
   asr: AsrClient;
   log: Logger;
@@ -212,7 +214,7 @@ export async function runIntake(d: WorkerDeps, job: JobRow): Promise<void> {
   await deliverCallback(d, job.id);
 }
 
-async function deliverCallback(d: WorkerDeps, jobId: string): Promise<void> {
+export async function deliverCallback(d: WorkerDeps, jobId: string): Promise<void> {
   const row = await getJob(d.pool, jobId);
   if (!row?.callback_url) return;
   const r = await sendCallback(row.callback_url, jobView(row), d.cfg.CALLBACK_HMAC_SECRET);
