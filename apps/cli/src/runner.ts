@@ -65,6 +65,8 @@ export interface SessionResult {
   error: string | null;
 }
 
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
 class Http {
   private readonly base: string;
   private readonly token: string | undefined;
@@ -81,7 +83,13 @@ class Http {
       h["content-type"] = "application/json";
       payload = JSON.stringify(body);
     }
-    const r = await fetch(this.base + path, { method, headers: h, ...(payload !== undefined ? { body: payload } : {}) });
+    // 429 RATE_LIMITED is retryable by definition: wait Retry-After (default 5 s) and send the same request again.
+    let r: Response;
+    for (let attempt = 0; ; attempt++) {
+      r = await fetch(this.base + path, { method, headers: h, ...(payload !== undefined ? { body: payload } : {}) });
+      if (r.status !== 429 || attempt >= 20) break;
+      await sleep(Number(r.headers.get("retry-after") ?? 5) * 1000 + 100);
+    }
     const text = await r.text();
     let parsed: unknown = text;
     try {
@@ -92,8 +100,6 @@ class Http {
     return { status: r.status, body: parsed };
   }
 }
-
-const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 export async function runSession(doc: SessionDoc, name: string, o: RunOptions): Promise<SessionResult> {
   const log = o.log ?? (() => undefined);
@@ -111,7 +117,7 @@ export async function runSession(doc: SessionDoc, name: string, o: RunOptions): 
       if (j.status !== 200) throw new Error(`GET job ${jobId} -> ${j.status} ${JSON.stringify(j.body)}`);
       if (j.body.status === "succeeded" || j.body.status === "failed") return j.body;
       if (Date.now() > deadline) throw new Error(`job ${jobId} did not finish within ${o.timeoutS ?? 3600} s (status ${j.body.status}, ${j.body.progress}%)`);
-      await sleep(o.pollMs ?? 500);
+      await sleep(o.pollMs ?? 1000);
     }
   };
 

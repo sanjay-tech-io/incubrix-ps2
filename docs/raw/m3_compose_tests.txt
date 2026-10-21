@@ -1,19 +1,23 @@
  Container incubrix-ps2-s3-1 Running 
  Container incubrix-ps2-postgres-1 Running 
- Container incubrix-ps2-asr-tests-1 Starting 
- Container incubrix-ps2-postgres-1 Waiting 
+ Container incubrix-ps2-init-1 Creating 
+ Container incubrix-ps2-asr-tests-1 Creating 
+ Container incubrix-ps2-asr-tests-1 Created 
+ Container incubrix-ps2-init-1 Created 
  Container incubrix-ps2-s3-1 Waiting 
+ Container incubrix-ps2-postgres-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Starting 
  Container incubrix-ps2-asr-tests-1 Started 
- Container incubrix-ps2-s3-1 Healthy 
  Container incubrix-ps2-postgres-1 Healthy 
+ Container incubrix-ps2-s3-1 Healthy 
  Container incubrix-ps2-init-1 Starting 
  Container incubrix-ps2-init-1 Started 
  Container incubrix-ps2-asr-tests-1 Waiting 
  Container incubrix-ps2-init-1 Waiting 
  Container incubrix-ps2-init-1 Exited 
  Container incubrix-ps2-asr-tests-1 Exited 
- Container incubrix-ps2-tests-run-ebef4e1b424b Creating 
- Container incubrix-ps2-tests-run-ebef4e1b424b Created 
+ Container incubrix-ps2-tests-run-b6a15a2c6f7f Creating 
+ Container incubrix-ps2-tests-run-b6a15a2c6f7f Created 
 
 > incubrix@0.0.0 test
 > npm test --workspaces --if-present
@@ -25,12 +29,12 @@
 
  RUN  v2.1.9 /app/packages/config
 
- ✓ test/config.test.ts (9 tests) 30ms
+ ✓ test/config.test.ts (9 tests) 31ms
 
  Test Files  1 passed (1)
       Tests  9 passed (9)
-   Start at  16:46:31
-   Duration  629ms (transform 90ms, setup 0ms, collect 183ms, tests 30ms, environment 0ms, prepare 93ms)
+   Start at  17:13:05
+   Duration  766ms (transform 103ms, setup 0ms, collect 193ms, tests 31ms, environment 0ms, prepare 121ms)
 
 
 > @incubrix/contracts@0.0.0 test
@@ -39,12 +43,12 @@
 
  RUN  v2.1.9 /app/packages/contracts
 
- ✓ test/schema.test.ts (4 tests) 370ms
+ ✓ test/schema.test.ts (4 tests) 391ms
 
  Test Files  1 passed (1)
       Tests  4 passed (4)
-   Start at  16:46:33
-   Duration  1.14s (transform 103ms, setup 0ms, collect 258ms, tests 370ms, environment 0ms, prepare 121ms)
+   Start at  17:13:06
+   Duration  1.14s (transform 116ms, setup 0ms, collect 305ms, tests 391ms, environment 0ms, prepare 132ms)
 
 
 > @incubrix/db@0.0.0 test
@@ -53,13 +57,13 @@
 
  RUN  v2.1.9 /app/packages/db
 
- ✓ test/files.test.ts (5 tests) 16ms
- ✓ test/postgres.test.ts (8 tests) 366ms
+ ✓ test/files.test.ts (5 tests) 12ms
+ ✓ test/postgres.test.ts (8 tests) 399ms
 
  Test Files  2 passed (2)
       Tests  13 passed (13)
-   Start at  16:46:34
-   Duration  896ms (transform 118ms, setup 0ms, collect 215ms, tests 381ms, environment 1ms, prepare 261ms)
+   Start at  17:13:08
+   Duration  1.02s (transform 191ms, setup 0ms, collect 301ms, tests 411ms, environment 1ms, prepare 295ms)
 
 
 > @incubrix/engine@0.0.0 test
@@ -68,28 +72,31 @@
 
  RUN  v2.1.9 /app/packages/engine
 
- ✓ test/session.test.ts (30 tests) 120ms
- ✓ test/new_ops.test.ts (39 tests) 188ms
- ✓ test/reorder.test.ts (26 tests) 220ms
- ✓ test/replay.test.ts (23 tests) 66ms
- ✓ test/frame_rounding.test.ts (14 tests) 218ms
- ✓ test/worked_example.test.ts (11 tests | 1 skipped) 76ms
- ✓ test/search_resolve.test.ts (21 tests) 26ms
- ✓ test/atoms.test.ts (21 tests) 46ms
- ✓ test/grid_warnings.test.ts (11 tests) 62ms
- ✓ test/mutants.test.ts (14 tests) 38ms
- ✓ test/canonical.test.ts (18 tests) 37ms
- ✓ test/hard_cases.test.ts (6 tests) 2740ms
-   ✓ property: incremental application equals a full replay > after every command of a random edit/undo/redo sequence, snapshots agree with replaying the log 493ms
-   ✓ property: the session path (caches, incremental priming) equals a fresh full replay > after every turn of a random session (edits, undo, redo, restore, rejected turns), the cached timeline equals a replay on a brand-new engine 2183ms
- ✓ test/schema.test.ts (4 tests) 304ms
- ✓ test/lint_guard.test.ts (12 tests) 955ms
-   ✓ engine purity lint rules > forbids Date in packages/engine/src 883ms
+ ✓ test/session.test.ts (30 tests) 186ms
+ ✓ test/new_ops.test.ts (39 tests) 279ms
+ ✓ test/reorder.test.ts (26 tests) 467ms
+   ✓ property: any sequence of moves keeps all material, in disjoint pieces, with consistent time mapping > 100 seeded random move sequences (inputs deep-frozen) 356ms
+ ✓ test/replay.test.ts (23 tests) 125ms
+ ✓ test/frame_rounding.test.ts (14 tests) 536ms
+   ✓ property: sum of piece frames equals round(total), pieces within 1 frame, cuts on the grid > holds for 150 seeded random cut-and-speed sequences on a 29.97 fps source 476ms
+ ✓ test/worked_example.test.ts (11 tests | 1 skipped) 172ms
+ ✓ test/search_resolve.test.ts (21 tests) 68ms
+ ✓ test/atoms.test.ts (21 tests) 202ms
+ ✓ test/grid_warnings.test.ts (11 tests) 206ms
+ ✓ test/mutants.test.ts (14 tests) 126ms
+ ✓ test/canonical.test.ts (18 tests) 154ms
+ ✓ test/hard_cases.test.ts (6 tests) 8634ms
+   ✓ property: incremental application equals a full replay > after every command of a random edit/undo/redo sequence, snapshots agree with replaying the log 881ms
+   ✓ property: the session path (caches, incremental priming) equals a fresh full replay > after every turn of a random session (edits, undo, redo, restore, rejected turns), the cached timeline equals a replay on a brand-new engine 7583ms
+ ✓ test/schema.test.ts (4 tests) 1631ms
+   ✓ the schema accepts what the engine really produces > a real session (caption, cut, question, answer, speed, restore, undo, recolour) validates, and so does its materialized timeline 1532ms
+ ✓ test/lint_guard.test.ts (12 tests) 2399ms
+   ✓ engine purity lint rules > forbids Date in packages/engine/src 2279ms
 
  Test Files  14 passed (14)
       Tests  249 passed | 1 skipped (250)
-   Start at  16:46:40
-   Duration  6.11s (transform 1.08s, setup 0ms, collect 4.10s, tests 5.10s, environment 10ms, prepare 2.11s)
+   Start at  17:13:18
+   Duration  17.56s (transform 2.36s, setup 0ms, collect 12.30s, tests 15.19s, environment 11ms, prepare 5.97s)
 
 
 > @incubrix/errors@0.0.0 test
@@ -98,12 +105,12 @@
 
  RUN  v2.1.9 /app/packages/errors
 
- ✓ test/errors.test.ts (3 tests) 9ms
+ ✓ test/errors.test.ts (3 tests) 13ms
 
  Test Files  1 passed (1)
       Tests  3 passed (3)
-   Start at  16:46:46
-   Duration  481ms (transform 85ms, setup 0ms, collect 75ms, tests 9ms, environment 0ms, prepare 92ms)
+   Start at  17:13:36
+   Duration  829ms (transform 137ms, setup 0ms, collect 121ms, tests 13ms, environment 0ms, prepare 151ms)
 
 
 > @incubrix/media@0.0.0 test
@@ -112,14 +119,15 @@
 
  RUN  v2.1.9 /app/packages/media
 
- ✓ test/pure.test.ts (17 tests) 18ms
- ✓ test/music.test.ts (1 test) 223ms
- ✓ test/ffmpeg.test.ts (8 tests) 2440ms
+ ✓ test/pure.test.ts (17 tests) 57ms
+ ✓ test/music.test.ts (1 test) 331ms
+   ✓ built-in music > is generated by arithmetic and its bytes never change (sha256 pinned) 326ms
+ ✓ test/ffmpeg.test.ts (8 tests) 2722ms
 
  Test Files  3 passed (3)
       Tests  26 passed (26)
-   Start at  16:46:47
-   Duration  3.10s (transform 261ms, setup 0ms, collect 531ms, tests 2.68s, environment 1ms, prepare 455ms)
+   Start at  17:13:38
+   Duration  3.62s (transform 340ms, setup 0ms, collect 740ms, tests 3.11s, environment 1ms, prepare 642ms)
 
 
 > @incubrix/nlu@0.0.0 test
@@ -128,15 +136,15 @@
 
  RUN  v2.1.9 /app/packages/nlu
 
- ✓ test/time.test.ts (19 tests) 24ms
+ ✓ test/time.test.ts (19 tests) 21ms
  ✓ test/rules.test.ts (24 tests) 351ms
- ✓ test/lint_guard.test.ts (9 tests) 1134ms
-   ✓ nlu purity lint rules > forbids Date in packages/nlu/src 1080ms
+ ✓ test/lint_guard.test.ts (9 tests) 1316ms
+   ✓ nlu purity lint rules > forbids Date in packages/nlu/src 1253ms
 
  Test Files  3 passed (3)
       Tests  52 passed (52)
-   Start at  16:46:53
-   Duration  2.04s (transform 745ms, setup 0ms, collect 1.32s, tests 1.51s, environment 1ms, prepare 429ms)
+   Start at  17:13:43
+   Duration  2.28s (transform 689ms, setup 0ms, collect 1.30s, tests 1.69s, environment 1ms, prepare 423ms)
 
 
 > @incubrix/render@0.0.0 test
@@ -148,27 +156,27 @@
 stdout | test/render.test.ts > render smoke > an unedited timeline renders to the same frame count, with the flash and the tone together
 {"frames":150,"verification":{"ok":true,"timelineFrames":150,"renderedFrames":150,"frameDifference":0,"audioVsVideoUs":0,"audioVsVideoFrames":0,"problems":[]},"m":{"videoFrames":150,"events":6,"offsetsFrames":[0.002604166666666667,0.0020833333333358794,0.0020833333333358794,0.0020833333333358794,0.002604166666664298,0.0020833333333358794],"maxAbsOffsetFrames":0.002604166666666667,"unmatched":0}}
 
- ✓ test/render.test.ts (1 test) 2728ms
-   ✓ render smoke > an unedited timeline renders to the same frame count, with the flash and the tone together 2726ms
- ✓ test/features.test.ts (7 tests) 21127ms
-   ✓ every effect the timeline holds renders > speed keeps the pitch: a 1 kHz tone is still 1 kHz at 2x and at 4x (chained atempo) 4459ms
-   ✓ every effect the timeline holds renders > slow motion (0.5x) lengthens the video, keeps the pitch 2569ms
-   ✓ every effect the timeline holds renders > mute silences exactly the word; bleep replaces it with a 1 kHz tone at the documented level 2013ms
-   ✓ every effect the timeline holds renders > captions: colour, text window and removal after a cut; auto-captions follow the surviving words 6956ms
-   ✓ every effect the timeline holds renders > long caption text is read from a file (quotes and colons cannot break the filter graph) 1199ms
-   ✓ background music follows the engine's ducking envelope > rendered music level equals the timeline envelope (base, ducked and mid-ramp) within 1 dB 3922ms
- ✓ test/accuracy.test.ts (6 tests) 35316ms
-   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > 25 fps: length equals the timeline within 1 frame and the flash/tone offset is within 1 frame 3715ms
-   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > 30 fps: length equals the timeline within 1 frame and the flash/tone offset is within 1 frame 3664ms
-   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > 29.97 fps: length equals the timeline within 1 frame and the flash/tone offset is within 1 frame 2995ms
-   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > a variable-frame-rate clip renders through a CFR proxy; the original is untouched 4285ms
-   ✓ a large graph: 300 pieces stay frame-exact > one instruction with 300 cuts renders in ONE ffmpeg run, frame count exact, A/V offset within 1 frame 20185ms
-   ✓ no-audio source > fails clearly with NO_AUDIO_TRACK and renders nothing 470ms
+ ✓ test/render.test.ts (1 test) 2574ms
+   ✓ render smoke > an unedited timeline renders to the same frame count, with the flash and the tone together 2572ms
+ ✓ test/features.test.ts (7 tests) 20604ms
+   ✓ every effect the timeline holds renders > speed keeps the pitch: a 1 kHz tone is still 1 kHz at 2x and at 4x (chained atempo) 4577ms
+   ✓ every effect the timeline holds renders > slow motion (0.5x) lengthens the video, keeps the pitch 1829ms
+   ✓ every effect the timeline holds renders > mute silences exactly the word; bleep replaces it with a 1 kHz tone at the documented level 1995ms
+   ✓ every effect the timeline holds renders > captions: colour, text window and removal after a cut; auto-captions follow the surviving words 7174ms
+   ✓ every effect the timeline holds renders > long caption text is read from a file (quotes and colons cannot break the filter graph) 1294ms
+   ✓ background music follows the engine's ducking envelope > rendered music level equals the timeline envelope (base, ducked and mid-ramp) within 1 dB 3728ms
+ ✓ test/accuracy.test.ts (6 tests) 36070ms
+   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > 25 fps: length equals the timeline within 1 frame and the flash/tone offset is within 1 frame 3850ms
+   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > 30 fps: length equals the timeline within 1 frame and the flash/tone offset is within 1 frame 2961ms
+   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > 29.97 fps: length equals the timeline within 1 frame and the flash/tone offset is within 1 frame 3104ms
+   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > a variable-frame-rate clip renders through a CFR proxy; the original is untouched 4474ms
+   ✓ a large graph: 300 pieces stay frame-exact > one instruction with 300 cuts renders in ONE ffmpeg run, frame count exact, A/V offset within 1 frame 21262ms
+   ✓ no-audio source > fails clearly with NO_AUDIO_TRACK and renders nothing 416ms
 
  Test Files  3 passed (3)
       Tests  14 passed (14)
-   Start at  16:46:55
-   Duration  36.47s (transform 644ms, setup 0ms, collect 1.88s, tests 59.17s, environment 1ms, prepare 445ms)
+   Start at  17:13:46
+   Duration  37.31s (transform 939ms, setup 0ms, collect 2.10s, tests 59.25s, environment 1ms, prepare 630ms)
 
 
 > @incubrix/storage@0.0.0 test
@@ -177,12 +185,12 @@ stdout | test/render.test.ts > render smoke > an unedited timeline renders to th
 
  RUN  v2.1.9 /app/packages/storage
 
- ✓ test/s3.test.ts (4 tests) 155ms
+ ✓ test/s3.test.ts (4 tests) 212ms
 
  Test Files  1 passed (1)
       Tests  4 passed (4)
-   Start at  16:47:32
-   Duration  1.01s (transform 148ms, setup 0ms, collect 387ms, tests 155ms, environment 0ms, prepare 107ms)
+   Start at  17:14:24
+   Duration  1.05s (transform 105ms, setup 0ms, collect 380ms, tests 212ms, environment 0ms, prepare 165ms)
 
 
 > @incubrix/store@0.0.0 test
@@ -191,14 +199,14 @@ stdout | test/render.test.ts > render smoke > an unedited timeline renders to th
 
  RUN  v2.1.9 /app/packages/store
 
- ✓ test/log.test.ts (2 tests) 14ms
- ✓ test/urlguard.test.ts (18 tests) 26ms
- ✓ test/store.test.ts (18 tests) 675ms
+ ✓ test/log.test.ts (2 tests) 15ms
+ ✓ test/urlguard.test.ts (18 tests) 22ms
+ ✓ test/store.test.ts (18 tests) 706ms
 
  Test Files  3 passed (3)
       Tests  38 passed (38)
-   Start at  16:47:34
-   Duration  2.04s (transform 538ms, setup 0ms, collect 2.32s, tests 715ms, environment 1ms, prepare 450ms)
+   Start at  17:14:25
+   Duration  2.08s (transform 632ms, setup 0ms, collect 2.39s, tests 742ms, environment 1ms, prepare 463ms)
 
 
 > @incubrix/api@0.0.0 test
@@ -207,33 +215,30 @@ stdout | test/render.test.ts > render smoke > an unedited timeline renders to th
 
  RUN  v2.1.9 /app/apps/api
 
- ✓ test/api.test.ts (20 tests) 14025ms
-   ✓ API behaviour > openapi.yaml matches the running service > real responses validate against their schemas 3224ms
-   ✓ API behaviour > errors > a session on a video that is not ready is 409 VIDEO_NOT_READY (retryable) 347ms
-   ✓ API behaviour > errors > a video without audio fails its job with NO_AUDIO_TRACK and cannot start a session 532ms
-   ✓ API behaviour > errors > a private URL is refused when private addresses are not allowed (the SSRF guard) 313ms
-   ✓ API behaviour > idempotency (every POST) > videos: same key + same file -> same ids, one video, one job, one stored object 883ms
-   ✓ API behaviour > idempotency (every POST) > sessions: same key + same body -> same session; different body -> 409 316ms
-   ✓ API behaviour > idempotency (every POST) > instructions: a repeated key replays the answer and does NOT apply the edit twice 355ms
-   ✓ API behaviour > jobs, cache, hints, warnings > the same file again is a transcript cache HIT (ASR not called); a different ASR model is a MISS 2746ms
-   ✓ API behaviour > jobs, cache, hints, warnings > num_speakers reaches the ASR/diarization call and changes the cache key 2102ms
-   ✓ API behaviour > jobs, cache, hints, warnings > variable frame rate is accepted with a warning in the job manifest and on the video 1247ms
-   ✓ API behaviour > jobs, cache, hints, warnings > a URL source is downloaded, stored byte-identical and transcribed; callback is signed and delivered 309ms
-   ✓ auth, rate limit, correlation id > API_TOKEN protects everything except /health and /ready; the token is never logged 302ms
- ✓ test/e2e.test.ts (5 tests) 8113ms
-   ✓ worked example over HTTP (mock ASR) > uploads the clip, the job runs with progress and succeeds, the original is stored untouched 3632ms
-   ✓ worked example over HTTP (mock ASR) > step 8: render is a background job; the file matches the timeline length; the original is untouched (sha256 before and after) 3806ms
- ✓ test/runner.test.ts (5 tests) 15305ms
-   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > determinism: the same session run 3 times through the runner gives the same timeline_hash at every step 12931ms
-   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a step that does not match its expectation fails the session, and the failure is kept in results.json 403ms
-   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a video without audio stops at intake with NO_AUDIO_TRACK and the session says so 680ms
-   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > batch: runs every file in a folder, one result folder each, summary.json lists pass and fail 881ms
- ✓ test/ratelimit.test.ts (5 tests) 8ms
+ ✓ test/api.test.ts (20 tests) 13699ms
+   ✓ API behaviour > openapi.yaml matches the running service > real responses validate against their schemas 3241ms
+   ✓ API behaviour > errors > a session on a video that is not ready is 409 VIDEO_NOT_READY (retryable) 321ms
+   ✓ API behaviour > errors > a video without audio fails its job with NO_AUDIO_TRACK and cannot start a session 435ms
+   ✓ API behaviour > idempotency (every POST) > videos: same key + same file -> same ids, one video, one job, one stored object 846ms
+   ✓ API behaviour > idempotency (every POST) > sessions: same key + same body -> same session; different body -> 409 338ms
+   ✓ API behaviour > idempotency (every POST) > instructions: a repeated key replays the answer and does NOT apply the edit twice 336ms
+   ✓ API behaviour > jobs, cache, hints, warnings > the same file again is a transcript cache HIT (ASR not called); a different ASR model is a MISS 2770ms
+   ✓ API behaviour > jobs, cache, hints, warnings > num_speakers reaches the ASR/diarization call and changes the cache key 2086ms
+   ✓ API behaviour > jobs, cache, hints, warnings > variable frame rate is accepted with a warning in the job manifest and on the video 1155ms
+ ✓ test/e2e.test.ts (5 tests) 7656ms
+   ✓ worked example over HTTP (mock ASR) > uploads the clip, the job runs with progress and succeeds, the original is stored untouched 3402ms
+   ✓ worked example over HTTP (mock ASR) > step 8: render is a background job; the file matches the timeline length; the original is untouched (sha256 before and after) 3622ms
+ ✓ test/runner.test.ts (5 tests) 14490ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > determinism: the same session run 3 times through the runner gives the same timeline_hash at every step 12260ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a step that does not match its expectation fails the session, and the failure is kept in results.json 417ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a video without audio stops at intake with NO_AUDIO_TRACK and the session says so 600ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > batch: runs every file in a folder, one result folder each, summary.json lists pass and fail 797ms
+ ✓ test/ratelimit.test.ts (5 tests) 7ms
 
  Test Files  4 passed (4)
       Tests  35 passed (35)
-   Start at  16:47:36
-   Duration  41.92s (transform 975ms, setup 0ms, collect 3.21s, tests 37.45s, environment 1ms, prepare 390ms)
+   Start at  17:14:28
+   Duration  40.37s (transform 884ms, setup 0ms, collect 3.28s, tests 35.85s, environment 1ms, prepare 358ms)
 
 
 > @incubrix/cli@0.0.0 test
@@ -242,12 +247,12 @@ stdout | test/render.test.ts > render smoke > an unedited timeline renders to th
 
  RUN  v2.1.9 /app/apps/cli
 
- ✓ test/format.test.ts (2 tests) 71ms
+ ✓ test/format.test.ts (2 tests) 93ms
 
  Test Files  1 passed (1)
       Tests  2 passed (2)
-   Start at  16:48:19
-   Duration  777ms (transform 84ms, setup 0ms, collect 206ms, tests 71ms, environment 0ms, prepare 124ms)
+   Start at  17:15:09
+   Duration  707ms (transform 104ms, setup 0ms, collect 211ms, tests 93ms, environment 0ms, prepare 138ms)
 
 
 > @incubrix/worker@0.0.0 test
@@ -256,12 +261,12 @@ stdout | test/render.test.ts > render smoke > an unedited timeline renders to th
 
  RUN  v2.1.9 /app/apps/worker
 
- ✓ test/callback.test.ts (3 tests) 70ms
- ✓ test/atoms.test.ts (5 tests) 22ms
+ ✓ test/callback.test.ts (3 tests) 65ms
+ ✓ test/atoms.test.ts (5 tests) 24ms
 
  Test Files  2 passed (2)
       Tests  8 passed (8)
-   Start at  16:48:20
-   Duration  1.10s (transform 552ms, setup 0ms, collect 759ms, tests 92ms, environment 1ms, prepare 244ms)
+   Start at  17:15:10
+   Duration  908ms (transform 428ms, setup 0ms, collect 572ms, tests 89ms, environment 1ms, prepare 250ms)
 
 exit=0

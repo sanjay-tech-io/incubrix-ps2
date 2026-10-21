@@ -1,4 +1,4 @@
-import { CreateBucketCommand, GetObjectCommand, HeadBucketCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { CopyObjectCommand, CreateBucketCommand, GetObjectCommand, HeadBucketCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import type { Config } from "@incubrix/config";
 
@@ -59,4 +59,21 @@ export async function sha256OfObject(s3: S3Client, bucket: string, key: string):
   const h = createHash("sha256");
   for await (const c of r.Body as Readable) h.update(c as Buffer);
   return h.digest("hex");
+}
+
+/** The text of an object, or null when it does not exist. */
+export async function getTextOrNull(s3: S3Client, bucket: string, key: string): Promise<string | null> {
+  try {
+    const r = await s3.send(new GetObjectCommand({ Bucket: bucket, Key: key }));
+    return await (r.Body as { transformToString(): Promise<string> }).transformToString();
+  } catch (e) {
+    const name = (e as { name?: string }).name;
+    if (name === "NoSuchKey" || name === "NotFound" || (e as { $metadata?: { httpStatusCode?: number } }).$metadata?.httpStatusCode === 404) return null;
+    throw e;
+  }
+}
+
+/** Server-side copy inside one bucket (no download). */
+export async function copyObject(s3: S3Client, bucket: string, fromKey: string, toKey: string): Promise<void> {
+  await s3.send(new CopyObjectCommand({ Bucket: bucket, Key: toKey, CopySource: `${bucket}/${fromKey}` }));
 }

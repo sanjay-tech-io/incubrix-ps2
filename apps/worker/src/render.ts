@@ -7,7 +7,7 @@ import { ApiError, errorBody, type ErrorCode } from "@incubrix/errors";
 import {
   RenderError, childCpuSeconds, decideProxy, ffmpegVersion, makeProxy, probeStreams, renderTimeline, sha256File, type RenderResult,
 } from "@incubrix/render";
-import { getToFile, presignGet, putFile, putText, sha256OfObject } from "@incubrix/storage";
+import { copyObject, getTextOrNull, getToFile, presignGet, putFile, putText, sha256OfObject } from "@incubrix/storage";
 import {
   buildManifest, contextOf, failJob, getSession, getTranscript, getVideo, mergeProbe, setProgress, succeedJob,
   type JobRow, type VideoRow,
@@ -29,6 +29,8 @@ interface ProxyInfo {
   fps: string;
   created_by: string;
   warnings: string[];
+  source_sha256?: string;
+  video_key?: string;
 }
 
 function failureOf(e: unknown): { code: ErrorCode; body: ReturnType<typeof errorBody> } {
@@ -93,27 +95,36 @@ export async function runRender(d: WorkerDeps, job: JobRow): Promise<void> {
     let videoOffsetUs = aligned ? 0 : startGapUs;
     let videoBaseUs = facts.videoStartUs;
     if (decision.needed) {
-      const cached = (video.probe as { proxy?: ProxyInfo }).proxy;
+      // The proxy depends only on the ORIGINAL's bytes and the frame grid, so it is cached by source sha256: uploading the same
+      // file again (a new video row) does not repeat the ~5 minute HEVC decode.
+      const proxyKey = `proxies/${video.sha256}/cfr_${fps.num}-${fps.den}_v1.mp4`;
+      const metaKey = proxyKey.replace(/\.mp4$/, ".json");
       const proxyPath = join(dir, "proxy_cfr.mp4");
-      if (cached) {
+      const metaText = await getTextOrNull(d.s3, bucket, metaKey);
+      if (metaText) {
+        const cached = JSON.parse(metaText) as ProxyInfo;
         await getToFile(d.s3, bucket, cached.storage_key, proxyPath);
         if ((await sha256File(proxyPath)) !== cached.sha256) throw new RenderError("RENDER_FAILED", "the stored CFR proxy does not match its recorded sha256");
         proxyInfo = cached;
-        log.info({ video_id: video.id }, "using the stored CFR proxy");
+        log.info({ video_id: video.id, proxy_key: proxyKey }, "using the stored CFR proxy");
       } else {
         const made = await makeProxy({
           original, out: proxyPath, facts, vfr, fps, offsetUs: aligned ? 0 : startGapUs,
           onProgress: (us) => void setProgress(d.pool, job.id, 5 + Math.min(1, us / ctx.source.durationUs) * 30).catch(() => undefined),
         });
-        const key = `videos/${video.id}/proxy_cfr.mp4`;
-        await putFile(d.s3, bucket, key, proxyPath, "video/mp4");
+        await putFile(d.s3, bucket, proxyKey, proxyPath, "video/mp4");
         proxyInfo = {
-          storage_key: key, sha256: made.sha256, reasons: made.decision.reasons, colour: made.decision.colour, fps: `${fps.num}/${fps.den}`,
-          created_by: await ffmpegVersion(), warnings: made.warnings,
+          storage_key: proxyKey, sha256: made.sha256, reasons: made.decision.reasons, colour: made.decision.colour, fps: `${fps.num}/${fps.den}`,
+          created_by: await ffmpegVersion(), warnings: made.warnings, source_sha256: video.sha256,
         };
-        await mergeProbe(d.pool, video.id, { proxy: proxyInfo });
+        await putText(d.s3, bucket, metaKey, JSON.stringify(proxyInfo));
         log.info({ video_id: video.id, reasons: made.decision.reasons }, "CFR proxy created");
       }
+      // ...and a copy next to this video's original (videos/<id>/), so the proxy is found where the original is.
+      const videoKey = `videos/${video.id}/proxy_cfr.mp4`;
+      await copyObject(d.s3, bucket, proxyKey, videoKey);
+      proxyInfo = { ...proxyInfo, video_key: videoKey };
+      await mergeProbe(d.pool, video.id, { proxy: proxyInfo });
       warnings.push(...proxyInfo.warnings);
       videoFile = proxyPath;
       videoOffsetUs = 0; // the proxy is already on the atom clock

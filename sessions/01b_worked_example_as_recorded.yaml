@@ -1,0 +1,27 @@
+# The same eight steps as 01_worked_example, with ONE change: the phrase. The real recording says "welcome to our channel"
+# (about 0:39.5), not "welcome to the channel" (0:42 in the script), so session 01 cannot find its anchor. This variant exists
+# so the rest of the example (cut, clarification, speed, restore, undo, recolour, render) is exercised on the real footage.
+# 01_worked_example.yaml is NOT changed to fit: its failure is the honest result.
+name: 01b_worked_example_as_recorded
+video: media/test_single.mp4
+num_speakers: 1
+rights: own recording, consent self
+steps:
+  - say: 'add a caption "Welcome!" on "welcome to our channel"'
+    expect: applied
+  - say: cut the first 30 seconds
+    expect: applied
+  - say: remove the part about pricing
+    expect: needs_clarification
+  - say: the second one
+    expect: applied
+  - say: speed up 1:00-1:30 by 2x
+    expect: applied
+  - say: put the intro back
+    expect: applied
+  - say: undo
+    expect: applied
+  - say: make that caption red
+    expect: applied
+  - render: true
+    expect: succeeded
