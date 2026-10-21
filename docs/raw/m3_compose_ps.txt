@@ -1,0 +1,5 @@
+api	Up 25 minutes (healthy)
+asr	Up 25 minutes (healthy)
+postgres	Up About an hour (healthy)
+s3	Up 58 minutes (healthy)
+worker	Up 25 minutes (healthy)

@@ -1,0 +1,45 @@
+{
+  "name": "09_make_it_bigger_without_caption",
+  "video": "media/test_single.mp4",
+  "passed": true,
+  "video_id": "vid_a574b2347647408dbbeb",
+  "session_id": "ses_7d69fafb6850486ab0e3",
+  "intake": {
+    "job_id": "job_f58183d614004967ba4e",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped."
+    ],
+    "ms": 5355
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "make it bigger",
+      "answer_sent": null,
+      "expected": "rejected",
+      "passed": true,
+      "http_status": 200,
+      "status": "rejected",
+      "operations": [],
+      "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": "There is no caption to change (bigger). Add one first, for example: add a caption \"Hello\" on \"welcome\".",
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 23,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+    "duration_s": 180.3
+  },
+  "error": null
+}

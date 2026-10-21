@@ -1,6 +1,6 @@
 # Project status (project memory)
 
-Updated at the end of every milestone. Last update: M2 (2026-10-20), on top of the infra workstream and M1c. Everything below was run, not assumed; "not verified" means exactly that.
+Updated at the end of every milestone. Last update: M3 (2026-10-21), on top of M2, the infra workstream and M1c. Everything below was run, not assumed; "not verified" means exactly that.
 
 ## Done and verified
 | Item | Proof (command) |
@@ -60,7 +60,21 @@ Updated at the end of every milestone. Last update: M2 (2026-10-20), on top of t
 
 Latest `npm test` (root): see docs/REVIEW_M1C.md section 2. Last update of this file: end of M1c (2026-10-20).
 
+### M3 (details and raw output: docs/REVIEW_M3.md)
+| Item | Proof |
+|---|---|
+| Render: ONE ffmpeg run per render (cuts, keep-only, reorder, speed with chained atempo, mute, bleep, captions, auto-captions, ducked music), verified by ffprobe, source sha256 checked before and after | `packages/render/test` (15), `apps/api/test/e2e.test.ts` step 8; docs/raw/m3_accuracy_*.json |
+| Frame accuracy at 25 / 30 / 29.97 fps, VFR via CFR proxy, 301 pieces: length difference 0 frames, A/V offset under 0.45 frames; no-audio fails with NO_AUDIO_TRACK | `docs/REVIEW_M3.md` section 3 |
+| One graph vs many pieces measured; grouped inputs (30 pieces) fixed a quadratic cost: 361 pieces at 1080p 150 s -> 59 s | `docs/raw/m3_bench_*.json` |
+| Real footage: worked example (as recorded) end to end with real ASR and a real render; about 60 s of rendering per output minute at 1080p on this VM | `test-pack/m3_real/`, REVIEW_M3.md sections 5-6 |
+| Session runner, batch runner, 22 session files, determinism x3 | `apps/cli`, `sessions/`, `runner.test.ts`; batch: 17 passed, 5 failed on purpose or because of the footage |
+| Storage hardening: 5xx retry, startup write check, identical uploads stored once, port 8333 published | `packages/storage/test`, `api.test.ts` |
+
+M3 decisions: pieces are grouped (30 per seeked input pair, max 64 pairs) inside the one ffmpeg run; a CFR H.264 proxy is made for VFR, 10-bit/HDR/wide-gamut or non-H.264 sources and stored next to the original; the music asset is the generated built-in track; the render snapshots the timeline when asked.
+M3 NOT done or not verified: see REVIEW_M3.md section 9 (tone-map and late-video paths untested, real-footage A/V offset not measured by flash/beep, graphs above 361 pieces untested, no storage cleanup, speaker-aware edits and vague references not built).
+
 ## Not verified (not built or not run)
+M3 leftovers: see REVIEW_M3.md section 9. The M2 list below is partly outdated: render, batch runner and the worker are built now.
 M2 leftovers: render (501 stub), the real LLM provider (interface only), reorder/mute/bleep/captions by voice-of-speaker ("what the guest says"), music by text, batch runner CLI, deploy, a worker crash mid-job end to end (stale re-queue is tested at store level only), in-memory rate limit (one process only), API_TOKEN is unset in the default compose (open API), DNS-rebinding hardening, ASR service has no auth (internal network only). Older list follows.
 
 Infra additions not done: real api/worker, compose end-to-end test, diarization accuracy on real speech (default settings failed on the synthetic clip), training-data licences (all unchecked), a failing-pytest-fails-compose check, disfluency-prompt effect on labelled human speech (see REVIEW_INFRA.md section 8). Older list follows; its Docker item is now outdated (Docker works on the GCP VM).

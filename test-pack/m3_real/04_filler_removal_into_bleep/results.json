@@ -1,0 +1,67 @@
+{
+  "name": "04_filler_removal_into_bleep",
+  "video": "media/test_single.mp4",
+  "passed": false,
+  "video_id": "vid_fdbd1f80303a42529aeb",
+  "session_id": "ses_e90159ebba6a4c34b319",
+  "intake": {
+    "job_id": "job_8f47856c055f4648b840",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped."
+    ],
+    "ms": 5036
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "bleep \"um\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": false,
+      "http_status": 200,
+      "status": "rejected",
+      "operations": [],
+      "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": "I could not find \"um\" in the video.",
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 17,
+      "note": null,
+      "failure": "expected applied, got rejected: I could not find \"um\" in the video.",
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "remove filler words",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": false,
+      "http_status": 200,
+      "status": "rejected",
+      "operations": [],
+      "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": "No filler words were found.",
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 15,
+      "note": null,
+      "failure": "expected applied, got rejected: No filler words were found.",
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+    "duration_s": 180.3
+  },
+  "error": null
+}

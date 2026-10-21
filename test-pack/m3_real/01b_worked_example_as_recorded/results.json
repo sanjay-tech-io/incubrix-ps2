@@ -1,0 +1,337 @@
+{
+  "name": "01b_worked_example_as_recorded",
+  "video": "media/test_single.mp4",
+  "passed": true,
+  "video_id": "vid_b88ba55b24a64f05b3ce",
+  "session_id": "ses_8a8cdc2311d64283bc90",
+  "intake": {
+    "job_id": "job_767e8b465e2446dbabbd",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped."
+    ],
+    "ms": 13233
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "add a caption \"Welcome!\" on \"welcome to our channel\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "add_effect",
+          "effectId": "fx_0_0",
+          "range": {
+            "from": "a_2137b52ae255",
+            "to": "a_02df35e8374d"
+          },
+          "params": {
+            "kind": "caption",
+            "text": "Welcome!",
+            "style": {
+              "color": "#ffffff",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 3:00.300 -> 3:00.300 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [
+        "This edit touches words the transcript is unsure about: \"welcome\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "cd0c6e17d0043a46b2b4ac832ca3bd5400ccca560da29f6fc56ee6840fb749b3",
+      "duration_s": 180.3,
+      "ms": 78,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "cut the first 30 seconds",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_da6442cd4fcc",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_97d15879e51b",
+              "offsetUs": 2600000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:00.300 -> 2:30.300 (-0:30.000). caption \"Welcome!\" moved from 0:39.501 to 0:09.501. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [
+        "This edit touches words the transcript is unsure about: \"Hello\" (speaker uncertain, low confidence), \"cloud\" (low confidence), \"So\" (speaker uncertain), \"What\" (low confidence), \"for\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "b578640252a7d53b984c8974f8ca53957fedf41231f6fc0724e9c086e43b0d18",
+      "duration_s": 150.3,
+      "ms": 61,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "remove the part about pricing",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "\"pricing\" is mentioned 7 times. Which part should I remove?",
+      "options": [
+        "#1 at 0:09.501: \"welcome to our channel, let's say, pricing plans in Cloud Code.\"",
+        "#2 at 0:16.051: \"So the pricing plans in Cloud will be differing from each plan.\"",
+        "#3 at 0:20.958: \"So we have to choose each plan accordingly to our use and each plan will be having more of its slot features and it's not like chargey bd go plus or premium it just has only three plants free pro and max plan and after that you know the pricing in all the three plants will be extraordinarily clear and you know I chose I chose cloud pro plan pricing for my for building my project.\"",
+        "#4 at 1:09.720: \"So what I am trying to tell is like the cost or subscription fee of each plan will be meaning based the search.\"",
+        "#5 at 1:35.410: \"everything will be mentioned in the cloud cloud subscriptions and their pricing page.\"",
+        "#6 at 1:45.220: \"us say, let us see what are the plans that are mentioned in the pro pricing plan.\"",
+        "#7 at 1:56.080: \"and it's not like chargey video, so chargey video will be having different types of pricing and those things, those start -off stuffs and I\""
+      ],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "b578640252a7d53b984c8974f8ca53957fedf41231f6fc0724e9c086e43b0d18",
+      "duration_s": 150.3,
+      "ms": 45,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 4,
+      "say": "the second one",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_97e2198b92c0",
+              "offsetUs": 593333
+            },
+            "end": {
+              "atom": "a_e97ac8331de1",
+              "offsetUs": 693333
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 2:30.300 -> 2:25.400 (-0:04.900). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "b6eccc27847a59b1d070be3941b3bfe3f9fefa2a1bba62b6cf856848dc52a34d",
+      "duration_s": 145.4,
+      "ms": 58,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 5,
+      "say": "speed up 1:00-1:30 by 2x",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "set_speed",
+          "span": {
+            "start": {
+              "atom": "a_2c14e7322110",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_f29f2d9f8077",
+              "offsetUs": 1640000
+            }
+          },
+          "rate": {
+            "num": 2,
+            "den": 1
+          }
+        }
+      ],
+      "summary": "Length 2:25.400 -> 2:10.367 (-0:15.033). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [
+        "1:34.900 is inside the word \"pricing\", so the cut point moved to 1:34.820, the nearest word edge (no silence nearby). The cut point at 1:34.820 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+        "This edit touches words the transcript is unsure about: \"for\" (speaker uncertain), \"So\" (speaker uncertain), \"the\" (speaker uncertain), \"based\" (low confidence), \"the\" (low confidence) and 3 more. Check the result."
+      ],
+      "timeline_hash": "ccf60b546a5e6c9c46f428d757e2bcc81f0c2b9c0a761e062ddfcb7817f9dd11",
+      "duration_s": 130.366667,
+      "ms": 60,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 6,
+      "say": "put the intro back",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "restore",
+          "targetGroup": 2
+        }
+      ],
+      "summary": "Length 2:10.367 -> 2:40.367 (+0:30.000). caption \"Welcome!\" moved from 0:09.501 to 0:39.501. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [
+        "Restoring edit 2: removed original 0:00.000-0:30.000."
+      ],
+      "timeline_hash": "8575c60328343693498e02726155d9f08a7584a03d3f3cadd4ec74dce4c9eefd",
+      "duration_s": 160.366667,
+      "ms": 39,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 7,
+      "say": "undo",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [],
+      "summary": "Undid edit 5. Length 2:40.367 -> 2:10.367 (-0:30.000). caption \"Welcome!\" moved from 0:39.501 to 0:09.501. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "ccf60b546a5e6c9c46f428d757e2bcc81f0c2b9c0a761e062ddfcb7817f9dd11",
+      "duration_s": 130.366667,
+      "ms": 35,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 8,
+      "say": "make that caption red",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "update_effect",
+          "effectId": "fx_0_0",
+          "params": {
+            "kind": "caption",
+            "text": "Welcome!",
+            "style": {
+              "color": "#ff0000",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 2:10.367 -> 2:10.367 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "5c590d67df2eed8de7c879ae8a9dbae6a3c4ccd13a1e7a24cfaac72687f6a16c",
+      "duration_s": 130.366667,
+      "ms": 96,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 9,
+      "say": null,
+      "answer_sent": null,
+      "expected": "succeeded",
+      "passed": true,
+      "http_status": 202,
+      "status": "succeeded",
+      "operations": null,
+      "summary": null,
+      "question": null,
+      "options": null,
+      "reason": null,
+      "time_policy": null,
+      "warnings": null,
+      "timeline_hash": "5c590d67df2eed8de7c879ae8a9dbae6a3c4ccd13a1e7a24cfaac72687f6a16c",
+      "duration_s": 130.366667,
+      "ms": 184618,
+      "note": null,
+      "failure": null,
+      "kind": "render",
+      "render": {
+        "job_id": "job_2f9340fbe326446a8e00",
+        "job_status": "succeeded",
+        "error": null,
+        "file": "render_1.mp4",
+        "frames": 3911,
+        "duration_s": 130.366667,
+        "timeline_hash": "5c590d67df2eed8de7c879ae8a9dbae6a3c4ccd13a1e7a24cfaac72687f6a16c",
+        "render_seconds_per_output_minute": 63.4,
+        "source_unchanged": true,
+        "manifest_file": "render_1_manifest.json"
+      }
+    }
+  ],
+  "final": {
+    "timeline_hash": "5c590d67df2eed8de7c879ae8a9dbae6a3c4ccd13a1e7a24cfaac72687f6a16c",
+    "duration_s": 130.366667
+  },
+  "error": null
+}

@@ -1,0 +1,136 @@
+{
+  "name": "02_caption_cut_restore",
+  "video": "media/test_single.mp4",
+  "passed": false,
+  "video_id": "vid_5e69b4c467f74f83b704",
+  "session_id": "ses_effdac5203a547feac24",
+  "intake": {
+    "job_id": "job_7880e41736914f1d89c2",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped."
+    ],
+    "ms": 5175
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "add a caption \"Welcome!\" on \"welcome to the channel\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": false,
+      "http_status": 200,
+      "status": "rejected",
+      "operations": [],
+      "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": "I could not find the words \"welcome to the channel\" in the video, so there is nothing to put the caption on.",
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 17,
+      "note": null,
+      "failure": "expected applied, got rejected: I could not find the words \"welcome to the channel\" in the video, so there is nothing to put the caption on.",
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "cut the first 50 seconds",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_da6442cd4fcc",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_e97ac8331de1",
+              "offsetUs": 26667
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:00.300 -> 2:10.033 (-0:50.267). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [
+        "0:50.000 is inside the word \"plan.\", so the cut point moved to 0:50.240, the nearest silence.",
+        "This edit touches words the transcript is unsure about: \"Hello\" (speaker uncertain, low confidence), \"cloud\" (low confidence), \"So\" (speaker uncertain), \"What\" (low confidence), \"for\" (low confidence) and 7 more. Check the result."
+      ],
+      "timeline_hash": "994e5b2486c2052ba69afe854077fb256f5f7547e9c17d4b8d27b1fe19052a8d",
+      "duration_s": 130.033333,
+      "ms": 20,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "put the intro back",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "restore",
+          "targetGroup": 1
+        }
+      ],
+      "summary": "Length 2:10.033 -> 3:00.300 (+0:50.267). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [
+        "Restoring edit 1: removed original 0:00.000-0:50.267."
+      ],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 17,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 4,
+      "say": "make that caption red",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": false,
+      "http_status": 200,
+      "status": "rejected",
+      "operations": [],
+      "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": "There is no caption to change (red). Add one first, for example: add a caption \"Hello\" on \"welcome\".",
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 12,
+      "note": null,
+      "failure": "expected applied, got rejected: There is no caption to change (red). Add one first, for example: add a caption \"Hello\" on \"welcome\".",
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+    "duration_s": 180.3
+  },
+  "error": null
+}

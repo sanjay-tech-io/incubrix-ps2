@@ -1,0 +1,111 @@
+{
+  "seed": null,
+  "render": {
+    "proxy": {
+      "fps": "30/1",
+      "colour": "none",
+      "sha256": "d77fb21ed7e0012b2e6cd94ab1e43ec1408b62d05aa81f8b6b23366b75fae6a7",
+      "reasons": [
+        "hevc source (decoded once into an H.264 proxy)"
+      ],
+      "warnings": [],
+      "created_by": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers",
+      "storage_key": "videos/vid_360ec584ae7a4219b0e2/proxy_cfr_30-1_v1.mp4",
+      "source_sha256": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd"
+    },
+    "job_id": "job_6faabbbcf4a944bfae77",
+    "output": {
+      "fps": "30/1",
+      "width": 1920,
+      "height": 1080,
+      "pixFmt": "yuv420p",
+      "seconds": 170.833333,
+      "audioCodec": "aac",
+      "size_bytes": 79631723,
+      "videoCodec": "h264",
+      "videoFrames": 5125,
+      "audioDurationUs": 170833000,
+      "videoDurationUs": 170833333,
+      "formatDurationUs": 170834000
+    },
+    "pieces": 3,
+    "source": {
+      "video_id": "vid_88b316f0031a45a58b5e",
+      "unchanged": true,
+      "sha256_before": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd",
+      "sha256_after_local": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd",
+      "sha256_after_stored": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd"
+    },
+    "session_id": "ses_c84f6e9540124e0b86a4",
+    "timeline_hash": "9cafa2b16f0e6bb510dda1c6af71022ce7f878a2dc3e07894c594b8e79b33dca",
+    "rendered_frames": 5125,
+    "timeline_frames": 5125,
+    "frame_difference": 0,
+    "ffmpeg_peak_rss_mb": 555,
+    "filter_script_sha256": "5b25aa155c1807c62fce0c5ad3d3518928822522ce5c4c04b459683079d214ae",
+    "audio_minus_video_frames": -0.01,
+    "render_seconds_per_output_minute": 65.1
+  },
+  "rights": {
+    "software": {
+      "engine": "own code",
+      "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+      "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked"
+    },
+    "reference": "SOURCES.md",
+    "source_media": "not stated by the uploader"
+  },
+  "timings": {
+    "proxy_s": 3.754,
+    "total_s": 238.145,
+    "render_s": 228.58,
+    "upload_s": 0.849,
+    "verify_s": 3.044,
+    "fetch_original_s": 1.908
+  },
+  "settings": {
+    "crf": 20,
+    "fps": "30/1",
+    "audio": "aac 192k 48 kHz stereo",
+    "bleep": "1 kHz sine, level 0.25",
+    "preset": "veryfast",
+    "pix_fmt": "yuv420p",
+    "movflags": "+faststart",
+    "max_height": 0,
+    "caption_size": "sizePt relative to a 720-line frame"
+  },
+  "warnings": [
+    "4 word(s) had no length after cleaning and were dropped.",
+    "video starts 18 ms after the audio in the original; the render keeps that offset."
+  ],
+  "providers": {
+    "font": "DejaVu Sans / DejaVu Sans Bold (Bitstream Vera + public-domain changes licence; commercial use allowed), see SOURCES.md",
+    "media": {
+      "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers"
+    },
+    "music": {
+      "note": "programmatic sine-wave pad, not an AI model",
+      "builtin": true,
+      "asset_sha256": "19c234fef199c51cd59f5a1365f7c09ff83d8a2a8352751a5fc6668e7e739cbb"
+    },
+    "audio_codec": {
+      "name": "aac (ffmpeg native encoder)"
+    },
+    "video_codec": {
+      "name": "libx264",
+      "note": "H.264 (GPL libx264 inside the ffmpeg build; used as an external program, not linked)"
+    }
+  },
+  "ai_generated": {
+    "music": false,
+    "transcript_words": true,
+    "captions_text_is_user_text": false,
+    "input_media_marked_ai_generated": false
+  },
+  "cost_estimate": {
+    "usd": null,
+    "note": "No price per CPU second is configured, so no money figure is given.",
+    "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+    "cpu_seconds": 666.085
+  }
+}

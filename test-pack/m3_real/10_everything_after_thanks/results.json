@@ -1,0 +1,91 @@
+{
+  "name": "10_everything_after_thanks",
+  "video": "media/test_single.mp4",
+  "passed": true,
+  "video_id": "vid_d819e391168c4225a110",
+  "session_id": "ses_5b9e620a58f540c4b60f",
+  "intake": {
+    "job_id": "job_2bc7316d3ba2473d8f9f",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped."
+    ],
+    "ms": 4796
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "remove everything after I say thanks",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "\"thanks\" appears 6 times. Which one?",
+      "options": [
+        "#1 at 0:26.720: \"for joining. So, thanks for joining. So So thanks,\"",
+        "#2 at 0:32.240: \"joining. So So thanks, welcome to our channel, let's\"",
+        "#3 at 2:44.140: \"and I'm really thanks thanks you people to staying\"",
+        "#4 at 2:44.980: \"I'm really thanks thanks you people to staying here\"",
+        "#5 at 2:53.360: \"and once again, thanks for watching, thanks for watching.\"",
+        "#6 at 2:56.980: \"thanks for watching, thanks for watching.\""
+      ],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 18,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "the last one",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_686901e66a46",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_716d559960c7",
+              "offsetUs": 1693800
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:00.300 -> 2:57.967 (-0:02.333). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [
+        "The cut point at 2:57.960 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there)."
+      ],
+      "timeline_hash": "620103a4765ca6f8c78001b9483a15cfe240e321ad934371fb2fb975237d7e7b",
+      "duration_s": 177.966667,
+      "ms": 15,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "620103a4765ca6f8c78001b9483a15cfe240e321ad934371fb2fb975237d7e7b",
+    "duration_s": 177.966667
+  },
+  "error": null
+}

@@ -1,0 +1,171 @@
+{
+  "name": "16_auto_captions_and_speed",
+  "video": "media/test_single.mp4",
+  "passed": true,
+  "video_id": "vid_dcb3670bda454dd29076",
+  "session_id": "ses_09e739158e2843708f51",
+  "intake": {
+    "job_id": "job_6473edaceac74445846b",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped."
+    ],
+    "ms": 4683
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "add captions",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "auto_caption",
+          "style": {
+            "color": "#ffffff",
+            "sizePt": 32,
+            "bold": true
+          }
+        }
+      ],
+      "summary": "Length 3:00.300 -> 3:00.300 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "d4c0242b92c966dc64e6378b1a623226329bfdad4d4b4f676506a931a744ab55",
+      "duration_s": 180.3,
+      "ms": 12,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "cut 0:10-0:20",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_c05359cbaee8",
+              "offsetUs": 1833
+            },
+            "end": {
+              "atom": "a_4ad8c62eb6a1",
+              "offsetUs": 712200
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:00.300 -> 2:51.533 (-0:08.767). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [
+        "0:10.000 is inside the word \"What\", so the cut point moved to 0:10.532, the nearest silence.",
+        "0:20.000 is inside the word \"For\", so the cut point moved to 0:19.320, the nearest silence."
+      ],
+      "timeline_hash": "8c2f3fa79885b17be1bebe83b0c23abd07d4b37dbdbd0c0f7a5201b2966dca5e",
+      "duration_s": 171.533333,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "speed up 0:30-0:50 by 4x",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "set_speed",
+          "span": {
+            "start": {
+              "atom": "a_00a50a65284e",
+              "offsetUs": 4906667
+            },
+            "end": {
+              "atom": "a_c9019ef862e7",
+              "offsetUs": 0
+            }
+          },
+          "rate": {
+            "num": 4,
+            "den": 1
+          }
+        }
+      ],
+      "summary": "Length 2:51.533 -> 2:36.667 (-0:14.867). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "time_policy": "current",
+      "warnings": [
+        "0:58.767 is inside the word \"and\", so the cut point moved to 0:58.600, the nearest word edge (no silence nearby).",
+        "This edit touches words the transcript is unsure about: \"welcome\" (low confidence), \"pricing\" (low confidence), \"plans\" (low confidence), \"Cloud\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "1a2b134ec7ed4fd3f8d58b2b3d65282bdf911e52b761fc9670bc258790bed2a2",
+      "duration_s": 156.666667,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 4,
+      "say": null,
+      "answer_sent": null,
+      "expected": "succeeded",
+      "passed": true,
+      "http_status": 202,
+      "status": "succeeded",
+      "operations": null,
+      "summary": null,
+      "question": null,
+      "options": null,
+      "reason": null,
+      "time_policy": null,
+      "warnings": null,
+      "timeline_hash": "1a2b134ec7ed4fd3f8d58b2b3d65282bdf911e52b761fc9670bc258790bed2a2",
+      "duration_s": 156.666667,
+      "ms": 202603,
+      "note": null,
+      "failure": null,
+      "kind": "render",
+      "render": {
+        "job_id": "job_7d520814c8dc4445a613",
+        "job_status": "succeeded",
+        "error": null,
+        "file": "render_1.mp4",
+        "frames": 4700,
+        "duration_s": 156.666667,
+        "timeline_hash": "1a2b134ec7ed4fd3f8d58b2b3d65282bdf911e52b761fc9670bc258790bed2a2",
+        "render_seconds_per_output_minute": 59.2,
+        "source_unchanged": true,
+        "manifest_file": "render_1_manifest.json"
+      }
+    }
+  ],
+  "final": {
+    "timeline_hash": "1a2b134ec7ed4fd3f8d58b2b3d65282bdf911e52b761fc9670bc258790bed2a2",
+    "duration_s": 156.666667
+  },
+  "error": null
+}

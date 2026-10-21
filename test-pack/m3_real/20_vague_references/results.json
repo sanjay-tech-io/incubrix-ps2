@@ -1,0 +1,67 @@
+{
+  "name": "20_vague_references",
+  "video": "media/test_single.mp4",
+  "passed": false,
+  "video_id": "vid_e7aaf8eecc184a31b7e4",
+  "session_id": "ses_1d221aacc137451981dc",
+  "intake": {
+    "job_id": "job_08c686de856a4975a161",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped."
+    ],
+    "ms": 4765
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "make it shorter",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": false,
+      "http_status": 200,
+      "status": "rejected",
+      "operations": [],
+      "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": "I did not understand \"make it shorter\". Examples: cut 0:30-0:40; remove the part about pricing; speed up 1:00-1:30 by 2x; add a caption \"Hi\" on \"welcome\"; make that caption red; remove filler words; undo.",
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 13,
+      "note": null,
+      "failure": "expected needs_clarification, got rejected: I did not understand \"make it shorter\". Examples: cut 0:30-0:40; remove the part about pricing; speed up 1:00-1:30 by 2x; add a caption \"Hi\" on \"welcome\"; make that caption red; remove filler words; undo.",
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "remove the boring part",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": false,
+      "http_status": 200,
+      "status": "rejected",
+      "operations": [],
+      "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": "I did not understand what to remove. Give a time range (remove 0:30-0:40, cut the first 30 seconds), a topic (remove the part about pricing) or a phrase (remove everything after \"thanks\").",
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 14,
+      "note": null,
+      "failure": "expected needs_clarification, got rejected: I did not understand what to remove. Give a time range (remove 0:30-0:40, cut the first 30 seconds), a topic (remove the part about pricing) or a phrase (remove everything after \"thanks\").",
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+    "duration_s": 180.3
+  },
+  "error": null
+}

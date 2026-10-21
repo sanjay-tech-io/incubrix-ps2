@@ -1,0 +1,14 @@
+3c36cf4 Render: named stereo layout after aeval/aevalsrc (mute alone failed in AAC), ffmpeg stderr in RENDER_FAILED details; sessions 02b, 17 anchored to the real footage
+0dd03c2 Store identical uploads once (findStoredOriginal), keep the CFR proxy next to the original, SeaweedFS volume.max=80 (40 volumes were full of repeated 200 MB uploads)
+5dba0df Batch runner --resume; SeaweedFS volume.max=40 (the default volume count filled up: 'No free volumes left'); keep logs of the cut-off batch runs
+516ab7f Publish S3 port 8333 and set S3_PUBLIC_ENDPOINT=http://localhost:8333 so render download links work from the host
+60c1857 Storage: retry 5xx writes (limit 4), startup write probe in init/api/worker, SeaweedFS volume.max=40 (the batch hit 'no free volumes left', not the new-bucket bug)
+474b30c Proxy cached by source sha256 (copy next to the original), runner retries 429, session 01b as recorded, design amendments
+4d3beb2 Session runner, batch runner, 20 scripted sessions, determinism test; font and music in SOURCES.md
+3ff073d Render job: POST /sessions/{id}/render (202), worker render with source sha256 check before/after, proxy cache, manifest and links; add 'add background music' rule
+5511140 Render: group pieces onto seeked input pairs (361 pieces at 1080p: 150 s -> 59 s), memory cap, bench numbers
+542c683 Render engine: one filter graph per render (pieces, speed, mute/bleep, captions, ducked music), CFR proxy, frame-accuracy tests on generated media; render error codes
+7cf9f60 Save test output after merging m2 into main
+0261a62 Add M3 render design for approval
+3f7a4d7 Ignore media/ (never commit video files)
+8a58ef3 Merge branch 'm2' (M2: real API, jobs, idempotency, errors, manifest)

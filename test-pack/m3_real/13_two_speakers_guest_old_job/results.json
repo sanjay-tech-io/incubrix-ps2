@@ -1,0 +1,45 @@
+{
+  "name": "13_two_speakers_guest_old_job",
+  "video": "media/two_speaker.mp4",
+  "passed": false,
+  "video_id": "vid_6ab1ec405f9c42668989",
+  "session_id": "ses_10dd700fc2a242e1a55b",
+  "intake": {
+    "job_id": "job_be235164a6f148e1aa4f",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "1 word(s) had no length after cleaning and were dropped."
+    ],
+    "ms": 1046
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "remove everything the guest says about their old job",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": false,
+      "http_status": 200,
+      "status": "rejected",
+      "operations": [],
+      "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": "this would remove the whole video; nothing would be left to play",
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "b3ee2ae9a18df8c64dbb8e2aa60350345d2b6f17d9fa7e5b1ecbdf2e2f217f13",
+      "duration_s": 27.12,
+      "ms": 13,
+      "note": null,
+      "failure": "expected needs_clarification, got rejected: this would remove the whole video; nothing would be left to play",
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "b3ee2ae9a18df8c64dbb8e2aa60350345d2b6f17d9fa7e5b1ecbdf2e2f217f13",
+    "duration_s": 27.12
+  },
+  "error": null
+}
