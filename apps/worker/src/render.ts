@@ -102,13 +102,21 @@ export async function runRender(d: WorkerDeps, job: JobRow): Promise<void> {
       const metaKey = proxyKey.replace(/\.mp4$/, ".json");
       const proxyPath = join(dir, "proxy_cfr.mp4");
       const metaText = await getTextOrNull(d.s3, bucket, metaKey);
+      let reused = false;
       if (metaText) {
         const cached = JSON.parse(metaText) as ProxyInfo;
-        await getToFile(d.s3, bucket, cached.storage_key, proxyPath);
-        if ((await sha256File(proxyPath)) !== cached.sha256) throw new RenderError("RENDER_FAILED", "the stored CFR proxy does not match its recorded sha256");
-        proxyInfo = cached;
-        log.info({ video_id: video.id, proxy_key: proxyKey }, "using the stored CFR proxy");
-      } else {
+        try {
+          await getToFile(d.s3, bucket, cached.storage_key, proxyPath);
+          reused = true; // (a retention sweep can delete the proxy a moment before its json: then it is simply rebuilt)
+          if ((await sha256File(proxyPath)) !== cached.sha256) throw new RenderError("RENDER_FAILED", "the stored CFR proxy does not match its recorded sha256");
+          proxyInfo = cached;
+          log.info({ video_id: video.id, proxy_key: proxyKey }, "using the stored CFR proxy");
+        } catch (e) {
+          if (reused) throw e;
+          log.warn({ proxy_key: proxyKey }, "stored CFR proxy missing, rebuilding");
+        }
+      }
+      if (!proxyInfo) {
         const made = await makeProxy({
           original, out: proxyPath, facts, vfr, fps, offsetUs: aligned ? 0 : startGapUs,
           onProgress: (us) => void setProgress(d.pool, job.id, 5 + Math.min(1, us / ctx.source.durationUs) * 30).catch(() => undefined),

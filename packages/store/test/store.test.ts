@@ -131,3 +131,13 @@ run("store against Postgres", () => {
     await expect(pool.query("delete from operation_log where session_id=$1", [rows[0].session_id])).rejects.toThrow(/append-only/);
   });
 });
+
+import { assertFreeDisk } from "../src/index.ts";
+describe("disk space check at startup", () => {
+  it("fails clearly (folder, free and required GB) when the disk is nearly full, passes otherwise", async () => {
+    const full = async () => ({ bavail: 1_000_000, bsize: 4096 }); // ~3.8 GB... too small for 5 GB
+    await expect(assertFreeDisk("/tmp", 5, full)).rejects.toThrow(/not enough free disk space in \/tmp: 3\.8 GB free, 5 GB required \(MIN_FREE_DISK_GB\)/);
+    const roomy = async () => ({ bavail: 10_000_000, bsize: 4096 });
+    expect(await assertFreeDisk("/tmp", 5, roomy)).toBeGreaterThan(30);
+  });
+});

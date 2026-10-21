@@ -1,4 +1,4 @@
-import { CopyObjectCommand, CreateBucketCommand, DeleteObjectCommand, GetObjectCommand, HeadBucketCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { ListObjectsV2Command, CopyObjectCommand, CreateBucketCommand, DeleteObjectCommand, GetObjectCommand, HeadBucketCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import type { Config } from "@incubrix/config";
 
@@ -111,4 +111,35 @@ export async function verifyBucketWritable(s3: S3Client, bucket: string): Promis
   } catch (e) {
     throw new Error(`storage bucket "${bucket}" is not writable: ${(e as Error).message}`);
   }
+}
+
+/**
+ * Retention: delete objects under `prefixes` that are older than `olderThanMs` AND whose key matches `keep === false`.
+ * Returns the deleted keys. Originals (`videos/<id>/original.*`) are never matched by the callers' predicate.
+ */
+export async function sweepExpired(
+  s3: S3Client, bucket: string,
+  o: { prefixes: string[]; olderThanMs: number; now: number; shouldDelete: (key: string) => boolean },
+): Promise<string[]> {
+  const deleted: string[] = [];
+  for (const prefix of o.prefixes) {
+    let token: string | undefined;
+    do {
+      const r = await s3.send(new ListObjectsV2Command({ Bucket: bucket, Prefix: prefix, ...(token ? { ContinuationToken: token } : {}) }));
+      for (const obj of r.Contents ?? []) {
+        if (!obj.Key || !obj.LastModified) continue;
+        if (o.now - obj.LastModified.getTime() < o.olderThanMs || !o.shouldDelete(obj.Key)) continue;
+        await s3.send(new DeleteObjectCommand({ Bucket: bucket, Key: obj.Key }));
+        deleted.push(obj.Key);
+      }
+      token = r.IsTruncated ? r.NextContinuationToken : undefined;
+    } while (token);
+  }
+  return deleted;
+}
+
+/** Keys that are derived and can be rebuilt: renders and CFR proxies (+ their json). Never an original. */
+export function isExpirable(key: string): boolean {
+  if (key.startsWith("renders/")) return true;
+  return /^videos\/[^/]+\/proxy_cfr_[^/]*\.(mp4|json)$/.test(key);
 }

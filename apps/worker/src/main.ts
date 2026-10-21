@@ -2,7 +2,7 @@ import http from "node:http";
 import pg from "pg";
 import { loadConfig } from "@incubrix/config";
 import { makeS3, verifyBucketWritable } from "@incubrix/storage";
-import { makeLogger } from "@incubrix/store";
+import { assertFreeDisk, makeLogger } from "@incubrix/store";
 import { DEFAULT_MOCK_WORDS, HttpAsrClient, MockAsrClient, type AsrClient } from "./asr.ts";
 import { workerLoop } from "./worker.ts";
 
@@ -10,6 +10,7 @@ const cfg = loadConfig(process.env);
 const log = makeLogger("worker", cfg.LOG_LEVEL);
 const pool = new pg.Pool({ connectionString: cfg.DATABASE_URL, max: 4 });
 const s3 = makeS3(cfg);
+log.info({ free_gb: Math.round((await assertFreeDisk(cfg.RENDER_TMP_DIR, cfg.MIN_FREE_DISK_GB)) * 10) / 10 }, "disk space ok"); // refuses to start when the disk is nearly full
 await verifyBucketWritable(s3, cfg.S3_BUCKET); // fail at startup, not at the first upload
 const s3Public = cfg.S3_PUBLIC_ENDPOINT ? makeS3({ ...cfg, S3_ENDPOINT: cfg.S3_PUBLIC_ENDPOINT }) : s3;
 

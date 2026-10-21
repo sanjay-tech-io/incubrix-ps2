@@ -50,6 +50,11 @@ Three separate questions per row: the licence of the CODE, the licence of the WE
 | silero VAD (`silero_vad_v6.onnx`, bundled inside faster-whisper; a model, see below) | v6 | MIT | `silero-vad.LICENSE` |
 | espeak-ng (tests/spikes only, never in the product) | 1.52.0+dfsg-5 | GPL-3.0 per the Debian package; copyright file saved, licence text not re-read here | `espeak-ng-debian-copyright.txt` |
 
+| ffmpeg + ffprobe (Debian bookworm package `ffmpeg` 7:5.1.9-0+deb12u1, run as a separate program) | 5.1.9 | The build is configured `--enable-gpl` (not `--enable-nonfree`); `ffmpeg -L` prints "GNU General Public License ... version 2 or (at your option) any later version". So this build is **GPL**, not LGPL. | `docs/licence-evidence/ffmpeg-libx264-build.txt` (`ffmpeg -version`, the full configuration line, `ffmpeg -L`, package versions, Debian copyright files, read from the image 2026-10-21) |
+| libx264 (Debian `libx264-164` 2:0.164.3095+gitbaee400-3, enabled in that ffmpeg via `--enable-libx264`) | 0.164 | **GPL-2+** per its Debian copyright file (the file also says a commercial licence is available from the x264 project) | same evidence file |
+
+ffmpeg/ffprobe/libx264 are started by our code as separate operating-system processes (`child_process`), they are not linked into our code. I make no claim about the legal effect of that, or about what the GPL requires of a hosted service; that question is NOT assessed.
+
 ### Models
 | Model | Code licence | Weights licence | Training-data licence status |
 |---|---|---|---|

@@ -351,7 +351,8 @@ export async function buildApp(d: ApiDeps): Promise<FastifyInstance & { routeTab
     const view = jobView(j);
     // Download links expire, so they are signed again on every read from the stored object keys.
     const outputs = (j.result as { outputs?: { video: string; manifest: string } } | null)?.outputs;
-    if (j.status === "succeeded" && outputs) {
+    if ((j.result as { expired?: boolean } | null)?.expired) view.links = {}; // deleted by retention: no link to a missing object
+    else if (j.status === "succeeded" && outputs) {
       view.links = { video: await presignGet(d.s3Public, cfg.S3_BUCKET, outputs.video, 3600), manifest: await presignGet(d.s3Public, cfg.S3_BUCKET, outputs.manifest, 3600) };
     }
     return view;

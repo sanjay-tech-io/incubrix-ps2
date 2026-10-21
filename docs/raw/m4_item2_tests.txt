@@ -1,0 +1,95 @@
+ Container incubrix-ps2-asr-tests-1 Creating 
+ Container incubrix-ps2-postgres-1 Recreate 
+ Container incubrix-ps2-s3-1 Recreate 
+ Container incubrix-ps2-asr-tests-1 Created 
+ Container incubrix-ps2-postgres-1 Recreated 
+ Container incubrix-ps2-s3-1 Recreated 
+ Container incubrix-ps2-init-1 Creating 
+ Container incubrix-ps2-init-1 Created 
+ Container incubrix-ps2-asr-tests-1 Starting 
+ Container incubrix-ps2-s3-1 Starting 
+ Container incubrix-ps2-postgres-1 Starting 
+ Container incubrix-ps2-asr-tests-1 Started 
+ Container incubrix-ps2-s3-1 Started 
+ Container incubrix-ps2-postgres-1 Started 
+ Container incubrix-ps2-postgres-1 Waiting 
+ Container incubrix-ps2-s3-1 Waiting 
+ Container incubrix-ps2-postgres-1 Healthy 
+ Container incubrix-ps2-s3-1 Healthy 
+ Container incubrix-ps2-init-1 Starting 
+ Container incubrix-ps2-init-1 Started 
+ Container incubrix-ps2-init-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Exited 
+ Container incubrix-ps2-init-1 Exited 
+ Container incubrix-ps2-tests-run-70cfcaba4949 Creating 
+ Container incubrix-ps2-tests-run-70cfcaba4949 Created 
+
+> @incubrix/storage@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/storage
+
+ ✓ test/retention.test.ts (2 tests) 9ms
+ ✓ test/s3.test.ts (4 tests) 251ms
+ ✓ test/retry.test.ts (5 tests) 2523ms
+   ✓ storage 5xx handling (SeaweedFS answers 500 when it has no writable volume) > a write that fails twice with 500 and then works succeeds 757ms
+   ✓ storage 5xx handling (SeaweedFS answers 500 when it has no writable volume) > gives up after the attempt limit and throws the last error (a full store does not heal) 1755ms
+
+ Test Files  3 passed (3)
+      Tests  11 passed (11)
+   Start at  19:57:57
+   Duration  3.55s (transform 296ms, setup 0ms, collect 1.55s, tests 2.78s, environment 1ms, prepare 565ms)
+
+
+> @incubrix/store@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/store
+
+ ✓ test/log.test.ts (2 tests) 26ms
+ ✓ test/urlguard.test.ts (18 tests) 33ms
+ ✓ test/store.test.ts (19 tests) 975ms
+
+ Test Files  3 passed (3)
+      Tests  39 passed (39)
+   Start at  19:58:01
+   Duration  2.78s (transform 826ms, setup 0ms, collect 2.84s, tests 1.03s, environment 1ms, prepare 739ms)
+
+
+> @incubrix/api@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/api
+
+ ✓ test/api.test.ts (22 tests) 56470ms
+   ✓ API behaviour > openapi.yaml matches the running service > real responses validate against their schemas 3349ms
+   ✓ API behaviour > errors > a session on a video that is not ready is 409 VIDEO_NOT_READY (retryable) 334ms
+   ✓ API behaviour > errors > a video without audio fails its job with NO_AUDIO_TRACK and cannot start a session 460ms
+   ✓ API behaviour > idempotency (every POST) > the same bytes uploaded twice (different keys) are stored ONCE: both videos point at the same object 576ms
+   ✓ API behaviour > idempotency (every POST) > videos: same key + same file -> same ids, one video, one job, one stored object 802ms
+   ✓ API behaviour > idempotency (every POST) > sessions: same key + same body -> same session; different body -> 409 308ms
+   ✓ API behaviour > idempotency (every POST) > instructions: a repeated key replays the answer and does NOT apply the edit twice 314ms
+   ✓ API behaviour > jobs, cache, hints, warnings > the same file again is a transcript cache HIT (ASR not called); a different ASR model is a MISS 2630ms
+   ✓ API behaviour > jobs, cache, hints, warnings > num_speakers reaches the ASR/diarization call and changes the cache key 2156ms
+   ✓ API behaviour > jobs, cache, hints, warnings > variable frame rate is accepted with a warning in the job manifest and on the video 1177ms
+   ✓ API behaviour > jobs, cache, hints, warnings > a URL source is downloaded, stored byte-identical and transcribed; callback is signed and delivered 359ms
+   ✓ retention (real storage) > an expired render is deleted with its manifest, the job says expired and has no links, the original stays 42212ms
+ ✓ test/e2e.test.ts (5 tests) 7557ms
+   ✓ worked example over HTTP (mock ASR) > uploads the clip, the job runs with progress and succeeds, the original is stored untouched 3327ms
+   ✓ worked example over HTTP (mock ASR) > step 8: render is a background job; the file matches the timeline length; the original is untouched (sha256 before and after) 3613ms
+ ✓ test/runner.test.ts (5 tests) 14142ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > determinism: the same session run 3 times through the runner gives the same timeline_hash at every step 12023ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a step that does not match its expectation fails the session, and the failure is kept in results.json 390ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a video without audio stops at intake with NO_AUDIO_TRACK and the session says so 571ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > batch: runs every file in a folder, one result folder each, summary.json lists pass and fail 769ms
+ ✓ test/ratelimit.test.ts (5 tests) 6ms
+
+ Test Files  4 passed (4)
+      Tests  37 passed (37)
+   Start at  19:58:04
+   Duration  82.46s (transform 867ms, setup 0ms, collect 3.07s, tests 78.18s, environment 1ms, prepare 363ms)
+

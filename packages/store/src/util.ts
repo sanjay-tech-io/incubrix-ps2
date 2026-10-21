@@ -35,3 +35,18 @@ export async function tx<T>(pool: pg.Pool, fn: (c: pg.PoolClient) => Promise<T>)
     c.release();
   }
 }
+
+/**
+ * Startup check: the folder the service writes temporary files to must have at least `minFreeGb` free.
+ * Fails with a message that names the folder and both numbers, so a full disk is found at start, not in the middle of a render.
+ * `statfs` is a parameter so a test can simulate a full disk.
+ */
+export async function assertFreeDisk(
+  dir: string, minFreeGb: number,
+  statfs: (p: string) => Promise<{ bavail: number; bsize: number }> = async (p) => (await import("node:fs/promises")).statfs(p),
+): Promise<number> {
+  const s = await statfs(dir);
+  const freeGb = (s.bavail * s.bsize) / 1024 ** 3;
+  if (freeGb < minFreeGb) throw new Error(`not enough free disk space in ${dir}: ${freeGb.toFixed(1)} GB free, ${minFreeGb} GB required (MIN_FREE_DISK_GB). Free some space (RETENTION_DAYS cleans renders and proxies) and start again.`);
+  return freeGb;
+}

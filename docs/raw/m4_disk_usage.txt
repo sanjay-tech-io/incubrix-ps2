@@ -1,0 +1,8 @@
+/dev/sda1        49G   36G   12G  77% /
+9.0G	/data
+47
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          12        5         10.22GB   761.2MB (7%)
+Containers      7         5         2.728MB   1.597MB (58%)
+Local Volumes   3         3         9.913GB   0B (0%)
+Build Cache     53        0         10.41GB   7.942GB

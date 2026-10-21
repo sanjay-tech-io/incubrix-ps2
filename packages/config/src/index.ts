@@ -72,6 +72,12 @@ const base = z.object({
     RENDER_GROUP_PIECES: z.coerce.number().int().min(0).max(1000).default(30),
     // Upper bound on open input pairs (memory); the group size is raised for very fragmented timelines.
     RENDER_MAX_GROUPS: z.coerce.number().int().min(1).max(500).default(64),
+    // Retention: renders and CFR proxies older than this are deleted (they can be rebuilt); originals are kept. 0 = keep everything.
+    RETENTION_DAYS: z.coerce.number().int().min(0).max(3650).default(14),
+    // Services refuse to start with less free disk than this in their temp folder.
+    MIN_FREE_DISK_GB: z.coerce.number().min(0).max(1000).default(3),
+    // SeaweedFS master endpoint that frees the space of deleted objects (blank = do not call).
+    S3_VACUUM_URL: z.url().optional(),
     // Where ffmpeg may write its temporary files (proxy, graph script, output).
     RENDER_TMP_DIR: z.string().min(1).default("/tmp"),
 });

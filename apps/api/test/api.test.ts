@@ -337,3 +337,33 @@ describe.skipIf(!integration)("auth, rate limit, correlation id", () => {
     }
   });
 });
+
+import { runRetention } from "../../worker/src/retention.ts";
+describe.skipIf(!integration)("retention (real storage)", () => {
+  it("an expired render is deleted with its manifest, the job says expired and has no links, the original stays", async () => {
+    const st = await startStack();
+    try {
+      const { videoId } = await ingest(st, makeClip({ seconds: 20 }));
+      const ses = (await st.call("POST", "/api/v1/sessions", { video_id: videoId })).body.session_id;
+      const r = await st.call("POST", `/api/v1/sessions/${ses}/render`, {});
+      await st.drain();
+      const job = (await st.call("GET", `/api/v1/jobs/${r.body.job_id}`)).body;
+      expect(job.links.video).toMatch(/^http/);
+      const dl = await fetch(job.links.video);
+      expect(dl.status).toBe(200);
+      const cfg = { ...st.cfg, RETENTION_DAYS: 1 };
+      const log = (await import("@incubrix/store")).makeLogger("t", "silent");
+      const { deleted } = await runRetention({ pool: st.pool, s3: st.s3, cfg, asr: st.asr, log }, Date.now() + 3 * 86_400_000);
+      expect(deleted).toContain(job.result.outputs.video);
+      expect(deleted).toContain(job.result.outputs.manifest);
+      expect(deleted.some((k) => /original\./.test(k))).toBe(false);
+      const after = (await st.call("GET", `/api/v1/jobs/${r.body.job_id}`)).body;
+      expect(after.result.expired).toBe(true);
+      expect(after.links).toEqual({});
+      const orig = (await st.call("GET", `/api/v1/videos/${videoId}`)).body;
+      expect((await fetch(orig.download_url)).status).toBe(200); // the original is still there
+    } finally {
+      await st.stop();
+    }
+  }, 120_000);
+});
