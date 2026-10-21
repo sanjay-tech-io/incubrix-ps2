@@ -1,3 +1,4 @@
+2371486 Add docs/REVIEW_M3.md, update STATUS, raw outputs and test-pack results of the real batch
 3c36cf4 Render: named stereo layout after aeval/aevalsrc (mute alone failed in AAC), ffmpeg stderr in RENDER_FAILED details; sessions 02b, 17 anchored to the real footage
 0dd03c2 Store identical uploads once (findStoredOriginal), keep the CFR proxy next to the original, SeaweedFS volume.max=80 (40 volumes were full of repeated 200 MB uploads)
 5dba0df Batch runner --resume; SeaweedFS volume.max=40 (the default volume count filled up: 'No free volumes left'); keep logs of the cut-off batch runs
@@ -9,6 +10,3 @@
 5511140 Render: group pieces onto seeked input pairs (361 pieces at 1080p: 150 s -> 59 s), memory cap, bench numbers
 542c683 Render engine: one filter graph per render (pieces, speed, mute/bleep, captions, ducked music), CFR proxy, frame-accuracy tests on generated media; render error codes
 7cf9f60 Save test output after merging m2 into main
-0261a62 Add M3 render design for approval
-3f7a4d7 Ignore media/ (never commit video files)
-8a58ef3 Merge branch 'm2' (M2: real API, jobs, idempotency, errors, manifest)
