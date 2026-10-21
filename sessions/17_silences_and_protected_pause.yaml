@@ -1,9 +1,11 @@
-# Remove silences longer than 1 s, but a pause the user pinned survives (TEST_VIDEO_SCRIPT.md: a deliberate 3 s pause near 1:20).
+# Remove silences longer than 1 s, but a pause the user pinned survives. The script's pause (1:20) is not in the real recording;
+# the longest real pause is 1:52.8-2:01.6 (8.75 s, from the transcript), so the pin is placed at 2:00. (First version used 1:21 and was
+# rejected with "inside speech, not a pause": a wrong assumption of mine about the footage, kept in docs/REVIEW_M3.md.)
 name: 17_silences_and_protected_pause
 video: media/test_single.mp4
 num_speakers: 1
 steps:
-  - say: keep the pause at 1:21
+  - say: keep the pause at 2:00
     expect: applied
   - say: remove silences longer than 1 second
     expect: applied

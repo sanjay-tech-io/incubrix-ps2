@@ -2,7 +2,7 @@
 > incubrix@0.0.0 batch
 > node --import tsx apps/cli/src/batch.ts sessions --out test-pack/m3_real
 
-[01_worked_example] video vid_dc384d7c338b4ab49924, job job_39da2eecf70f4823a7be
+[01_worked_example] video vid_f20e760c58d34d01997e, job job_a6694f5d8d3642b398ff
 [01_worked_example] step 1: rejected FAILED expected applied, got rejected: I could not find the words "welcome to the channel" in the video, so there is nothing to put the caption on.
 [01_worked_example] step 2: applied ok
 [01_worked_example] step 3: needs_clarification ok
@@ -11,3 +11,107 @@
 [01_worked_example] step 6: applied ok
 [01_worked_example] step 7: applied ok
 [01_worked_example] step 8: rejected FAILED expected applied, got rejected: There is no caption to change (red). Add one first, for example: add a caption "Hello" on "welcome".
+[01_worked_example] step 9: render ok 
+FAIL 01_worked_example
+[01b_worked_example_as_recorded] video vid_d9c182b0db2249cb8e76, job job_f25541e951834433a8a1
+[01b_worked_example_as_recorded] step 1: applied ok
+[01b_worked_example_as_recorded] step 2: applied ok
+[01b_worked_example_as_recorded] step 3: needs_clarification ok
+[01b_worked_example_as_recorded] step 4: applied ok
+[01b_worked_example_as_recorded] step 5: applied ok
+[01b_worked_example_as_recorded] step 6: applied ok
+[01b_worked_example_as_recorded] step 7: applied ok
+[01b_worked_example_as_recorded] step 8: applied ok
+[01b_worked_example_as_recorded] step 9: render ok 
+PASS 01b_worked_example_as_recorded
+[02_caption_cut_restore] video vid_5f7e26509c06481ba40b, job job_478cfbac7ed7467895b1
+[02_caption_cut_restore] step 1: rejected FAILED expected applied, got rejected: I could not find the words "welcome to the channel" in the video, so there is nothing to put the caption on.
+[02_caption_cut_restore] step 2: applied ok
+[02_caption_cut_restore] step 3: applied ok
+[02_caption_cut_restore] step 4: rejected FAILED expected applied, got rejected: There is no caption to change (red). Add one first, for example: add a caption "Hello" on "welcome".
+FAIL 02_caption_cut_restore
+[03_reorder_then_mute] video vid_2d4dfbebef5d4f4181c4, job job_a22c6b95dab74706b121
+[03_reorder_then_mute] step 1: applied ok
+[03_reorder_then_mute] step 2: applied ok
+[03_reorder_then_mute] step 3: render FAILED render job failed, expected succeeded: {"error":{"code":"RENDER_FAILED","details":{},"message":"ffmpeg exited with code 1","retryable":true}}
+FAIL 03_reorder_then_mute
+[04_filler_removal_into_bleep] video vid_8241dbe6c7c2462482d2, job job_39cb12c83f9c4880b030
+[04_filler_removal_into_bleep] step 1: rejected FAILED expected applied, got rejected: I could not find "um" in the video.
+[04_filler_removal_into_bleep] step 2: rejected FAILED expected applied, got rejected: No filler words were found.
+FAIL 04_filler_removal_into_bleep
+[05_remove_range_twice] video vid_9c0fe2c244dc43c19251, job job_2c6eb74b91e64015a26d
+[05_remove_range_twice] step 1: applied ok
+[05_remove_range_twice] step 2: applied ok
+[05_remove_range_twice] step 3: applied ok
+[05_remove_range_twice] step 4: applied ok
+PASS 05_remove_range_twice
+[06_caption_beyond_the_end] video vid_70e612b54ade48978ec5, job job_c8d2312dd9084fcdb900
+[06_caption_beyond_the_end] step 1: rejected ok
+PASS 06_caption_beyond_the_end
+[07_time_phrases] video vid_363a96f8e4594038b23e, job job_c075cb1400aa4f79bc72
+[07_time_phrases] step 1: applied ok
+[07_time_phrases] step 2: applied ok
+[07_time_phrases] step 3: applied ok
+[07_time_phrases] step 4: rejected ok
+PASS 07_time_phrases
+[08_undo_second_to_last_keep_music] video vid_02486c01bbe74e8c97e7, job job_138c5e3e890e4f89b9b8
+[08_undo_second_to_last_keep_music] step 1: applied ok
+[08_undo_second_to_last_keep_music] step 2: applied ok
+[08_undo_second_to_last_keep_music] step 3: applied ok
+[08_undo_second_to_last_keep_music] step 4: applied ok
+[08_undo_second_to_last_keep_music] step 5: applied ok
+[08_undo_second_to_last_keep_music] step 6: render ok 
+PASS 08_undo_second_to_last_keep_music
+[09_make_it_bigger_without_caption] video vid_e0630482171d4771b5bb, job job_d8b87d319bd74caf9bff
+[09_make_it_bigger_without_caption] step 1: rejected ok
+PASS 09_make_it_bigger_without_caption
+[10_everything_after_thanks] video vid_815425821daa4221b7e2, job job_c37147e081d44e87bcde
+[10_everything_after_thanks] step 1: needs_clarification ok
+[10_everything_after_thanks] step 2: applied ok
+PASS 10_everything_after_thanks
+[11_impossible_speed_and_cut_everything] video vid_4ce0e410c61c47329c8a, job job_3f123a52d2cf42939d13
+[11_impossible_speed_and_cut_everything] step 1: rejected ok
+[11_impossible_speed_and_cut_everything] step 2: rejected ok
+[11_impossible_speed_and_cut_everything] step 3: rejected ok
+PASS 11_impossible_speed_and_cut_everything
+[12_three_parts_one_impossible] video vid_00408e49c6da4526996f, job job_c91abca997134b73af66
+[12_three_parts_one_impossible] step 1: applied ok
+[12_three_parts_one_impossible] step 2: applied ok
+PASS 12_three_parts_one_impossible
+[13_two_speakers_guest_old_job] video vid_124198be747c49a29771, job job_36692afbd5424092bf3a
+[13_two_speakers_guest_old_job] step 1: rejected FAILED expected needs_clarification, got rejected: this would remove the whole video; nothing would be left to play
+FAIL 13_two_speakers_guest_old_job
+[14_variable_frame_rate_phone] video vid_e60306a995ea4495afc0, job job_764934336cec4c5da99d
+[14_variable_frame_rate_phone] step 1: applied ok
+[14_variable_frame_rate_phone] step 2: applied ok
+[14_variable_frame_rate_phone] step 3: applied ok
+[14_variable_frame_rate_phone] step 4: render ok 
+PASS 14_variable_frame_rate_phone
+[15_no_audio_track] video vid_6fea9fb3653d478487fc, job job_2e5197915fa149929845
+[15_no_audio_track] intake failed with the expected NO_AUDIO_TRACK
+PASS 15_no_audio_track
+[16_auto_captions_and_speed] video vid_f2323de3f3864066a0d5, job job_c32c490956d048b29839
+[16_auto_captions_and_speed] step 1: applied ok
+[16_auto_captions_and_speed] step 2: applied ok
+[16_auto_captions_and_speed] step 3: applied ok
+[16_auto_captions_and_speed] step 4: render ok 
+PASS 16_auto_captions_and_speed
+[17_silences_and_protected_pause] video vid_b2ea656053274e559121, job job_c1ac6007bdf743b1899a
+[17_silences_and_protected_pause] step 1: rejected FAILED expected applied, got rejected: 1:21.000 is inside speech, not a pause
+[17_silences_and_protected_pause] step 2: applied ok
+FAIL 17_silences_and_protected_pause
+[18_keep_only_and_restore_edit] video vid_0fbeab63cc7c4ea98f65, job job_7ae21ba7b0774116ad32
+[18_keep_only_and_restore_edit] step 1: applied ok
+[18_keep_only_and_restore_edit] step 2: applied ok
+[18_keep_only_and_restore_edit] step 3: applied ok
+PASS 18_keep_only_and_restore_edit
+[19_meaning_search_cost] video vid_2267e599fbec415ab527, job job_d4186bb8cd52491589fe
+[19_meaning_search_cost] step 1: needs_clarification ok
+PASS 19_meaning_search_cost
+[20_vague_references] video vid_cacfe140b9b7439199f8, job job_6f674b15e25144c5a7a2
+[20_vague_references] step 1: rejected FAILED expected needs_clarification, got rejected: I did not understand "make it shorter". Examples: cut 0:30-0:40; remove the part about pricing; speed up 1:00-1:30 by 2x; add a caption "Hi" on "welcome"; make that caption red; remove filler words; undo.
+[20_vague_references] step 2: rejected FAILED expected needs_clarification, got rejected: I did not understand what to remove. Give a time range (remove 0:30-0:40, cut the first 30 seconds), a topic (remove the part about pricing) or a phrase (remove everything after "thanks").
+FAIL 20_vague_references
+
+14/21 sessions passed, 7 failed -> /home/g23m143/incubrix-ps2/test-pack/m3_real/summary.json
+exit=1

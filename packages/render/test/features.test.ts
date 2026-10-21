@@ -94,6 +94,16 @@ describe("every effect the timeline holds renders", () => {
     expect(frequency(x, 6.02, 6.14)).toBeGreaterThan(950);
   });
 
+  it("mute ALONE (no bleep, no music) renders: the aeval output must carry a named stereo layout for the AAC encoder", async () => {
+    const clip = await makeSyncClip({ fps: FPS, seconds: 6 });
+    const s = scripted(clip.ctx);
+    expect(s.say('mute "bravo"').answer.status).toBe("applied");
+    const { out } = await render(clip, s.timeline());
+    const x = decodeAudio(out);
+    expect(rms(x, 1.02, 1.14)).toBeLessThan(0.005);
+    expect(rms(x, 2.02, 2.14)).toBeGreaterThan(0.3);
+  });
+
   it("captions: colour, text window and removal after a cut; auto-captions follow the surviving words", async () => {
     const clip = await makeSyncClip({ fps: FPS, seconds: 12 });
     const plain = scripted(clip.ctx);

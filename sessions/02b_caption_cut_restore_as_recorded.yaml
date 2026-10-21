@@ -1,0 +1,13 @@
+# Same as 02_caption_cut_restore with the phrase the real recording contains ("welcome to our channel", 0:39.5); 02 itself is unchanged and fails on its anchor phrase.
+name: 02b_caption_cut_restore_as_recorded
+video: media/test_single.mp4
+num_speakers: 1
+steps:
+  - say: 'add a caption "Welcome!" on "welcome to our channel"'
+    expect: applied
+  - say: cut the first 50 seconds
+    expect: applied   # every word of the caption is cut: the caption goes inactive and the answer says so
+  - say: put the intro back
+    expect: applied   # the caption is active again
+  - say: make that caption red
+    expect: applied   # only works if the caption is back

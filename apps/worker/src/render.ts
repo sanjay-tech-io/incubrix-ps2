@@ -5,7 +5,7 @@ import { Timeline } from "@incubrix/contracts";
 import { timelineHash } from "@incubrix/engine";
 import { ApiError, errorBody, type ErrorCode } from "@incubrix/errors";
 import {
-  RenderError, childCpuSeconds, decideProxy, ffmpegVersion, makeProxy, probeStreams, renderTimeline, sha256File, type RenderResult,
+  FfmpegError, RenderError, childCpuSeconds, decideProxy, ffmpegVersion, makeProxy, probeStreams, renderTimeline, sha256File, type RenderResult,
 } from "@incubrix/render";
 import { getTextOrNull, getToFile, presignGet, putFile, putText, sha256OfObject } from "@incubrix/storage";
 import {
@@ -35,6 +35,8 @@ interface ProxyInfo {
 function failureOf(e: unknown): { code: ErrorCode; body: ReturnType<typeof errorBody> } {
   if (e instanceof ApiError) return { code: e.code, body: e.body() };
   if (e instanceof RenderError) return { code: e.code, body: errorBody(e.code, e.message, e.details) };
+  // ffmpeg's last error lines say WHY it stopped; without them "exit code 1" is not actionable.
+  if (e instanceof FfmpegError) return { code: "RENDER_FAILED", body: errorBody("RENDER_FAILED", e.message, { exit_code: e.exitCode, ffmpeg_stderr_tail: e.stderrTail.slice(-1500) }) };
   return { code: "RENDER_FAILED", body: errorBody("RENDER_FAILED", (e as Error).message ?? "render failed") };
 }
 

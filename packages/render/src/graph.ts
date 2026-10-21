@@ -290,13 +290,13 @@ export function buildRenderGraph(inp: RenderGraphInput): RenderGraph {
   const mixInputs: string[] = [];
   let amain = "acat";
   if (gateWindows.length > 0) {
-    lines.push(`[${amain}]aeval=exprs='val(0)*(1-gt(${inWindow(gateWindows)},0))|val(1)*(1-gt(${inWindow(gateWindows)},0))':channel_layout=stereo[agate]`);
+    lines.push(`[${amain}]aeval=exprs='val(0)*(1-gt(${inWindow(gateWindows)},0))|val(1)*(1-gt(${inWindow(gateWindows)},0))':channel_layout=stereo,aformat=channel_layouts=stereo[agate]`);
     amain = "agate";
   }
   mixInputs.push(`[${amain}]`);
   if (bleepWindows.length > 0) {
     const g = `${BLEEP_LEVEL}*gt(${inWindow(bleepWindows)},0)*sin(2*PI*${BLEEP_HZ}*t)`;
-    lines.push(`aevalsrc=exprs='${g}|${g}':sample_rate=${AUDIO_RATE}:duration=${sec(tl.durationUs)}:channel_layout=stereo[abeep]`);
+    lines.push(`aevalsrc=exprs='${g}|${g}':sample_rate=${AUDIO_RATE}:duration=${sec(tl.durationUs)}:channel_layout=stereo,aformat=channel_layouts=stereo[abeep]`);
     mixInputs.push("[abeep]");
   }
 
