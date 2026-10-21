@@ -1,7 +1,7 @@
 import pg from "pg";
 import { loadConfig } from "@incubrix/config";
 import { createParser } from "@incubrix/nlu";
-import { makeS3 } from "@incubrix/storage";
+import { makeS3, verifyBucketWritable } from "@incubrix/storage";
 import { makeLogger } from "@incubrix/store";
 import { buildApp } from "./app.ts";
 
@@ -13,6 +13,7 @@ if (!cfg.API_TOKEN) log.warn("API_TOKEN is not set: the API is open. Only accept
 
 const pool = new pg.Pool({ connectionString: cfg.DATABASE_URL, max: 10 });
 const s3 = makeS3(cfg);
+await verifyBucketWritable(s3, cfg.S3_BUCKET); // fail at startup, not at the first upload
 const s3Public = cfg.S3_PUBLIC_ENDPOINT ? makeS3({ ...cfg, S3_ENDPOINT: cfg.S3_PUBLIC_ENDPOINT }) : s3;
 const app = await buildApp({ pool, s3, s3Public, cfg, log, parser });
 

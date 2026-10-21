@@ -1,0 +1,37 @@
+
+> incubrix@0.0.0 batch
+> node --import tsx apps/cli/src/batch.ts sessions --out test-pack/m3_real
+
+[01_worked_example] video vid_aa0acb931aab4b1db655, job job_3a53f730a62b4f379fc1
+[01_worked_example] step 1: rejected FAILED expected applied, got rejected: I could not find the words "welcome to the channel" in the video, so there is nothing to put the caption on.
+[01_worked_example] step 2: applied ok
+[01_worked_example] step 3: needs_clarification ok
+[01_worked_example] step 4: applied ok
+[01_worked_example] step 5: applied ok
+[01_worked_example] step 6: applied ok
+[01_worked_example] step 7: applied ok
+[01_worked_example] step 8: rejected FAILED expected applied, got rejected: There is no caption to change (red). Add one first, for example: add a caption "Hello" on "welcome".
+FAIL 01_worked_example  fetch failed
+FAIL 01b_worked_example_as_recorded  fetch failed
+FAIL 02_caption_cut_restore  fetch failed
+FAIL 03_reorder_then_mute  fetch failed
+FAIL 04_filler_removal_into_bleep  fetch failed
+FAIL 05_remove_range_twice  fetch failed
+FAIL 06_caption_beyond_the_end  fetch failed
+FAIL 07_time_phrases  fetch failed
+FAIL 08_undo_second_to_last_keep_music  fetch failed
+FAIL 09_make_it_bigger_without_caption  fetch failed
+FAIL 10_everything_after_thanks  fetch failed
+FAIL 11_impossible_speed_and_cut_everything  fetch failed
+FAIL 12_three_parts_one_impossible  fetch failed
+FAIL 13_two_speakers_guest_old_job  fetch failed
+FAIL 14_variable_frame_rate_phone  fetch failed
+FAIL 15_no_audio_track  fetch failed
+FAIL 16_auto_captions_and_speed  fetch failed
+FAIL 17_silences_and_protected_pause  fetch failed
+FAIL 18_keep_only_and_restore_edit  fetch failed
+FAIL 19_meaning_search_cost  fetch failed
+FAIL 20_vague_references  fetch failed
+
+0/21 sessions passed, 21 failed -> /home/g23m143/incubrix-ps2/test-pack/m3_real/summary.json
+exit=1

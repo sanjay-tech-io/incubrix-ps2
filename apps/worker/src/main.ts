@@ -1,7 +1,7 @@
 import http from "node:http";
 import pg from "pg";
 import { loadConfig } from "@incubrix/config";
-import { makeS3 } from "@incubrix/storage";
+import { makeS3, verifyBucketWritable } from "@incubrix/storage";
 import { makeLogger } from "@incubrix/store";
 import { DEFAULT_MOCK_WORDS, HttpAsrClient, MockAsrClient, type AsrClient } from "./asr.ts";
 import { workerLoop } from "./worker.ts";
@@ -10,6 +10,7 @@ const cfg = loadConfig(process.env);
 const log = makeLogger("worker", cfg.LOG_LEVEL);
 const pool = new pg.Pool({ connectionString: cfg.DATABASE_URL, max: 4 });
 const s3 = makeS3(cfg);
+await verifyBucketWritable(s3, cfg.S3_BUCKET); // fail at startup, not at the first upload
 const s3Public = cfg.S3_PUBLIC_ENDPOINT ? makeS3({ ...cfg, S3_ENDPOINT: cfg.S3_PUBLIC_ENDPOINT }) : s3;
 
 // ASR_PROVIDER=mock never calls the ASR service (tests); anything else goes over HTTP and the service runs its own engine.

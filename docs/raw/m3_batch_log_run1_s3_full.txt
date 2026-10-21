@@ -1,0 +1,38 @@
+
+> incubrix@0.0.0 batch
+> node --import tsx apps/cli/src/batch.ts sessions --out test-pack/m3_real
+
+[01_worked_example] video vid_1a7183f4cacd47a3affd, job job_334a3c81895e4e2f8fc6
+[01_worked_example] step 1: rejected FAILED expected applied, got rejected: I could not find the words "welcome to the channel" in the video, so there is nothing to put the caption on.
+[01_worked_example] step 2: applied ok
+[01_worked_example] step 3: needs_clarification ok
+[01_worked_example] step 4: applied ok
+[01_worked_example] step 5: applied ok
+[01_worked_example] step 6: applied ok
+[01_worked_example] step 7: applied ok
+[01_worked_example] step 8: rejected FAILED expected applied, got rejected: There is no caption to change (red). Add one first, for example: add a caption "Hello" on "welcome".
+[01_worked_example] step 9: render FAILED render job failed, expected succeeded: {"error":{"code":"RENDER_FAILED","details":{},"message":"We encountered an internal error, please try again.","retryable":true}}
+FAIL 01_worked_example
+FAIL 01b_worked_example_as_recorded  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"9dc2d902-3390-4721-b6d4-8ccdc1ab24f4"}}}
+FAIL 02_caption_cut_restore  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"b4f0db4c-a8f0-43de-9d7e-939ca66265ae"}}}
+FAIL 03_reorder_then_mute  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"f0c68f0b-4591-48d2-880b-7ba0c6621b43"}}}
+FAIL 04_filler_removal_into_bleep  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"9d13c746-eda5-4617-84da-e16737f957b9"}}}
+FAIL 05_remove_range_twice  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"3b5c72de-c5b7-4f42-b030-d701ab87d3a3"}}}
+FAIL 06_caption_beyond_the_end  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"ad5a035c-2a7d-4560-8030-cfd2a8d1fb3c"}}}
+FAIL 07_time_phrases  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"8ba89686-3eb3-4570-a3ca-1d56f6e101a5"}}}
+FAIL 08_undo_second_to_last_keep_music  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"9a67072a-8468-419f-8a6b-ba46df695074"}}}
+FAIL 09_make_it_bigger_without_caption  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"d0146008-3399-4c2d-8c93-9ce9dee695ca"}}}
+FAIL 10_everything_after_thanks  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"ba29d4a8-8313-4b51-b230-8782872ecc0a"}}}
+FAIL 11_impossible_speed_and_cut_everything  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"46458d22-477f-4d4d-8ca1-c874da68aa5f"}}}
+FAIL 12_three_parts_one_impossible  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"0d889426-c0e5-48db-812a-365b6cbb9c6b"}}}
+FAIL 13_two_speakers_guest_old_job  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"2d2fcb76-2b15-4d4d-a549-526fdfc639b6"}}}
+FAIL 14_variable_frame_rate_phone  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"efbfa6dd-f3fd-4e2f-b883-b2f90511fe27"}}}
+FAIL 15_no_audio_track  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"eeeffe33-b0c4-4095-8d63-66d354a18fca"}}}
+FAIL 16_auto_captions_and_speed  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"4ace4d3b-62d8-4d13-99f0-3b4bba109157"}}}
+FAIL 17_silences_and_protected_pause  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"8423a6fc-2aa6-4dba-9ed8-09827e1a5717"}}}
+FAIL 18_keep_only_and_restore_edit  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"77af9123-42f2-441f-a769-d9411c9c7342"}}}
+FAIL 19_meaning_search_cost  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"f18cdffd-a784-404f-9bd8-16ac951159ad"}}}
+FAIL 20_vague_references  POST /videos -> 500 {"error":{"code":"INTERNAL_ERROR","message":"Unexpected server error.","retryable":false,"details":{"correlation_id":"484f1093-4370-4885-b06f-6784b36a3222"}}}
+
+0/21 sessions passed, 21 failed -> /home/g23m143/incubrix-ps2/test-pack/m3_real/summary.json
+exit=1

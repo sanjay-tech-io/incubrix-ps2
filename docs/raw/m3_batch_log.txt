@@ -1,0 +1,13 @@
+
+> incubrix@0.0.0 batch
+> node --import tsx apps/cli/src/batch.ts sessions --out test-pack/m3_real
+
+[01_worked_example] video vid_dc384d7c338b4ab49924, job job_39da2eecf70f4823a7be
+[01_worked_example] step 1: rejected FAILED expected applied, got rejected: I could not find the words "welcome to the channel" in the video, so there is nothing to put the caption on.
+[01_worked_example] step 2: applied ok
+[01_worked_example] step 3: needs_clarification ok
+[01_worked_example] step 4: applied ok
+[01_worked_example] step 5: applied ok
+[01_worked_example] step 6: applied ok
+[01_worked_example] step 7: applied ok
+[01_worked_example] step 8: rejected FAILED expected applied, got rejected: There is no caption to change (red). Add one first, for example: add a caption "Hello" on "welcome".

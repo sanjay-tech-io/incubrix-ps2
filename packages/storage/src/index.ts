@@ -1,4 +1,4 @@
-import { CopyObjectCommand, CreateBucketCommand, GetObjectCommand, HeadBucketCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
+import { CopyObjectCommand, CreateBucketCommand, DeleteObjectCommand, GetObjectCommand, HeadBucketCommand, PutObjectCommand, S3Client } from "@aws-sdk/client-s3";
 import { getSignedUrl } from "@aws-sdk/s3-request-presigner";
 import type { Config } from "@incubrix/config";
 
@@ -40,7 +40,8 @@ import { pipeline } from "node:stream/promises";
 import type { Readable } from "node:stream";
 
 export async function putFile(s3: S3Client, bucket: string, key: string, path: string, contentType?: string): Promise<void> {
-  await s3.send(new PutObjectCommand({ Bucket: bucket, Key: key, Body: createReadStream(path), ContentLength: statSync(path).size, ...(contentType ? { ContentType: contentType } : {}) }));
+  // A new read stream per attempt: a stream that failed half way cannot be reused.
+  await withS3Retry(() => s3.send(new PutObjectCommand({ Bucket: bucket, Key: key, Body: createReadStream(path), ContentLength: statSync(path).size, ...(contentType ? { ContentType: contentType } : {}) })));
 }
 
 export async function getToFile(s3: S3Client, bucket: string, key: string, path: string): Promise<void> {
@@ -49,7 +50,7 @@ export async function getToFile(s3: S3Client, bucket: string, key: string, path:
 }
 
 export async function putText(s3: S3Client, bucket: string, key: string, body: string, contentType = "application/json"): Promise<void> {
-  await s3.send(new PutObjectCommand({ Bucket: bucket, Key: key, Body: body, ContentType: contentType }));
+  await withS3Retry(() => s3.send(new PutObjectCommand({ Bucket: bucket, Key: key, Body: body, ContentType: contentType })));
 }
 
 /** sha256 of a stored object, streamed (never held in memory). Used to prove the original did not change. */
@@ -76,4 +77,38 @@ export async function getTextOrNull(s3: S3Client, bucket: string, key: string): 
 /** Server-side copy inside one bucket (no download). */
 export async function copyObject(s3: S3Client, bucket: string, fromKey: string, toKey: string): Promise<void> {
   await s3.send(new CopyObjectCommand({ Bucket: bucket, Key: toKey, CopySource: `${bucket}/${fromKey}` }));
+}
+
+const isServerError = (e: unknown): boolean => ((e as { $metadata?: { httpStatusCode?: number } }).$metadata?.httpStatusCode ?? 0) >= 500;
+
+/**
+ * Retry a storage call that failed with an HTTP 5xx, at most `attempts` times in total with a growing pause. 4xx (a real
+ * mistake) is never retried. SeaweedFS answers 500 when it has no writable volume yet (first write into a new bucket or a
+ * volume that is just growing); a short retry covers that, a full disk does not go away, so the last error is thrown.
+ */
+export async function withS3Retry<T>(fn: () => Promise<T>, o: { attempts?: number; baseMs?: number } = {}): Promise<T> {
+  const attempts = o.attempts ?? 4;
+  for (let i = 1; ; i++) {
+    try {
+      return await fn();
+    } catch (e) {
+      if (i >= attempts || !isServerError(e)) throw e;
+      await new Promise((r) => setTimeout(r, (o.baseMs ?? 250) * 2 ** (i - 1)));
+    }
+  }
+}
+
+/**
+ * Startup check: the bucket exists AND accepts a write (put + delete of a probe object). Fails with a message that says what
+ * was tried, so a full or broken store is found when the service starts, not at the first user upload.
+ */
+export async function verifyBucketWritable(s3: S3Client, bucket: string): Promise<void> {
+  await ensureBucket(s3, bucket);
+  const key = ".probe/startup-check";
+  try {
+    await withS3Retry(() => s3.send(new PutObjectCommand({ Bucket: bucket, Key: key, Body: "ok" })));
+    await s3.send(new DeleteObjectCommand({ Bucket: bucket, Key: key }));
+  } catch (e) {
+    throw new Error(`storage bucket "${bucket}" is not writable: ${(e as Error).message}`);
+  }
 }
