@@ -16,8 +16,19 @@ curl -F file=@talk.mp4 $API/api/v1/videos                       # 202 {video_id,
 curl $API/api/v1/jobs/<job_id>                                  # queued|running|succeeded|failed, progress 0-100
 curl -H 'content-type: application/json' -d '{"video_id":"<video_id>"}' $API/api/v1/sessions
 curl -H 'content-type: application/json' -d '{"say":"cut the first 30 seconds"}' $API/api/v1/sessions/<session_id>/instructions
+curl -X POST $API/api/v1/sessions/<session_id>/render           # 202 {job_id}; poll the job, then download links.video and links.manifest
 ```
 Every POST accepts `Idempotency-Key`. Each instruction answer is `applied`, `needs_clarification` or `rejected`, states its time policy in `summary`, and carries a `manifest`. Routes: `openapi.yaml`.
+
+## Render
+`POST /api/v1/sessions/{id}/render` snapshots the session's timeline and renders it as a background job: ONE ffmpeg run that applies cuts, keep-only, reorder, speed (pitch kept), mute, bleep, captions, auto-captions and ducked music, then ffprobe-checks the file against the timeline (frame count exact, audio within one frame) and re-hashes the stored original. Output is H.264/AAC MP4 (yuv420p, faststart). Sources that are variable frame rate, 10-bit/HDR or not H.264 are first converted once into an 8-bit BT.709 H.264 constant-frame-rate proxy kept next to the original. Design: `docs/RENDER_DESIGN.md`; measured numbers: `docs/REVIEW_M3.md`.
+
+## Session runner and batch runner
+```
+npm run session -- sessions/01_worked_example.yaml --out out/01      # one session -> results.json, timeline.json, render_N.mp4, output.mp4
+npm run batch -- sessions --out out/all                              # every session file -> one folder each + summary.json (pass/fail)
+```
+Both are plain HTTP clients of the API (`--api http://localhost:8080`, `--token` or `API_TOKEN`); they contain no editing logic. The file format is documented in `apps/cli/src/format.ts` (`video` = local path or URL, `steps` = `say` / `answer` / `render`, optional `expect`). `scripts/make_session_media.sh` builds the generated videos the sessions use besides `media/test_single.mp4`.
 
 ## Settings
 Every setting is an environment variable, validated at startup; `.env.example` lists all of them with their defaults (a test keeps the two in sync). The real speech models are the default (`ASR_PROVIDER=faster-whisper`, `DIARIZATION_PROVIDER=sherpa`); tests set `mock`.

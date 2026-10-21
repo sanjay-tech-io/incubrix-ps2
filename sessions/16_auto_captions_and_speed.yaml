@@ -1,0 +1,13 @@
+# Auto-captions follow the surviving words through a cut and a 4x speed-up (chained atempo), rendered.
+name: 16_auto_captions_and_speed
+video: media/test_single.mp4
+num_speakers: 1
+steps:
+  - say: add captions
+    expect: applied
+  - say: cut 0:10-0:20
+    expect: applied
+  - say: speed up 0:30-0:50 by 4x
+    expect: applied
+  - render: true
+    expect: succeeded

@@ -1,0 +1,8 @@
+# Meaning-based search: "cost" must find the sentence where the speaker says "the pricing, I mean the cost".
+# Asking about a topic never cuts before showing the matches.
+name: 19_meaning_search_cost
+video: media/test_single.mp4
+num_speakers: 1
+steps:
+  - say: remove the part about cost
+    expect: needs_clarification

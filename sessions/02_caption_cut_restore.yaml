@@ -1,0 +1,13 @@
+# Hard case: caption added, its sentence cut, cut restored (the caption returns).
+name: 02_caption_cut_restore
+video: media/test_single.mp4
+num_speakers: 1
+steps:
+  - say: 'add a caption "Welcome!" on "welcome to the channel"'
+    expect: applied
+  - say: cut the first 50 seconds
+    expect: applied   # every word of the caption is cut: the caption goes inactive and the answer says so
+  - say: put the intro back
+    expect: applied   # the caption is active again
+  - say: make that caption red
+    expect: applied   # only works if the caption is back

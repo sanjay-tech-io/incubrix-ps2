@@ -14,7 +14,9 @@
     "test": "npm test --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present",
     "mutation-check": "node scripts/mutation-check.mjs",
-    "docs:errors": "tsx scripts/gen-error-docs.ts"
+    "docs:errors": "tsx scripts/gen-error-docs.ts",
+    "session": "node --import tsx apps/cli/src/session.ts",
+    "batch": "node --import tsx apps/cli/src/batch.ts"
   },
   "devDependencies": {
     "tsx": "^4.23.15"

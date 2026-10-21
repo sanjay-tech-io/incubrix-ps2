@@ -1,0 +1,25 @@
+# The brief's 8-step worked example on our own recording (media/test_single.mp4, not in git).
+name: 01_worked_example
+description: caption, cut first 30 s, ambiguous pricing (3 mentions) then "the second one", speed 2x, put the intro back, undo, recolour the caption, render
+video: media/test_single.mp4
+num_speakers: 1
+rights: own recording, consent self
+steps:
+  - say: 'add a caption "Welcome!" on "welcome to the channel"'
+    expect: applied
+  - say: cut the first 30 seconds
+    expect: applied
+  - say: remove the part about pricing
+    expect: needs_clarification
+  - say: the second one
+    expect: applied
+  - say: speed up 1:00-1:30 by 2x
+    expect: applied
+  - say: put the intro back
+    expect: applied
+  - say: undo
+    expect: applied
+  - say: make that caption red
+    expect: applied
+  - render: true
+    expect: succeeded

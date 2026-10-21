@@ -1,0 +1,11 @@
+# Hard cases: "speed up 10x" (above MAX_SPEED=4) and "cut everything" -> both rejected with the reason; the timeline is unchanged.
+name: 11_impossible_speed_and_cut_everything
+video: media/test_single.mp4
+num_speakers: 1
+steps:
+  - say: speed up 0:10-0:20 by 10x
+    expect: rejected
+  - say: cut everything
+    expect: rejected
+  - say: slow down 0:10-0:20 to 0.1x
+    expect: rejected   # below the 0.25x minimum

@@ -1,0 +1,10 @@
+# Hard case: a three-part instruction with one impossible part. The possible parts are applied as ONE undo group and
+# the answer names the part that could not be applied.
+name: 12_three_parts_one_impossible
+video: media/test_single.mp4
+num_speakers: 1
+steps:
+  - say: cut 0:10-0:15, then speed up 0:30-0:40 by 10x, then add a caption "Hi" on "welcome to the channel"
+    expect: applied
+  - say: undo
+    expect: applied   # one undo reverts all applied parts together

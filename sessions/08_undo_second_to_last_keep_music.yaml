@@ -1,0 +1,17 @@
+# Hard case: "undo the second-to-last cut but keep the music". Rendered, so the music and its ducking are in the file.
+name: 08_undo_second_to_last_keep_music
+video: media/test_single.mp4
+num_speakers: 1
+steps:
+  - say: add background music
+    expect: applied
+  - say: cut 0:10-0:15
+    expect: applied
+  - say: cut 0:20-0:25
+    expect: applied
+  - say: cut 0:30-0:35
+    expect: applied
+  - say: undo the second-to-last cut but keep the music
+    expect: applied
+  - render: true
+    expect: succeeded

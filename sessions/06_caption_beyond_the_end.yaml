@@ -1,0 +1,7 @@
+# Hard case: "add a caption at 5:00" on a video that is only 3 minutes long -> rejected, with the length in the reason.
+name: 06_caption_beyond_the_end
+video: media/test_single.mp4
+num_speakers: 1
+steps:
+  - say: add a caption "Late" at 5:00
+    expect: rejected

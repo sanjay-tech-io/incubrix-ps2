@@ -1,0 +1,9 @@
+# Remove silences longer than 1 s, but a pause the user pinned survives (TEST_VIDEO_SCRIPT.md: a deliberate 3 s pause near 1:20).
+name: 17_silences_and_protected_pause
+video: media/test_single.mp4
+num_speakers: 1
+steps:
+  - say: keep the pause at 1:21
+    expect: applied
+  - say: remove silences longer than 1 second
+    expect: applied

@@ -1,0 +1,7 @@
+# Hard case: "make it bigger" when there is no caption -> nothing to change: rejected with a reason, not a guess.
+name: 09_make_it_bigger_without_caption
+video: media/test_single.mp4
+num_speakers: 1
+steps:
+  - say: make it bigger
+    expect: rejected

@@ -1,0 +1,11 @@
+# keep only a range, move a section, then restore a specific earlier edit by number.
+name: 18_keep_only_and_restore_edit
+video: media/test_single.mp4
+num_speakers: 1
+steps:
+  - say: cut 0:05-0:10
+    expect: applied
+  - say: keep only 0:30-1:30
+    expect: applied
+  - say: restore edit 1
+    expect: applied

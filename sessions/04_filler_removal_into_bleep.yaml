@@ -1,0 +1,9 @@
+# Hard case: filler removal cutting into a bleeped word. A filler inside a bleep is kept and the answer warns.
+name: 04_filler_removal_into_bleep
+video: media/test_single.mp4
+num_speakers: 1
+steps:
+  - say: bleep "um"
+    expect: applied
+  - say: remove filler words
+    expect: applied

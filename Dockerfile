@@ -15,5 +15,6 @@ COPY packages/store/package.json packages/store/
 COPY packages/render/package.json packages/render/
 COPY apps/api/package.json apps/api/
 COPY apps/worker/package.json apps/worker/
+COPY apps/cli/package.json apps/cli/
 RUN npm ci
 COPY . .

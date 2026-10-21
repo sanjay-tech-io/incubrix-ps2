@@ -1,0 +1,6 @@
+# Hard case: a video without an audio track. Fails clearly at intake with NO_AUDIO_TRACK; no session can be opened.
+name: 15_no_audio_track
+video: media/no_audio.mp4
+expect_intake_error: NO_AUDIO_TRACK
+steps:
+  - say: cut the first 5 seconds
