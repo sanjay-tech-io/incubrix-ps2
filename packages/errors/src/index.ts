@@ -24,11 +24,14 @@ export const ERRORS = {
   PROBE_FAILED: { status: 422, retryable: false, description: "ffprobe could not read the file as a video. Reported on the failed job." },
   RATE_LIMITED: { status: 429, retryable: true, description: "Too many requests. Wait `Retry-After` seconds." },
   INTERNAL_ERROR: { status: 500, retryable: false, description: "Unexpected server error. The `X-Correlation-Id` header identifies it in the logs." },
-  NOT_IMPLEMENTED: { status: 501, retryable: false, description: "The route exists in openapi.yaml but is not built yet (render, until M3)." },
+  NOT_IMPLEMENTED: { status: 501, retryable: false, description: "The route exists in openapi.yaml but is not built yet (none at the moment)." },
   SERVICE_UNAVAILABLE: { status: 503, retryable: true, description: "A dependency (database, storage) is not reachable." },
   DOWNLOAD_FAILED: { status: 502, retryable: true, description: "The video URL could not be downloaded. Reported on the failed job." },
   ASR_UNAVAILABLE: { status: 502, retryable: true, description: "The speech-to-text service did not answer or returned an error. Reported on the failed job." },
   TRANSCRIPTION_FAILED: { status: 422, retryable: false, description: "The transcript could not be turned into atoms (for example no speech found). Reported on the failed job." },
+  RENDER_FAILED: { status: 500, retryable: true, description: "ffmpeg failed while rendering. Reported on the failed render job." },
+  RENDER_VERIFY_FAILED: { status: 500, retryable: false, description: "The rendered file does not match the timeline (frame count or audio length off by more than 1 frame). Reported on the failed render job." },
+  SOURCE_CHANGED: { status: 500, retryable: false, description: "The stored original's sha256 differs from the one recorded at intake. The render is discarded. Reported on the failed render job." },
 } as const satisfies Record<string, ErrorSpec>;
 
 export type ErrorCode = keyof typeof ERRORS;

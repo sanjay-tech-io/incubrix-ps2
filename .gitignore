@@ -3,4 +3,4 @@ dist/
 coverage/
 .env
 *.log
-media/
+/media/

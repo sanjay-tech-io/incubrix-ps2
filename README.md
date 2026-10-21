@@ -44,9 +44,12 @@ Every error is `{"error":{"code","message","retryable","details"}}`. The list be
 | `PROBE_FAILED` | 422 | no | ffprobe could not read the file as a video. Reported on the failed job. |
 | `RATE_LIMITED` | 429 | yes | Too many requests. Wait `Retry-After` seconds. |
 | `INTERNAL_ERROR` | 500 | no | Unexpected server error. The `X-Correlation-Id` header identifies it in the logs. |
-| `NOT_IMPLEMENTED` | 501 | no | The route exists in openapi.yaml but is not built yet (render, until M3). |
+| `NOT_IMPLEMENTED` | 501 | no | The route exists in openapi.yaml but is not built yet (none at the moment). |
 | `SERVICE_UNAVAILABLE` | 503 | yes | A dependency (database, storage) is not reachable. |
 | `DOWNLOAD_FAILED` | 502 | yes | The video URL could not be downloaded. Reported on the failed job. |
 | `ASR_UNAVAILABLE` | 502 | yes | The speech-to-text service did not answer or returned an error. Reported on the failed job. |
 | `TRANSCRIPTION_FAILED` | 422 | no | The transcript could not be turned into atoms (for example no speech found). Reported on the failed job. |
+| `RENDER_FAILED` | 500 | yes | ffmpeg failed while rendering. Reported on the failed render job. |
+| `RENDER_VERIFY_FAILED` | 500 | no | The rendered file does not match the timeline (frame count or audio length off by more than 1 frame). Reported on the failed render job. |
+| `SOURCE_CHANGED` | 500 | no | The stored original's sha256 differs from the one recorded at intake. The render is discarded. Reported on the failed render job. |
 <!-- ERRORS:END -->

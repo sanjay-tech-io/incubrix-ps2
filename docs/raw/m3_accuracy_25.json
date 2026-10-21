@@ -1,0 +1,32 @@
+{
+  "fps": "25",
+  "edits": "cut 0:02-0:04; speed up 0:06-0:10 by 2x; move 0:00-0:02 to the end; put back what I removed",
+  "pieces": 4,
+  "timeline_us": 14000000,
+  "timeline_frames": 350,
+  "rendered_frames": 350,
+  "length_diff_frames": 0,
+  "audio_minus_video_frames": 0,
+  "events": 16,
+  "unmatched": 0,
+  "av_offsets_frames": [
+    0.003,
+    0.002,
+    0.003,
+    0.002,
+    0.002,
+    0.002,
+    0.002,
+    0.203,
+    -0.186,
+    0.136,
+    0.003,
+    0.002,
+    0.002,
+    0.002,
+    0.002,
+    0.002
+  ],
+  "av_offset_max_frames": 0.203,
+  "timeline_frames_from_duration": 350
+}

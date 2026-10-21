@@ -62,6 +62,14 @@ const base = z.object({
     SILENCE_MIN_MS: z.coerce.number().int().min(50).max(10000).default(300),
     CLAMP_MIN_WORD_MS: z.coerce.number().int().min(1).max(1000).default(20),
     LOW_CONFIDENCE_PERMILLE: z.coerce.number().int().min(0).max(1000).default(600),
+
+    // --- M3: render ---
+    RENDER_PRESET: z.enum(["ultrafast", "superfast", "veryfast", "faster", "fast", "medium", "slow", "slower", "veryslow"]).default("veryfast"),
+    RENDER_CRF: z.coerce.number().int().min(0).max(51).default(20),
+    // 0 = keep the source height. Otherwise the output is scaled down (never up) to at most this many lines.
+    RENDER_MAX_HEIGHT: z.coerce.number().int().min(0).max(4320).default(0),
+    // Where ffmpeg may write its temporary files (proxy, graph script, output).
+    RENDER_TMP_DIR: z.string().min(1).default("/tmp"),
 });
 
 const schema = base.superRefine((c, ctx) => {
