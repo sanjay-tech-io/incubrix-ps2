@@ -59,6 +59,19 @@ describe("loadConfig", () => {
     expect(() => loadConfig({ ...good, DIARIZATION_PROVIDER: "pyannote" })).toThrow();
   });
 
+  it("production refuses to start without an API token (fail fast), development does not", () => {
+    expect(() => loadConfig({ ...good, NODE_ENV: "production" })).toThrow(/API_TOKEN/);
+    expect(() => loadConfig({ ...good, NODE_ENV: "production", API_TOKEN: "" })).toThrow(/API_TOKEN/);
+    expect(loadConfig({ ...good, NODE_ENV: "production", API_TOKEN: "a-long-enough-token-0123" }).API_TOKEN).toBeDefined();
+    expect(loadConfig({ ...good }).API_TOKEN).toBeUndefined();
+  });
+
+  it("limits default to: no duration cap, one ingest and one render job at a time, no proxy trust", () => {
+    const c = loadConfig({ ...good });
+    expect([c.MAX_VIDEO_DURATION_S, c.MAX_INGEST_JOBS, c.MAX_RENDER_JOBS, c.TRUST_PROXY]).toEqual([0, 1, 1, false]);
+    expect(() => loadConfig({ ...good, MAX_RENDER_JOBS: "0" })).toThrow(/MAX_RENDER_JOBS/);
+  });
+
   it("treats empty strings as unset (so a blank line in .env uses the default)", () => {
     expect(loadConfig({ ...good, PORT: "" }).PORT).toBe(8080);
   });
@@ -71,7 +84,7 @@ describe(".env.example", () => {
     const text = readFileSync(new URL("../../../.env.example", import.meta.url), "utf8");
     const listed = [...text.matchAll(/^#?\s*([A-Z][A-Z0-9_]+)=/gm)].map((m) => m[1]!);
     // Compose-only variables (not read by the Node config loader) are allowed extras.
-    const extra = new Set(["POSTGRES_USER", "POSTGRES_PASSWORD", "POSTGRES_DB", "WHISPER_COMPUTE_TYPE", "WHISPER_INITIAL_PROMPT", "DIARIZATION_MODEL_DIR", "DIARIZATION_NUM_SPEAKERS", "DIARIZATION_CLUSTER_THRESHOLD", "DIARIZATION_UNCERTAIN_BELOW", "DIARIZATION_OVERLAP_MIN_FRACTION"]);
+    const extra = new Set(["POSTGRES_USER", "POSTGRES_PASSWORD", "POSTGRES_DB", "WHISPER_COMPUTE_TYPE", "WHISPER_INITIAL_PROMPT", "DIARIZATION_MODEL_DIR", "DIARIZATION_NUM_SPEAKERS", "DIARIZATION_CLUSTER_THRESHOLD", "DIARIZATION_UNCERTAIN_BELOW", "DIARIZATION_OVERLAP_MIN_FRACTION", "PUBLIC_HOST"]);
     expect(CONFIG_KEYS.filter((k) => !listed.includes(k))).toEqual([]);
     expect(listed.filter((k) => !CONFIG_KEYS.includes(k) && !extra.has(k))).toEqual([]);
   });

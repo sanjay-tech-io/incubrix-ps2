@@ -112,6 +112,10 @@ export async function runIntake(d: WorkerDeps, job: JobRow): Promise<void> {
     // 2. probe
     const p = await probe(original);
     mark = lap("probe_s", mark);
+    // Checked right after the probe, before the expensive ASR; the original has already been stored (it is kept, like any original).
+    if (d.cfg.MAX_VIDEO_DURATION_S > 0 && p.durationUs > d.cfg.MAX_VIDEO_DURATION_S * 1e6) {
+      throw new ApiError("VIDEO_TOO_LONG", `The video is ${(p.durationUs / 1e6).toFixed(1)} s long; this deployment accepts at most ${d.cfg.MAX_VIDEO_DURATION_S} s.`, { duration_s: p.durationUs / 1e6, max_duration_s: d.cfg.MAX_VIDEO_DURATION_S });
+    }
     if (!p.hasAudio) throw new ApiError("NO_AUDIO_TRACK", "This video has no audio track, so there is nothing to transcribe.");
     const warnings: string[] = [];
     if (!p.hasVideo) warnings.push("The file has no video stream; only audio will be edited.");

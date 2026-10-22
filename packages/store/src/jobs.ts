@@ -32,15 +32,30 @@ export async function getJob(db: Db, id: string): Promise<JobRow | null> {
   return rows[0] ?? null;
 }
 
+/** Concurrency caps per job group. ingest covers ingest + transcribe (the CPU-heavy ASR), render is its own group. */
+export interface JobLimits {
+  ingest: number;
+  render: number;
+}
+
 /**
- * Take the oldest queued job. FOR UPDATE SKIP LOCKED: two workers never get the same row, and a worker
- * never waits for a row another worker is claiming. The status flip commits at once, so the lock is short.
+ * Take the oldest queued job that is allowed to start. FOR UPDATE SKIP LOCKED: two workers never get the same row, and a
+ * worker never waits for a row another worker is claiming. The status flip commits at once, so the lock is short.
+ * With limits, a transaction-level advisory lock serialises claims: without it two workers could both count 0 running
+ * and both start a render. Without limits (tests, dev) there is no cap and no extra lock.
  */
-export async function claimNextJob(pool: pg.Pool): Promise<JobRow | null> {
+export async function claimNextJob(pool: pg.Pool, limits?: JobLimits): Promise<JobRow | null> {
   const c = await pool.connect();
   try {
     await c.query("begin");
-    const { rows } = await c.query<JobRow>(`select ${COLS} from jobs where status='queued' order by created_at, id for update skip locked limit 1`);
+    if (limits) await c.query("select pg_advisory_xact_lock(7001)");
+    const where = limits
+      ? `and (
+           (type in ('ingest','transcribe') and (select count(*) from jobs r where r.status='running' and r.type in ('ingest','transcribe')) < ${Math.trunc(limits.ingest)})
+           or (type = 'render' and (select count(*) from jobs r where r.status='running' and r.type = 'render') < ${Math.trunc(limits.render)})
+           or type not in ('ingest','transcribe','render'))`
+      : "";
+    const { rows } = await c.query<JobRow>(`select ${COLS} from jobs where status='queued' ${where} order by created_at, id for update skip locked limit 1`);
     const job = rows[0];
     if (!job) {
       await c.query("commit");

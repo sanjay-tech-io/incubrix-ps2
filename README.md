@@ -50,6 +50,7 @@ Every error is `{"error":{"code","message","retryable","details"}}`. The list be
 | `IDEMPOTENCY_KEY_REUSED` | 409 | no | This Idempotency-Key was already used with a different request body. |
 | `IDEMPOTENCY_IN_PROGRESS` | 409 | yes | A request with this Idempotency-Key is still running. Retry shortly. |
 | `FILE_TOO_LARGE` | 413 | no | The upload or the downloaded file is larger than `MAX_UPLOAD_MB`. |
+| `VIDEO_TOO_LONG` | 422 | no | The video is longer than `MAX_VIDEO_DURATION_S` (a limit of this deployment; 0 = no limit). |
 | `UNSUPPORTED_MEDIA_TYPE` | 415 | no | Only MP4 and MOV videos are accepted. |
 | `NO_AUDIO_TRACK` | 422 | no | The video has no audio track, so there is nothing to transcribe. Reported on the failed job. |
 | `PROBE_FAILED` | 422 | no | ffprobe could not read the file as a video. Reported on the failed job. |

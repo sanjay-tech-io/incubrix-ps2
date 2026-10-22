@@ -51,6 +51,12 @@ const base = z.object({
     // Bearer token for everything except /health and /ready. Unset = open API (local development only).
     API_TOKEN: z.string().min(16).optional(),
     RATE_LIMIT_PER_MIN: z.coerce.number().int().min(1).max(100000).default(120),
+    // Public demo safety (docs/DEPLOY.md). Duration cap in seconds, 0 = no cap. Job caps: a job type group never runs more than this many at once.
+    MAX_VIDEO_DURATION_S: z.coerce.number().int().min(0).max(86400).default(0),
+    MAX_INGEST_JOBS: z.coerce.number().int().min(1).max(16).default(1),
+    MAX_RENDER_JOBS: z.coerce.number().int().min(1).max(16).default(1),
+    // true only behind a reverse proxy that overwrites X-Forwarded-For (Caddy does): the rate limit then sees the real client IP.
+    TRUST_PROXY: bool.default(false),
     MAX_UPLOAD_MB: z.coerce.number().int().min(1).max(20000).default(2048),
     // Only for tests: allow video URLs that point to loopback/private addresses.
     URL_ALLOW_PRIVATE: bool.default(false),
@@ -96,6 +102,8 @@ const base = z.object({
 });
 
 const schema = base.superRefine((c, ctx) => {
+    // Fail fast: a production deployment must never start with an open API.
+    if (c.NODE_ENV === "production" && !c.API_TOKEN) ctx.addIssue({ code: "custom", path: ["API_TOKEN"], message: "required when NODE_ENV=production (at least 16 characters)" });
     // A missing GEMINI_API_KEY is NOT an error: the language-model fallback is simply off, and an instruction the rules cannot read says so.
     if (c.LLM_PROVIDER === "groq" && !c.GROQ_API_KEY) ctx.addIssue({ code: "custom", path: ["GROQ_API_KEY"], message: "required when LLM_PROVIDER=groq" });
   });

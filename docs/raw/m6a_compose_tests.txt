@@ -1,0 +1,729 @@
+ Image incubrix-app Building 
+ Image incubrix-ps2-asr-tests Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 990B done
+#1 DONE 0.0s
+
+#2 [init internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.16kB 0.0s done
+#2 DONE 0.0s
+
+#3 [asr-tests internal] load build definition from Dockerfile
+#3 transferring dockerfile: 1.13kB 0.0s done
+#3 DONE 0.1s
+
+#4 [asr-tests internal] load metadata for docker.io/library/python:3.12-slim
+#4 ...
+
+#5 [init internal] load metadata for docker.io/library/node:22-bookworm-slim
+#5 DONE 1.4s
+
+#4 [asr-tests internal] load metadata for docker.io/library/python:3.12-slim
+#4 DONE 1.4s
+
+#6 [init internal] load .dockerignore
+#6 transferring context: 98B done
+#6 DONE 0.0s
+
+#7 [asr-tests internal] load .dockerignore
+#7 transferring context: 78B done
+#7 DONE 0.0s
+
+#8 [asr-tests internal] load build context
+#8 transferring context: 79.10kB 0.0s done
+#8 DONE 0.0s
+
+#9 [init internal] load build context
+#9 ...
+
+#10 [init  1/21] FROM docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d
+#10 resolve docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d 0.1s done
+#10 DONE 0.1s
+
+#11 [asr-tests base 1/7] FROM docker.io/library/python:3.12-slim@sha256:cb33f7f771ecec2ef1225cf39b159591a040391bd73e4c01f00fdfc4c47611d2
+#11 resolve docker.io/library/python:3.12-slim@sha256:cb33f7f771ecec2ef1225cf39b159591a040391bd73e4c01f00fdfc4c47611d2 0.1s done
+#11 DONE 0.1s
+
+#12 [asr-tests base 3/7] COPY requirements.txt .
+#12 CACHED
+
+#13 [asr-tests base 5/7] COPY fetch_models.py .
+#13 CACHED
+
+#14 [asr-tests base 4/7] RUN pip install --no-cache-dir -r requirements.txt
+#14 CACHED
+
+#15 [asr-tests base 7/7] COPY asr ./asr
+#15 CACHED
+
+#16 [asr-tests base 6/7] RUN ASR_MODEL=base.en python fetch_models.py
+#16 CACHED
+
+#17 [asr-tests base 2/7] WORKDIR /app
+#17 CACHED
+
+#18 [asr-tests test 1/3] COPY requirements-dev.txt pytest.ini ./
+#18 CACHED
+
+#9 [init internal] load build context
+#9 transferring context: 1.19MB 0.9s done
+#9 DONE 0.9s
+
+#19 [init  2/21] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core ca-certificates && rm -rf /var/lib/apt/lists/*
+#19 CACHED
+
+#20 [init  3/21] WORKDIR /app
+#20 CACHED
+
+#21 [init  4/21] COPY package.json package-lock.json .npmrc ./
+#21 DONE 0.1s
+
+#22 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#22 ...
+
+#23 [init  5/21] COPY packages/contracts/package.json packages/contracts/
+#23 DONE 0.0s
+
+#24 [init  6/21] COPY packages/engine/package.json packages/engine/
+#24 DONE 0.0s
+
+#25 [init  7/21] COPY packages/config/package.json packages/config/
+#25 DONE 0.0s
+
+#26 [init  8/21] COPY packages/db/package.json packages/db/
+#26 DONE 0.0s
+
+#27 [init  9/21] COPY packages/storage/package.json packages/storage/
+#27 DONE 0.0s
+
+#22 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#22 ...
+
+#28 [init 10/21] COPY packages/media/package.json packages/media/
+#28 DONE 0.0s
+
+#29 [init 11/21] COPY packages/errors/package.json packages/errors/
+#29 DONE 0.0s
+
+#30 [init 12/21] COPY packages/nlu/package.json packages/nlu/
+#30 DONE 0.0s
+
+#31 [init 13/21] COPY packages/store/package.json packages/store/
+#31 DONE 0.0s
+
+#32 [init 14/21] COPY packages/render/package.json packages/render/
+#32 DONE 0.0s
+
+#33 [init 15/21] COPY packages/semantic/package.json packages/semantic/
+#33 DONE 0.0s
+
+#22 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#22 ...
+
+#34 [init 16/21] COPY packages/llm/package.json packages/llm/
+#34 DONE 0.0s
+
+#35 [init 17/21] COPY apps/api/package.json apps/api/
+#35 DONE 0.0s
+
+#36 [init 18/21] COPY apps/worker/package.json apps/worker/
+#36 DONE 0.0s
+
+#37 [init 19/21] COPY apps/cli/package.json apps/cli/
+#37 DONE 0.1s
+
+#38 [init 20/21] RUN npm ci
+#38 ...
+
+#22 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#22 2.218 Requirement already satisfied: faster-whisper==1.2.1 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 1)) (1.2.1)
+#22 2.219 Requirement already satisfied: ctranslate2==4.8.3 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 2)) (4.8.3)
+#22 2.221 Requirement already satisfied: av==16.1.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 3)) (16.1.0)
+#22 2.226 Requirement already satisfied: onnxruntime==1.31.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 4)) (1.31.0)
+#22 2.230 Requirement already satisfied: numpy==2.5.4 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 5)) (2.5.4)
+#22 2.230 Requirement already satisfied: huggingface_hub==2.2.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 6)) (2.2.0)
+#22 2.230 Requirement already satisfied: tokenizers==0.23.3 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 7)) (0.23.3)
+#22 2.230 Requirement already satisfied: sherpa-onnx==1.13.8 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 8)) (1.13.8)
+#22 2.231 Requirement already satisfied: fastapi==0.151.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 9)) (0.151.0)
+#22 2.232 Requirement already satisfied: starlette==1.9.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 10)) (1.9.0)
+#22 2.232 Requirement already satisfied: pydantic==2.14.1 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 11)) (2.14.1)
+#22 2.233 Requirement already satisfied: uvicorn==0.54.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 12)) (0.54.0)
+#22 2.234 Requirement already satisfied: python-multipart==0.0.32 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 13)) (0.0.32)
+#22 2.458 Collecting pytest==9.1.1 (from -r requirements-dev.txt (line 2))
+#22 2.606   Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+#22 2.668 Collecting httpx==0.28.1 (from -r requirements-dev.txt (line 3))
+#22 2.705   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#22 2.716 Requirement already satisfied: tqdm in /usr/local/lib/python3.12/site-packages (from faster-whisper==1.2.1->-r /app/requirements.txt (line 1)) (4.70.1)
+#22 2.719 Requirement already satisfied: pyyaml<7,>=5.3 in /usr/local/lib/python3.12/site-packages (from ctranslate2==4.8.3->-r /app/requirements.txt (line 2)) (6.0.3)
+#22 2.726 Requirement already satisfied: flatbuffers in /usr/local/lib/python3.12/site-packages (from onnxruntime==1.31.0->-r /app/requirements.txt (line 4)) (25.12.19)
+#22 2.727 Requirement already satisfied: packaging in /usr/local/lib/python3.12/site-packages (from onnxruntime==1.31.0->-r /app/requirements.txt (line 4)) (26.3)
+#22 2.728 Requirement already satisfied: protobuf>=4.25.8 in /usr/local/lib/python3.12/site-packages (from onnxruntime==1.31.0->-r /app/requirements.txt (line 4)) (7.36.2)
+#22 2.751 Requirement already satisfied: click<9.0.0,>=8.4.2 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (8.5.0)
+#22 2.752 Requirement already satisfied: filelock>=3.10.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (4.2.4)
+#22 2.753 Requirement already satisfied: fsspec>=2023.5.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (2026.9.0)
+#22 2.755 Requirement already satisfied: hf-xet<2.0.0,>=1.6.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (1.7.0)
+#22 2.756 Requirement already satisfied: httpx2<3,>=2.0.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (2.16.0)
+#22 2.758 Requirement already satisfied: typing-extensions>=4.1.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (4.16.0)
+#22 2.768 Requirement already satisfied: sherpa-onnx-core==1.13.8 in /usr/local/lib/python3.12/site-packages (from sherpa-onnx==1.13.8->-r /app/requirements.txt (line 8)) (1.13.8)
+#22 2.783 Requirement already satisfied: typing-inspection>=0.4.2 in /usr/local/lib/python3.12/site-packages (from fastapi==0.151.0->-r /app/requirements.txt (line 9)) (0.4.4)
+#22 2.784 Requirement already satisfied: annotated-doc>=0.0.2 in /usr/local/lib/python3.12/site-packages (from fastapi==0.151.0->-r /app/requirements.txt (line 9)) (0.0.5)
+#22 2.785 Requirement already satisfied: opentelemetry-api>=1.44.0 in /usr/local/lib/python3.12/site-packages (from fastapi==0.151.0->-r /app/requirements.txt (line 9)) (1.45.1)
+#22 2.791 Requirement already satisfied: anyio<5,>=4.0.0 in /usr/local/lib/python3.12/site-packages (from starlette==1.9.0->-r /app/requirements.txt (line 10)) (4.15.1)
+#22 2.798 Requirement already satisfied: annotated-types>=0.6.0 in /usr/local/lib/python3.12/site-packages (from pydantic==2.14.1->-r /app/requirements.txt (line 11)) (0.8.0)
+#22 2.799 Requirement already satisfied: pydantic-core==2.50.1 in /usr/local/lib/python3.12/site-packages (from pydantic==2.14.1->-r /app/requirements.txt (line 11)) (2.50.1)
+#22 2.807 Requirement already satisfied: h11>=0.8 in /usr/local/lib/python3.12/site-packages (from uvicorn==0.54.0->-r /app/requirements.txt (line 12)) (0.16.0)
+#22 2.850 Collecting iniconfig>=1.0.1 (from pytest==9.1.1->-r requirements-dev.txt (line 2))
+#22 2.886   Downloading iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+#22 2.929 Collecting pluggy<2,>=1.5 (from pytest==9.1.1->-r requirements-dev.txt (line 2))
+#22 2.965   Downloading pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+#22 3.022 Collecting pygments>=2.7.2 (from pytest==9.1.1->-r requirements-dev.txt (line 2))
+#22 3.059   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+#22 3.165 Collecting certifi (from httpx==0.28.1->-r requirements-dev.txt (line 3))
+#22 3.201   Downloading certifi-2026.10.19-py3-none-any.whl.metadata (2.5 kB)
+#22 3.254 Collecting httpcore==1.* (from httpx==0.28.1->-r requirements-dev.txt (line 3))
+#22 3.291   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#22 3.306 Requirement already satisfied: idna in /usr/local/lib/python3.12/site-packages (from httpx==0.28.1->-r requirements-dev.txt (line 3)) (3.20)
+#22 3.363 Requirement already satisfied: httpcore2==2.16.0 in /usr/local/lib/python3.12/site-packages (from httpx2<3,>=2.0.0->huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (2.16.0)
+#22 3.365 Requirement already satisfied: truststore>=0.10 in /usr/local/lib/python3.12/site-packages (from httpx2<3,>=2.0.0->huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (0.10.5)
+#22 3.450 Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+#22 3.564 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#22 3.595 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#22 3.626 Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+#22 3.657 Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
+#22 3.689 Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+#22 3.734    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 28.5 MB/s eta 0:00:00
+#22 3.765 Downloading certifi-2026.10.19-py3-none-any.whl (136 kB)
+#22 3.868 Installing collected packages: pygments, pluggy, iniconfig, certifi, pytest, httpcore, httpx
+#22 6.677 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#22 6.677 Successfully installed certifi-2026.10.19 httpcore-1.0.9 httpx-0.28.1 iniconfig-2.3.1 pluggy-1.7.0 pygments-2.21.0 pytest-9.1.1
+#22 6.887 
+#22 6.887 [notice] A new release of pip is available: 25.0.1 -> 26.2.2
+#22 6.887 [notice] To update, run: pip install --upgrade pip
+#22 DONE 7.2s
+
+#38 [init 20/21] RUN npm ci
+#38 ...
+
+#39 [asr-tests test 3/3] COPY tests ./tests
+#39 DONE 0.1s
+
+#40 [asr-tests] exporting to image
+#40 exporting layers
+#40 exporting layers 1.4s done
+#40 exporting manifest sha256:7726cf70c39f050905a6eb2d8bfc2af9e7d4a1ca9d3fe758cd27a57edb622231 0.0s done
+#40 exporting config sha256:ee8a07b771e8f25e263d270ff748345939698bef53abf76d3bb9b5e131025bfc 0.0s done
+#40 exporting attestation manifest sha256:8dea0f3fa09eeb78833a00625b4d59548609bf89b28d8aea600749c2f9cac717
+#40 exporting attestation manifest sha256:8dea0f3fa09eeb78833a00625b4d59548609bf89b28d8aea600749c2f9cac717 0.0s done
+#40 exporting manifest list sha256:fd8e5d90b9e0c37edc877bbc78c07c53655d7c870a156884e299a8f5790db7bb 0.0s done
+#40 naming to docker.io/library/incubrix-ps2-asr-tests:latest done
+#40 unpacking to docker.io/library/incubrix-ps2-asr-tests:latest
+#40 unpacking to docker.io/library/incubrix-ps2-asr-tests:latest 0.6s done
+#40 DONE 2.2s
+
+#38 [init 20/21] RUN npm ci
+#38 ...
+
+#41 [asr-tests] resolving provenance for metadata file
+#41 DONE 0.0s
+
+#38 [init 20/21] RUN npm ci
+#38 12.01 npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+#38 15.46 
+#38 15.46 added 270 packages, and audited 286 packages in 14s
+#38 15.46 
+#38 15.46 76 packages are looking for funding
+#38 15.46   run `npm fund` for details
+#38 15.50 
+#38 15.50 6 vulnerabilities (3 moderate, 1 high, 2 critical)
+#38 15.50 
+#38 15.50 To address all issues (including breaking changes), run:
+#38 15.50   npm audit fix --force
+#38 15.50 
+#38 15.50 Run `npm audit` for details.
+#38 15.50 npm notice
+#38 15.50 npm notice New major version of npm available! 10.9.9 -> 12.2.1
+#38 15.50 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+#38 15.50 npm notice To update run: npm install -g npm@12.2.1
+#38 15.50 npm notice
+#38 DONE 16.8s
+
+#42 [init 21/21] COPY . .
+#42 DONE 23.4s
+
+#43 [init] exporting to image
+#43 exporting layers
+#43 exporting layers 102.0s done
+#43 exporting manifest sha256:8318d594674e003cd27159e1f97ebd0bbf737de7b7b4fc33c744508114448bd4 0.0s done
+#43 exporting config sha256:68203f60891c612428cb68324cdb24b17c3085d7761303c6a0e43d8afeb500b7 0.0s done
+#43 exporting attestation manifest sha256:cf9cbe2e92798d58fe85e34005a57b38ad2c9575a8387de42d2ad2b7b5f6b41a 0.0s done
+#43 exporting manifest list sha256:39938716d2d23db3ba9851dab545be29e37fa038a82fce5043daffa5b9de5875 0.0s done
+#43 naming to docker.io/library/incubrix-app:latest
+#43 naming to docker.io/library/incubrix-app:latest done
+#43 unpacking to docker.io/library/incubrix-app:latest
+#43 unpacking to docker.io/library/incubrix-app:latest 23.1s done
+#43 DONE 125.4s
+
+#44 [init] resolving provenance for metadata file
+#44 DONE 0.0s
+ Image incubrix-ps2-asr-tests Built 
+ Image incubrix-app Built 
+ Container incubrix-ps2-s3-1 Recreate 
+ Container incubrix-ps2-asr-tests-1 Recreate 
+ Container incubrix-ps2-postgres-1 Recreate 
+ Container incubrix-ps2-asr-tests-1 Recreated 
+ Container incubrix-ps2-postgres-1 Recreated 
+ Container incubrix-ps2-s3-1 Recreated 
+ Container incubrix-ps2-init-1 Recreate 
+ Container incubrix-ps2-init-1 Recreated 
+ Container incubrix-ps2-s3-1 Starting 
+ Container incubrix-ps2-asr-tests-1 Starting 
+ Container incubrix-ps2-postgres-1 Starting 
+ Container incubrix-ps2-s3-1 Started 
+ Container incubrix-ps2-asr-tests-1 Started 
+ Container incubrix-ps2-postgres-1 Started 
+ Container incubrix-ps2-postgres-1 Waiting 
+ Container incubrix-ps2-s3-1 Waiting 
+ Container incubrix-ps2-postgres-1 Healthy 
+ Container incubrix-ps2-s3-1 Healthy 
+ Container incubrix-ps2-init-1 Starting 
+ Container incubrix-ps2-init-1 Started 
+ Image incubrix-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.37kB done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.16kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:22-bookworm-slim
+#3 DONE 0.9s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 98B done
+#4 DONE 0.0s
+
+#5 [ 1/21] FROM docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d
+#5 resolve docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d 0.1s done
+#5 DONE 0.1s
+
+#6 [internal] load build context
+#6 transferring context: 812.72kB 0.7s done
+#6 DONE 0.7s
+
+#7 [15/21] COPY packages/semantic/package.json packages/semantic/
+#7 CACHED
+
+#8 [19/21] COPY apps/cli/package.json apps/cli/
+#8 CACHED
+
+#9 [ 7/21] COPY packages/config/package.json packages/config/
+#9 CACHED
+
+#10 [10/21] COPY packages/media/package.json packages/media/
+#10 CACHED
+
+#11 [13/21] COPY packages/store/package.json packages/store/
+#11 CACHED
+
+#12 [18/21] COPY apps/worker/package.json apps/worker/
+#12 CACHED
+
+#13 [14/21] COPY packages/render/package.json packages/render/
+#13 CACHED
+
+#14 [17/21] COPY apps/api/package.json apps/api/
+#14 CACHED
+
+#15 [ 4/21] COPY package.json package-lock.json .npmrc ./
+#15 CACHED
+
+#16 [ 6/21] COPY packages/engine/package.json packages/engine/
+#16 CACHED
+
+#17 [12/21] COPY packages/nlu/package.json packages/nlu/
+#17 CACHED
+
+#18 [ 9/21] COPY packages/storage/package.json packages/storage/
+#18 CACHED
+
+#19 [ 3/21] WORKDIR /app
+#19 CACHED
+
+#20 [ 8/21] COPY packages/db/package.json packages/db/
+#20 CACHED
+
+#21 [11/21] COPY packages/errors/package.json packages/errors/
+#21 CACHED
+
+#22 [16/21] COPY packages/llm/package.json packages/llm/
+#22 CACHED
+
+#23 [ 5/21] COPY packages/contracts/package.json packages/contracts/
+#23 CACHED
+
+#24 [ 2/21] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core ca-certificates && rm -rf /var/lib/apt/lists/*
+#24 CACHED
+
+#25 [20/21] RUN npm ci
+#25 CACHED
+
+#26 [21/21] COPY . .
+#26 DONE 21.2s
+
+#27 exporting to image
+#27 exporting layers
+#27 exporting layers 80.6s done
+#27 exporting manifest sha256:bcf1c91231675ecabe7918dcf79d3573c0fd00be1196033cea0a4c0da896574c 0.0s done
+#27 exporting config sha256:1a8038832003fce5a48cfee1c22a9743eab5f0e4be61b105c241406d399be47e 0.0s done
+#27 exporting attestation manifest sha256:e354fe319b18a9710ba1d7092569950a7531fbceae95fe73793ab34c3e8906df 0.0s done
+#27 exporting manifest list sha256:2fa38e1a32a2c1627a3c41f7e86574d32b7f8f3fcda018b228521be7647b0cd0 0.0s done
+#27 naming to docker.io/library/incubrix-app:latest done
+#27 unpacking to docker.io/library/incubrix-app:latest
+#27 unpacking to docker.io/library/incubrix-app:latest 17.4s done
+#27 DONE 98.1s
+
+#28 resolving provenance for metadata file
+#28 DONE 0.0s
+ Image incubrix-app Built 
+ Container incubrix-ps2-asr-tests-1 Waiting 
+ Container incubrix-ps2-init-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Exited 
+ Container incubrix-ps2-init-1 Exited 
+ Container incubrix-ps2-tests-run-9a9e2c45b143 Creating 
+ Container incubrix-ps2-tests-run-9a9e2c45b143 Created 
+
+> incubrix@0.0.0 test
+> npm test --workspaces --if-present
+
+
+> @incubrix/config@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/config
+
+ ✓ test/config.test.ts (11 tests) 66ms
+
+ Test Files  1 passed (1)
+      Tests  11 passed (11)
+   Start at  13:13:07
+   Duration  809ms (transform 126ms, setup 0ms, collect 240ms, tests 66ms, environment 0ms, prepare 149ms)
+
+
+> @incubrix/contracts@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/contracts
+
+ ✓ test/schema.test.ts (4 tests) 415ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  13:13:09
+   Duration  1.05s (transform 97ms, setup 0ms, collect 243ms, tests 415ms, environment 0ms, prepare 107ms)
+
+
+> @incubrix/db@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/db
+
+ ✓ test/files.test.ts (5 tests) 17ms
+ ✓ test/postgres.test.ts (8 tests) 640ms
+
+ Test Files  2 passed (2)
+      Tests  13 passed (13)
+   Start at  13:13:10
+   Duration  1.23s (transform 157ms, setup 0ms, collect 248ms, tests 657ms, environment 1ms, prepare 247ms)
+
+
+> @incubrix/engine@0.0.0 test
+> eslint . && vitest run
+
+
+ RUN  v2.1.9 /app/packages/engine
+
+ ✓ test/session.test.ts (30 tests) 94ms
+ ✓ test/new_ops.test.ts (39 tests) 140ms
+ ✓ test/reorder.test.ts (26 tests) 209ms
+ ✓ test/replay.test.ts (23 tests) 74ms
+ ✓ test/frame_rounding.test.ts (14 tests) 198ms
+ ✓ test/worked_example.test.ts (11 tests | 1 skipped) 67ms
+ ✓ test/search_resolve.test.ts (21 tests) 59ms
+ ✓ test/atoms.test.ts (21 tests) 43ms
+ ✓ test/grid_warnings.test.ts (11 tests) 54ms
+ ✓ test/mutants.test.ts (14 tests) 40ms
+ ✓ test/canonical.test.ts (18 tests) 32ms
+ ✓ test/hard_cases.test.ts (6 tests) 2629ms
+   ✓ property: incremental application equals a full replay > after every command of a random edit/undo/redo sequence, snapshots agree with replaying the log 407ms
+   ✓ property: the session path (caches, incremental priming) equals a fresh full replay > after every turn of a random session (edits, undo, redo, restore, rejected turns), the cached timeline equals a replay on a brand-new engine 2149ms
+ ✓ test/schema.test.ts (4 tests) 391ms
+   ✓ the schema accepts what the engine really produces > a real session (caption, cut, question, answer, speed, restore, undo, recolour) validates, and so does its materialized timeline 341ms
+ ✓ test/lint_guard.test.ts (12 tests) 973ms
+   ✓ engine purity lint rules > forbids Date in packages/engine/src 888ms
+
+ Test Files  14 passed (14)
+      Tests  249 passed | 1 skipped (250)
+   Start at  13:13:16
+   Duration  6.39s (transform 1.21s, setup 0ms, collect 4.52s, tests 5.00s, environment 6ms, prepare 2.24s)
+
+
+> @incubrix/errors@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/errors
+
+ ✓ test/errors.test.ts (3 tests) 9ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  13:13:23
+   Duration  591ms (transform 96ms, setup 0ms, collect 85ms, tests 9ms, environment 0ms, prepare 111ms)
+
+
+> @incubrix/llm@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/llm
+
+ ✓ test/gemini.test.ts (3 tests) 83ms
+ ✓ test/llm.test.ts (9 tests) 383ms
+
+ Test Files  2 passed (2)
+      Tests  12 passed (12)
+   Start at  13:13:24
+   Duration  1.68s (transform 631ms, setup 0ms, collect 1.24s, tests 466ms, environment 1ms, prepare 369ms)
+
+
+> @incubrix/media@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/media
+
+ ✓ test/pure.test.ts (17 tests) 19ms
+ ✓ test/voiced.test.ts (4 tests) 211ms
+ ✓ test/music.test.ts (1 test) 228ms
+ ✓ test/ffmpeg.test.ts (8 tests) 3416ms
+
+ Test Files  4 passed (4)
+      Tests  30 passed (30)
+   Start at  13:13:26
+   Duration  4.13s (transform 317ms, setup 0ms, collect 688ms, tests 3.87s, environment 2ms, prepare 602ms)
+
+
+> @incubrix/nlu@0.0.0 test
+> eslint . && vitest run
+
+
+ RUN  v2.1.9 /app/packages/nlu
+
+ ✓ test/fillers.test.ts (5 tests) 105ms
+ ✓ test/advanced.test.ts (8 tests) 137ms
+ ✓ test/rules.test.ts (24 tests) 489ms
+ ✓ test/time.test.ts (19 tests) 23ms
+ ✓ test/semantic.test.ts (5 tests) 112ms
+ ✓ test/lint_guard.test.ts (9 tests) 997ms
+   ✓ nlu purity lint rules > forbids Date in packages/nlu/src 932ms
+
+ Test Files  6 passed (6)
+      Tests  70 passed (70)
+   Start at  13:13:33
+   Duration  3.37s (transform 892ms, setup 0ms, collect 2.34s, tests 1.86s, environment 2ms, prepare 1.01s)
+
+
+> @incubrix/render@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/render
+
+stdout | test/render.test.ts > render smoke > an unedited timeline renders to the same frame count, with the flash and the tone together
+{"frames":150,"verification":{"ok":true,"timelineFrames":150,"renderedFrames":150,"frameDifference":0,"audioVsVideoUs":0,"audioVsVideoFrames":0,"problems":[]},"m":{"videoFrames":150,"events":6,"offsetsFrames":[0.002604166666666667,0.0020833333333358794,0.0020833333333358794,0.0020833333333358794,0.002604166666664298,0.0020833333333358794],"maxAbsOffsetFrames":0.002604166666666667,"unmatched":0}}
+
+ ✓ test/render.test.ts (1 test) 3066ms
+   ✓ render smoke > an unedited timeline renders to the same frame count, with the flash and the tone together 3062ms
+ ✓ test/features.test.ts (8 tests) 23280ms
+   ✓ every effect the timeline holds renders > speed keeps the pitch: a 1 kHz tone is still 1 kHz at 2x and at 4x (chained atempo) 4697ms
+   ✓ every effect the timeline holds renders > slow motion (0.5x) lengthens the video, keeps the pitch 2097ms
+   ✓ every effect the timeline holds renders > mute silences exactly the word; bleep replaces it with a 1 kHz tone at the documented level 2058ms
+   ✓ every effect the timeline holds renders > mute ALONE (no bleep, no music) renders: the aeval output must carry a named stereo layout for the AAC encoder 1414ms
+   ✓ every effect the timeline holds renders > captions: colour, text window and removal after a cut; auto-captions follow the surviving words 7560ms
+   ✓ every effect the timeline holds renders > long caption text is read from a file (quotes and colons cannot break the filter graph) 1393ms
+   ✓ background music follows the engine's ducking envelope > rendered music level equals the timeline envelope (base, ducked and mid-ramp) within 1 dB 4023ms
+ ✓ test/accuracy.test.ts (6 tests) 39285ms
+   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > 25 fps: length equals the timeline within 1 frame and the flash/tone offset is within 1 frame 4175ms
+   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > 30 fps: length equals the timeline within 1 frame and the flash/tone offset is within 1 frame 3135ms
+   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > 29.97 fps: length equals the timeline within 1 frame and the flash/tone offset is within 1 frame 3275ms
+   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > a variable-frame-rate clip renders through a CFR proxy; the original is untouched 4653ms
+   ✓ a large graph: 300 pieces stay frame-exact > one instruction with 300 cuts renders in ONE ffmpeg run, frame count exact, A/V offset within 1 frame 23579ms
+   ✓ no-audio source > fails clearly with NO_AUDIO_TRACK and renders nothing 462ms
+
+ Test Files  3 passed (3)
+      Tests  15 passed (15)
+   Start at  13:13:37
+   Duration  41.78s (transform 2.62s, setup 0ms, collect 5.85s, tests 65.63s, environment 2ms, prepare 564ms)
+
+
+> @incubrix/semantic@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/semantic
+
+ ✓ test/semantic.test.ts (3 tests) 37ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  13:14:19
+   Duration  1.39s (transform 609ms, setup 0ms, collect 904ms, tests 37ms, environment 0ms, prepare 126ms)
+
+
+> @incubrix/storage@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/storage
+
+ ✓ test/retention.test.ts (2 tests) 14ms
+ ✓ test/s3.test.ts (4 tests) 190ms
+ ✓ test/retry.test.ts (5 tests) 2518ms
+   ✓ storage 5xx handling (SeaweedFS answers 500 when it has no writable volume) > a write that fails twice with 500 and then works succeeds 756ms
+   ✓ storage 5xx handling (SeaweedFS answers 500 when it has no writable volume) > gives up after the attempt limit and throws the last error (a full store does not heal) 1755ms
+
+ Test Files  3 passed (3)
+      Tests  11 passed (11)
+   Start at  13:14:21
+   Duration  3.53s (transform 292ms, setup 0ms, collect 1.39s, tests 2.72s, environment 1ms, prepare 576ms)
+
+
+> @incubrix/store@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/store
+
+ ✓ test/log.test.ts (2 tests) 13ms
+ ✓ test/urlguard.test.ts (18 tests) 28ms
+ ✓ test/store.test.ts (20 tests) 822ms
+
+ Test Files  3 passed (3)
+      Tests  40 passed (40)
+   Start at  13:14:25
+   Duration  2.12s (transform 546ms, setup 0ms, collect 2.17s, tests 863ms, environment 1ms, prepare 563ms)
+
+
+> @incubrix/api@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/api
+
+ ❯ test/api.test.ts (30 tests | 1 failed) 28410ms
+   ✓ API behaviour > openapi.yaml matches the running service > real responses validate against their schemas 3583ms
+   ✓ API behaviour > possible fillers reach the parser > markers stored in the transcript manifest turn 'remove the ums' into a question; nothing is cut before the answer 345ms
+   ✓ API behaviour > errors > a video without audio fails its job with NO_AUDIO_TRACK and cannot start a session 466ms
+   ✓ API behaviour > errors > a private URL is refused when private addresses are not allowed (the SSRF guard) 336ms
+   ✓ API behaviour > idempotency (every POST) > the same bytes uploaded twice (different keys) are stored ONCE: both videos point at the same object 592ms
+   ✓ API behaviour > idempotency (every POST) > videos: same key + same file -> same ids, one video, one job, one stored object 935ms
+   ✓ API behaviour > idempotency (every POST) > sessions: same key + same body -> same session; different body -> 409 320ms
+   ✓ API behaviour > idempotency (every POST) > instructions: a repeated key replays the answer and does NOT apply the edit twice 370ms
+   ✓ API behaviour > jobs, cache, hints, warnings > progress goes 0 -> 100, never down; a job is queued until a worker takes it 312ms
+   ✓ API behaviour > jobs, cache, hints, warnings > the same file again is a transcript cache HIT (ASR not called); a different ASR model is a MISS 2949ms
+   ✓ API behaviour > jobs, cache, hints, warnings > num_speakers reaches the ASR/diarization call and changes the cache key 2260ms
+   ✓ API behaviour > jobs, cache, hints, warnings > variable frame rate is accepted with a warning in the job manifest and on the video 1248ms
+   ✓ API behaviour > jobs, cache, hints, warnings > a URL source is downloaded, stored byte-identical and transcribed; callback is signed and delivered 345ms
+   ✓ auth, rate limit, correlation id > API_TOKEN protects everything except /health and /ready; the token is never logged 310ms
+   ✓ auth, rate limit, correlation id > rate limit: the N+1th request in a minute is 429 RATE_LIMITED with Retry-After 317ms
+   ✓ retention (real storage) > an expired render is deleted with its manifest, the job says expired and has no links, the original stays 2977ms
+   ✓ meaning search through the API (mock embeddings) > a meaning match is listed with its time before anything is cut; a repeated query uses the cached vector 2098ms
+   ✓ language-model fallback through the API (mock model) > is used only for text the rules cannot read; the engine applies the result; the manifest has tokens and cost; a repeat is a cache hit with no model call 2323ms
+   ✓ language-model fallback through the API (mock model) > a model reply that is not valid commands is a rejection and the timeline does not change 1359ms
+   ✓ language-model fallback through the API (mock model) > LLM_PROVIDER=gemini with an empty key: the fallback is off and the answer says so 1312ms
+   ✓ public deployment guards (M6a) > a video longer than MAX_VIDEO_DURATION_S fails its job with VIDEO_TOO_LONG before ASR runs 1897ms
+   ✓ public deployment guards (M6a) > the rate limit counts per client IP and also counts requests with a wrong token (no free guessing) 304ms
+   × public deployment guards (M6a) > /docs serves Swagger UI and /openapi.yaml serves the file itself, both without a token; the API still needs it 295ms
+     → expected 401 to be 404 // Object.is equality
+ ✓ test/e2e.test.ts (5 tests) 8815ms
+   ✓ worked example over HTTP (mock ASR) > uploads the clip, the job runs with progress and succeeds, the original is stored untouched 3920ms
+   ✓ worked example over HTTP (mock ASR) > step 8: render is a background job; the file matches the timeline length; the original is untouched (sha256 before and after) 4097ms
+ ✓ test/runner.test.ts (5 tests) 16254ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > determinism: the same session run 3 times through the runner gives the same timeline_hash at every step 13726ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a step that does not match its expectation fails the session, and the failure is kept in results.json 425ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a video without audio stops at intake with NO_AUDIO_TRACK and the session says so 639ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > batch: runs every file in a folder, one result folder each, summary.json lists pass and fail 916ms
+ ✓ test/ratelimit.test.ts (5 tests) 7ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/api.test.ts > public deployment guards (M6a) > /docs serves Swagger UI and /openapi.yaml serves the file itself, both without a token; the API still needs it
+AssertionError: expected 401 to be 404 // Object.is equality
+
+- Expected
++ Received
+
+- 404
++ 401
+
+ ❯ test/api.test.ts:533:70
+    531|       expect((await fetch(`${s.base}/docs/swagger-ui-bundle.js`)).stat…
+    532|       expect((await fetch(`${s.base}/docs/swagger-ui.css`)).status).to…
+    533|       expect((await fetch(`${s.base}/docs/../package.json`)).status).t…
+       |                                                                      ^
+    534|       expect((await fetch(`${s.base}/docs/nothing.js`)).status).toBe(4…
+    535|       const y = await fetch(`${s.base}/openapi.yaml`);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 3 passed (4)
+      Tests  1 failed | 44 passed (45)
+   Start at  13:14:28
+   Duration  58.40s (transform 1.14s, setup 0ms, collect 3.61s, tests 53.49s, environment 1ms, prepare 395ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /app/apps/api
+npm error workspace @incubrix/api@0.0.0
+npm error location /app/apps/api
+npm error command failed
+npm error command sh -c vitest run
+
+
+> @incubrix/cli@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/cli
+
+ ✓ test/format.test.ts (2 tests) 91ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  13:15:27
+   Duration  735ms (transform 87ms, setup 0ms, collect 219ms, tests 91ms, environment 0ms, prepare 100ms)
+
+
+> @incubrix/worker@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/worker
+
+ ✓ test/callback.test.ts (3 tests) 66ms
+ ✓ test/atoms.test.ts (5 tests) 18ms
+
+ Test Files  2 passed (2)
+      Tests  8 passed (8)
+   Start at  13:15:28
+   Duration  1.32s (transform 606ms, setup 0ms, collect 810ms, tests 83ms, environment 1ms, prepare 408ms)
+
+
+
+real	7m59.494s
+user	0m2.395s
+sys	0m1.876s

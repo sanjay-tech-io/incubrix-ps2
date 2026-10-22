@@ -18,6 +18,7 @@ import { applyParsed, topicRequest, type InstructionParser, type SideData } from
 import type { SemanticService } from "@incubrix/semantic";
 import type { CallInfo, LlmFallback } from "@incubrix/llm";
 import { presignGet, putFile } from "@incubrix/storage";
+import { isDocPath, registerDocs } from "./docs.ts";
 import {
   appendTurn, assertUrlAllowed, findStoredOriginal, createJob, createSession, createVideo, getJob, getSession, getVideo, jobView, lockSession, requestHash, tx, withIdempotency,
   type Logger,
@@ -88,10 +89,14 @@ export async function buildApp(d: ApiDeps): Promise<FastifyInstance & { routeTab
     childLoggerFactory: (logger, bindings) => logger.child({ correlation_id: (bindings as { reqId?: string }).reqId }),
     exposeHeadRoutes: false,
     bodyLimit: 1024 * 1024,
+    // Behind Caddy (TRUST_PROXY=true) req.ip is the client's address from X-Forwarded-For, which Caddy overwrites; otherwise it is the socket peer.
+    trustProxy: cfg.TRUST_PROXY,
   }) as unknown as FastifyInstance & { routeTable: RouteRecord[] }; // pino's Logger vs Fastify's FastifyBaseLogger only differ in types
   const routeTable: RouteRecord[] = [];
   app.routeTable = routeTable;
   app.addHook("onRoute", (r) => {
+    // The documentation routes are tooling, not API: the contract test compares only the documented API routes.
+    if (isDocPath(r.url.replace(/:name$/, "x"))) return;
     for (const m of Array.isArray(r.method) ? r.method : [r.method]) if (m !== "HEAD" && m !== "OPTIONS") routeTable.push({ method: m, url: r.url });
   });
 
@@ -103,17 +108,18 @@ export async function buildApp(d: ApiDeps): Promise<FastifyInstance & { routeTab
   app.addHook("onRequest", async (req, reply) => {
     reply.header("X-Correlation-Id", req.id);
     const path = req.url.split("?")[0]!;
-    if (PUBLIC_PATHS.has(path)) return;
+    if (PUBLIC_PATHS.has(path) || isDocPath(path)) return;
+    // Rate limit BEFORE the token check, per client IP: otherwise a wrong token costs nothing and can be guessed without limit.
+    const wait = limiter.hit(req.ip);
+    if (wait > 0) {
+      reply.header("Retry-After", String(wait));
+      throw new ApiError("RATE_LIMITED", `Too many requests. Try again in ${wait} s.`, { retry_after_s: wait });
+    }
     if (cfg.API_TOKEN) {
       const header = singleHeader(req.headers.authorization) ?? "";
       const given = Buffer.from(header.startsWith("Bearer ") ? header.slice(7) : "");
       const want = Buffer.from(cfg.API_TOKEN);
       if (given.length !== want.length || !timingSafeEqual(given, want)) throw new ApiError("UNAUTHORIZED", "Missing or wrong access token. Send `Authorization: Bearer <token>`.");
-    }
-    const wait = limiter.hit(`${cfg.API_TOKEN ? "token" : req.ip}`);
-    if (wait > 0) {
-      reply.header("Retry-After", String(wait));
-      throw new ApiError("RATE_LIMITED", `Too many requests. Try again in ${wait} s.`, { retry_after_s: wait });
     }
   });
 
@@ -142,6 +148,8 @@ export async function buildApp(d: ApiDeps): Promise<FastifyInstance & { routeTab
     if (r.replayed) reply.header("Idempotent-Replayed", "true");
     return reply.status(r.status).send(r.body);
   };
+
+  registerDocs(app, new URL("../../../openapi.yaml", import.meta.url));
 
   // ---- ops -------------------------------------------------------------------------------------------------------
   app.get("/health", async () => ({ status: "ok", service: "api" }));

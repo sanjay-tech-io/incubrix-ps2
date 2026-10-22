@@ -8,7 +8,8 @@ info:
     Source of truth for the routes: a test compares this file with the routes the server registers, in both directions.
     Every `summary` states which time policy was used ("current" = the edited timeline, "original" = the untouched source).
 servers:
-  - url: http://localhost:8080
+  - url: /
+    description: The host that serves this file (so Swagger UI at /docs calls the same host).
 security:
   - bearerAuth: []
 tags:
@@ -215,7 +216,7 @@ paths:
         "404": { $ref: "#/components/responses/Error" }
 components:
   securitySchemes:
-    bearerAuth: { type: http, scheme: bearer, description: "Set API_TOKEN to require it. /health and /ready never need it." }
+    bearerAuth: { type: http, scheme: bearer, description: "Set API_TOKEN to require it (required in production). /health, /ready, /docs and /openapi.yaml never need it. Swagger UI: press Authorize and paste the token." }
   parameters:
     IdempotencyKey:
       name: Idempotency-Key

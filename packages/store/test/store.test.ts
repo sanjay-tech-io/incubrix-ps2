@@ -92,6 +92,25 @@ run("store against Postgres", () => {
     expect((await getJob(pool, ids[0]!))!.status).toBe("running");
   });
 
+  it("claimNextJob with limits: at most 1 ingest/transcribe and 1 render run at once, even with concurrent workers", async () => {
+    await pool.query("delete from jobs");
+    const ing = await Promise.all([1, 2, 3].map(() => createJob(pool, { type: "ingest" })));
+    const tr = await createJob(pool, { type: "transcribe" });
+    const ren = await Promise.all([1, 2].map(() => createJob(pool, { type: "render" })));
+    const limits = { ingest: 1, render: 1 };
+    const claims = (await Promise.all([1, 2, 3, 4, 5, 6].map(() => claimNextJob(pool, limits)))).filter((c) => c !== null).map((c) => c!);
+    // one from the ingest/transcribe group, one render; the rest wait in the queue
+    expect(claims.map((c) => c.type === "render").sort()).toEqual([false, true]);
+    expect([...ing, tr, ...ren].filter((id) => claims.some((c) => c.id === id))).toHaveLength(2);
+    expect(await claimNextJob(pool, limits)).toBeNull();
+    // finishing the render frees only the render slot
+    const render = claims.find((c) => c.type === "render")!;
+    await succeedJob(pool, render.id, {});
+    expect((await claimNextJob(pool, limits))!.type).toBe("render");
+    expect(await claimNextJob(pool, limits)).toBeNull();
+    await pool.query("delete from jobs");
+  });
+
   it("progress never goes down; stale running jobs are re-queued, fresh ones are not", async () => {
     const id = await createJob(pool, { type: "ingest" });
     const job = await claimNextJob(pool);

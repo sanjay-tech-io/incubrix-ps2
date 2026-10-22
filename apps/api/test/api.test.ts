@@ -490,3 +490,54 @@ describe.skipIf(!integration)("language-model fallback through the API (mock mod
     }
   }, 120_000);
 });
+
+describe.skipIf(!integration)("public deployment guards (M6a)", () => {
+  it("a video longer than MAX_VIDEO_DURATION_S fails its job with VIDEO_TOO_LONG before ASR runs", async () => {
+    const s = await startStack({ env: { MAX_VIDEO_DURATION_S: "10" } });
+    try {
+      const { job } = await ingest(s, makeClip({ seconds: 20 }));
+      expect(job.status).toBe("failed");
+      expect(job.error.error).toMatchObject({ code: "VIDEO_TOO_LONG", retryable: false });
+      expect(job.error.error.details).toMatchObject({ max_duration_s: 10 });
+      const ok = await ingest(s, makeClip({ seconds: 5 }));
+      expect(ok.job.status).toBe("succeeded");
+    } finally {
+      await s.stop();
+    }
+  }, 120_000);
+
+  it("the rate limit counts per client IP and also counts requests with a wrong token (no free guessing)", async () => {
+    const s = await startStack({ env: { API_TOKEN: "demo-token-1234567890", RATE_LIMIT_PER_MIN: "3", TRUST_PROXY: "true" } });
+    try {
+      const get = (ip: string, token = "wrong-token-0000000") => fetch(`${s.base}/api/v1/jobs/x`, { headers: { authorization: `Bearer ${token}`, "x-forwarded-for": ip } });
+      expect([(await get("10.0.0.1")).status, (await get("10.0.0.1")).status, (await get("10.0.0.1")).status]).toEqual([401, 401, 401]);
+      const limited = await get("10.0.0.1", "demo-token-1234567890");
+      expect(limited.status).toBe(429);
+      expect(limited.headers.get("retry-after")).not.toBeNull();
+      expect((await get("10.0.0.2", "demo-token-1234567890")).status).toBe(404); // another client is not affected
+      expect((await fetch(`${s.base}/health`)).status).toBe(200); // health is never limited
+    } finally {
+      await s.stop();
+    }
+  });
+
+  it("/docs serves Swagger UI and /openapi.yaml serves the file itself, both without a token; the API still needs it", async () => {
+    const s = await startStack({ env: { API_TOKEN: "demo-token-1234567890" } });
+    try {
+      const page = await fetch(`${s.base}/docs`);
+      expect(page.status).toBe(200);
+      expect(page.headers.get("content-type")).toContain("text/html");
+      expect(await page.text()).toContain("swagger-ui");
+      expect((await fetch(`${s.base}/docs/swagger-ui-bundle.js`)).status).toBe(200);
+      expect((await fetch(`${s.base}/docs/swagger-ui.css`)).status).toBe(200);
+      expect((await fetch(`${s.base}/docs/..%2Fpackage.json`)).status).toBe(404);
+      expect((await fetch(`${s.base}/docs/nothing.js`)).status).toBe(404);
+      const y = await fetch(`${s.base}/openapi.yaml`);
+      expect(y.status).toBe(200);
+      expect(await y.text()).toBe(readFileSync(new URL("../../../openapi.yaml", import.meta.url), "utf8"));
+      expect((await fetch(`${s.base}/api/v1/jobs/x`)).status).toBe(401);
+    } finally {
+      await s.stop();
+    }
+  });
+});

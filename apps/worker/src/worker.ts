@@ -6,7 +6,7 @@ import { runRetention } from "./retention.ts";
 
 /** Take one queued job and run it. Returns false when the queue was empty. */
 export async function processOneJob(d: WorkerDeps): Promise<boolean> {
-  const job = await claimNextJob(d.pool);
+  const job = await claimNextJob(d.pool, { ingest: d.cfg.MAX_INGEST_JOBS, render: d.cfg.MAX_RENDER_JOBS });
   if (!job) return false;
   d.log.info({ job_id: job.id, type: job.type }, "job claimed");
   if (job.type === "ingest" || job.type === "transcribe") await runIntake(d, job);

@@ -19,6 +19,7 @@ export const ERRORS = {
   IDEMPOTENCY_KEY_REUSED: { status: 409, retryable: false, description: "This Idempotency-Key was already used with a different request body." },
   IDEMPOTENCY_IN_PROGRESS: { status: 409, retryable: true, description: "A request with this Idempotency-Key is still running. Retry shortly." },
   FILE_TOO_LARGE: { status: 413, retryable: false, description: "The upload or the downloaded file is larger than `MAX_UPLOAD_MB`." },
+  VIDEO_TOO_LONG: { status: 422, retryable: false, description: "The video is longer than `MAX_VIDEO_DURATION_S` (a limit of this deployment; 0 = no limit)." },
   UNSUPPORTED_MEDIA_TYPE: { status: 415, retryable: false, description: "Only MP4 and MOV videos are accepted." },
   NO_AUDIO_TRACK: { status: 422, retryable: false, description: "The video has no audio track, so there is nothing to transcribe. Reported on the failed job." },
   PROBE_FAILED: { status: 422, retryable: false, description: "ffprobe could not read the file as a video. Reported on the failed job." },
