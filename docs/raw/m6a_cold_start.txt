@@ -1,0 +1,15 @@
+start (UTC): 2026-10-22T13:29:05Z
+ Container incubrix-ps2-s3-1 Removed 
+ Network incubrix-ps2_default Removing 
+ Network incubrix-ps2_default Removed 
+ Container incubrix-ps2-caddy-1 Starting 
+ Container incubrix-ps2-caddy-1 Started 
+down: 19.4 s
+up -d returned after: 21.4 s
+/ready 200 (https) after up -d started: 23.8 s
+incubrix-ps2-api-1 Up 5 seconds (healthy)
+incubrix-ps2-asr-1 Up 22 seconds (healthy)
+incubrix-ps2-caddy-1 Up 4 seconds
+incubrix-ps2-postgres-1 Up 21 seconds (healthy)
+incubrix-ps2-s3-1 Up 22 seconds (healthy)
+incubrix-ps2-worker-1 Up 4 seconds (healthy)

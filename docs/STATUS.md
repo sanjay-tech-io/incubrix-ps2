@@ -1,6 +1,6 @@
 # Project status (project memory)
 
-Updated at the end of every milestone. Last update: M4 (2026-10-21), on top of M3, M2, the infra workstream and M1c. Everything below was run, not assumed; "not verified" means exactly that.
+Updated at the end of every milestone. Last update: M6a deploy (2026-10-22), M4 (2026-10-21), on top of M3, M2, the infra workstream and M1c. Everything below was run, not assumed; "not verified" means exactly that.
 
 ## Done and verified
 | Item | Proof (command) |
@@ -84,6 +84,18 @@ M3 NOT done or not verified: see REVIEW_M3.md section 9 (tone-map and late-video
 | Vague references, speaker-scoped removal with host assumption and lead-in question, repeats safe; sessions 13 and 20 pass | `packages/nlu/test/advanced.test.ts`, sessions 13, 20, 24, 25 |
 
 M4 NOT done: item 7 (needs the new recordings), filler ground truth, Gemini job path (latency up to 36 s observed), batch not re-run. See REVIEW_M4.md section 7.
+
+### M6a: live demo deployed (details and raw output: docs/DEPLOY.md, docs/raw/m6a_*)
+| Item | Proof |
+|---|---|
+| Caddy (Apache-2.0, SOURCES.md) with automatic HTTPS on https://34-93-140-79.sslip.io; Let's Encrypt certificate obtained; only ports 80/443 listen | Caddy log, `ss -ltn`, `/health` and `/ready` 200 via an external fetch service and curl |
+| Downloads through the same host (`/<bucket>/*`, GET/HEAD only): GET 200 and bytes identical to the runner's file, range 206, PUT/DELETE 405, tampered signature 403 | `docs/DEPLOY.md`; commands run this session |
+| Production guards: token required, rate limit per IP before auth, upload cap (Caddy + API), `MAX_VIDEO_DURATION_S`, job caps, strict config | `npm test` via `docker compose run --rm tests` (docs/raw/m6a_compose_tests.txt; the one failure was my test's wrong expectation, rerun passes: m6a_api_tests_rerun.txt); live checks m6a_rate_limit / upload_cap / duration_cap |
+| Swagger UI at `/docs`, spec at `/openapi.yaml` (swagger-ui-dist Apache-2.0) | api.test.ts; HTTP 200 for page, bundle, css, spec |
+| Smoke test through the public URL: upload, ASR, 2 edits, render, download | `docs/raw/m6a_smoke_session.txt` (PASS, 16.4 s), `m6a_smoke_out/` |
+| Cold start (`down` + `up -d`): `/ready` 200 after 23.8 s | `docs/raw/m6a_cold_start.txt` (one run) |
+
+M6a NOT done or not verified: see the last section of docs/DEPLOY.md. Most important: **the running stack still uses the public dev S3 keys and DB password** (rotation not authorised in the session); production config now refuses them, so the next rebuild needs the new values in `.env`. Swagger UI not opened in a browser; reboot not tested; price is an unverified third-party list price.
 
 ## Not verified (not built or not run)
 M3 leftovers: see REVIEW_M3.md section 9. The M2 list below is partly outdated: render, batch runner and the worker are built now.
