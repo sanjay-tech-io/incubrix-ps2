@@ -66,6 +66,15 @@ describe("loadConfig", () => {
     expect(loadConfig({ ...good }).API_TOKEN).toBeUndefined();
   });
 
+  it("production refuses the public dev-default S3 secret and database password", () => {
+    const prod = { ...good, NODE_ENV: "production", API_TOKEN: "a-long-enough-token-0123" };
+    expect(() => loadConfig({ ...prod, S3_SECRET_KEY: "incubrix-dev-secret-key" })).toThrow(/S3_SECRET_KEY/);
+    expect(() => loadConfig({ ...prod, S3_ACCESS_KEY: "incubrix-dev-access" })).toThrow(/S3_ACCESS_KEY/);
+    expect(() => loadConfig({ ...prod, DATABASE_URL: "postgres://incubrix:incubrix-dev@postgres:5432/incubrix" })).toThrow(/DATABASE_URL/);
+    expect(loadConfig({ ...prod, S3_SECRET_KEY: "random-secret-xyz" }).S3_SECRET_KEY).toBe("random-secret-xyz");
+    expect(loadConfig({ ...good, S3_SECRET_KEY: "incubrix-dev-secret-key" }).NODE_ENV).toBe("development"); // dev keeps the defaults
+  });
+
   it("limits default to: no duration cap, one ingest and one render job at a time, no proxy trust", () => {
     const c = loadConfig({ ...good });
     expect([c.MAX_VIDEO_DURATION_S, c.MAX_INGEST_JOBS, c.MAX_RENDER_JOBS, c.TRUST_PROXY]).toEqual([0, 1, 1, false]);

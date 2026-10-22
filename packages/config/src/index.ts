@@ -102,6 +102,13 @@ const base = z.object({
 });
 
 const schema = base.superRefine((c, ctx) => {
+    // Fail fast: the dev defaults of .env.example are public (they are in the repo). Presigned download links are served on the
+    // public host, so a known S3 secret would let anyone sign links to any stored file.
+    if (c.NODE_ENV === "production") {
+      if (c.S3_SECRET_KEY === "incubrix-dev-secret-key") ctx.addIssue({ code: "custom", path: ["S3_SECRET_KEY"], message: "is the public dev default; set a random secret in .env" });
+      if (c.S3_ACCESS_KEY === "incubrix-dev-access") ctx.addIssue({ code: "custom", path: ["S3_ACCESS_KEY"], message: "is the public dev default; set a random value in .env" });
+      if (c.DATABASE_URL.includes("incubrix-dev@")) ctx.addIssue({ code: "custom", path: ["DATABASE_URL"], message: "uses the public dev database password; set a random one in .env" });
+    }
     // Fail fast: a production deployment must never start with an open API.
     if (c.NODE_ENV === "production" && !c.API_TOKEN) ctx.addIssue({ code: "custom", path: ["API_TOKEN"], message: "required when NODE_ENV=production (at least 16 characters)" });
     // A missing GEMINI_API_KEY is NOT an error: the language-model fallback is simply off, and an instruction the rules cannot read says so.
