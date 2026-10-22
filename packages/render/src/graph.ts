@@ -134,6 +134,30 @@ interface CaptionDraw {
   position: "top" | "center" | "bottom";
 }
 
+/**
+ * Linear gain at output time t (seconds) for a piecewise-linear envelope in centi-dB (linear between keyframes IN dB), as an ffmpeg expression.
+ * Why a balanced if() tree and not a sum of gte()*lt() terms: ffmpeg's expression parser nests one level per operator and stops at about
+ * 100 ("Error initializing complex filters"), which a few minutes of speech with pauses already exceeds. The tree is log2(keyframes)
+ * deep, evaluates only one path per 10 ms block, and gives the same values (test: packages/render/test/musicexpr.test.ts, evaluated by ffmpeg itself).
+ */
+export function musicGainExpr(kf: readonly { timeUs: number; gainCentiDb: number }[]): string {
+  const seg = (i: number): string => {
+    const a = kf[i]!;
+    const b = kf[i + 1];
+    if (!b) return String(a.gainCentiDb); // the last keyframe: constant from there on
+    const slope = (b.gainCentiDb - a.gainCentiDb) / (b.timeUs - a.timeUs) / 1e-6; // centi-dB per second
+    return `(${a.gainCentiDb}+${slope.toFixed(6)}*(t-${sec(a.timeUs)}))`;
+  };
+  // segments lo..hi; boundary k is the start time of segment k
+  const tree = (lo: number, hi: number): string => {
+    if (lo === hi) return seg(lo);
+    const mid = (lo + hi + 1) >> 1;
+    return `if(lt(t,${sec(kf[mid]!.timeUs)}),${tree(lo, mid - 1)},${tree(mid, hi)})`;
+  };
+  // before the first keyframe there is no gain change (0 dB)
+  return `pow(10,if(lt(t,${sec(kf[0]!.timeUs)}),0,${tree(0, kf.length - 1)})/2000)`;
+}
+
 export function buildRenderGraph(inp: RenderGraphInput): RenderGraph {
   const { ctx, tl } = inp;
   const fps = ctx.fps;
@@ -306,18 +330,9 @@ export function buildRenderGraph(inp: RenderGraphInput): RenderGraph {
     const musicIndex = inputs.length;
     inputs.push({ role: "music", seekUs: null, durationUs: null });
     const kf = duckingEnvelope(ctx, tl, tl.music);
-    const terms: string[] = [];
-    for (let i = 0; i + 1 < kf.length; i++) {
-      const a = kf[i]!;
-      const b = kf[i + 1]!;
-      const slope = (b.gainCentiDb - a.gainCentiDb) / (b.timeUs - a.timeUs) / 1e-6; // centi-dB per second
-      terms.push(`gte(t,${sec(a.timeUs)})*lt(t,${sec(b.timeUs)})*(${a.gainCentiDb}+${slope.toFixed(6)}*(t-${sec(a.timeUs)}))`);
-    }
-    const last = kf[kf.length - 1]!;
-    terms.push(`gte(t,${sec(last.timeUs)})*${last.gainCentiDb}`);
     // asetnsamples: gain is evaluated once per 10 ms block, so a ramp is followed to within 10 ms.
     lines.push(
-      `[${musicIndex}:a]aresample=${AUDIO_RATE},aformat=sample_fmts=fltp:channel_layouts=stereo,atrim=duration=${sec(tl.durationUs)},asetpts=PTS-STARTPTS,asetnsamples=n=480:p=0,volume=volume='pow(10,(${terms.join("+")})/2000)':eval=frame[amusic]`,
+      `[${musicIndex}:a]aresample=${AUDIO_RATE},aformat=sample_fmts=fltp:channel_layouts=stereo,atrim=duration=${sec(tl.durationUs)},asetpts=PTS-STARTPTS,asetnsamples=n=480:p=0,volume=volume='${musicGainExpr(kf)}':eval=frame[amusic]`,
     );
     mixInputs.push("[amusic]");
   }
