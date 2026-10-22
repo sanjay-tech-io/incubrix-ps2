@@ -131,3 +131,4 @@ export function loadConfig(env: Record<string, string | undefined>): Config {
   // Why only key + message: zod can echo the input value, which may be a secret (CLAUDE.md: no secrets in logs).
   throw new ConfigError(r.error.issues.map((i) => `${i.path.join(".") || "(root)"}: ${i.message}`));
 }
+export * from "./envdoc.ts";
