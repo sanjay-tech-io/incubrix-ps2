@@ -106,7 +106,7 @@ Secrets rotated after approval (S3 keys, DB password): old-key link 200 before, 
 | README: architecture (Mermaid), setup, tests, runners, demo, settings table generated from `.env.example` with a staleness test | `packages/config/test/envdoc.test.ts` |
 | Bugs found and fixed by the above | music could not be rendered on longer videos (ffmpeg expression nesting; `musicexpr.test.ts`); answer now says when a speed change overlaps an earlier one; **a fresh clone could not run because `.gitignore` `media/` hid `packages/media/src/voiced.ts` since M4** (`m5_ci_simulation_run1_failed.txt`) |
 
-M5 NOT done or not verified: see REVIEW_M5.md section 7. The live demo still runs the M6a image (no OTIO route, no swap flags, no music fix): `docker compose up -d --build` deploys M5.
+M5 NOT done or not verified: see REVIEW_M5.md section 7. **Live demo redeployed with M5 on 2026-10-22** (docs/DEPLOY.md, last section); tests now run on their own stack and no longer touch the live services (REVIEW_M5 section 8).
 
 ## Not verified (not built or not run)
 M3 leftovers: see REVIEW_M3.md section 9. The M2 list below is partly outdated: render, batch runner and the worker are built now.

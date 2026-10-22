@@ -1,0 +1,21 @@
+# 2026-10-22T16:17:24Z from this VM against the public URL
+GET /health: {"status":"ok","service":"api"}
+HEAD /health: HTTP/2 200 
+GET /ready: {"status":"ready","service":"api"}
+HEAD /ready: HTTP/2 200 
+
+[m5b_smoke_redeploy] video vid_865bbd85dab34c779c5f, job job_4b064d3198cd4c57808d
+[m5b_smoke_redeploy] step 1: applied ok
+[m5b_smoke_redeploy] step 2: applied ok
+[m5b_smoke_redeploy] step 3: render ok 
+PASS m5b_smoke_redeploy  -> /home/g23m143/incubrix-ps2/docs/raw/m5b_smoke_out
+--- OTIO export from outside
+HTTP/2 200 
+content-disposition: attachment; filename="ses_bd80b98fe8fc477985db.otio"
+content-type: application/json; charset=utf-8
+x-incubrix-export-provider: opentimelineio
+x-incubrix-timeline-hash: bf4af062fe910b526564622b0fe4a5214c54a963e38315a708f06f6152c8db9e
+link host: 34.93.140.79.sslip.io
+S3 link (public door) serves the same bytes
+tracks: ['Video', 'Audio'] clips: 2 markers: ['Hello and welcome to this M5', 'Re -deploy smoke test', 'The tool'] timeline hash matches: True
+clip frames 363.0 timeline 363.0

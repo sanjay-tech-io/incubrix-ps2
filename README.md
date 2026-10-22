@@ -76,7 +76,7 @@ Every POST accepts `Idempotency-Key` (same key and body returns the same result 
 ## Tests
 
 ```
-docker compose run --rm tests              # EVERYTHING, no keys, no network: unit + integration + the 48 scenarios (needs the compose stack's database and storage; compose starts them)
+docker compose run --rm tests              # EVERYTHING, no keys, no network: unit + integration + the 48 scenarios. Runs on its OWN throwaway Postgres, S3 and OTIO service (the *-test services, own network): it never touches a running stack. `scripts/test.sh` = the same command, then removes those test containers.
 npm test -w @incubrix/engine               # engine only, no Docker (any workspace: -w @incubrix/<name>)
 npm run typecheck
 npm run mutation-check                     # breaks the engine in 40 ways, one at a time; the suite must fail each time
