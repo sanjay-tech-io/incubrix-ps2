@@ -255,6 +255,21 @@ describe("warnings about effects and uncertain words", () => {
     expect(t.answer.summary).toContain('caption "Welcome!" moved from 0:42.000 to 0:12.000');
   });
 
+  it("warns when a speed change overlaps an earlier one: the later replaces the earlier rate on the overlap (rates never multiply)", () => {
+    const first = submitOperations(ctx, newSession(), "2x", [speedOp(ctx, 90_000_000, 108_000_000, 2)]);
+    expect(first.answer.warnings).toEqual([]);
+    const second = submitOperations(ctx, first.state, "4x", [speedOp(ctx, 100_000_000, 120_000_000, 4)]);
+    const text = second.answer.warnings.join(" ");
+    expect(text).toMatch(/overlaps an earlier speed change \(2x at original 1:30\.000-1:48\.000\)/);
+    expect(text).toMatch(/on the overlap the new rate replaces the earlier one/);
+    expect(text).toMatch(/never multiply/);
+    // same rate on top of the same rate: nothing to warn about; no overlap: nothing to warn about
+    expect(submitOperations(ctx, first.state, "2x again", [speedOp(ctx, 95_000_000, 100_000_000, 2)]).answer.warnings.join(" ")).not.toMatch(/overlaps an earlier/);
+    expect(submitOperations(ctx, first.state, "elsewhere", [speedOp(ctx, 10_000_000, 20_000_000, 3)]).answer.warnings).toEqual([]);
+    // 1x over part of an earlier change is a "back to normal" and says so
+    expect(submitOperations(ctx, first.state, "normal", [speedOp(ctx, 95_000_000, 100_000_000, 1)]).answer.warnings.join(" ")).toMatch(/back to normal speed/);
+  });
+
   it("warns when a speed-up shortens a caption below 0.7 s and extends it", () => {
     const t = submitOperations(ctx, withCaption().state, "speed", [speedOp(ctx, 41_000_000, 45_000_000, 4)]);
     expect(t.answer.warnings.join(" ")).toMatch(/caption "Welcome!".*0\.7 s/);

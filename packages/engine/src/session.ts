@@ -4,7 +4,7 @@ import { EngineError } from "./errors";
 import { timelineHash } from "./hash";
 import { analyzeLog, appendEdit, appendRedo, appendUndo, type Log } from "./log";
 import { formatTime } from "./resolve";
-import { applyOp, materialize, primeRaw, rawFromLog, type Raw } from "./replay";
+import { applyOp, formatRate, materialize, primeRaw, rawFromLog, type Raw } from "./replay";
 import { atomsOverlapping, rangeAtoms } from "./search";
 import { atomOutSpan, effectDisplay, MIN_CAPTION_VISIBLE_US, timelinePieces } from "./timemap";
 import type { Answer, ConversationEntry, Effect, Operation, PendingQuestion, Timeline } from "./types";
@@ -149,6 +149,22 @@ function describeChange(ctx: EngineContext, before: Timeline, after: Timeline, o
     if (dAfter?.extended && !dBefore?.extended) {
       warnings.push(`${label} would be on screen for under ${MIN_CAPTION_VISIBLE_US / 1_000_000} s after the speed change, so it is shown for 0.7 s instead.`);
     }
+  }
+  // Documented rule for overlapping speed changes (DESIGN.md): the later change replaces the earlier rate on the overlap. Say so.
+  for (const op of ops) {
+    if (op.type !== "set_speed") continue;
+    const iv = spanToInterval(ctx.index, op.span, ctx.fps);
+    const earlier = before.speedRegions.filter((r) => {
+      const ri = spanToInterval(ctx.index, r.span, ctx.fps);
+      return ri.s < iv.e && iv.s < ri.e && (r.rate.num !== op.rate.num || r.rate.den !== op.rate.den);
+    });
+    if (earlier.length === 0) continue;
+    const where = earlier.map((r) => {
+      const ri = spanToInterval(ctx.index, r.span, ctx.fps);
+      return `${formatRate(r.rate)} at original ${formatTime(ri.s)}-${formatTime(ri.e)}`;
+    });
+    const back = op.rate.num === op.rate.den ? " (back to normal speed)" : "";
+    warnings.push(`This speed change${back} overlaps an earlier speed change (${where.join("; ")}): on the overlap the new rate replaces the earlier one; rates never multiply. The rest of the earlier change stays.`);
   }
   for (const op of ops) {
     if (op.type !== "move") continue;
