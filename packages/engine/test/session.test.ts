@@ -260,6 +260,15 @@ describe("warnings about effects and uncertain words", () => {
     expect(t.answer.warnings.join(" ")).toMatch(/caption "Welcome!".*0\.7 s/);
   });
 
+  it("warns when an edit touches words whose speaker label may be swapped, and says what that means", () => {
+    const swapped = makeFixture((words) => words.map((w) => (w.text === "Honestly" || w.text === "great." ? { ...w, possibleLabelSwap: true } : w)));
+    const t = submitOperations(swapped.ctx, newSession(), "cut", [cutOp(swapped.ctx, FACTS.honestly.startUs, FACTS.honestly.endUs)]);
+    expect(t.answer.warnings.join(" ")).toMatch(/"Honestly" \(possible speaker-label swap\)/);
+    expect(t.answer.warnings.join(" ")).toMatch(/Check the result/);
+    expect(swapped.atoms.find((a) => a.text === "Honestly")!.possibleLabelSwap).toBe(true);
+    expect(ctx.index.atoms.find((a) => a.text === "Honestly")!.possibleLabelSwap).toBe(false); // plain words: explicit false
+  });
+
   it("warns when an edit touches low-confidence, overlapping or speaker-uncertain words", () => {
     const flagged = makeFixture((words) =>
       words.map((w) => {

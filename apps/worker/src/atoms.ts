@@ -47,6 +47,7 @@ export function atomsFromAsr(sha256: string, durationUs: number, asrWords: reado
     confidencePermille: w.confidence_permille,
     ...(w.overlaps_speech != null ? { overlapsSpeech: w.overlaps_speech } : {}),
     ...(w.speaker_uncertain != null ? { speakerUncertain: w.speaker_uncertain } : {}),
+    ...(w.possible_label_swap != null ? { possibleLabelSwap: w.possible_label_swap } : {}),
   }));
   const atoms = buildAtoms(sha256, durationUs, inputs, { lowConfidencePermille: o.lowConfidencePermille });
   if (droppedAfterEnd > 0) warnings.push(`${droppedAfterEnd} word(s) from the speech-to-text started after the end of the video and were dropped.`);

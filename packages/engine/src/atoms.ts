@@ -16,6 +16,7 @@ export interface WordInput {
   filler?: boolean;
   overlapsSpeech?: boolean;
   speakerUncertain?: boolean;
+  possibleLabelSwap?: boolean;
 }
 
 export interface BuildAtomsOptions {
@@ -81,7 +82,7 @@ export function buildAtoms(sourceSha256: string, durationUs: Micros, words: read
   };
   const pushSilence = (startUs: number, endUs: number): void => {
     if (endUs > startUs) {
-      push({ kind: "silence", startUs, endUs, text: "", speaker: null, confidencePermille: 1000, lowConfidence: false, filler: false, overlapsSpeech: false, speakerUncertain: false });
+      push({ kind: "silence", startUs, endUs, text: "", speaker: null, confidencePermille: 1000, lowConfidence: false, filler: false, overlapsSpeech: false, speakerUncertain: false, possibleLabelSwap: false });
     }
   };
 
@@ -103,6 +104,7 @@ export function buildAtoms(sourceSha256: string, durationUs: Micros, words: read
       filler: w.filler ?? FILLER_TEXT.test(normalizeWord(w.text)),
       overlapsSpeech: w.overlapsSpeech ?? false,
       speakerUncertain: w.speakerUncertain ?? false,
+      possibleLabelSwap: w.possibleLabelSwap ?? false,
     });
     if (w.filler === undefined && normalizeWord(w.text) === "like") likeCandidates.push(atoms.length - 1);
     cursor = w.endUs;

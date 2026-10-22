@@ -135,6 +135,22 @@ describe("'remove everything the guest says about <topic>'", () => {
     expect(q.answer.question).not.toMatch(/assum/i);
   });
 
+  it("warns about a POSSIBLE LABEL SWAP when the guest lines it cuts were flagged by the swap detector", () => {
+    const lines: [number, string, string][] = [[1, "So tell me about your old job.", "SPEAKER_00"], [5, "My old job was in a factory.", "SPEAKER_01"], [10, "And now I build software.", "SPEAKER_00"]];
+    const words = lines.flatMap(([start, text, speaker]) => text.split(" ").map((w, i) => ({ text: w, startUs: Math.round((start + i * 0.4) * U), endUs: Math.round((start + i * 0.4 + 0.35) * U), speaker, possibleLabelSwap: speaker === "SPEAKER_01" })));
+    const atoms = buildAtoms(sha256Hex("sw2"), 20 * U, words);
+    const ctx = createContext({ sha256: sha256Hex("sw2"), durationUs: 20 * U, fps: { num: 25, den: 1 }, hasAudio: true, hasVideo: true, variableFrameRate: false }, atoms);
+    const d = driver(ctx, { semantic: { topic: "old job", hits: [hit(5, 7.4, "My old job was in a factory.", "SPEAKER_01")] } });
+    const q = d.say("remove everything the guest says about the old job");
+    expect(q.answer.warnings.join(" ")).toMatch(/possible speaker-label swap/i);
+    expect(q.answer.warnings.join(" ")).toMatch(/7 word\(s\)/);
+    // no flags -> no such warning
+    const plain = buildAtoms(sha256Hex("sw3"), 20 * U, words.map((w) => ({ ...w, possibleLabelSwap: false })));
+    const ctx2 = createContext({ sha256: sha256Hex("sw3"), durationUs: 20 * U, fps: { num: 25, den: 1 }, hasAudio: true, hasVideo: true, variableFrameRate: false }, plain);
+    const q2 = driver(ctx2, { semantic: { topic: "old job", hits: [hit(5, 7.4, "My old job was in a factory.", "SPEAKER_01")] } }).say("remove everything the guest says about the old job");
+    expect(q2.answer.warnings.join(" ")).not.toMatch(/swap/i);
+  });
+
   it("warns when the words it cuts have an uncertain speaker label (possible label swap) or overlap another speaker", () => {
     const lines: [number, string, string][] = [[1, "So tell me about your old job.", "SPEAKER_00"], [5, "My old job was in a factory.", "SPEAKER_01"], [10, "And now I build software.", "SPEAKER_00"]];
     const words = lines.flatMap(([start, text, speaker]) => text.split(" ").map((w, i) => ({ text: w, startUs: Math.round((start + i * 0.4) * U), endUs: Math.round((start + i * 0.4 + 0.35) * U), speaker, speakerUncertain: speaker === "SPEAKER_01" && i < 2, overlapsSpeech: speaker === "SPEAKER_01" && i === 2 })));

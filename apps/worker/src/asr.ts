@@ -9,6 +9,7 @@ export interface AsrWord {
   speaker?: string | null;
   speaker_uncertain?: boolean | null;
   overlaps_speech?: boolean | null;
+  possible_label_swap?: boolean | null;
 }
 
 export interface AsrResult {

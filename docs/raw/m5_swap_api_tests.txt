@@ -1,0 +1,435 @@
+ Image incubrix-ps2-asr-tests Building 
+ Image incubrix-ps2-otio-tests Building 
+ Image incubrix-ps2-otio Building 
+ Image incubrix-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.96kB done
+#1 DONE 0.0s
+
+#2 [init internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.21kB done
+#2 DONE 0.0s
+
+#3 [asr-tests internal] load build definition from Dockerfile
+#3 transferring dockerfile: 1.13kB done
+#3 DONE 0.0s
+
+#4 [otio internal] load build definition from Dockerfile
+#4 transferring dockerfile: 589B done
+#4 DONE 0.0s
+
+#5 [otio internal] load metadata for docker.io/library/python:3.12-slim
+#5 DONE 0.9s
+
+#6 [asr-tests internal] load .dockerignore
+#6 transferring context: 78B done
+#6 DONE 0.0s
+
+#7 [otio-tests internal] load .dockerignore
+#7 transferring context: 2B done
+#7 DONE 0.0s
+
+#8 [asr-tests internal] load build context
+#8 transferring context: 136.56kB 0.0s done
+#8 DONE 0.0s
+
+#9 [otio base 1/7] FROM docker.io/library/python:3.12-slim@sha256:cb33f7f771ecec2ef1225cf39b159591a040391bd73e4c01f00fdfc4c47611d2
+#9 resolve docker.io/library/python:3.12-slim@sha256:cb33f7f771ecec2ef1225cf39b159591a040391bd73e4c01f00fdfc4c47611d2 0.0s done
+#9 DONE 0.1s
+
+#10 [asr-tests base 2/7] WORKDIR /app
+#10 CACHED
+
+#11 [asr-tests base 5/7] COPY fetch_models.py .
+#11 CACHED
+
+#12 [asr-tests test 1/3] COPY requirements-dev.txt pytest.ini ./
+#12 CACHED
+
+#13 [asr-tests base 7/7] COPY asr ./asr
+#13 CACHED
+
+#14 [asr-tests base 4/7] RUN pip install --no-cache-dir -r requirements.txt
+#14 CACHED
+
+#15 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#15 CACHED
+
+#16 [asr-tests base 3/7] COPY requirements.txt .
+#16 CACHED
+
+#17 [asr-tests base 6/7] RUN ASR_MODEL=base.en python fetch_models.py
+#17 CACHED
+
+#18 [otio internal] load build context
+#18 transferring context: 26.78kB done
+#18 DONE 0.0s
+
+#19 [otio-tests internal] load build context
+#19 transferring context: 77.82kB done
+#19 DONE 0.1s
+
+#20 [asr-tests test 3/3] COPY tests ./tests
+#20 CACHED
+
+#21 [otio base 3/5] COPY requirements.txt .
+#21 CACHED
+
+#22 [otio base 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#22 CACHED
+
+#23 [otio-tests base 5/5] COPY otio_service ./otio_service
+#23 CACHED
+
+#24 [otio-tests base 3/5] COPY requirements.txt .
+#24 CACHED
+
+#25 [otio-tests base 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#25 CACHED
+
+#26 [otio-tests test 1/3] COPY requirements-dev.txt pytest.ini ./
+#26 CACHED
+
+#10 [otio-tests base 2/7] WORKDIR /app
+#10 CACHED
+
+#27 [otio-tests base 5/5] COPY otio_service ./otio_service
+#27 CACHED
+
+#28 [otio-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#28 CACHED
+
+#29 [otio] exporting to image
+#29 exporting layers done
+#29 exporting manifest sha256:f1c50bbba9d0d840579667bf59db871b25b9774fdfde881eec0ac04730be3dbf done
+#29 exporting config sha256:ba845630467ac8afa20ded737481adfde139004945a1fddefd0ff574662dba4f done
+#29 exporting attestation manifest sha256:bb8cb667d7d5a3aa924c3a62bfe3495c6d0eef978e0fca7ad8f5d26442d8f3a2
+#29 ...
+
+#30 [otio-tests test 3/3] COPY tests ./tests
+#30 DONE 0.1s
+
+#31 [init internal] load metadata for docker.io/library/node:22-bookworm-slim
+#31 DONE 1.2s
+
+#32 [init internal] load .dockerignore
+#32 transferring context: 98B done
+#32 DONE 0.0s
+
+#29 [otio] exporting to image
+#29 exporting attestation manifest sha256:bb8cb667d7d5a3aa924c3a62bfe3495c6d0eef978e0fca7ad8f5d26442d8f3a2 0.0s done
+#29 exporting manifest list sha256:2f7c5a4a4ce9be73a5fd2344df8cb0e319fda8191da04b357fdcf191db33f38e 0.0s done
+#29 naming to docker.io/library/incubrix-ps2-otio:latest done
+#29 unpacking to docker.io/library/incubrix-ps2-otio:latest 0.0s done
+#29 DONE 0.3s
+
+#33 [asr-tests] exporting to image
+#33 exporting layers done
+#33 exporting manifest sha256:fce26a0d6f66c92127bb03da098de78b72638704bb91ee09c2a75d1165e8169a done
+#33 exporting config sha256:9e1b4d6c686b5ab3d055c6b5701f691af7c4bcf80bb5ac8ccf76b2f7c63f66f7 done
+#33 exporting attestation manifest sha256:b72020e3e3842f074c62a1d8a660502cdc13d36fe98e2534587da6f3c8ab2f75 0.1s done
+#33 exporting manifest list sha256:8ea7963659112e2272fc9848a1274dd7075dafd3b26835e710707468e354958f 0.0s done
+#33 naming to docker.io/library/incubrix-ps2-asr-tests:latest done
+#33 unpacking to docker.io/library/incubrix-ps2-asr-tests:latest 0.0s done
+#33 DONE 0.3s
+
+#34 [init internal] load build context
+#34 ...
+
+#35 [init  1/22] FROM docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d
+#35 resolve docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d 0.1s done
+#35 DONE 0.1s
+
+#34 [init internal] load build context
+#34 ...
+
+#36 [otio-tests] exporting to image
+#36 exporting layers 0.2s done
+#36 exporting manifest sha256:f448fcec8f947a21c055ca02378745b8e558b8b625440be73b7a682580cf8258 0.0s done
+#36 exporting config sha256:b6f21a3912bb2c9dd9afeaa8b68e09bc445cf1910664da0c73ea669918afe413 0.0s done
+#36 exporting attestation manifest sha256:7e3f00b333b13dbf942799bcd9e4753a70e6bf81779d828d1edc3be4d9868d2a 0.0s done
+#36 exporting manifest list sha256:cee50d4d4440970f415e42e0a0af2def03b771e178c91f9014b640d4af743f17 0.0s done
+#36 naming to docker.io/library/incubrix-ps2-otio-tests:latest done
+#36 unpacking to docker.io/library/incubrix-ps2-otio-tests:latest 0.0s done
+#36 DONE 0.5s
+
+#37 [otio] resolving provenance for metadata file
+#37 DONE 0.0s
+
+#34 [init internal] load build context
+#34 transferring context: 1.21MB 0.5s done
+#34 DONE 0.5s
+
+#38 [asr-tests] resolving provenance for metadata file
+#38 DONE 0.0s
+
+#39 [init 20/22] COPY apps/cli/package.json apps/cli/
+#39 CACHED
+
+#40 [init  7/22] COPY packages/config/package.json packages/config/
+#40 CACHED
+
+#41 [init 16/22] COPY packages/llm/package.json packages/llm/
+#41 CACHED
+
+#42 [init 19/22] COPY apps/worker/package.json apps/worker/
+#42 CACHED
+
+#43 [init  5/22] COPY packages/contracts/package.json packages/contracts/
+#43 CACHED
+
+#44 [init  8/22] COPY packages/db/package.json packages/db/
+#44 CACHED
+
+#45 [init 12/22] COPY packages/nlu/package.json packages/nlu/
+#45 CACHED
+
+#46 [init  4/22] COPY package.json package-lock.json .npmrc ./
+#46 CACHED
+
+#47 [init  6/22] COPY packages/engine/package.json packages/engine/
+#47 CACHED
+
+#48 [init 15/22] COPY packages/semantic/package.json packages/semantic/
+#48 CACHED
+
+#49 [init 13/22] COPY packages/store/package.json packages/store/
+#49 CACHED
+
+#50 [init  2/22] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core ca-certificates && rm -rf /var/lib/apt/lists/*
+#50 CACHED
+
+#51 [init 10/22] COPY packages/media/package.json packages/media/
+#51 CACHED
+
+#52 [init 14/22] COPY packages/render/package.json packages/render/
+#52 CACHED
+
+#53 [init 11/22] COPY packages/errors/package.json packages/errors/
+#53 CACHED
+
+#54 [init 18/22] COPY apps/api/package.json apps/api/
+#54 CACHED
+
+#55 [init 17/22] COPY packages/otio/package.json packages/otio/
+#55 CACHED
+
+#56 [init  3/22] WORKDIR /app
+#56 CACHED
+
+#57 [init  9/22] COPY packages/storage/package.json packages/storage/
+#57 CACHED
+
+#58 [init 21/22] RUN npm ci
+#58 CACHED
+
+#59 [otio-tests] resolving provenance for metadata file
+#59 DONE 0.0s
+
+#60 [init 22/22] COPY . .
+#60 DONE 15.3s
+
+#61 [init] exporting to image
+#61 exporting layers
+#61 exporting layers 83.9s done
+#61 exporting manifest sha256:4220d30b7d3ae0084abe1e86ed6f33af23f83ec1094eea449afdaa6f06a9f2ea
+#61 exporting manifest sha256:4220d30b7d3ae0084abe1e86ed6f33af23f83ec1094eea449afdaa6f06a9f2ea 0.0s done
+#61 exporting config sha256:8471223d9d76d333fc052f30fd99d5181dee13d566651b6906333c4b8598d03e 0.0s done
+#61 exporting attestation manifest sha256:a97bc62905f8ef17f97dcdbcbdea5a5f91c001b646b19b31b559926a56e8e2f9 0.0s done
+#61 exporting manifest list sha256:44f4d0e55b6ce05c37f70c7056da02f7538135a11a1b5dd100134d71d3a92647 0.0s done
+#61 naming to docker.io/library/incubrix-app:latest done
+#61 unpacking to docker.io/library/incubrix-app:latest
+#61 unpacking to docker.io/library/incubrix-app:latest 16.5s done
+#61 DONE 100.6s
+
+#62 [init] resolving provenance for metadata file
+#62 DONE 0.0s
+ Image incubrix-app Built 
+ Image incubrix-ps2-otio Built 
+ Image incubrix-ps2-otio-tests Built 
+ Image incubrix-ps2-asr-tests Built 
+ Container incubrix-ps2-asr-tests-1 Recreate 
+ Container incubrix-ps2-postgres-1 Recreate 
+ Container incubrix-ps2-s3-1 Recreate 
+ Container incubrix-ps2-otio-1 Recreate 
+ Container incubrix-ps2-otio-tests-1 Recreate 
+ Container incubrix-ps2-asr-tests-1 Recreated 
+ Container incubrix-ps2-otio-tests-1 Recreated 
+ Container incubrix-ps2-postgres-1 Recreated 
+ Container incubrix-ps2-otio-1 Recreated 
+ Container incubrix-ps2-s3-1 Recreated 
+ Container incubrix-ps2-init-1 Recreate 
+ Container incubrix-ps2-init-1 Recreated 
+ Container incubrix-ps2-s3-1 Starting 
+ Container incubrix-ps2-otio-1 Starting 
+ Container incubrix-ps2-asr-tests-1 Starting 
+ Container incubrix-ps2-postgres-1 Starting 
+ Container incubrix-ps2-otio-tests-1 Starting 
+ Container incubrix-ps2-s3-1 Started 
+ Container incubrix-ps2-otio-1 Started 
+ Container incubrix-ps2-asr-tests-1 Started 
+ Container incubrix-ps2-postgres-1 Started 
+ Container incubrix-ps2-postgres-1 Waiting 
+ Container incubrix-ps2-s3-1 Waiting 
+ Container incubrix-ps2-otio-tests-1 Started 
+ Container incubrix-ps2-postgres-1 Healthy 
+ Container incubrix-ps2-s3-1 Healthy 
+ Container incubrix-ps2-init-1 Starting 
+ Container incubrix-ps2-init-1 Started 
+ Image incubrix-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.30kB done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.21kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:22-bookworm-slim
+#3 DONE 0.9s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 98B done
+#4 DONE 0.0s
+
+#5 [ 1/22] FROM docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d
+#5 resolve docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d 0.0s done
+#5 DONE 0.1s
+
+#6 [internal] load build context
+#6 transferring context: 810.98kB 0.4s done
+#6 DONE 0.4s
+
+#7 [19/22] COPY apps/worker/package.json apps/worker/
+#7 CACHED
+
+#8 [11/22] COPY packages/errors/package.json packages/errors/
+#8 CACHED
+
+#9 [12/22] COPY packages/nlu/package.json packages/nlu/
+#9 CACHED
+
+#10 [ 5/22] COPY packages/contracts/package.json packages/contracts/
+#10 CACHED
+
+#11 [15/22] COPY packages/semantic/package.json packages/semantic/
+#11 CACHED
+
+#12 [13/22] COPY packages/store/package.json packages/store/
+#12 CACHED
+
+#13 [14/22] COPY packages/render/package.json packages/render/
+#13 CACHED
+
+#14 [17/22] COPY packages/otio/package.json packages/otio/
+#14 CACHED
+
+#15 [ 8/22] COPY packages/db/package.json packages/db/
+#15 CACHED
+
+#16 [ 4/22] COPY package.json package-lock.json .npmrc ./
+#16 CACHED
+
+#17 [ 3/22] WORKDIR /app
+#17 CACHED
+
+#18 [ 2/22] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core ca-certificates && rm -rf /var/lib/apt/lists/*
+#18 CACHED
+
+#19 [10/22] COPY packages/media/package.json packages/media/
+#19 CACHED
+
+#20 [16/22] COPY packages/llm/package.json packages/llm/
+#20 CACHED
+
+#21 [20/22] COPY apps/cli/package.json apps/cli/
+#21 CACHED
+
+#22 [18/22] COPY apps/api/package.json apps/api/
+#22 CACHED
+
+#23 [ 9/22] COPY packages/storage/package.json packages/storage/
+#23 CACHED
+
+#24 [ 6/22] COPY packages/engine/package.json packages/engine/
+#24 CACHED
+
+#25 [ 7/22] COPY packages/config/package.json packages/config/
+#25 CACHED
+
+#26 [21/22] RUN npm ci
+#26 CACHED
+
+#27 [22/22] COPY . .
+#27 DONE 12.0s
+
+#28 exporting to image
+#28 exporting layers
+#28 exporting layers 93.9s done
+#28 exporting manifest sha256:eaf7d7da9e5e1d7f1eba58106e1a8f8f7fab617d2f8d36521a7e85bb442041c7
+#28 exporting manifest sha256:eaf7d7da9e5e1d7f1eba58106e1a8f8f7fab617d2f8d36521a7e85bb442041c7 0.0s done
+#28 exporting config sha256:0489e9a0a2ac895f3f1da42633655a9d3534cf0f1f225c95121c2f3e8643dd44 0.0s done
+#28 exporting attestation manifest sha256:96a33df9e391c405b9cd2921dbaf9ea160043aeff66a401d81d658d660310a19 0.0s done
+#28 exporting manifest list sha256:a0aeeae29ffd42447d8c9021c96bc7a9f4d21e59f5f4568330662e679d351641 0.0s done
+#28 naming to docker.io/library/incubrix-app:latest done
+#28 unpacking to docker.io/library/incubrix-app:latest
+#28 unpacking to docker.io/library/incubrix-app:latest 17.4s done
+#28 DONE 111.5s
+
+#29 resolving provenance for metadata file
+#29 DONE 0.0s
+ Image incubrix-app Built 
+ Container incubrix-ps2-otio-tests-1 Waiting 
+ Container incubrix-ps2-otio-1 Waiting 
+ Container incubrix-ps2-init-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Exited 
+ Container incubrix-ps2-otio-1 Healthy 
+ Container incubrix-ps2-otio-tests-1 Exited 
+ Container incubrix-ps2-init-1 Exited 
+ Container incubrix-ps2-tests-run-3f9597c3bb2b Creating 
+ Container incubrix-ps2-tests-run-3f9597c3bb2b Created 
+
+> @incubrix/api@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/api
+
+ ✓ test/api.test.ts (35 tests) 33845ms
+   ✓ API behaviour > openapi.yaml matches the running service > real responses validate against their schemas 3396ms
+   ✓ API behaviour > possible fillers reach the parser > markers stored in the transcript manifest turn 'remove the ums' into a question; nothing is cut before the answer 340ms
+   ✓ API behaviour > errors > a video without audio fails its job with NO_AUDIO_TRACK and cannot start a session 466ms
+   ✓ API behaviour > errors > a private URL is refused when private addresses are not allowed (the SSRF guard) 335ms
+   ✓ API behaviour > idempotency (every POST) > the same bytes uploaded twice (different keys) are stored ONCE: both videos point at the same object 613ms
+   ✓ API behaviour > idempotency (every POST) > videos: same key + same file -> same ids, one video, one job, one stored object 791ms
+   ✓ API behaviour > idempotency (every POST) > sessions: same key + same body -> same session; different body -> 409 319ms
+   ✓ API behaviour > idempotency (every POST) > instructions: a repeated key replays the answer and does NOT apply the edit twice 345ms
+   ✓ API behaviour > jobs, cache, hints, warnings > the same file again is a transcript cache HIT (ASR not called); a different ASR model is a MISS 2831ms
+   ✓ API behaviour > jobs, cache, hints, warnings > num_speakers reaches the ASR/diarization call and changes the cache key 2167ms
+   ✓ API behaviour > jobs, cache, hints, warnings > variable frame rate is accepted with a warning in the job manifest and on the video 1174ms
+   ✓ auth, rate limit, correlation id > rate limit: the N+1th request in a minute is 429 RATE_LIMITED with Retry-After 312ms
+   ✓ retention (real storage) > an expired render is deleted with its manifest, the job says expired and has no links, the original stays 2819ms
+   ✓ meaning search through the API (mock embeddings) > a meaning match is listed with its time before anything is cut; a repeated query uses the cached vector 1831ms
+   ✓ language-model fallback through the API (mock model) > is used only for text the rules cannot read; the engine applies the result; the manifest has tokens and cost; a repeat is a cache hit with no model call 2159ms
+   ✓ language-model fallback through the API (mock model) > a model reply that is not valid commands is a rejection and the timeline does not change 1162ms
+   ✓ language-model fallback through the API (mock model) > LLM_PROVIDER=gemini with an empty key: the fallback is off and the answer says so 1177ms
+   ✓ public deployment guards (M6a) > a video longer than MAX_VIDEO_DURATION_S fails its job with VIDEO_TOO_LONG before ASR runs 1717ms
+   ✓ OpenTimelineIO export > OTIO_PROVIDER=mock: returns the .otio file and an S3 link; the file has the clips in output order, speed, the caption marker, and the timeline length (±1 frame) 3737ms
+   ✓ OpenTimelineIO export > OTIO_PROVIDER=http: returns the .otio file and an S3 link; the file has the clips in output order, speed, the caption marker, and the timeline length (±1 frame) 1571ms
+   ✓ possible speaker-label swap through the API (mock ASR flags a turn on purpose) > the flag reaches the atoms, the intake warns, and an edit touching the flagged words warns 1565ms
+ ✓ test/e2e.test.ts (5 tests) 5786ms
+   ✓ worked example over HTTP (mock ASR) > uploads the clip, the job runs with progress and succeeds, the original is stored untouched 1373ms
+   ✓ worked example over HTTP (mock ASR) > step 8: render is a background job; the file matches the timeline length; the original is untouched (sha256 before and after) 3717ms
+ ✓ test/runner.test.ts (5 tests) 15303ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > determinism: the same session run 3 times through the runner gives the same timeline_hash at every step 13054ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a step that does not match its expectation fails the session, and the failure is kept in results.json 413ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a video without audio stops at intake with NO_AUDIO_TRACK and the session says so 577ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > batch: runs every file in a folder, one result folder each, summary.json lists pass and fail 823ms
+ ✓ test/ratelimit.test.ts (5 tests) 6ms
+
+ Test Files  4 passed (4)
+      Tests  50 passed (50)
+   Start at  14:54:45
+   Duration  60.36s (transform 1.16s, setup 0ms, collect 4.07s, tests 54.94s, environment 1ms, prepare 482ms)
+

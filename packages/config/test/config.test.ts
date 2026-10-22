@@ -93,7 +93,7 @@ describe(".env.example", () => {
     const text = readFileSync(new URL("../../../.env.example", import.meta.url), "utf8");
     const listed = [...text.matchAll(/^#?\s*([A-Z][A-Z0-9_]+)=/gm)].map((m) => m[1]!);
     // Compose-only variables (not read by the Node config loader) are allowed extras.
-    const extra = new Set(["POSTGRES_USER", "POSTGRES_PASSWORD", "POSTGRES_DB", "WHISPER_COMPUTE_TYPE", "WHISPER_INITIAL_PROMPT", "DIARIZATION_MODEL_DIR", "DIARIZATION_NUM_SPEAKERS", "DIARIZATION_CLUSTER_THRESHOLD", "DIARIZATION_UNCERTAIN_BELOW", "DIARIZATION_OVERLAP_MIN_FRACTION", "PUBLIC_HOST", "PUBLIC_HOST_ALT"]);
+    const extra = new Set(["POSTGRES_USER", "POSTGRES_PASSWORD", "POSTGRES_DB", "WHISPER_COMPUTE_TYPE", "WHISPER_INITIAL_PROMPT", "DIARIZATION_MODEL_DIR", "DIARIZATION_NUM_SPEAKERS", "DIARIZATION_CLUSTER_THRESHOLD", "DIARIZATION_UNCERTAIN_BELOW", "DIARIZATION_OVERLAP_MIN_FRACTION", "DIARIZATION_SWAP_DETECTION", "DIARIZATION_SWAP_MARGIN", "DIARIZATION_SWAP_MIN_TURN_S", "PUBLIC_HOST", "PUBLIC_HOST_ALT"]);
     expect(CONFIG_KEYS.filter((k) => !listed.includes(k))).toEqual([]);
     expect(listed.filter((k) => !CONFIG_KEYS.includes(k) && !extra.has(k))).toEqual([]);
   });

@@ -202,6 +202,8 @@ export async function runIntake(d: WorkerDeps, job: JobRow): Promise<void> {
     const speakersFound = new Set(atoms.map((a) => a.speaker).filter((s) => s !== null)).size;
     if (speakersFound > 1 && video.num_speakers_hint === null) warnings.push(`${speakersFound} speakers were detected; if that is wrong, upload again with the num_speakers hint.`);
     if (atoms.some((a) => a.overlapsSpeech)) warnings.push("Some words overlap another speaker; edits touching them will warn.");
+    const swapWords = atoms.filter((a) => a.possibleLabelSwap).length;
+    if (swapWords > 0) warnings.push(`${swapWords} word(s) may have the wrong speaker label (their voice is closer to another speaker); edits touching them will warn. Labels are never changed automatically.`);
 
     const nPossible = ((voiced as { markers?: unknown[] } | null)?.markers ?? []).length;
     if (nPossible > 0) warnings.push(`${nPossible} untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them.`);

@@ -635,3 +635,28 @@ describe.skipIf(!integration)("OpenTimelineIO export", () => {
     }
   });
 });
+
+describe.skipIf(!integration)("possible speaker-label swap through the API (mock ASR flags a turn on purpose)", () => {
+  it("the flag reaches the atoms, the intake warns, and an edit touching the flagged words warns", async () => {
+    const words = makeFixture().atoms.filter((a) => a.kind === "word").map((a) => ({
+      text: a.text, start_us: a.startUs, end_us: a.endUs, confidence_permille: 950, speaker: a.startUs >= 90_000_000 && a.endUs <= 92_000_000 ? "SPEAKER_01" : "SPEAKER_00",
+      // the words of "Honestly the speed is great." carry the label of the other speaker on purpose
+      possible_label_swap: a.startUs >= 90_000_000 && a.endUs <= 92_000_000,
+    }));
+    const s = await startStack({ words });
+    try {
+      const { videoId, job } = await ingest(s, makeClip({ seconds: 200 }));
+      expect(job.status).toBe("succeeded");
+      const v = (await s.call("GET", `/api/v1/videos/${videoId}`)).body;
+      expect(v.warnings.join(" ")).toMatch(/5 word\(s\) may have the wrong speaker label/);
+      const ses = await s.call("POST", "/api/v1/sessions", { video_id: videoId });
+      const touching = await s.call("POST", `/api/v1/sessions/${ses.body.session_id}/instructions`, { say: "cut 1:30-1:32" });
+      expect(touching.body.status).toBe("applied");
+      expect(touching.body.warnings.join(" ")).toMatch(/possible speaker-label swap/);
+      const away = await s.call("POST", `/api/v1/sessions/${ses.body.session_id}/instructions`, { say: "cut 0:10-0:12" });
+      expect(away.body.warnings.join(" ")).not.toMatch(/swap/);
+    } finally {
+      await s.stop();
+    }
+  }, 240_000);
+});

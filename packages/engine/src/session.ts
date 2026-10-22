@@ -108,7 +108,7 @@ function flaggedWarning(ctx: EngineContext, ops: readonly Operation[]): string[]
   for (const i of [...touched].sort((a, b) => a - b)) {
     const a = ctx.index.atoms[i]!;
     if (a.kind !== "word") continue;
-    const why = [a.speakerUncertain ? "speaker uncertain" : "", a.overlapsSpeech ? "overlapping speech" : "", a.lowConfidence ? "low confidence" : ""].filter(Boolean);
+    const why = [a.speakerUncertain ? "speaker uncertain" : "", a.possibleLabelSwap ? "possible speaker-label swap" : "", a.overlapsSpeech ? "overlapping speech" : "", a.lowConfidence ? "low confidence" : ""].filter(Boolean);
     if (why.length > 0) notes.push(`"${a.text}" (${why.join(", ")})`);
   }
   if (notes.length === 0) return [];

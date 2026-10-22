@@ -22,6 +22,11 @@ describe("atomsFromAsr", () => {
     expect(stats.clamp_adjustments).toBe(1);
   });
 
+  it("passes the possible-label-swap flag from the ASR service to the atoms", () => {
+    const { atoms } = atomsFromAsr(SHA, 10 * U, [w("hi", 1, 2, { possible_label_swap: true }), w("there", 3, 4, { possible_label_swap: false }), w("you", 5, 6)], [], opts);
+    expect(atoms.filter((a) => a.kind === "word").map((a) => a.possibleLabelSwap)).toEqual([true, false, false]);
+  });
+
   it("drops words after the end and zero-length words, and says so; fixes overlaps", () => {
     const r = atomsFromAsr(SHA, 5 * U, [w("late", 6, 7), w("zero", 1, 1), w("a", 2, 3), w("b", 2.5, 3.5)], [], opts);
     expect(r.warnings.join(" ")).toMatch(/after the end/);

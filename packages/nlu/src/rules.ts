@@ -532,6 +532,8 @@ function handleSpeakerTopic(env: Env, who: string, topic: string): Parsed {
   const warns = [...note];
   const unsure = ws.filter((w) => w.speakerUncertain).length;
   const overlap = ws.filter((w) => w.overlapsSpeech).length;
+  const swapped = ws.filter((w) => w.possibleLabelSwap).length;
+  if (swapped > 0) warns.push(`${swapped} word(s) in these lines are a possible speaker-label swap: their voice sounds more like another speaker than the label ${targetName} suggests. Check that these really are ${targetName}'s lines before relying on this.`);
   if (unsure > 0) warns.push(`${unsure} word(s) in these lines have an uncertain speaker label (the diarization may have swapped the speakers there); check ${targetName}'s lines before relying on this.`);
   if (overlap > 0) warns.push(`${overlap} word(s) in these lines overlap another speaker; cutting them also removes part of what the other person says.`);
 

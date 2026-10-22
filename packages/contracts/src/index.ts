@@ -51,6 +51,8 @@ export const Atom = z
     filler: z.boolean(),
     overlapsSpeech: z.boolean(),
     speakerUncertain: z.boolean(),
+    /** The diarization label of this word's turn looks wrong: another speaker's voice is clearly closer (services/asr swap detection). Optional so atoms stored before this existed still validate. */
+    possibleLabelSwap: z.boolean().optional(),
   })
   .meta({ id: "Atom" });
 

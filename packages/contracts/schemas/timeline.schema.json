@@ -152,6 +152,9 @@
         },
         "speakerUncertain": {
           "type": "boolean"
+        },
+        "possibleLabelSwap": {
+          "type": "boolean"
         }
       },
       "required": [

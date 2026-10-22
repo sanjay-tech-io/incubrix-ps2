@@ -17,7 +17,7 @@ export interface TranscriptSettings {
 }
 
 export function transcriptCacheKey(sourceSha256: string, s: TranscriptSettings): string {
-  return sha256Text(canonicalJson({ v: 2, sourceSha256, ...s }));
+  return sha256Text(canonicalJson({ v: 3, sourceSha256, ...s }));
 }
 
 export interface TranscriptRow {
