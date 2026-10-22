@@ -1,0 +1,42 @@
+# opentimelineio licence evidence (2026-10-22), from the pinned image services/otio (pip show + dist-info)
+Name: OpenTimelineIO
+Version: 0.18.1
+Summary: Editorial interchange format and API
+Home-page: http://opentimeline.io
+Author: Contributors to the OpenTimelineIO project
+Author-email: otio-discussion@lists.aswf.io
+License: Apache 2.0 License
+Location: /usr/local/lib/python3.12/site-packages
+Requires: 
+Required-by: 
+Files:
+  ../../../bin/otioautogen_serialized_schema_docs
+  ../../../bin/otiocat
+  ../../../bin/otioconvert
+ERROR: Pipe to stdout was broken
+Exception ignored in: <_io.TextIOWrapper name='<stdout>' mode='w' encoding='utf-8'>
+BrokenPipeError: [Errno 32] Broken pipe
+
+licence file: /usr/local/lib/python3.12/site-packages/opentimelineio-0.18.1.dist-info/licenses
+head: error reading '/usr/local/lib/python3.12/site-packages/opentimelineio-0.18.1.dist-info/licenses': Is a directory
+
+[notice] To update, run: pip install --upgrade pip
+LICENSE.txt
+NOTICE.txt
+--- /usr/local/lib/python3.12/site-packages/opentimelineio-0.18.1.dist-info/licenses/LICENSE.txt
+                                 Apache License
+                           Version 2.0, January 2004
+                        http://www.apache.org/licenses/
+
+   TERMS AND CONDITIONS FOR USE, REPRODUCTION, AND DISTRIBUTION
+
+   1. Definitions.
+
+--- /usr/local/lib/python3.12/site-packages/opentimelineio-0.18.1.dist-info/licenses/NOTICE.txt
+OpenTimelineIO   
+Copyright Contributors to the OpenTimelineIO project.
+All rights reserved.
+
+This product includes software developed at:
+       
+Pixar (http://www.pixar.com/).
