@@ -1,0 +1,65 @@
+{
+  "name": "s22_uncertain_speaker_label_warns",
+  "video": "/tmp/incubrix-test-clips/clip_50s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_3b3096bc58554aeab425",
+  "session_id": "ses_800a068118b04178883d",
+  "intake": {
+    "job_id": "job_737a7852e3c74e5bb0dc",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "48 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "Some words overlap another speaker; edits touching them will warn.",
+      "10 word(s) may have the wrong speaker label (their voice is closer to another speaker); edits touching them will warn. Labels are never changed automatically.",
+      "2 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 336
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "mute \"My old job\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "add_effect",
+          "effectId": "fx_0_0",
+          "range": {
+            "from": "a_f258ede76069",
+            "to": "a_a7306d2bb0af"
+          },
+          "params": {
+            "kind": "mute"
+          }
+        }
+      ],
+      "summary": "Length 0:50.000 -> 0:50.000 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "This edit touches words the transcript is unsure about: \"My\" (speaker uncertain), \"old\" (speaker uncertain). Check the result."
+      ],
+      "timeline_hash": "9a14227bbe5d87d2292f75144df8fe3e14fc2c6ec2ee96a4369d6784f4f6a17f",
+      "duration_s": 50,
+      "ms": 14,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "9a14227bbe5d87d2292f75144df8fe3e14fc2c6ec2ee96a4369d6784f4f6a17f",
+    "duration_s": 50
+  },
+  "error": null
+}

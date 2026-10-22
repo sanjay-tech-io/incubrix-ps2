@@ -1,0 +1,11 @@
+brief: "Hard case: the answer picks the first of four 'thanks'"
+fixture: single
+steps:
+  - say: "remove everything after I say thanks"
+    expect: needs_clarification
+    expect_options: 4
+  - answer: "the first one"
+    expect: applied
+  - say: "undo"
+    expect: applied
+    expect_duration_s: 200

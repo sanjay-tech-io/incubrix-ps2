@@ -1,0 +1,10 @@
+brief: "Rejected answers are normal answers and change nothing"
+fixture: single
+steps:
+  - say: "undo"
+    expect: rejected
+    expect_text: "nothing to undo"
+    expect_hash_unchanged: true
+  - say: "redo"
+    expect: rejected
+    expect_hash_unchanged: true

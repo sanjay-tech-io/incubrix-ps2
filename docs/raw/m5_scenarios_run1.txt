@@ -1,0 +1,532 @@
+ Image incubrix-ps2-otio-tests Building 
+ Image incubrix-ps2-otio Building 
+ Image incubrix-app Building 
+ Image incubrix-ps2-asr-tests Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.96kB done
+#1 DONE 0.0s
+
+#2 [init internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.21kB done
+#2 DONE 0.0s
+
+#3 [asr-tests internal] load build definition from Dockerfile
+#3 transferring dockerfile: 1.13kB done
+#3 DONE 0.0s
+
+#4 [otio-tests internal] load build definition from Dockerfile
+#4 transferring dockerfile: 589B done
+#4 DONE 0.0s
+
+#5 [otio-tests internal] load metadata for docker.io/library/python:3.12-slim
+#5 ...
+
+#6 [otio-tests internal] load .dockerignore
+#6 DONE 0.0s
+
+#5 [otio-tests internal] load metadata for docker.io/library/python:3.12-slim
+#5 DONE 1.1s
+
+#7 [init internal] load metadata for docker.io/library/node:22-bookworm-slim
+#7 DONE 1.1s
+
+#8 [init internal] load .dockerignore
+#8 transferring context: 98B done
+#8 DONE 0.0s
+
+#9 [asr-tests internal] load .dockerignore
+#9 transferring context: 78B done
+#9 DONE 0.0s
+
+#6 [otio internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.1s
+
+#10 [otio-tests internal] load build context
+#10 DONE 0.0s
+
+#11 [asr-tests internal] load build context
+#11 transferring context: 2.82kB done
+#11 DONE 0.0s
+
+#12 [otio internal] load build context
+#12 transferring context: 26.78kB 0.0s done
+#12 DONE 0.1s
+
+#13 [init  1/22] FROM docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d
+#13 resolve docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d 0.1s done
+#13 DONE 0.1s
+
+#10 [otio-tests internal] load build context
+#10 transferring context: 77.82kB 0.0s done
+#10 DONE 0.1s
+
+#14 [asr-tests base 1/5] FROM docker.io/library/python:3.12-slim@sha256:cb33f7f771ecec2ef1225cf39b159591a040391bd73e4c01f00fdfc4c47611d2
+#14 resolve docker.io/library/python:3.12-slim@sha256:cb33f7f771ecec2ef1225cf39b159591a040391bd73e4c01f00fdfc4c47611d2 0.1s done
+#14 resolve docker.io/library/python:3.12-slim@sha256:cb33f7f771ecec2ef1225cf39b159591a040391bd73e4c01f00fdfc4c47611d2 0.1s done
+#14 DONE 0.1s
+
+#15 [otio base 3/5] COPY requirements.txt .
+#15 CACHED
+
+#16 [otio base 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#16 CACHED
+
+#17 [otio base 5/5] COPY otio_service ./otio_service
+#17 CACHED
+
+#18 [otio-tests base 3/5] COPY requirements.txt .
+#18 CACHED
+
+#19 [otio-tests base 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#19 CACHED
+
+#20 [otio-tests test 1/3] COPY requirements-dev.txt pytest.ini ./
+#20 CACHED
+
+#21 [otio-tests base 5/5] COPY otio_service ./otio_service
+#21 CACHED
+
+#22 [otio-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#22 CACHED
+
+#23 [otio-tests test 3/3] COPY tests ./tests
+#23 CACHED
+
+#24 [otio-tests base 2/5] WORKDIR /app
+#24 CACHED
+
+#25 [asr-tests base 4/7] RUN pip install --no-cache-dir -r requirements.txt
+#25 CACHED
+
+#26 [asr-tests base 5/7] COPY fetch_models.py .
+#26 CACHED
+
+#27 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#27 CACHED
+
+#28 [asr-tests base 7/7] COPY asr ./asr
+#28 CACHED
+
+#29 [asr-tests test 1/3] COPY requirements-dev.txt pytest.ini ./
+#29 CACHED
+
+#30 [asr-tests base 6/7] RUN ASR_MODEL=base.en python fetch_models.py
+#30 CACHED
+
+#31 [asr-tests base 3/7] COPY requirements.txt .
+#31 CACHED
+
+#32 [asr-tests test 3/3] COPY tests ./tests
+#32 CACHED
+
+#33 [asr-tests] exporting to image
+#33 exporting layers 0.0s done
+#33 exporting manifest sha256:fce26a0d6f66c92127bb03da098de78b72638704bb91ee09c2a75d1165e8169a done
+#33 exporting config sha256:9e1b4d6c686b5ab3d055c6b5701f691af7c4bcf80bb5ac8ccf76b2f7c63f66f7 0.0s done
+#33 exporting attestation manifest sha256:191eb20d7c5854403c0d19aa64e6e1fe2ac599f7d3e512ffefb47e87b1cea319 0.0s done
+#33 exporting manifest list sha256:0e39d303c0ce447dd08fc520a70b5b29bc0207b4506197f6b1e2ba55d69dda61 0.0s done
+#33 naming to docker.io/library/incubrix-ps2-asr-tests:latest
+#33 naming to docker.io/library/incubrix-ps2-asr-tests:latest done
+#33 unpacking to docker.io/library/incubrix-ps2-asr-tests:latest 0.0s done
+#33 DONE 0.3s
+
+#34 [otio-tests] exporting to image
+#34 exporting layers 0.0s done
+#34 exporting manifest sha256:145dbef6185fc8c59c3b9142b860f97d12be92bcfb95f3361bfb52ecc71ed5dc done
+#34 exporting config sha256:d0aa3c2e377d3e4f9da8f72e0f50e9b07996b233634d053553a0680df6985b3f done
+#34 exporting attestation manifest sha256:cd4f8ba6afec1b7d7bb28619a8e5fbdd6218c785be04f98974102ea717121e09 0.1s done
+#34 exporting manifest list sha256:4f41c33aecb696d02032ec9eeb0080c5f41d46e4edd052f3ed5d8158cf416b8f 0.0s done
+#34 naming to docker.io/library/incubrix-ps2-otio-tests:latest 0.0s done
+#34 unpacking to docker.io/library/incubrix-ps2-otio-tests:latest 0.0s done
+#34 DONE 0.3s
+
+#35 [otio] exporting to image
+#35 exporting layers 0.0s done
+#35 exporting manifest sha256:f1c50bbba9d0d840579667bf59db871b25b9774fdfde881eec0ac04730be3dbf done
+#35 exporting config sha256:ba845630467ac8afa20ded737481adfde139004945a1fddefd0ff574662dba4f done
+#35 exporting attestation manifest sha256:2c3ec7764c160fb491aee7e76bcd92b832776ac93590626d803bca12dcca1fde 0.1s done
+#35 exporting manifest list sha256:2de71cbb093ff5bd05439dd082a5818450791ab279af11ac308efbb1997ef434 0.0s done
+#35 naming to docker.io/library/incubrix-ps2-otio:latest done
+#35 unpacking to docker.io/library/incubrix-ps2-otio:latest 0.0s done
+#35 DONE 0.3s
+
+#36 [init internal] load build context
+#36 transferring context: 870.63kB 0.5s done
+#36 DONE 0.6s
+
+#37 [init 10/22] COPY packages/media/package.json packages/media/
+#37 CACHED
+
+#38 [init  2/22] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core ca-certificates && rm -rf /var/lib/apt/lists/*
+#38 CACHED
+
+#39 [init 12/22] COPY packages/nlu/package.json packages/nlu/
+#39 CACHED
+
+#40 [init 16/22] COPY packages/llm/package.json packages/llm/
+#40 CACHED
+
+#41 [init  4/22] COPY package.json package-lock.json .npmrc ./
+#41 CACHED
+
+#42 [init 20/22] COPY apps/cli/package.json apps/cli/
+#42 CACHED
+
+#43 [init 18/22] COPY apps/api/package.json apps/api/
+#43 CACHED
+
+#44 [init  8/22] COPY packages/db/package.json packages/db/
+#44 CACHED
+
+#45 [init  3/22] WORKDIR /app
+#45 CACHED
+
+#46 [init  9/22] COPY packages/storage/package.json packages/storage/
+#46 CACHED
+
+#47 [init  5/22] COPY packages/contracts/package.json packages/contracts/
+#47 CACHED
+
+#48 [init 14/22] COPY packages/render/package.json packages/render/
+#48 CACHED
+
+#49 [init 11/22] COPY packages/errors/package.json packages/errors/
+#49 CACHED
+
+#50 [init 13/22] COPY packages/store/package.json packages/store/
+#50 CACHED
+
+#51 [init 17/22] COPY packages/otio/package.json packages/otio/
+#51 CACHED
+
+#52 [init  6/22] COPY packages/engine/package.json packages/engine/
+#52 CACHED
+
+#53 [init  7/22] COPY packages/config/package.json packages/config/
+#53 CACHED
+
+#54 [init 15/22] COPY packages/semantic/package.json packages/semantic/
+#54 CACHED
+
+#55 [init 19/22] COPY apps/worker/package.json apps/worker/
+#55 CACHED
+
+#56 [init 21/22] RUN npm ci
+#56 CACHED
+
+#57 [otio] resolving provenance for metadata file
+#57 DONE 0.1s
+
+#58 [otio-tests] resolving provenance for metadata file
+#58 DONE 0.1s
+
+#59 [asr-tests] resolving provenance for metadata file
+#59 DONE 0.0s
+
+#60 [init 22/22] COPY . .
+#60 DONE 15.9s
+
+#61 [init] exporting to image
+#61 exporting layers
+#61 exporting layers 81.3s done
+#61 exporting manifest sha256:b0866babd3fdbfa64a4451be2ce43216c367e31d19b4165fa899ae39bba3120f 0.0s done
+#61 exporting config sha256:932d70b8d8ea8a8ba3b68e36e7348d71f6a9a8957d508e1aac9f1b1d453a19f5 0.0s done
+#61 exporting attestation manifest sha256:7cef36b43e26b9471f775ea1f4f265dc2f8296cf62368f9e3f21aefec52c8330 0.0s done
+#61 exporting manifest list sha256:1f99c39ebfe65120c55c7d28aac5a61a5e5d25ee748d853a61c44bef77edd6c8 0.0s done
+#61 naming to docker.io/library/incubrix-app:latest done
+#61 unpacking to docker.io/library/incubrix-app:latest
+#61 unpacking to docker.io/library/incubrix-app:latest 17.7s done
+#61 DONE 99.1s
+
+#62 [init] resolving provenance for metadata file
+#62 DONE 0.0s
+ Image incubrix-app Built 
+ Image incubrix-ps2-otio Built 
+ Image incubrix-ps2-otio-tests Built 
+ Image incubrix-ps2-asr-tests Built 
+ Container incubrix-ps2-s3-1 Running 
+ Container incubrix-ps2-otio-1 Running 
+ Container incubrix-ps2-postgres-1 Running 
+ Container incubrix-ps2-init-1 Recreate 
+ Container incubrix-ps2-init-1 Recreated 
+ Container incubrix-ps2-otio-tests-1 Starting 
+ Container incubrix-ps2-asr-tests-1 Starting 
+ Container incubrix-ps2-postgres-1 Waiting 
+ Container incubrix-ps2-s3-1 Waiting 
+ Container incubrix-ps2-otio-tests-1 Started 
+ Container incubrix-ps2-postgres-1 Healthy 
+ Container incubrix-ps2-s3-1 Healthy 
+ Container incubrix-ps2-init-1 Starting 
+ Container incubrix-ps2-asr-tests-1 Started 
+ Container incubrix-ps2-init-1 Started 
+ Image incubrix-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.30kB done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.21kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:22-bookworm-slim
+#3 DONE 0.9s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 98B done
+#4 DONE 0.0s
+
+#5 [ 1/22] FROM docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d
+#5 resolve docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d 0.1s done
+#5 DONE 0.1s
+
+#6 [internal] load build context
+#6 transferring context: 813.89kB 0.4s done
+#6 DONE 0.5s
+
+#7 [ 5/22] COPY packages/contracts/package.json packages/contracts/
+#7 CACHED
+
+#8 [ 2/22] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core ca-certificates && rm -rf /var/lib/apt/lists/*
+#8 CACHED
+
+#9 [17/22] COPY packages/otio/package.json packages/otio/
+#9 CACHED
+
+#10 [ 4/22] COPY package.json package-lock.json .npmrc ./
+#10 CACHED
+
+#11 [10/22] COPY packages/media/package.json packages/media/
+#11 CACHED
+
+#12 [ 9/22] COPY packages/storage/package.json packages/storage/
+#12 CACHED
+
+#13 [14/22] COPY packages/render/package.json packages/render/
+#13 CACHED
+
+#14 [19/22] COPY apps/worker/package.json apps/worker/
+#14 CACHED
+
+#15 [15/22] COPY packages/semantic/package.json packages/semantic/
+#15 CACHED
+
+#16 [11/22] COPY packages/errors/package.json packages/errors/
+#16 CACHED
+
+#17 [ 7/22] COPY packages/config/package.json packages/config/
+#17 CACHED
+
+#18 [ 3/22] WORKDIR /app
+#18 CACHED
+
+#19 [12/22] COPY packages/nlu/package.json packages/nlu/
+#19 CACHED
+
+#20 [20/22] COPY apps/cli/package.json apps/cli/
+#20 CACHED
+
+#21 [13/22] COPY packages/store/package.json packages/store/
+#21 CACHED
+
+#22 [18/22] COPY apps/api/package.json apps/api/
+#22 CACHED
+
+#23 [ 8/22] COPY packages/db/package.json packages/db/
+#23 CACHED
+
+#24 [16/22] COPY packages/llm/package.json packages/llm/
+#24 CACHED
+
+#25 [ 6/22] COPY packages/engine/package.json packages/engine/
+#25 CACHED
+
+#26 [21/22] RUN npm ci
+#26 CACHED
+
+#27 [22/22] COPY . .
+#27 DONE 11.4s
+
+#28 exporting to image
+#28 exporting layers
+#28 exporting layers 81.9s done
+#28 exporting manifest sha256:d8b71a685d30573d6d9a13cf03a8a6c94ba0680f15c74c3e379f1b41a884d49e
+#28 exporting manifest sha256:d8b71a685d30573d6d9a13cf03a8a6c94ba0680f15c74c3e379f1b41a884d49e 0.0s done
+#28 exporting config sha256:43034f5104ee861ebc6c0ff741c7c4b7159591b8cbe58b6af00e5cafc422cf69 0.0s done
+#28 exporting attestation manifest sha256:37fea53865435b2443a0514069cce2a481b6a5f6750cb14402c1e41e06282b5d 0.0s done
+#28 exporting manifest list sha256:f4e9d1d6ec4127b0ac5bc7096752fd87fd4b947ee567d0c17277803dcdcd09f9 0.0s done
+#28 naming to docker.io/library/incubrix-app:latest done
+#28 unpacking to docker.io/library/incubrix-app:latest
+#28 unpacking to docker.io/library/incubrix-app:latest 14.6s done
+#28 DONE 96.7s
+
+#29 resolving provenance for metadata file
+#29 DONE 0.0s
+ Image incubrix-app Built 
+ Container incubrix-ps2-asr-tests-1 Waiting 
+ Container incubrix-ps2-otio-tests-1 Waiting 
+ Container incubrix-ps2-otio-1 Waiting 
+ Container incubrix-ps2-init-1 Waiting 
+ Container incubrix-ps2-init-1 Exited 
+ Container incubrix-ps2-otio-tests-1 Exited 
+ Container incubrix-ps2-asr-tests-1 Exited 
+ Container incubrix-ps2-otio-1 Healthy 
+ Container incubrix-ps2-tests-run-a9f8e3611ff1 Creating 
+ Container incubrix-ps2-tests-run-a9f8e3611ff1 Created 
+
+> @incubrix/api@0.0.0 test
+> vitest run scenarios
+
+
+ RUN  v2.1.9 /app/apps/api
+
+ ❯ test/scenarios.test.ts (50 tests | 7 failed) 74933ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s01_worked_example: Worked example, 8 steps, with the numbers worked out by hand from the fixture 8162ms
+   × scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s02_undo_redo_new_edit_clears_redo: Undo/redo: 1 instruction = 1 undo; a new edit clears redo 548ms
+     → expected [ …(6) ] to deeply equal []
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s03_nothing_to_undo: Rejected answers are normal answers and change nothing 430ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s04_caption_sentence_cut_then_restored: Hard case: caption added, its sentence cut, cut restored (caption returns) 423ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s05_partial_cut_of_captioned_phrase: Advanced: documented rule for a partial cut of a captioned phrase 417ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s06_reorder_then_mute_a_word: Hard case: section reordered, then a word muted 7179ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s07_filler_removal_into_a_bleeped_word: Hard case: filler removal cutting into a bleeped word 412ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s08_remove_range_sent_twice: Hard case: 'remove 0:30-0:40' sent twice 424ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s09_caption_beyond_the_end: Hard case: 'add a caption at 5:00' on a shorter video 431ms
+   × scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s10_time_phrases: Hard case: '80 seconds', 'a minute twenty', 'the last 10 seconds' 448ms
+     → expected [ Array(1) ] to deeply equal []
+   × scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s11_undo_second_to_last_cut_keep_music: Hard case: 'undo the second-to-last cut but keep the music' 16965ms
+     → expected [ …(2) ] to deeply equal []
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s12_make_it_bigger_without_a_caption: Hard case: 'make it bigger' with no caption 391ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s13_everything_after_thanks_said_four_times: Hard case: 'remove everything after I say thanks' (said four times) 509ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s14_everything_after_thanks_first_one: Hard case: the answer picks the first of four 'thanks' 463ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s15_speed_up_10x: Hard case: 'speed up 10x' is outside the documented range 439ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s16_cut_everything: Hard case: 'cut everything' 388ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s17_three_parts_one_impossible: Hard case: a three-part instruction with one impossible part 404ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s18_guest_old_job_assumes_host_asks_lead_in: Advanced: 'remove everything the guest says about their old job' removes only the guest lines and asks about the lead-in 1929ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s19_guest_old_job_with_the_lead_in: Advanced: second option also removes the host's lead-in 390ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s20_possible_label_swap_warns: Outstanding: possible speaker-label swaps warn 342ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s21_overlapping_speech_warns: Outstanding: overlapping speech warns 349ms
+   × scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s22_uncertain_speaker_label_warns: Outstanding: an uncertain speaker label warns 329ms
+     → expected [ Array(1) ] to deeply equal []
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s23_one_speaker_video_has_no_guest: Rejected, not guessed: 'the guest' in a one-speaker video 379ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s24_variable_frame_rate_phone_video: Hard case: a phone video with variable frame rate 3519ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s25_video_without_audio_fails_clearly: Outstanding: a video with no audio track fails clearly 656ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s26_sped_up_caption_keeps_a_minimum: Advanced: sped-up captions keep a readable minimum (about 0.7 s) 472ms
+   × scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s27_overlapping_speed_changes: Advanced: documented rule for overlapping speed changes (the later one replaces the earlier) 448ms
+     → expected [ …(2) ] to deeply equal []
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s28_repeated_instructions_are_safe: Advanced: repeated instructions are safe 444ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s29_pricing_asks_which_of_three: Advanced: ambiguity asks, with specific options 411ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s30_meaning_search_cost_finds_pricing: Advanced: meaning-based search ('cost' finds 'pricing') shows matches before cutting 406ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s31_nothing_matches_is_rejected: Rejected, not guessed: a topic that is not in the video 431ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s32_make_it_shorter_asks_with_options: Advanced: 'make it shorter' asks with measurable options 406ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s33_the_boring_part_states_its_assumption: Advanced: 'the boring part' says what it can and cannot judge 502ms
+   × scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s34_put_back_what_i_removed_lists_the_cuts: Advanced: 'put back what I removed' with two cuts asks which 413ms
+     → expected [ Array(1) ] to deeply equal []
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s35_that_caption_with_two_captions_asks: Advanced: 'that caption' with two captions asks which 460ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s36_remove_fillers_then_undo: Must-have: remove fillers (um, uh, 'like' only as a filler) 388ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s37_silences_and_a_protected_pause: Advanced: deliberate pauses survive silence removal 417ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s38_keep_only_and_restore_edit_n: Must-have: keep only a range; restore a specific earlier edit 412ms
+   × scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s39_music_ducks_and_renders: Must-have: background music that ducks under speech, rendered 1001ms
+     → expected [ Array(1) ] to deeply equal []
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s40_low_confidence_word_warns_before_bleeping: Outstanding: low-confidence words are flagged, not bleeped blindly 1180ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s41_auto_captions_follow_cut_and_speed: Must-have: auto-captions from the words that survive 5222ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s42_original_time_policy_is_stated: Must-have: one stated time policy, mentioned in answers 512ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s43_caption_styling_edits: Must-have: caption text, colour, size, bold, position 438ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s44_unreadable_instruction_is_rejected: Three-way answers: an instruction nobody can read is rejected, not guessed 363ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s45_cut_beyond_the_end: Out of range is rejected 352ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s46_slow_motion: Must-have: speed up / slow down 5155ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s47_move_into_itself_is_rejected: Reorder: a target inside the moved span is rejected 444ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s48_cut_then_caption_follows_the_words: Must-have: captions stick to their words after a cut 426ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > determinism: six scenarios run again twice give the same timeline_hash at every step 5899ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 7 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/scenarios.test.ts > scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s02_undo_redo_new_edit_clears_redo: Undo/redo: 1 instruction = 1 undo; a new edit clears redo
+AssertionError: expected [ …(6) ] to deeply equal []
+
+- Expected
++ Received
+
+- Array []
++ Array [
++   "step 1 (cut 0:10-0:15): expected duration 195 s, got 194.8 s",
++   "step 2 (cut 0:30-0:35): expected duration 190 s, got 189.8 s",
++   "step 3 (undo): expected duration 195 s, got 194.8 s",
++   "step 4 (redo): expected duration 190 s, got 189.8 s",
++   "step 5 (undo): expected duration 195 s, got 194.8 s",
++   "step 6 (cut 1:00-1:05): expected duration 190 s, got 189.4 s",
++ ]
+
+ ❯ test/scenarios.test.ts:81:24
+     79|       const failures = r.steps.filter((x) => !x.passed).map((x) => `st…
+     80|       expect(r.error, "session error").toBeNull();
+     81|       expect(failures).toEqual([]);
+       |                        ^
+     82|       expect(r.passed).toBe(true);
+     83|     }, 300_000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/7]⎯
+
+ FAIL  test/scenarios.test.ts > scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s10_time_phrases: Hard case: '80 seconds', 'a minute twenty', 'the last 10 seconds'
+ FAIL  test/scenarios.test.ts > scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s22_uncertain_speaker_label_warns: Outstanding: an uncertain speaker label warns
+ FAIL  test/scenarios.test.ts > scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s34_put_back_what_i_removed_lists_the_cuts: Advanced: 'put back what I removed' with two cuts asks which
+ FAIL  test/scenarios.test.ts > scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s39_music_ducks_and_renders: Must-have: background music that ducks under speech, rendered
+AssertionError: expected [ Array(1) ] to deeply equal []
+
+- Expected
++ Received
+
+- Array []
++ Array [
++   "step 4 (cut the last 10 minutes): expected the answer to mention /longer|beyond|range|end/",
++ ]
+
+ ❯ test/scenarios.test.ts:81:24
+     79|       const failures = r.steps.filter((x) => !x.passed).map((x) => `st…
+     80|       expect(r.error, "session error").toBeNull();
+     81|       expect(failures).toEqual([]);
+       |                        ^
+     82|       expect(r.passed).toBe(true);
+     83|     }, 300_000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[2/7]⎯
+
+ FAIL  test/scenarios.test.ts > scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s11_undo_second_to_last_cut_keep_music: Hard case: 'undo the second-to-last cut but keep the music'
+ FAIL  test/scenarios.test.ts > scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s27_overlapping_speed_changes: Advanced: documented rule for overlapping speed changes (the later one replaces the earlier)
+AssertionError: expected [ …(2) ] to deeply equal []
+
+- Expected
++ Received
+
+- Array []
++ Array [
++   "step 4 (cut 0:30-0:35): expected duration 185 s, got 184.8 s",
++   "step 5 (undo the second-to-last cut but keep the music): expected duration 190 s, got 189.8 s",
++ ]
+
+ ❯ test/scenarios.test.ts:81:24
+     79|       const failures = r.steps.filter((x) => !x.passed).map((x) => `st…
+     80|       expect(r.error, "session error").toBeNull();
+     81|       expect(failures).toEqual([]);
+       |                        ^
+     82|       expect(r.passed).toBe(true);
+     83|     }, 300_000);
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[3/7]⎯
+
+ Test Files  1 failed (1)
+      Tests  7 failed | 43 passed (50)
+   Start at  15:07:54
+   Duration  77.36s (transform 972ms, setup 0ms, collect 2.03s, tests 74.93s, environment 0ms, prepare 120ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /app/apps/api
+npm error workspace @incubrix/api@0.0.0
+npm error location /app/apps/api
+npm error command failed
+npm error command sh -c vitest run scenarios
+
+
+real	5m26.053s
+user	0m1.887s
+sys	0m0.991s

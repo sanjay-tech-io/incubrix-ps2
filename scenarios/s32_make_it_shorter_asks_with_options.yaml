@@ -1,0 +1,9 @@
+brief: "Advanced: 'make it shorter' asks with measurable options"
+fixture: single
+steps:
+  - say: "make it shorter"
+    expect: needs_clarification
+    expect_text: "saves about"
+    expect_hash_unchanged: true
+  - answer: "the first one"
+    expect: applied

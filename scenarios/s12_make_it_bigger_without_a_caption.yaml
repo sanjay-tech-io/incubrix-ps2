@@ -1,0 +1,7 @@
+brief: "Hard case: 'make it bigger' with no caption"
+fixture: single
+steps:
+  - say: "make it bigger"
+    expect: rejected
+    expect_hash_unchanged: true
+    expect_text: "caption"

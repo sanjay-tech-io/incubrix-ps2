@@ -1,0 +1,180 @@
+{
+  "name": "s04_caption_sentence_cut_then_restored",
+  "video": "/tmp/incubrix-test-clips/clip_200s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_8ef4ec0460d34d7e9cbc",
+  "session_id": "ses_f90a10fb30474c648df3",
+  "intake": {
+    "job_id": "job_c7a23d9e27a84c909747",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 400
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "add a caption \"Welcome!\" on \"welcome to the channel\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "add_effect",
+          "effectId": "fx_0_0",
+          "range": {
+            "from": "a_654a07ac33cd",
+            "to": "a_3297bfffa6fd"
+          },
+          "params": {
+            "kind": "caption",
+            "text": "Welcome!",
+            "style": {
+              "color": "#ffffff",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:20.000 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "495b01e863637af54f5191c5ab7377118dac581861fa4ddc40888aed57982a65",
+      "duration_s": 200,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "cut 0:40-0:46",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_a95426c3f182",
+              "offsetUs": 800000
+            },
+            "end": {
+              "atom": "a_623587b03567",
+              "offsetUs": 2000000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:14.000 (-0:06.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "caption \"Welcome!\" is hidden because all of its words were cut. It stays in the history; restoring those words brings it back."
+      ],
+      "timeline_hash": "107c6ccd7b01fbbd12e0cbe2aa582febb76fece5b2788c6c1285a6b474c601a3",
+      "duration_s": 194,
+      "ms": 14,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "restore edit 2",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "restore",
+          "targetGroup": 2
+        }
+      ],
+      "summary": "Length 3:14.000 -> 3:20.000 (+0:06.000). caption \"Welcome!\" is visible again at 0:42.000. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "495b01e863637af54f5191c5ab7377118dac581861fa4ddc40888aed57982a65",
+      "duration_s": 200,
+      "ms": 14,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 4,
+      "say": "make that caption red",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "update_effect",
+          "effectId": "fx_0_0",
+          "params": {
+            "kind": "caption",
+            "text": "Welcome!",
+            "style": {
+              "color": "#ff0000",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:20.000 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "28f04eacc92efadc565ac19f7e9aa3fbe15e9a2cf56a6449ef14d149bc98be5f",
+      "duration_s": 200,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "28f04eacc92efadc565ac19f7e9aa3fbe15e9a2cf56a6449ef14d149bc98be5f",
+    "duration_s": 200
+  },
+  "error": null
+}

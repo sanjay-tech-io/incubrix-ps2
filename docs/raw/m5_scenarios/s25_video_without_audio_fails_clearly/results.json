@@ -1,0 +1,24 @@
+{
+  "name": "s25_video_without_audio_fails_clearly",
+  "video": "/tmp/incubrix-test-clips/clip_20s_noaudio_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_1b98aa8919d8499491dc",
+  "session_id": null,
+  "intake": {
+    "job_id": "job_31a6922dffb845d0a833",
+    "status": "failed",
+    "error": {
+      "error": {
+        "code": "NO_AUDIO_TRACK",
+        "details": {},
+        "message": "This video has no audio track, so there is nothing to transcribe.",
+        "retryable": false
+      }
+    },
+    "warnings": [],
+    "ms": 311
+  },
+  "steps": [],
+  "final": null,
+  "error": null
+}

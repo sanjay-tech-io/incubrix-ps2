@@ -1,0 +1,15 @@
+brief: "Hard case: '80 seconds', 'a minute twenty', 'the last 10 seconds'"
+fixture: single
+steps:
+  - say: "cut from 80 seconds to 85 seconds"
+    expect: applied
+    expect_duration_s: 195
+  - say: "cut from a minute twenty to a minute twenty five"
+    expect: applied
+    expect_duration_s: 190
+  - say: "cut the last 10 seconds"
+    expect: applied
+    expect_duration_s: 180
+  - say: "cut the last 10 minutes"
+    expect: rejected
+    expect_text: "whole video|nothing would be left"

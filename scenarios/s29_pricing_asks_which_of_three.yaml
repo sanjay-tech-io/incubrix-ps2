@@ -1,0 +1,10 @@
+brief: "Advanced: ambiguity asks, with specific options"
+fixture: single
+steps:
+  - say: "remove the part about pricing"
+    expect: needs_clarification
+    expect_options: 3
+    expect_hash_unchanged: true
+  - answer: "the third one"
+    expect: applied
+    expect_duration_s: 190

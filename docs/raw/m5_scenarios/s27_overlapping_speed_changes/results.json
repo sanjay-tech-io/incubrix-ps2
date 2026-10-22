@@ -1,0 +1,157 @@
+{
+  "name": "s27_overlapping_speed_changes",
+  "video": "/tmp/incubrix-test-clips/clip_200s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_0cbe770b5f524b3aa0a8",
+  "session_id": "ses_b705d8d16b1b45058a2f",
+  "intake": {
+    "job_id": "job_ea592ec351254c0d81d8",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 339
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "speed up 0:10-0:30 by 2x",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "set_speed",
+          "span": {
+            "start": {
+              "atom": "a_acba4c5c3674",
+              "offsetUs": 800000
+            },
+            "end": {
+              "atom": "a_4a99b54d27f9",
+              "offsetUs": 800000
+            }
+          },
+          "rate": {
+            "num": 2,
+            "den": 1
+          }
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:10.000 (-0:10.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "94bc7b2692984d8756fb3d34116dc3aad9f9f00230edb0f632e5201ff71e656b",
+      "duration_s": 190,
+      "ms": 11,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "speed up 0:15-0:25 by 4x",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "set_speed",
+          "span": {
+            "start": {
+              "atom": "a_ae995f7c20e6",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_0920b55a6c5e",
+              "offsetUs": 1200000
+            }
+          },
+          "rate": {
+            "num": 4,
+            "den": 1
+          }
+        }
+      ],
+      "summary": "Length 3:10.000 -> 3:03.760 (-0:06.240). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "This speed change overlaps an earlier speed change (2x at original 0:10.000-0:30.000): on the overlap the new rate replaces the earlier one; rates never multiply. The rest of the earlier change stays."
+      ],
+      "timeline_hash": "f66f92d960f3e635662123f9c3e777816748dd60f4cc85896c6a8bb06e225fa2",
+      "duration_s": 183.76,
+      "ms": 11,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "speed up 0:12-0:16 by 1x",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "set_speed",
+          "span": {
+            "start": {
+              "atom": "a_0968483e10af",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_057186cf6300",
+              "offsetUs": 0
+            }
+          },
+          "rate": {
+            "num": 1,
+            "den": 1
+          }
+        }
+      ],
+      "summary": "Length 3:03.760 -> 3:09.760 (+0:06.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "This speed change (back to normal speed) overlaps an earlier speed change (2x at original 0:10.000-0:20.000; 4x at original 0:20.000-0:35.000): on the overlap the new rate replaces the earlier one; rates never multiply. The rest of the earlier change stays."
+      ],
+      "timeline_hash": "4bffff94659b7361ab485eb305a0cf7b603fd9d27bd246cde41a649c46a51874",
+      "duration_s": 189.76,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "4bffff94659b7361ab485eb305a0cf7b603fd9d27bd246cde41a649c46a51874",
+    "duration_s": 189.76
+  },
+  "error": null
+}

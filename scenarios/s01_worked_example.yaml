@@ -1,0 +1,32 @@
+# The worked example of the brief on the engine's synthetic 3:20 fixture (3 pricing mentions, caption at 0:42). Durations are the hand-computed ones of the engine tests.
+brief: "Worked example, 8 steps, with the numbers worked out by hand from the fixture"
+fixture: single
+steps:
+  - say: "add a caption \"Welcome!\" on \"welcome to the channel\""
+    expect: applied
+    expect_text: "Time policy"
+  - say: "cut the first 30 seconds"
+    expect: applied
+    expect_duration_s: 170
+    expect_text: "current"
+  - say: "remove the part about pricing"
+    expect: needs_clarification
+    expect_options: 3
+    expect_hash_unchanged: true
+  - answer: "the second one"
+    expect: applied
+    expect_duration_s: 165
+  - say: "speed up 1:00-1:30 by 2x"
+    expect: applied
+    expect_duration_s: 150
+    expect_text: "current"
+  - say: "put the intro back"
+    expect: applied
+    expect_duration_s: 180
+  - say: "undo"
+    expect: applied
+    expect_duration_s: 150
+  - say: "make that caption red"
+    expect: applied
+  - render: true
+    expect: succeeded

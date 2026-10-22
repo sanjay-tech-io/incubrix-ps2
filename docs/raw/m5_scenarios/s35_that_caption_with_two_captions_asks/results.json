@@ -1,0 +1,180 @@
+{
+  "name": "s35_that_caption_with_two_captions_asks",
+  "video": "/tmp/incubrix-test-clips/clip_200s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_8d25d1061e5c40749a9e",
+  "session_id": "ses_e30c3ca1d82242378f4d",
+  "intake": {
+    "job_id": "job_5b8c2ce0da2e402caff6",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 350
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "add a caption \"One\" on \"welcome to the channel\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "add_effect",
+          "effectId": "fx_0_0",
+          "range": {
+            "from": "a_654a07ac33cd",
+            "to": "a_3297bfffa6fd"
+          },
+          "params": {
+            "kind": "caption",
+            "text": "One",
+            "style": {
+              "color": "#ffffff",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:20.000 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "29b8625337c8b2a5ccb09f5576b17c306c61b6e7a707db6a271a0b0d78a96165",
+      "duration_s": 200,
+      "ms": 11,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "add a caption \"Two\" on \"thanks for joining me today\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "add_effect",
+          "effectId": "fx_1_0",
+          "range": {
+            "from": "a_7e29ded50daf",
+            "to": "a_c2ef3e8b8fc9"
+          },
+          "params": {
+            "kind": "caption",
+            "text": "Two",
+            "style": {
+              "color": "#ffffff",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:20.000 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "25dcf60fce255bf4f2929cedefc35781ca01b9b02ce2d14801d6ebe34992d576",
+      "duration_s": 200,
+      "ms": 12,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "make that caption red",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "There are 2 captions. Which one?",
+      "options": [
+        "caption \"One\" (fx_0_0)",
+        "caption \"Two\" (fx_1_0)"
+      ],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "25dcf60fce255bf4f2929cedefc35781ca01b9b02ce2d14801d6ebe34992d576",
+      "duration_s": 200,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 4,
+      "say": null,
+      "answer_sent": "the second one",
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "update_effect",
+          "effectId": "fx_1_0",
+          "params": {
+            "kind": "caption",
+            "text": "Two",
+            "style": {
+              "color": "#ff0000",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:20.000 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "4b209520da8c4ed3bee1af18dd338e89ef2e822a9ed99bf59d2883d956e6d873",
+      "duration_s": 200,
+      "ms": 16,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "4b209520da8c4ed3bee1af18dd338e89ef2e822a9ed99bf59d2883d956e6d873",
+    "duration_s": 200
+  },
+  "error": null
+}

@@ -1,0 +1,13 @@
+brief: "Advanced: 'that caption' with two captions asks which"
+fixture: single
+steps:
+  - say: "add a caption \"One\" on \"welcome to the channel\""
+    expect: applied
+  - say: "add a caption \"Two\" on \"thanks for joining me today\""
+    expect: applied
+  - say: "make that caption red"
+    expect: needs_clarification
+    expect_options: 2
+    expect_hash_unchanged: true
+  - answer: "the second one"
+    expect: applied

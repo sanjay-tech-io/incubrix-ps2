@@ -1,0 +1,10 @@
+# The words of the guest line 0:18-0:25 carry possible_label_swap from the (mock) ASR; an edit touching them warns, an edit elsewhere does not.
+brief: "Outstanding: possible speaker-label swaps warn"
+fixture: two_speakers
+steps:
+  - say: "cut 0:18-0:22"
+    expect: applied
+    expect_warning: "swap"
+  - say: "cut 0:01-0:05"
+    expect: applied
+    expect_no_warning: "swap"

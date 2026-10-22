@@ -1,0 +1,93 @@
+{
+  "name": "s33_the_boring_part_states_its_assumption",
+  "video": "/tmp/incubrix-test-clips/clip_200s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_c857070353bd4a11b228",
+  "session_id": "ses_8e9de69a6da44f8ebb3d",
+  "intake": {
+    "job_id": "job_dc853620ac9c4b7fabe7",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 340
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "remove the boring part",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "I cannot judge what is boring. Assumption: you mean a stretch that stands out by one of these measurable signals. Which one should I remove? (Nothing is cut until you choose.)",
+      "options": [
+        "#1 the longest pause, 1:55.400-2:10.000 (14.6 s of silence)",
+        "#2 the slowest stretch of speech, 1:55.000-2:10.000 (1 words in 15 s, 0.1 words/s)",
+        "#3 the stretch with the most filler or low-confidence words, 0:05.000-0:20.000 (2 such words)"
+      ],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "878114337fcc4a977a2e3259b2b866ca84c356e4555ddc4dbe81b13250027f4c",
+      "duration_s": 200,
+      "ms": 12,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": null,
+      "answer_sent": "the second one",
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_37453bef06ee",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_92036c568b9f",
+              "offsetUs": 0
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:05.000 (-0:15.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "0b13a7a484267216209575627df0846e39330959f31e9d186b7218dc2836df14",
+      "duration_s": 185,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "0b13a7a484267216209575627df0846e39330959f31e9d186b7218dc2836df14",
+    "duration_s": 185
+  },
+  "error": null
+}

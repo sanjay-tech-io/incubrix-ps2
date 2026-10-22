@@ -1,0 +1,63 @@
+{
+  "name": "s40_low_confidence_word_warns_before_bleeping",
+  "video": "/tmp/incubrix-test-clips/clip_200s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_e3f32338659d4b548c7e",
+  "session_id": "ses_94aba13612ab4c88b5b4",
+  "intake": {
+    "job_id": "job_322dd9cc902941b58819",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 1203
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "bleep \"Honestly\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "add_effect",
+          "effectId": "fx_0_0",
+          "range": {
+            "from": "a_53ce406dfdc9",
+            "to": "a_53ce406dfdc9"
+          },
+          "params": {
+            "kind": "bleep"
+          }
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:20.000 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "This edit touches words the transcript is unsure about: \"Honestly\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "f77e49befa663021bd5723def5054205fbe68dd80837068ba5952336dbdbbf5c",
+      "duration_s": 200,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "f77e49befa663021bd5723def5054205fbe68dd80837068ba5952336dbdbbf5c",
+    "duration_s": 200
+  },
+  "error": null
+}

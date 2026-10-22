@@ -1,0 +1,5 @@
+brief: "Outstanding: a video with no audio track fails clearly"
+fixture: no_audio
+expect_intake_error: "NO_AUDIO_TRACK"
+steps:
+  - say: "cut the first 5 seconds"

@@ -1,0 +1,14 @@
+# Cutting every word of a captioned phrase makes the caption inactive (never deleted) and the answer says so; restoring the cut brings it back.
+brief: "Hard case: caption added, its sentence cut, cut restored (caption returns)"
+fixture: single
+steps:
+  - say: "add a caption \"Welcome!\" on \"welcome to the channel\""
+    expect: applied
+  - say: "cut 0:40-0:46"
+    expect: applied
+    expect_text: "Welcome!"
+  - say: "restore edit 2"
+    expect: applied
+    expect_duration_s: 200
+  - say: "make that caption red"
+    expect: applied

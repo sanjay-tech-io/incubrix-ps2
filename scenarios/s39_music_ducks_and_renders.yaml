@@ -1,0 +1,9 @@
+brief: "Must-have: background music that ducks under speech, rendered"
+fixture: single
+steps:
+  - say: "add background music"
+    expect: applied
+  - say: "cut 0:10-0:15"
+    expect: applied
+  - render: true
+    expect: succeeded

@@ -1,0 +1,8 @@
+brief: "Advanced: sped-up captions keep a readable minimum (about 0.7 s)"
+fixture: single
+steps:
+  - say: "add a caption \"Welcome!\" on \"welcome to the channel\""
+    expect: applied
+  - say: "speed up 0:41-0:45 by 4x"
+    expect: applied
+    expect_warning: "0\\.7 s"

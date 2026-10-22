@@ -1,0 +1,11 @@
+# Two speakers: the first one heard is assumed to be the host and the answer says so; the host's lead-in question is asked about, never removed silently.
+brief: "Advanced: 'remove everything the guest says about their old job' removes only the guest lines and asks about the lead-in"
+fixture: two_speakers
+steps:
+  - say: "remove everything the guest says about their old job"
+    expect: needs_clarification
+    expect_options: 2
+    expect_text: "host.*guest|guest.*host"
+    expect_hash_unchanged: true
+  - answer: "the first one"
+    expect: applied

@@ -1,0 +1,11 @@
+brief: "Must-have: captions stick to their words after a cut"
+fixture: single
+steps:
+  - say: "add a caption \"Welcome!\" on \"welcome to the channel\""
+    expect: applied
+  - say: "cut 0:10-0:20"
+    expect: applied
+    expect_text: "0:32"
+  - say: "undo"
+    expect: applied
+    expect_text: "0:42|42"

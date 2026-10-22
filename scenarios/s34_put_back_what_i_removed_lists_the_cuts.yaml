@@ -1,0 +1,15 @@
+brief: "Advanced: 'put back what I removed' with two cuts asks which"
+fixture: single
+steps:
+  - say: "cut 1:42-1:46"
+    expect: applied
+    expect_duration_s: 196
+  - say: "cut 1:26-1:29"
+    expect: applied
+    expect_duration_s: 193
+  - say: "put back what I removed"
+    expect: needs_clarification
+    expect_options: 2
+    expect_hash_unchanged: true
+  - answer: "the first one"
+    expect: applied

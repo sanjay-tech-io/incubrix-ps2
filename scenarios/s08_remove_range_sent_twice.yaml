@@ -1,0 +1,17 @@
+# Times refer to the CURRENT edited timeline, so the second 'remove 0:30-0:40' removes the next ten seconds; 'of the original' refers to the untouched source.
+brief: "Hard case: 'remove 0:30-0:40' sent twice"
+fixture: single
+steps:
+  - say: "remove 0:30-0:40"
+    expect: applied
+    expect_duration_s: 190
+  - say: "remove 0:30-0:40"
+    expect: applied
+    expect_duration_s: 180
+    expect_text: "current"
+  - say: "remove 1:00-1:10 of the original"
+    expect: applied
+    expect_text: "original"
+  - say: "remove 1:00-1:10 of the original"
+    expect: applied
+    expect_text: "original|already"

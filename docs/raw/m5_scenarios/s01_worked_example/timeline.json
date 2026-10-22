@@ -1,0 +1,110 @@
+{
+  "session_id": "ses_5cf92717ca094c87a76e",
+  "timeline": {
+    "sourceSha256": "9dcb92ec2118de4d2cf88d564cd3bf9375959917d20379bc147b01e946006e5c",
+    "segments": [
+      {
+        "id": "seg_0",
+        "span": {
+          "start": {
+            "atom": "a_4a99b54d27f9",
+            "offsetUs": 800000
+          },
+          "end": {
+            "atom": "a_555cd58876e1",
+            "offsetUs": 0
+          }
+        }
+      },
+      {
+        "id": "seg_1",
+        "span": {
+          "start": {
+            "atom": "a_2839f92272a6",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_953d7bd1f5f8",
+            "offsetUs": 7600000
+          }
+        }
+      }
+    ],
+    "speedRegions": [
+      {
+        "span": {
+          "start": {
+            "atom": "a_53ce406dfdc9",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_555cd58876e1",
+            "offsetUs": 0
+          }
+        },
+        "rate": {
+          "num": 2,
+          "den": 1
+        }
+      },
+      {
+        "span": {
+          "start": {
+            "atom": "a_2839f92272a6",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_946ad67104ad",
+            "offsetUs": 9600000
+          }
+        },
+        "rate": {
+          "num": 2,
+          "den": 1
+        }
+      }
+    ],
+    "effects": [
+      {
+        "id": "fx_0_0",
+        "range": {
+          "from": "a_654a07ac33cd",
+          "to": "a_3297bfffa6fd"
+        },
+        "params": {
+          "kind": "caption",
+          "text": "Welcome!",
+          "style": {
+            "color": "#ff0000",
+            "sizePt": 32,
+            "bold": true
+          },
+          "position": "bottom"
+        },
+        "state": "active",
+        "partial": false,
+        "fragmented": false,
+        "createdInGroup": 1
+      }
+    ],
+    "protectedPauses": [],
+    "music": null,
+    "autoCaption": null,
+    "durationUs": 150000000
+  },
+  "timeline_hash": "ed1eb00a1080d60f0e7e3db86df6bfc82570daa7c1f6aa894827733d8956bdbe",
+  "duration_s": 150,
+  "effects": [
+    {
+      "id": "fx_0_0",
+      "kind": "caption",
+      "text": "Welcome!",
+      "state": "active",
+      "partial": false,
+      "fragmented": false,
+      "start_s": 12,
+      "end_s": 14,
+      "start": "0:12.000"
+    }
+  ]
+}

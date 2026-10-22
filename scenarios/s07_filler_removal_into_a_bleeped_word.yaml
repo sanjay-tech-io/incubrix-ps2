@@ -1,0 +1,9 @@
+# A filler inside a bleep/mute is kept and the answer warns; the other fillers are cut.
+brief: "Hard case: filler removal cutting into a bleeped word"
+fixture: single
+steps:
+  - say: "bleep \"um\""
+    expect: applied
+  - say: "remove filler words"
+    expect: applied
+    expect_warning: "bleep|mute"

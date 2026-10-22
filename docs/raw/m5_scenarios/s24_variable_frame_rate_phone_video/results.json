@@ -1,0 +1,191 @@
+{
+  "name": "s24_variable_frame_rate_phone_video",
+  "video": "/tmp/incubrix-test-clips/clip_30s_speech_vfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_f2ad344b86664d268b60",
+  "session_id": "ses_8a3f5236f6764671bf1a",
+  "intake": {
+    "job_id": "job_2558ac89b715401c90b7",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "Variable frame rate detected. Times are exact for the original's timestamps, but frame-accurate cuts need a constant-frame-rate proxy at 25/1 fps, which the renderer builds from the original (M3, not built yet).",
+      "33 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 896
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "add a caption \"Hi\" on \"thanks for watching\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "add_effect",
+          "effectId": "fx_0_0",
+          "range": {
+            "from": "a_a07c2b30cb7d",
+            "to": "a_250049af9ccd"
+          },
+          "params": {
+            "kind": "caption",
+            "text": "Hi",
+            "style": {
+              "color": "#ffffff",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 0:30.000 -> 0:30.000 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "fd3fee353c703a46d34b67d9fe4a357d02375f00a8f124fe5e7754b5bde96a27",
+      "duration_s": 30,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "cut 0:05-0:08",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_d3dc028ef8fc",
+              "offsetUs": 600000
+            },
+            "end": {
+              "atom": "a_4bb00c6af5c5",
+              "offsetUs": 0
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 0:30.000 -> 0:27.000 (-0:03.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "6b76636e00441a67d9238502ca3b4dc31ad267554e1f2be8e88b0d980fec2b17",
+      "duration_s": 27,
+      "ms": 12,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "speed up 0:08-0:12 by 2x",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "set_speed",
+          "span": {
+            "start": {
+              "atom": "a_a88c59350f19",
+              "offsetUs": 1800000
+            },
+            "end": {
+              "atom": "a_11fcb4b3724a",
+              "offsetUs": 0
+            }
+          },
+          "rate": {
+            "num": 2,
+            "den": 1
+          }
+        }
+      ],
+      "summary": "Length 0:27.000 -> 0:24.920 (-0:02.080). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "0:15.000 is inside the word \"fast.\", so the cut point moved to 0:15.200, the nearest silence."
+      ],
+      "timeline_hash": "d073c2c26fa9a9ff358c23c39a535e8f46a7900fc9d5c02cf26ece4ab43ef821",
+      "duration_s": 24.92,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 4,
+      "say": null,
+      "answer_sent": null,
+      "expected": "succeeded",
+      "passed": true,
+      "http_status": 202,
+      "status": "succeeded",
+      "operations": null,
+      "summary": null,
+      "question": null,
+      "options": null,
+      "reason": null,
+      "llm": null,
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": null,
+      "warnings": null,
+      "timeline_hash": "d073c2c26fa9a9ff358c23c39a535e8f46a7900fc9d5c02cf26ece4ab43ef821",
+      "duration_s": 24.92,
+      "ms": 2076,
+      "note": null,
+      "failure": null,
+      "kind": "render",
+      "render": {
+        "job_id": "job_c4eec88d159f486cab95",
+        "job_status": "succeeded",
+        "error": null,
+        "file": "render_1.mp4",
+        "frames": 623,
+        "duration_s": 24.92,
+        "timeline_hash": "d073c2c26fa9a9ff358c23c39a535e8f46a7900fc9d5c02cf26ece4ab43ef821",
+        "render_seconds_per_output_minute": 2.5,
+        "source_unchanged": true,
+        "manifest_file": "render_1_manifest.json"
+      }
+    }
+  ],
+  "final": {
+    "timeline_hash": "d073c2c26fa9a9ff358c23c39a535e8f46a7900fc9d5c02cf26ece4ab43ef821",
+    "duration_s": 24.92
+  },
+  "error": null
+}

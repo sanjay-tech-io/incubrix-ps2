@@ -1,0 +1,252 @@
+{
+  "name": "s11_undo_second_to_last_cut_keep_music",
+  "video": "/tmp/incubrix-test-clips/clip_200s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_36c37d26cf9e4fec84e0",
+  "session_id": "ses_618215aa3ab24f7bb776",
+  "intake": {
+    "job_id": "job_daef6a82f9c64434a93d",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 397
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "add background music",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "set_music",
+          "music": {
+            "assetSha256": "19c234fef199c51cd59f5a1365f7c09ff83d8a2a8352751a5fc6668e7e739cbb",
+            "gainCentiDb": -1800,
+            "duckCentiDb": 1200,
+            "attackUs": 200000,
+            "releaseUs": 600000
+          }
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:20.000 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "Background music: the built-in generated track at -18 dB, lowered by 12 dB while someone speaks."
+      ],
+      "timeline_hash": "f058ebcf939fd72f97795c31efcacb7c59f6162fa590a6dccc0e1072497cf9bc",
+      "duration_s": 200,
+      "ms": 12,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "cut 2:15-2:19",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_6934549f1d9e",
+              "offsetUs": 2600000
+            },
+            "end": {
+              "atom": "a_6934549f1d9e",
+              "offsetUs": 6600000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:16.000 (-0:04.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "3c0d7f553086c8a18f093390a63abdc9f042e71e1d2067536abdd0add2392806",
+      "duration_s": 196,
+      "ms": 14,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "cut 2:00-2:05",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_946ad67104ad",
+              "offsetUs": 4600000
+            },
+            "end": {
+              "atom": "a_946ad67104ad",
+              "offsetUs": 9600000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:16.000 -> 3:11.000 (-0:05.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "c90b24ff8aec3143dd660052574578ff003fe8c88e84409442c0ca24ae6cbc57",
+      "duration_s": 191,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 4,
+      "say": "cut 1:42-1:46",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_5518f712db71",
+              "offsetUs": 1600000
+            },
+            "end": {
+              "atom": "a_5518f712db71",
+              "offsetUs": 5600000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:11.000 -> 3:07.000 (-0:04.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "934a4f7a456523d07d17f8a11ea10a21a53b8ef3279569c323153b13167d92a9",
+      "duration_s": 187,
+      "ms": 16,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 5,
+      "say": "undo the second-to-last cut but keep the music",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "restore",
+          "targetGroup": 3
+        }
+      ],
+      "summary": "Length 3:07.000 -> 3:12.000 (+0:05.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "Restoring edit 3: removed original 2:00.000-2:05.000. Everything else (captions, speed, music) is left as it is.",
+        "Music is not touched by this."
+      ],
+      "timeline_hash": "38da13536c82c50d278b52f9e544dc2e281a40c9d6d746ba52e949bb6fc111e8",
+      "duration_s": 192,
+      "ms": 11,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 6,
+      "say": null,
+      "answer_sent": null,
+      "expected": "succeeded",
+      "passed": true,
+      "http_status": 202,
+      "status": "succeeded",
+      "operations": null,
+      "summary": null,
+      "question": null,
+      "options": null,
+      "reason": null,
+      "llm": null,
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": null,
+      "warnings": null,
+      "timeline_hash": "38da13536c82c50d278b52f9e544dc2e281a40c9d6d746ba52e949bb6fc111e8",
+      "duration_s": 192,
+      "ms": 16793,
+      "note": null,
+      "failure": null,
+      "kind": "render",
+      "render": {
+        "job_id": "job_244c0aeb96c74418aadd",
+        "job_status": "succeeded",
+        "error": null,
+        "file": "render_1.mp4",
+        "frames": 4800,
+        "duration_s": 192,
+        "timeline_hash": "38da13536c82c50d278b52f9e544dc2e281a40c9d6d746ba52e949bb6fc111e8",
+        "render_seconds_per_output_minute": 4.8,
+        "source_unchanged": true,
+        "manifest_file": "render_1_manifest.json"
+      }
+    }
+  ],
+  "final": {
+    "timeline_hash": "38da13536c82c50d278b52f9e544dc2e281a40c9d6d746ba52e949bb6fc111e8",
+    "duration_s": 192
+  },
+  "error": null
+}

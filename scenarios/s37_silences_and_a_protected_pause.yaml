@@ -1,0 +1,13 @@
+brief: "Advanced: deliberate pauses survive silence removal"
+fixture: single
+steps:
+  - say: "keep the pause at 2:00"
+    expect: applied
+  - say: "remove silences longer than 1 second"
+    expect: applied
+    expect_text: "pause"
+  - say: "undo"
+    expect: applied
+  - say: "undo"
+    expect: applied
+    expect_duration_s: 200

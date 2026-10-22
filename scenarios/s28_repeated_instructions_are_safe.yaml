@@ -1,0 +1,20 @@
+brief: "Advanced: repeated instructions are safe"
+fixture: single
+steps:
+  - say: "add a caption \"Hi\" on \"welcome to the channel\""
+    expect: applied
+  - say: "make that caption red"
+    expect: applied
+  - say: "make that caption red"
+    expect: applied
+    expect_hash_unchanged: true
+  - say: "add captions"
+    expect: applied
+  - say: "add captions"
+    expect: applied
+    expect_hash_unchanged: true
+  - say: "cut 0:10-0:15 of the original"
+    expect: applied
+  - say: "cut 0:10-0:15 of the original"
+    expect: applied
+    expect_hash_unchanged: true

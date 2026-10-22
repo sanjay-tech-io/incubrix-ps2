@@ -1,0 +1,6 @@
+brief: "Hard case: 'add a caption at 5:00' on a shorter video"
+fixture: single
+steps:
+  - say: "add a caption \"Late\" at 5:00"
+    expect: rejected
+    expect_hash_unchanged: true

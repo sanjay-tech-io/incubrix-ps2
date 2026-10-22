@@ -1,0 +1,9 @@
+brief: "Advanced: 'the boring part' says what it can and cannot judge"
+fixture: single
+steps:
+  - say: "remove the boring part"
+    expect: needs_clarification
+    expect_text: "cannot judge"
+    expect_hash_unchanged: true
+  - answer: "the second one"
+    expect: applied

@@ -1,0 +1,49 @@
+{
+  "session_id": "ses_5ffdb9d93eee421ba8e3",
+  "timeline": {
+    "sourceSha256": "9dcb92ec2118de4d2cf88d564cd3bf9375959917d20379bc147b01e946006e5c",
+    "segments": [
+      {
+        "id": "seg_0",
+        "span": {
+          "start": {
+            "atom": "a_02c55e8ba265",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_acba4c5c3674",
+            "offsetUs": 800000
+          }
+        }
+      },
+      {
+        "id": "seg_1",
+        "span": {
+          "start": {
+            "atom": "a_e8a8aae9c8dd",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_953d7bd1f5f8",
+            "offsetUs": 7600000
+          }
+        }
+      }
+    ],
+    "speedRegions": [],
+    "effects": [],
+    "protectedPauses": [],
+    "music": {
+      "assetSha256": "19c234fef199c51cd59f5a1365f7c09ff83d8a2a8352751a5fc6668e7e739cbb",
+      "gainCentiDb": -1800,
+      "duckCentiDb": 1200,
+      "attackUs": 200000,
+      "releaseUs": 600000
+    },
+    "autoCaption": null,
+    "durationUs": 194800000
+  },
+  "timeline_hash": "3073143e9c7847678577334c3daec31ec96823ff8053b9bcf3a451ff4b9964c5",
+  "duration_s": 194.8,
+  "effects": []
+}

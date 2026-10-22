@@ -1,0 +1,81 @@
+{
+  "session_id": "ses_6ef597297ccd42e2a439",
+  "timeline": {
+    "sourceSha256": "9dcb92ec2118de4d2cf88d564cd3bf9375959917d20379bc147b01e946006e5c",
+    "segments": [
+      {
+        "id": "seg_0",
+        "span": {
+          "start": {
+            "atom": "a_02c55e8ba265",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_953d7bd1f5f8",
+            "offsetUs": 7600000
+          }
+        }
+      }
+    ],
+    "speedRegions": [
+      {
+        "span": {
+          "start": {
+            "atom": "a_a95426c3f182",
+            "offsetUs": 1800000
+          },
+          "end": {
+            "atom": "a_623587b03567",
+            "offsetUs": 1000000
+          }
+        },
+        "rate": {
+          "num": 4,
+          "den": 1
+        }
+      }
+    ],
+    "effects": [
+      {
+        "id": "fx_0_0",
+        "range": {
+          "from": "a_654a07ac33cd",
+          "to": "a_3297bfffa6fd"
+        },
+        "params": {
+          "kind": "caption",
+          "text": "Welcome!",
+          "style": {
+            "color": "#ffffff",
+            "sizePt": 32,
+            "bold": true
+          },
+          "position": "bottom"
+        },
+        "state": "active",
+        "partial": false,
+        "fragmented": false,
+        "createdInGroup": 1
+      }
+    ],
+    "protectedPauses": [],
+    "music": null,
+    "autoCaption": null,
+    "durationUs": 197000000
+  },
+  "timeline_hash": "8e4d01d4408bb9bfac6ca519b4a6085dc38db995edd52c8d994199495de2ee32",
+  "duration_s": 197,
+  "effects": [
+    {
+      "id": "fx_0_0",
+      "kind": "caption",
+      "text": "Welcome!",
+      "state": "active",
+      "partial": false,
+      "fragmented": false,
+      "start_s": 41.25,
+      "end_s": 41.95,
+      "start": "0:41.250"
+    }
+  ]
+}

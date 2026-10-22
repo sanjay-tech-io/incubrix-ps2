@@ -1,0 +1,99 @@
+{
+  "seed": null,
+  "render": {
+    "proxy": null,
+    "job_id": "job_d7169c3395df43e68554",
+    "output": {
+      "fps": "25/1",
+      "width": 160,
+      "height": 120,
+      "pixFmt": "yuv420p",
+      "seconds": 194.8,
+      "audioCodec": "aac",
+      "size_bytes": 5257647,
+      "videoCodec": "h264",
+      "videoFrames": 4870,
+      "audioDurationUs": 194800000,
+      "videoDurationUs": 194800000,
+      "formatDurationUs": 194800000
+    },
+    "pieces": 2,
+    "source": {
+      "video_id": "vid_b0a570c75f294b429aeb",
+      "unchanged": true,
+      "sha256_before": "9dcb92ec2118de4d2cf88d564cd3bf9375959917d20379bc147b01e946006e5c",
+      "sha256_after_local": "9dcb92ec2118de4d2cf88d564cd3bf9375959917d20379bc147b01e946006e5c",
+      "sha256_after_stored": "9dcb92ec2118de4d2cf88d564cd3bf9375959917d20379bc147b01e946006e5c"
+    },
+    "session_id": "ses_5ffdb9d93eee421ba8e3",
+    "timeline_hash": "3073143e9c7847678577334c3daec31ec96823ff8053b9bcf3a451ff4b9964c5",
+    "rendered_frames": 4870,
+    "timeline_frames": 4870,
+    "frame_difference": 0,
+    "ffmpeg_peak_rss_mb": 84,
+    "filter_script_sha256": "526ad3639dc0a414691673c899fa80bcaeeba7af0abc5118710e6f3bd68249a1",
+    "audio_minus_video_frames": 0,
+    "render_seconds_per_output_minute": 4.6
+  },
+  "rights": {
+    "software": {
+      "engine": "own code",
+      "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+      "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked"
+    },
+    "reference": "SOURCES.md",
+    "source_media": "not stated by the uploader"
+  },
+  "timings": {
+    "total_s": 16.062,
+    "render_s": 15.961,
+    "upload_s": 0.066,
+    "verify_s": 0.014,
+    "fetch_original_s": 0.016
+  },
+  "settings": {
+    "crf": 20,
+    "fps": "25/1",
+    "audio": "aac 192k 48 kHz stereo",
+    "bleep": "1 kHz sine, level 0.25",
+    "preset": "veryfast",
+    "pix_fmt": "yuv420p",
+    "movflags": "+faststart",
+    "max_height": 0,
+    "caption_size": "sizePt relative to a 720-line frame"
+  },
+  "warnings": [
+    "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+    "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+  ],
+  "providers": {
+    "font": "DejaVu Sans / DejaVu Sans Bold (Bitstream Vera + public-domain changes licence; commercial use allowed), see SOURCES.md",
+    "media": {
+      "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers"
+    },
+    "music": {
+      "note": "programmatic sine-wave pad, not an AI model",
+      "builtin": true,
+      "asset_sha256": "19c234fef199c51cd59f5a1365f7c09ff83d8a2a8352751a5fc6668e7e739cbb"
+    },
+    "audio_codec": {
+      "name": "aac (ffmpeg native encoder)"
+    },
+    "video_codec": {
+      "name": "libx264",
+      "note": "H.264 (GPL libx264 inside the ffmpeg build; used as an external program, not linked)"
+    }
+  },
+  "ai_generated": {
+    "music": false,
+    "transcript_words": true,
+    "captions_text_is_user_text": false,
+    "input_media_marked_ai_generated": false
+  },
+  "cost_estimate": {
+    "usd": null,
+    "note": "No price per CPU second is configured, so no money figure is given.",
+    "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+    "cpu_seconds": 19.593
+  }
+}

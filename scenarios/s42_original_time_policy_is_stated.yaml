@@ -1,0 +1,9 @@
+brief: "Must-have: one stated time policy, mentioned in answers"
+fixture: single
+steps:
+  - say: "cut 0:30-0:40"
+    expect: applied
+    expect_text: "Time policy: current"
+  - say: "cut 0:30-0:40 of the original"
+    expect: applied
+    expect_text: "Time policy: original"

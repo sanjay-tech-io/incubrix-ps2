@@ -1,0 +1,390 @@
+{
+  "total": 48,
+  "passed": 48,
+  "scenarios": [
+    {
+      "scenario": "s01_worked_example",
+      "fixture": "single",
+      "brief": "Worked example, 8 steps, with the numbers worked out by hand from the fixture",
+      "passed": true,
+      "known_failure": null,
+      "steps": 9
+    },
+    {
+      "scenario": "s02_undo_redo_new_edit_clears_redo",
+      "fixture": "single",
+      "brief": "Undo/redo: 1 instruction = 1 undo; a new edit clears redo",
+      "passed": true,
+      "known_failure": null,
+      "steps": 7
+    },
+    {
+      "scenario": "s03_nothing_to_undo",
+      "fixture": "single",
+      "brief": "Rejected answers are normal answers and change nothing",
+      "passed": true,
+      "known_failure": null,
+      "steps": 2
+    },
+    {
+      "scenario": "s04_caption_sentence_cut_then_restored",
+      "fixture": "single",
+      "brief": "Hard case: caption added, its sentence cut, cut restored (caption returns)",
+      "passed": true,
+      "known_failure": null,
+      "steps": 4
+    },
+    {
+      "scenario": "s05_partial_cut_of_captioned_phrase",
+      "fixture": "single",
+      "brief": "Advanced: documented rule for a partial cut of a captioned phrase",
+      "passed": true,
+      "known_failure": null,
+      "steps": 2
+    },
+    {
+      "scenario": "s06_reorder_then_mute_a_word",
+      "fixture": "single",
+      "brief": "Hard case: section reordered, then a word muted",
+      "passed": true,
+      "known_failure": null,
+      "steps": 3
+    },
+    {
+      "scenario": "s07_filler_removal_into_a_bleeped_word",
+      "fixture": "single",
+      "brief": "Hard case: filler removal cutting into a bleeped word",
+      "passed": true,
+      "known_failure": null,
+      "steps": 2
+    },
+    {
+      "scenario": "s08_remove_range_sent_twice",
+      "fixture": "single",
+      "brief": "Hard case: 'remove 0:30-0:40' sent twice",
+      "passed": true,
+      "known_failure": null,
+      "steps": 4
+    },
+    {
+      "scenario": "s09_caption_beyond_the_end",
+      "fixture": "single",
+      "brief": "Hard case: 'add a caption at 5:00' on a shorter video",
+      "passed": true,
+      "known_failure": null,
+      "steps": 1
+    },
+    {
+      "scenario": "s10_time_phrases",
+      "fixture": "single",
+      "brief": "Hard case: '80 seconds', 'a minute twenty', 'the last 10 seconds'",
+      "passed": true,
+      "known_failure": null,
+      "steps": 4
+    },
+    {
+      "scenario": "s11_undo_second_to_last_cut_keep_music",
+      "fixture": "single",
+      "brief": "Hard case: 'undo the second-to-last cut but keep the music'",
+      "passed": true,
+      "known_failure": null,
+      "steps": 6
+    },
+    {
+      "scenario": "s12_make_it_bigger_without_a_caption",
+      "fixture": "single",
+      "brief": "Hard case: 'make it bigger' with no caption",
+      "passed": true,
+      "known_failure": null,
+      "steps": 1
+    },
+    {
+      "scenario": "s13_everything_after_thanks_said_four_times",
+      "fixture": "single",
+      "brief": "Hard case: 'remove everything after I say thanks' (said four times)",
+      "passed": true,
+      "known_failure": null,
+      "steps": 2
+    },
+    {
+      "scenario": "s14_everything_after_thanks_first_one",
+      "fixture": "single",
+      "brief": "Hard case: the answer picks the first of four 'thanks'",
+      "passed": true,
+      "known_failure": null,
+      "steps": 3
+    },
+    {
+      "scenario": "s15_speed_up_10x",
+      "fixture": "single",
+      "brief": "Hard case: 'speed up 10x' is outside the documented range",
+      "passed": true,
+      "known_failure": null,
+      "steps": 2
+    },
+    {
+      "scenario": "s16_cut_everything",
+      "fixture": "single",
+      "brief": "Hard case: 'cut everything'",
+      "passed": true,
+      "known_failure": null,
+      "steps": 2
+    },
+    {
+      "scenario": "s17_three_parts_one_impossible",
+      "fixture": "single",
+      "brief": "Hard case: a three-part instruction with one impossible part",
+      "passed": true,
+      "known_failure": null,
+      "steps": 2
+    },
+    {
+      "scenario": "s18_guest_old_job_assumes_host_asks_lead_in",
+      "fixture": "two_speakers",
+      "brief": "Advanced: 'remove everything the guest says about their old job' removes only the guest lines and asks about the lead-in",
+      "passed": true,
+      "known_failure": null,
+      "steps": 2
+    },
+    {
+      "scenario": "s19_guest_old_job_with_the_lead_in",
+      "fixture": "two_speakers",
+      "brief": "Advanced: second option also removes the host's lead-in",
+      "passed": true,
+      "known_failure": null,
+      "steps": 3
+    },
+    {
+      "scenario": "s20_possible_label_swap_warns",
+      "fixture": "two_speakers",
+      "brief": "Outstanding: possible speaker-label swaps warn",
+      "passed": true,
+      "known_failure": null,
+      "steps": 2
+    },
+    {
+      "scenario": "s21_overlapping_speech_warns",
+      "fixture": "two_speakers",
+      "brief": "Outstanding: overlapping speech warns",
+      "passed": true,
+      "known_failure": null,
+      "steps": 1
+    },
+    {
+      "scenario": "s22_uncertain_speaker_label_warns",
+      "fixture": "two_speakers",
+      "brief": "Outstanding: an uncertain speaker label warns",
+      "passed": true,
+      "known_failure": null,
+      "steps": 1
+    },
+    {
+      "scenario": "s23_one_speaker_video_has_no_guest",
+      "fixture": "single",
+      "brief": "Rejected, not guessed: 'the guest' in a one-speaker video",
+      "passed": true,
+      "known_failure": null,
+      "steps": 1
+    },
+    {
+      "scenario": "s24_variable_frame_rate_phone_video",
+      "fixture": "phone_vfr",
+      "brief": "Hard case: a phone video with variable frame rate",
+      "passed": true,
+      "known_failure": null,
+      "steps": 4
+    },
+    {
+      "scenario": "s25_video_without_audio_fails_clearly",
+      "fixture": "no_audio",
+      "brief": "Outstanding: a video with no audio track fails clearly",
+      "passed": true,
+      "known_failure": null,
+      "steps": 0
+    },
+    {
+      "scenario": "s26_sped_up_caption_keeps_a_minimum",
+      "fixture": "single",
+      "brief": "Advanced: sped-up captions keep a readable minimum (about 0.7 s)",
+      "passed": true,
+      "known_failure": null,
+      "steps": 2
+    },
+    {
+      "scenario": "s27_overlapping_speed_changes",
+      "fixture": "single",
+      "brief": "Advanced: documented rule for overlapping speed changes (the later one replaces the earlier)",
+      "passed": true,
+      "known_failure": null,
+      "steps": 3
+    },
+    {
+      "scenario": "s28_repeated_instructions_are_safe",
+      "fixture": "single",
+      "brief": "Advanced: repeated instructions are safe",
+      "passed": true,
+      "known_failure": null,
+      "steps": 7
+    },
+    {
+      "scenario": "s29_pricing_asks_which_of_three",
+      "fixture": "single",
+      "brief": "Advanced: ambiguity asks, with specific options",
+      "passed": true,
+      "known_failure": null,
+      "steps": 2
+    },
+    {
+      "scenario": "s30_meaning_search_cost_finds_pricing",
+      "fixture": "single",
+      "brief": "Advanced: meaning-based search ('cost' finds 'pricing') shows matches before cutting",
+      "passed": true,
+      "known_failure": null,
+      "steps": 2
+    },
+    {
+      "scenario": "s31_nothing_matches_is_rejected",
+      "fixture": "single",
+      "brief": "Rejected, not guessed: a topic that is not in the video",
+      "passed": true,
+      "known_failure": null,
+      "steps": 1
+    },
+    {
+      "scenario": "s32_make_it_shorter_asks_with_options",
+      "fixture": "single",
+      "brief": "Advanced: 'make it shorter' asks with measurable options",
+      "passed": true,
+      "known_failure": null,
+      "steps": 2
+    },
+    {
+      "scenario": "s33_the_boring_part_states_its_assumption",
+      "fixture": "single",
+      "brief": "Advanced: 'the boring part' says what it can and cannot judge",
+      "passed": true,
+      "known_failure": null,
+      "steps": 2
+    },
+    {
+      "scenario": "s34_put_back_what_i_removed_lists_the_cuts",
+      "fixture": "single",
+      "brief": "Advanced: 'put back what I removed' with two cuts asks which",
+      "passed": true,
+      "known_failure": null,
+      "steps": 4
+    },
+    {
+      "scenario": "s35_that_caption_with_two_captions_asks",
+      "fixture": "single",
+      "brief": "Advanced: 'that caption' with two captions asks which",
+      "passed": true,
+      "known_failure": null,
+      "steps": 4
+    },
+    {
+      "scenario": "s36_remove_fillers_then_undo",
+      "fixture": "single",
+      "brief": "Must-have: remove fillers (um, uh, 'like' only as a filler)",
+      "passed": true,
+      "known_failure": null,
+      "steps": 2
+    },
+    {
+      "scenario": "s37_silences_and_a_protected_pause",
+      "fixture": "single",
+      "brief": "Advanced: deliberate pauses survive silence removal",
+      "passed": true,
+      "known_failure": null,
+      "steps": 4
+    },
+    {
+      "scenario": "s38_keep_only_and_restore_edit_n",
+      "fixture": "single",
+      "brief": "Must-have: keep only a range; restore a specific earlier edit",
+      "passed": true,
+      "known_failure": null,
+      "steps": 3
+    },
+    {
+      "scenario": "s39_music_ducks_and_renders",
+      "fixture": "single",
+      "brief": "Must-have: background music that ducks under speech, rendered",
+      "passed": true,
+      "known_failure": null,
+      "steps": 3
+    },
+    {
+      "scenario": "s40_low_confidence_word_warns_before_bleeping",
+      "fixture": "low_confidence",
+      "brief": "Outstanding: low-confidence words are flagged, not bleeped blindly",
+      "passed": true,
+      "known_failure": null,
+      "steps": 1
+    },
+    {
+      "scenario": "s41_auto_captions_follow_cut_and_speed",
+      "fixture": "single",
+      "brief": "Must-have: auto-captions from the words that survive",
+      "passed": true,
+      "known_failure": null,
+      "steps": 4
+    },
+    {
+      "scenario": "s42_original_time_policy_is_stated",
+      "fixture": "single",
+      "brief": "Must-have: one stated time policy, mentioned in answers",
+      "passed": true,
+      "known_failure": null,
+      "steps": 2
+    },
+    {
+      "scenario": "s43_caption_styling_edits",
+      "fixture": "single",
+      "brief": "Must-have: caption text, colour, size, bold, position",
+      "passed": true,
+      "known_failure": null,
+      "steps": 4
+    },
+    {
+      "scenario": "s44_unreadable_instruction_is_rejected",
+      "fixture": "single",
+      "brief": "Three-way answers: an instruction nobody can read is rejected, not guessed",
+      "passed": true,
+      "known_failure": null,
+      "steps": 1
+    },
+    {
+      "scenario": "s45_cut_beyond_the_end",
+      "fixture": "single",
+      "brief": "Out of range is rejected",
+      "passed": true,
+      "known_failure": null,
+      "steps": 1
+    },
+    {
+      "scenario": "s46_slow_motion",
+      "fixture": "single",
+      "brief": "Must-have: speed up / slow down",
+      "passed": true,
+      "known_failure": null,
+      "steps": 2
+    },
+    {
+      "scenario": "s47_move_into_itself_is_rejected",
+      "fixture": "single",
+      "brief": "Reorder: a target inside the moved span is rejected",
+      "passed": true,
+      "known_failure": null,
+      "steps": 1
+    },
+    {
+      "scenario": "s48_cut_then_caption_follows_the_words",
+      "fixture": "single",
+      "brief": "Must-have: captions stick to their words after a cut",
+      "passed": true,
+      "known_failure": null,
+      "steps": 3
+    }
+  ]
+}

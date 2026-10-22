@@ -1,0 +1,9 @@
+# 'to' and 'the' are cut; the caption keeps its literal text on the surviving words and the answer lists what was cut.
+brief: "Advanced: documented rule for a partial cut of a captioned phrase"
+fixture: single
+steps:
+  - say: "add a caption \"Welcome!\" on \"welcome to the channel\""
+    expect: applied
+  - say: "cut 0:42.5-0:43.5"
+    expect: applied
+    expect_text: "Welcome!|cut"

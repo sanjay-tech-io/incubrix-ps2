@@ -1,0 +1,7 @@
+brief: "Rejected, not guessed: 'the guest' in a one-speaker video"
+fixture: single
+steps:
+  - say: "remove everything the guest says about pricing"
+    expect: rejected
+    expect_text: "one speaker|only one"
+    expect_hash_unchanged: true

@@ -1,0 +1,6 @@
+brief: "Outstanding: overlapping speech warns"
+fixture: two_speakers
+steps:
+  - say: "cut 0:29-0:33"
+    expect: applied
+    expect_warning: "overlap"

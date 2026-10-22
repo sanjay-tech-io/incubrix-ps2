@@ -1,0 +1,74 @@
+{
+  "name": "s15_speed_up_10x",
+  "video": "/tmp/incubrix-test-clips/clip_200s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_ad89497041d341289c86",
+  "session_id": "ses_3f9f6fc7d68f4e3f96f8",
+  "intake": {
+    "job_id": "job_94883d67c15344239acc",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 342
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "speed up 0:10-0:20 by 10x",
+      "answer_sent": null,
+      "expected": "rejected",
+      "passed": true,
+      "http_status": 200,
+      "status": "rejected",
+      "operations": [],
+      "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": "speed 10x is outside the allowed range 0.25x to 4x",
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "878114337fcc4a977a2e3259b2b866ca84c356e4555ddc4dbe81b13250027f4c",
+      "duration_s": 200,
+      "ms": 11,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "slow down 0:10-0:20 to 0.1x",
+      "answer_sent": null,
+      "expected": "rejected",
+      "passed": true,
+      "http_status": 200,
+      "status": "rejected",
+      "operations": [],
+      "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": "speed 0.1x is outside the allowed range 0.25x to 4x",
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "878114337fcc4a977a2e3259b2b866ca84c356e4555ddc4dbe81b13250027f4c",
+      "duration_s": 200,
+      "ms": 11,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "878114337fcc4a977a2e3259b2b866ca84c356e4555ddc4dbe81b13250027f4c",
+    "duration_s": 200
+  },
+  "error": null
+}

@@ -1,0 +1,56 @@
+{
+  "session_id": "ses_5997f68a7c8440afbfb5",
+  "timeline": {
+    "sourceSha256": "b31b596759afcb15636fd2201133c594e20d7eba05a929d3e426ef4e5b8ecc43",
+    "segments": [
+      {
+        "id": "seg_0",
+        "span": {
+          "start": {
+            "atom": "a_3ede33018f82",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_95273d1632e9",
+            "offsetUs": 0
+          }
+        }
+      },
+      {
+        "id": "seg_1",
+        "span": {
+          "start": {
+            "atom": "a_033c9f2b9238",
+            "offsetUs": 450000
+          },
+          "end": {
+            "atom": "a_dae292d10fe2",
+            "offsetUs": 0
+          }
+        }
+      },
+      {
+        "id": "seg_2",
+        "span": {
+          "start": {
+            "atom": "a_e0f88fe94105",
+            "offsetUs": 50000
+          },
+          "end": {
+            "atom": "a_7c93462ca9d1",
+            "offsetUs": 7450000
+          }
+        }
+      }
+    ],
+    "speedRegions": [],
+    "effects": [],
+    "protectedPauses": [],
+    "music": null,
+    "autoCaption": null,
+    "durationUs": 42000000
+  },
+  "timeline_hash": "ea91f1b7669bafa3df74a1250a073561e7f7d6b35d2a223ba5988467e5a4bc6e",
+  "duration_s": 42,
+  "effects": []
+}

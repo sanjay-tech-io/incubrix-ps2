@@ -1,0 +1,11 @@
+brief: "Hard case: 'speed up 10x' is outside the documented range"
+fixture: single
+steps:
+  - say: "speed up 0:10-0:20 by 10x"
+    expect: rejected
+    expect_text: "4|range|0.25"
+    expect_hash_unchanged: true
+  - say: "slow down 0:10-0:20 to 0.1x"
+    expect: rejected
+    expect_text: "0.25|range"
+    expect_hash_unchanged: true

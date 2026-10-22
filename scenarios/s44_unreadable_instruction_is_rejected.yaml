@@ -1,0 +1,6 @@
+brief: "Three-way answers: an instruction nobody can read is rejected, not guessed"
+fixture: single
+steps:
+  - say: "frobnicate the widgets"
+    expect: rejected
+    expect_hash_unchanged: true

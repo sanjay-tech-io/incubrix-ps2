@@ -1,0 +1,9 @@
+brief: "Advanced: meaning-based search ('cost' finds 'pricing') shows matches before cutting"
+fixture: single
+steps:
+  - say: "remove the part about cost"
+    expect: needs_clarification
+    expect_hash_unchanged: true
+    expect_text: "pricing"
+  - answer: "the first one"
+    expect: applied

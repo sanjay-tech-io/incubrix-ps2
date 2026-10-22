@@ -1,0 +1,9 @@
+brief: "Hard case: 'cut everything'"
+fixture: single
+steps:
+  - say: "cut everything"
+    expect: rejected
+    expect_hash_unchanged: true
+  - say: "cut 0:00-3:20"
+    expect: rejected
+    expect_hash_unchanged: true

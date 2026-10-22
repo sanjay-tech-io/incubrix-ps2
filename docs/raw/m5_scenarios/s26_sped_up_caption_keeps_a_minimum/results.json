@@ -1,0 +1,113 @@
+{
+  "name": "s26_sped_up_caption_keeps_a_minimum",
+  "video": "/tmp/incubrix-test-clips/clip_200s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_ca6b15e9eba14bf5b4c3",
+  "session_id": "ses_6ef597297ccd42e2a439",
+  "intake": {
+    "job_id": "job_d7189a611d694762be8e",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 364
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "add a caption \"Welcome!\" on \"welcome to the channel\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "add_effect",
+          "effectId": "fx_0_0",
+          "range": {
+            "from": "a_654a07ac33cd",
+            "to": "a_3297bfffa6fd"
+          },
+          "params": {
+            "kind": "caption",
+            "text": "Welcome!",
+            "style": {
+              "color": "#ffffff",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:20.000 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "495b01e863637af54f5191c5ab7377118dac581861fa4ddc40888aed57982a65",
+      "duration_s": 200,
+      "ms": 11,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "speed up 0:41-0:45 by 4x",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "set_speed",
+          "span": {
+            "start": {
+              "atom": "a_a95426c3f182",
+              "offsetUs": 1800000
+            },
+            "end": {
+              "atom": "a_623587b03567",
+              "offsetUs": 1000000
+            }
+          },
+          "rate": {
+            "num": 4,
+            "den": 1
+          }
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:17.000 (-0:03.000). caption \"Welcome!\" moved from 0:42.000 to 0:41.250. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "caption \"Welcome!\" would be on screen for under 0.7 s after the speed change, so it is shown for 0.7 s instead."
+      ],
+      "timeline_hash": "8e4d01d4408bb9bfac6ca519b4a6085dc38db995edd52c8d994199495de2ee32",
+      "duration_s": 197,
+      "ms": 12,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "8e4d01d4408bb9bfac6ca519b4a6085dc38db995edd52c8d994199495de2ee32",
+    "duration_s": 197
+  },
+  "error": null
+}

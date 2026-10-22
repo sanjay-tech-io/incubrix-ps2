@@ -1,0 +1,371 @@
+{
+  "name": "s01_worked_example",
+  "video": "/tmp/incubrix-test-clips/clip_200s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_04ca2b32cd9c4cb79752",
+  "session_id": "ses_5cf92717ca094c87a76e",
+  "intake": {
+    "job_id": "job_584ce4104dbb4dc9b69d",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 1465
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "add a caption \"Welcome!\" on \"welcome to the channel\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "add_effect",
+          "effectId": "fx_0_0",
+          "range": {
+            "from": "a_654a07ac33cd",
+            "to": "a_3297bfffa6fd"
+          },
+          "params": {
+            "kind": "caption",
+            "text": "Welcome!",
+            "style": {
+              "color": "#ffffff",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:20.000 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "495b01e863637af54f5191c5ab7377118dac581861fa4ddc40888aed57982a65",
+      "duration_s": 200,
+      "ms": 35,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "cut the first 30 seconds",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_02c55e8ba265",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_4a99b54d27f9",
+              "offsetUs": 800000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:20.000 -> 2:50.000 (-0:30.000). caption \"Welcome!\" moved from 0:42.000 to 0:12.000. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "9cac86970d03b2fe94a6e0ce9943f95bfac142e8117db763fa00373a88fecffe",
+      "duration_s": 170,
+      "ms": 27,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "remove the part about pricing",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "\"pricing\" is mentioned 3 times. Which part should I remove?",
+      "options": [
+        "#1 at 0:35.000 [exact word]: \"Now let us talk about pricing.\"",
+        "#2 at 1:18.000 [exact word]: \"The pricing for teams is different.\"",
+        "#3 at 2:10.000 [exact word]: \"One last word on pricing.\""
+      ],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": 18,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "9cac86970d03b2fe94a6e0ce9943f95bfac142e8117db763fa00373a88fecffe",
+      "duration_s": 170,
+      "ms": 41,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 4,
+      "say": null,
+      "answer_sent": "the second one",
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_555cd58876e1",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_2839f92272a6",
+              "offsetUs": 0
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 2:50.000 -> 2:45.000 (-0:05.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "8198c87f004d239fc25709cb62621522944e243d596f76b912bf2ae8efe8ba3c",
+      "duration_s": 165,
+      "ms": 17,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 5,
+      "say": "speed up 1:00-1:30 by 2x",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "set_speed",
+          "span": {
+            "start": {
+              "atom": "a_53ce406dfdc9",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_555cd58876e1",
+              "offsetUs": 0
+            }
+          },
+          "rate": {
+            "num": 2,
+            "den": 1
+          }
+        },
+        {
+          "type": "set_speed",
+          "span": {
+            "start": {
+              "atom": "a_2839f92272a6",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_946ad67104ad",
+              "offsetUs": 9600000
+            }
+          },
+          "rate": {
+            "num": 2,
+            "den": 1
+          }
+        }
+      ],
+      "summary": "Length 2:45.000 -> 2:30.000 (-0:15.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "c45ef8fdaf28d7c4a69b9164eb6fc1923a35e0ae796c87c72a3761957581269b",
+      "duration_s": 150,
+      "ms": 16,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 6,
+      "say": "put the intro back",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "restore",
+          "targetGroup": 2
+        }
+      ],
+      "summary": "Length 2:30.000 -> 3:00.000 (+0:30.000). caption \"Welcome!\" moved from 0:12.000 to 0:42.000. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "Restoring edit 2: removed original 0:00.000-0:30.000."
+      ],
+      "timeline_hash": "2dab770e5d778547df7e21594559f0880497aa65a10b89352d13cfb8850bc6f9",
+      "duration_s": 180,
+      "ms": 18,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 7,
+      "say": "undo",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [],
+      "summary": "Undid edit 5. Length 3:00.000 -> 2:30.000 (-0:30.000). caption \"Welcome!\" moved from 0:42.000 to 0:12.000. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "c45ef8fdaf28d7c4a69b9164eb6fc1923a35e0ae796c87c72a3761957581269b",
+      "duration_s": 150,
+      "ms": 17,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 8,
+      "say": "make that caption red",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "update_effect",
+          "effectId": "fx_0_0",
+          "params": {
+            "kind": "caption",
+            "text": "Welcome!",
+            "style": {
+              "color": "#ff0000",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 2:30.000 -> 2:30.000 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "ed1eb00a1080d60f0e7e3db86df6bfc82570daa7c1f6aa894827733d8956bdbe",
+      "duration_s": 150,
+      "ms": 15,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 9,
+      "say": null,
+      "answer_sent": null,
+      "expected": "succeeded",
+      "passed": true,
+      "http_status": 202,
+      "status": "succeeded",
+      "operations": null,
+      "summary": null,
+      "question": null,
+      "options": null,
+      "reason": null,
+      "llm": null,
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": null,
+      "warnings": null,
+      "timeline_hash": "ed1eb00a1080d60f0e7e3db86df6bfc82570daa7c1f6aa894827733d8956bdbe",
+      "duration_s": 150,
+      "ms": 3636,
+      "note": null,
+      "failure": null,
+      "kind": "render",
+      "render": {
+        "job_id": "job_6a6c3cb53182468e89f8",
+        "job_status": "succeeded",
+        "error": null,
+        "file": "render_1.mp4",
+        "frames": 3750,
+        "duration_s": 150,
+        "timeline_hash": "ed1eb00a1080d60f0e7e3db86df6bfc82570daa7c1f6aa894827733d8956bdbe",
+        "render_seconds_per_output_minute": 1.1,
+        "source_unchanged": true,
+        "manifest_file": "render_1_manifest.json"
+      }
+    }
+  ],
+  "final": {
+    "timeline_hash": "ed1eb00a1080d60f0e7e3db86df6bfc82570daa7c1f6aa894827733d8956bdbe",
+    "duration_s": 150
+  },
+  "error": null
+}

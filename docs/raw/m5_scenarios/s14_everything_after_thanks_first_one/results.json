@@ -1,0 +1,119 @@
+{
+  "name": "s14_everything_after_thanks_first_one",
+  "video": "/tmp/incubrix-test-clips/clip_200s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_9b751634f988423795d4",
+  "session_id": "ses_25449104b2eb40339180",
+  "intake": {
+    "job_id": "job_8f675badc55c49a687ae",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 373
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "remove everything after I say thanks",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "\"thanks\" appears 4 times. Which one?",
+      "options": [
+        "#1 at 0:03.200: \"Hi everyone and thanks for watching. Um today I\"",
+        "#2 at 0:48.000: \"to the channel. Thanks for joining me today. The\"",
+        "#3 at 2:30.000: \"your voice automatically. Thanks again for the support. One\"",
+        "#4 at 3:10.000: \"in the comments. Thanks and see you next time.\""
+      ],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "878114337fcc4a977a2e3259b2b866ca84c356e4555ddc4dbe81b13250027f4c",
+      "duration_s": 200,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": null,
+      "answer_sent": "the first one",
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_0e4cbbc070e0",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_953d7bd1f5f8",
+              "offsetUs": 7600000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:20.000 -> 0:03.600 (-3:16.400). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "03fad20597e577d913b5c5fd638c54d9724134a02f6fd68b4fc14efe4091ad54",
+      "duration_s": 3.6,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "undo",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [],
+      "summary": "Undid edit 1. Length 0:03.600 -> 3:20.000 (+3:16.400). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "878114337fcc4a977a2e3259b2b866ca84c356e4555ddc4dbe81b13250027f4c",
+      "duration_s": 200,
+      "ms": 14,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "878114337fcc4a977a2e3259b2b866ca84c356e4555ddc4dbe81b13250027f4c",
+    "duration_s": 200
+  },
+  "error": null
+}

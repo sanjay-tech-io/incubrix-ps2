@@ -1,0 +1,106 @@
+{
+  "name": "s42_original_time_policy_is_stated",
+  "video": "/tmp/incubrix-test-clips/clip_200s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_06aa09f01d9b419f9a40",
+  "session_id": "ses_b54b32fa6973472894fd",
+  "intake": {
+    "job_id": "job_2d4e3d5fa94c4b108ce0",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 363
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "cut 0:30-0:40",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_4a99b54d27f9",
+              "offsetUs": 800000
+            },
+            "end": {
+              "atom": "a_a95426c3f182",
+              "offsetUs": 800000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:10.000 (-0:10.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "abe3f342fa7068bf740885749286fe2dfa57ee07ac724be979c18983dc989ea4",
+      "duration_s": 190,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "cut 0:30-0:40 of the original",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_4a99b54d27f9",
+              "offsetUs": 800000
+            },
+            "end": {
+              "atom": "a_a95426c3f182",
+              "offsetUs": 800000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:10.000 -> 3:10.000 (unchanged). Time policy: original (times refer to the untouched source video).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "original",
+      "warnings": [
+        "Nothing changed: the timeline is identical to before (this edit was already in effect)."
+      ],
+      "timeline_hash": "abe3f342fa7068bf740885749286fe2dfa57ee07ac724be979c18983dc989ea4",
+      "duration_s": 190,
+      "ms": 18,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "abe3f342fa7068bf740885749286fe2dfa57ee07ac724be979c18983dc989ea4",
+    "duration_s": 190
+  },
+  "error": null
+}

@@ -1,0 +1,485 @@
+{
+  "name": "s37_silences_and_a_protected_pause",
+  "video": "/tmp/incubrix-test-clips/clip_200s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_c6ed810d47fa45589c25",
+  "session_id": "ses_b4cdd23984994bbc9097",
+  "intake": {
+    "job_id": "job_c99674074cfd46de9a2f",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 362
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "keep the pause at 2:00",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "protect_pause",
+          "range": {
+            "from": "a_946ad67104ad",
+            "to": "a_946ad67104ad"
+          }
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:20.000 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "02badfa3a18e17de44c4b4f9b293aa894c344f0ed2a7e02cf7f2ce22dcd979b5",
+      "duration_s": 200,
+      "ms": 12,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "remove silences longer than 1 second",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_02c55e8ba265",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_02c55e8ba265",
+              "offsetUs": 1840000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_aa7243233e2c",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_aa7243233e2c",
+              "offsetUs": 1440000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_acba4c5c3674",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_acba4c5c3674",
+              "offsetUs": 2640000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_e8a8aae9c8dd",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_e8a8aae9c8dd",
+              "offsetUs": 2640000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_45ffabd80801",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_45ffabd80801",
+              "offsetUs": 2640000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_4a99b54d27f9",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_4a99b54d27f9",
+              "offsetUs": 1640000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_0920b55a6c5e",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_0920b55a6c5e",
+              "offsetUs": 2040000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_a95426c3f182",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_a95426c3f182",
+              "offsetUs": 2640000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_623587b03567",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_623587b03567",
+              "offsetUs": 3840000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_51fcc1b5c261",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_51fcc1b5c261",
+              "offsetUs": 3840000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_fd5f6678808c",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_fd5f6678808c",
+              "offsetUs": 3040000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_1f3156fda4c6",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_1f3156fda4c6",
+              "offsetUs": 2440000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_1807a86de5d5",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_1807a86de5d5",
+              "offsetUs": 4440000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_62280431d08f",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_62280431d08f",
+              "offsetUs": 4440000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_8e90246ebeea",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_8e90246ebeea",
+              "offsetUs": 5440000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_2f56379b7968",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_2f56379b7968",
+              "offsetUs": 5840000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_5518f712db71",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_5518f712db71",
+              "offsetUs": 7440000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_72a8c027702e",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_72a8c027702e",
+              "offsetUs": 2440000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_6934549f1d9e",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_6934549f1d9e",
+              "offsetUs": 7440000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_ee506398b6fe",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_ee506398b6fe",
+              "offsetUs": 7440000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_41ddb39adbbb",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_41ddb39adbbb",
+              "offsetUs": 7840000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_72189ba48ee9",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_72189ba48ee9",
+              "offsetUs": 7840000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_18beb681dfad",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_18beb681dfad",
+              "offsetUs": 5440000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_48a037a0de90",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_48a037a0de90",
+              "offsetUs": 9440000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_953d7bd1f5f8",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_953d7bd1f5f8",
+              "offsetUs": 7600000
+            }
+          }
+        }
+      ],
+      "summary": "Length 3:20.000 -> 1:30.080 (-1:49.920). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "Kept 1 long pause because it is pinned."
+      ],
+      "timeline_hash": "daf9e1f34bb925d8a5b569da6c5d88e257eb936231506ad523f3d19021de1469",
+      "duration_s": 90.08,
+      "ms": 33,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "undo",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [],
+      "summary": "Undid edit 2. Length 1:30.080 -> 3:20.000 (+1:49.920). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "02badfa3a18e17de44c4b4f9b293aa894c344f0ed2a7e02cf7f2ce22dcd979b5",
+      "duration_s": 200,
+      "ms": 12,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 4,
+      "say": "undo",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [],
+      "summary": "Undid edit 1. Length 3:20.000 -> 3:20.000 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "878114337fcc4a977a2e3259b2b866ca84c356e4555ddc4dbe81b13250027f4c",
+      "duration_s": 200,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "878114337fcc4a977a2e3259b2b866ca84c356e4555ddc4dbe81b13250027f4c",
+    "duration_s": 200
+  },
+  "error": null
+}

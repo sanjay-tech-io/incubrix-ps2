@@ -1,0 +1,7 @@
+brief: "Must-have: speed up / slow down"
+fixture: single
+steps:
+  - say: "slow down 0:10-0:20 to 0.5x"
+    expect: applied
+  - render: true
+    expect: succeeded

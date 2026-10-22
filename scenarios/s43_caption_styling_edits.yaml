@@ -1,0 +1,11 @@
+brief: "Must-have: caption text, colour, size, bold, position"
+fixture: single
+steps:
+  - say: "add a caption \"Welcome!\" on \"welcome to the channel\""
+    expect: applied
+  - say: "make that caption red"
+    expect: applied
+  - say: "make that caption bigger"
+    expect: applied
+  - say: "put that caption at the top"
+    expect: applied

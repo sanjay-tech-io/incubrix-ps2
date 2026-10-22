@@ -1,0 +1,11 @@
+brief: "Must-have: auto-captions from the words that survive"
+fixture: single
+steps:
+  - say: "add captions"
+    expect: applied
+  - say: "cut 0:10-0:20"
+    expect: applied
+  - say: "speed up 0:30-0:50 by 4x"
+    expect: applied
+  - render: true
+    expect: succeeded

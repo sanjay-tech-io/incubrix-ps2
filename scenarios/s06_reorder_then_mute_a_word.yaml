@@ -1,0 +1,10 @@
+brief: "Hard case: section reordered, then a word muted"
+fixture: single
+steps:
+  - say: "move 0:30-0:40 to the end"
+    expect: applied
+    expect_duration_s: 200
+  - say: "mute \"welcome\""
+    expect: applied
+  - render: true
+    expect: succeeded

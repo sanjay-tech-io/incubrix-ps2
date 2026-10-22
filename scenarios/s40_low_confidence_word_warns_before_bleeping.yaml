@@ -1,0 +1,6 @@
+brief: "Outstanding: low-confidence words are flagged, not bleeped blindly"
+fixture: low_confidence
+steps:
+  - say: "bleep \"Honestly\""
+    expect: applied
+    expect_warning: "low confidence"

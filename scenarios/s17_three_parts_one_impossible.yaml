@@ -1,0 +1,10 @@
+# The parts that can be applied are applied, the answer reports exactly which one was not and why; one undo reverts all applied parts together.
+brief: "Hard case: a three-part instruction with one impossible part"
+fixture: single
+steps:
+  - say: "cut 0:10-0:15, then speed up 0:30-0:40 by 10x, then add a caption \"Hi\" on \"welcome to the channel\""
+    expect: applied
+    expect_text: "speed"
+  - say: "undo"
+    expect: applied
+    expect_duration_s: 200

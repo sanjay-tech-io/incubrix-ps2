@@ -70,6 +70,24 @@ describe.skipIf(!integration)("session runner and batch runner (HTTP clients of 
     expect(JSON.parse(readFileSync(join(out, "results.json"), "utf8")).passed).toBe(false);
   }, 120_000);
 
+  it("per-step expectations on the answer text: expect_warning, expect_no_warning, expect_text, expect_options (a mismatch fails the step and says what)", async () => {
+    const video = makeClip({ seconds: 200 });
+    const steps: SessionDoc["steps"] = [
+      { say: 'add a caption "Welcome!" on "welcome to the channel"', expect: "applied", expect_no_warning: "." }, // no warning at all
+      { say: "speed up 0:41-0:45 by 4x", expect: "applied", expect_warning: "0\\.7 s" }, // the caption would be shorter than 0.7 s
+      { say: "remove everything after I say thanks", expect: "needs_clarification", expect_options: 4, expect_text: "thanks" },
+      { answer: "the last one", expect: "applied", expect_no_warning: "swap" },
+      { say: "cut 0:10-0:12", expect: "applied", expect_warning: "this text is not in any warning" },
+      { say: "undo", expect: "applied", expect_options: 3 },
+      { say: "undo", expect: "applied", expect_hash_unchanged: true }, // undo changes the timeline, so this must fail
+    ];
+    const r = await runSession({ video, steps }, "text_expectations", { api: s.base, idle: async () => void (await s.drain()), pollMs: 20 });
+    expect(r.steps.map((x) => x.passed)).toEqual([true, true, true, true, false, false, false]);
+    expect(r.steps[4]!.failure).toMatch(/expected a warning matching \/this text is not in any warning\//);
+    expect(r.steps[5]!.failure).toMatch(/expected 3 option\(s\), got 0/);
+    expect(r.steps[6]!.failure).toMatch(/expected the timeline_hash to stay the same as after step 6/);
+  }, 120_000);
+
   it("a video without audio stops at intake with NO_AUDIO_TRACK and the session says so", async () => {
     const video = makeClip({ seconds: 20, audio: false });
     const r = await runSession({ video, expect_intake_error: "NO_AUDIO_TRACK", steps: [{ say: "undo" }] }, "no_audio", { api: s.base, idle: async () => void (await s.drain()), pollMs: 20 });

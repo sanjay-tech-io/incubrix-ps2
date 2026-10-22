@@ -1,0 +1,11 @@
+brief: "Advanced: second option also removes the host's lead-in"
+fixture: two_speakers
+steps:
+  - say: "remove everything the guest says about their old job"
+    expect: needs_clarification
+    expect_options: 2
+  - answer: "2"
+    expect: applied
+  - say: "undo"
+    expect: applied
+    expect_duration_s: 50

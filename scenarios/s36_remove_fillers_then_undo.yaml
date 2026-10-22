@@ -1,0 +1,9 @@
+brief: "Must-have: remove fillers (um, uh, 'like' only as a filler)"
+fixture: single
+steps:
+  - say: "remove filler words"
+    expect: applied
+    expect_text: "filler"
+  - say: "undo"
+    expect: applied
+    expect_duration_s: 200

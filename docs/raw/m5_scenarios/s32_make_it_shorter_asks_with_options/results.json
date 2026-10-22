@@ -1,0 +1,135 @@
+{
+  "name": "s32_make_it_shorter_asks_with_options",
+  "video": "/tmp/incubrix-test-clips/clip_200s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_5f40614b26a4422e9ad8",
+  "session_id": "ses_e350d638e43e4957ae70",
+  "intake": {
+    "job_id": "job_cef9df6002354a4dbd83",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 339
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "make it shorter",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "Shorter by removing what? These can go without changing what is said (nothing is cut until you choose; 200.0 s now):",
+      "options": [
+        "remove the 4 filler words (saves about 1.6 s)",
+        "remove the 26 silences longer than 1 s (saves about 124.2 s)",
+        "both of the above (saves about 125.8 s)"
+      ],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "878114337fcc4a977a2e3259b2b866ca84c356e4555ddc4dbe81b13250027f4c",
+      "duration_s": 200,
+      "ms": 15,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": null,
+      "answer_sent": "the first one",
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "reason": "filler",
+          "span": {
+            "start": {
+              "atom": "a_d675eed8eb75",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_29abef47b314",
+              "offsetUs": 0
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "filler",
+          "span": {
+            "start": {
+              "atom": "a_204cd855fbe2",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_a90b16947e44",
+              "offsetUs": 0
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "filler",
+          "span": {
+            "start": {
+              "atom": "a_604ac5c09c9e",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_c8b1564b71c4",
+              "offsetUs": 0
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "filler",
+          "span": {
+            "start": {
+              "atom": "a_c592469b8359",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_5d3c99d6f18f",
+              "offsetUs": 0
+            }
+          }
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:18.400 (-0:01.600). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f18dd7acbb812f81824dfca0e2e76df375c32060e35f9ebe835090be7b62b807",
+      "duration_s": 198.4,
+      "ms": 14,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "f18dd7acbb812f81824dfca0e2e76df375c32060e35f9ebe835090be7b62b807",
+    "duration_s": 198.4
+  },
+  "error": null
+}

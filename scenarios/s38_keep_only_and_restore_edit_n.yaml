@@ -1,0 +1,9 @@
+brief: "Must-have: keep only a range; restore a specific earlier edit"
+fixture: single
+steps:
+  - say: "cut 0:05-0:10"
+    expect: applied
+  - say: "keep only 0:30-1:30"
+    expect: applied
+  - say: "restore edit 1"
+    expect: applied

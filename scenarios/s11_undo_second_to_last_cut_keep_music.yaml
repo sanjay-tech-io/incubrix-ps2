@@ -1,0 +1,20 @@
+brief: "Hard case: 'undo the second-to-last cut but keep the music'"
+fixture: single
+steps:
+  - say: "add background music"
+    expect: applied
+  - say: "cut 2:15-2:19"
+    expect: applied
+    expect_duration_s: 196
+  - say: "cut 2:00-2:05"
+    expect: applied
+    expect_duration_s: 191
+  - say: "cut 1:42-1:46"
+    expect: applied
+    expect_duration_s: 187
+  - say: "undo the second-to-last cut but keep the music"
+    expect: applied
+    expect_duration_s: 192
+    expect_text: "music"
+  - render: true
+    expect: succeeded

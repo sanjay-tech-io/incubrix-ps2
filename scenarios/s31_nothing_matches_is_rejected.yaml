@@ -1,0 +1,6 @@
+brief: "Rejected, not guessed: a topic that is not in the video"
+fixture: single
+steps:
+  - say: "remove the part about the weather"
+    expect: rejected
+    expect_hash_unchanged: true

@@ -1,0 +1,141 @@
+{
+  "name": "s39_music_ducks_and_renders",
+  "video": "/tmp/incubrix-test-clips/clip_200s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_b0a570c75f294b429aeb",
+  "session_id": "ses_5ffdb9d93eee421ba8e3",
+  "intake": {
+    "job_id": "job_6dff3dfdab7447d9b942",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 343
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "add background music",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "set_music",
+          "music": {
+            "assetSha256": "19c234fef199c51cd59f5a1365f7c09ff83d8a2a8352751a5fc6668e7e739cbb",
+            "gainCentiDb": -1800,
+            "duckCentiDb": 1200,
+            "attackUs": 200000,
+            "releaseUs": 600000
+          }
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:20.000 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "Background music: the built-in generated track at -18 dB, lowered by 12 dB while someone speaks."
+      ],
+      "timeline_hash": "f058ebcf939fd72f97795c31efcacb7c59f6162fa590a6dccc0e1072497cf9bc",
+      "duration_s": 200,
+      "ms": 11,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "cut 0:10-0:15",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_acba4c5c3674",
+              "offsetUs": 800000
+            },
+            "end": {
+              "atom": "a_e8a8aae9c8dd",
+              "offsetUs": 0
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:14.800 (-0:05.200). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "0:15.000 is inside the word \"fast.\", so the cut point moved to 0:15.200, the nearest silence."
+      ],
+      "timeline_hash": "3073143e9c7847678577334c3daec31ec96823ff8053b9bcf3a451ff4b9964c5",
+      "duration_s": 194.8,
+      "ms": 14,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": null,
+      "answer_sent": null,
+      "expected": "succeeded",
+      "passed": true,
+      "http_status": 202,
+      "status": "succeeded",
+      "operations": null,
+      "summary": null,
+      "question": null,
+      "options": null,
+      "reason": null,
+      "llm": null,
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": null,
+      "warnings": null,
+      "timeline_hash": "3073143e9c7847678577334c3daec31ec96823ff8053b9bcf3a451ff4b9964c5",
+      "duration_s": 194.8,
+      "ms": 16170,
+      "note": null,
+      "failure": null,
+      "kind": "render",
+      "render": {
+        "job_id": "job_d7169c3395df43e68554",
+        "job_status": "succeeded",
+        "error": null,
+        "file": "render_1.mp4",
+        "frames": 4870,
+        "duration_s": 194.8,
+        "timeline_hash": "3073143e9c7847678577334c3daec31ec96823ff8053b9bcf3a451ff4b9964c5",
+        "render_seconds_per_output_minute": 4.6,
+        "source_unchanged": true,
+        "manifest_file": "render_1_manifest.json"
+      }
+    }
+  ],
+  "final": {
+    "timeline_hash": "3073143e9c7847678577334c3daec31ec96823ff8053b9bcf3a451ff4b9964c5",
+    "duration_s": 194.8
+  },
+  "error": null
+}

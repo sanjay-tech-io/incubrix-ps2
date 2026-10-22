@@ -1,0 +1,13 @@
+# Edited times: after 10-30 s (source) runs at 2x, edited 0:15-0:25 is source 20-35, so the 4x overlaps the 2x on 20-30; 0:12-0:16 is source 14-24, across both.
+brief: "Advanced: documented rule for overlapping speed changes (the later one replaces the earlier)"
+fixture: single
+steps:
+  - say: "speed up 0:10-0:30 by 2x"
+    expect: applied
+    expect_duration_s: 190
+  - say: "speed up 0:15-0:25 by 4x"
+    expect: applied
+    expect_warning: "overlaps an earlier speed change \\(2x at original 0:10\\.000-0:30\\.000\\).*replaces the earlier one.*never multiply"
+  - say: "speed up 0:12-0:16 by 1x"
+    expect: applied
+    expect_warning: "back to normal speed"

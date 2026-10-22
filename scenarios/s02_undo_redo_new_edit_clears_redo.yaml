@@ -1,0 +1,25 @@
+# The cuts lie inside silences (84.4-90, 100.4-108, 115.4-130 s of the fixture), so they are exact and the lengths are whole numbers.
+brief: "Undo/redo: 1 instruction = 1 undo; a new edit clears redo"
+fixture: single
+steps:
+  - say: "cut 2:00-2:05"
+    expect: applied
+    expect_duration_s: 195
+  - say: "cut 1:42-1:46"
+    expect: applied
+    expect_duration_s: 191
+  - say: "undo"
+    expect: applied
+    expect_duration_s: 195
+  - say: "redo"
+    expect: applied
+    expect_duration_s: 191
+  - say: "undo"
+    expect: applied
+    expect_duration_s: 195
+  - say: "cut 1:26-1:29"
+    expect: applied
+    expect_duration_s: 192
+  - say: "redo"
+    expect: rejected
+    expect_text: "nothing to redo"

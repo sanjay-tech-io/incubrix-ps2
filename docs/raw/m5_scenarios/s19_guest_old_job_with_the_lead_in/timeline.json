@@ -1,0 +1,30 @@
+{
+  "session_id": "ses_d142319964d64c73b364",
+  "timeline": {
+    "sourceSha256": "b31b596759afcb15636fd2201133c594e20d7eba05a929d3e426ef4e5b8ecc43",
+    "segments": [
+      {
+        "id": "seg_0",
+        "span": {
+          "start": {
+            "atom": "a_3ede33018f82",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_7c93462ca9d1",
+            "offsetUs": 7450000
+          }
+        }
+      }
+    ],
+    "speedRegions": [],
+    "effects": [],
+    "protectedPauses": [],
+    "music": null,
+    "autoCaption": null,
+    "durationUs": 50000000
+  },
+  "timeline_hash": "f2ff2a42d06789f2627b0192f6822c22f04398de236b81e339b23d4922222837",
+  "duration_s": 50,
+  "effects": []
+}

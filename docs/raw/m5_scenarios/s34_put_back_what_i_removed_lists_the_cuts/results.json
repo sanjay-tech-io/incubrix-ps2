@@ -1,0 +1,162 @@
+{
+  "name": "s34_put_back_what_i_removed_lists_the_cuts",
+  "video": "/tmp/incubrix-test-clips/clip_200s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_ec81b7693ef242199c41",
+  "session_id": "ses_28b84887b0a84c36995f",
+  "intake": {
+    "job_id": "job_99e3a6de854d4a47b2df",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 375
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "cut 1:42-1:46",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_5518f712db71",
+              "offsetUs": 1600000
+            },
+            "end": {
+              "atom": "a_5518f712db71",
+              "offsetUs": 5600000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:16.000 (-0:04.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "4191e4cc58dd294711982e18632e236e97f74f7b90ba9d7e938a84a8ec50ef96",
+      "duration_s": 196,
+      "ms": 12,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "cut 1:26-1:29",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_8e90246ebeea",
+              "offsetUs": 1600000
+            },
+            "end": {
+              "atom": "a_8e90246ebeea",
+              "offsetUs": 4600000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:16.000 -> 3:13.000 (-0:03.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "c66c82047182aa85744462ad8ceee22502b60b569641034ed8418635d15221b6",
+      "duration_s": 193,
+      "ms": 12,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "put back what I removed",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "Several cuts are in effect. Which one should I put back?",
+      "options": [
+        "edit 1: removed original 1:42.000-1:46.000",
+        "edit 2: removed original 1:26.000-1:29.000"
+      ],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "c66c82047182aa85744462ad8ceee22502b60b569641034ed8418635d15221b6",
+      "duration_s": 193,
+      "ms": 12,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 4,
+      "say": null,
+      "answer_sent": "the first one",
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "restore",
+          "targetGroup": 1
+        }
+      ],
+      "summary": "Length 3:13.000 -> 3:17.000 (+0:04.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "aaabad5194f1c77e9809092a62c54fd7efbad849b13b098ebf370a87e95608f0",
+      "duration_s": 197,
+      "ms": 11,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "aaabad5194f1c77e9809092a62c54fd7efbad849b13b098ebf370a87e95608f0",
+    "duration_s": 197
+  },
+  "error": null
+}

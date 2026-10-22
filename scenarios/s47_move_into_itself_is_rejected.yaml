@@ -1,0 +1,6 @@
+brief: "Reorder: a target inside the moved span is rejected"
+fixture: single
+steps:
+  - say: "move 0:30-0:40 to 0:35"
+    expect: rejected
+    expect_hash_unchanged: true

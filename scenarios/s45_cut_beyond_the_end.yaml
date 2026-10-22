@@ -1,0 +1,6 @@
+brief: "Out of range is rejected"
+fixture: single
+steps:
+  - say: "cut 5:00-5:10"
+    expect: rejected
+    expect_hash_unchanged: true

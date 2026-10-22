@@ -1,0 +1,12 @@
+# The source is variable frame rate: accepted with a warning, the renderer builds a constant-frame-rate proxy and the render check (frame count, A/V) still passes.
+brief: "Hard case: a phone video with variable frame rate"
+fixture: phone_vfr
+steps:
+  - say: "add a caption \"Hi\" on \"thanks for watching\""
+    expect: applied
+  - say: "cut 0:05-0:08"
+    expect: applied
+  - say: "speed up 0:08-0:12 by 2x"
+    expect: applied
+  - render: true
+    expect: succeeded

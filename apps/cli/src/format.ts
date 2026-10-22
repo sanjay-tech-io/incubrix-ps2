@@ -31,6 +31,14 @@ const Say = z.strictObject({
   expect: Status.optional(),
   /** Optional check of the answer's duration_s (seconds, +-0.01). */
   expect_duration_s: z.number().optional(),
+  /** Case-insensitive regular expressions on the answer: at least one warning matches / no warning matches / summary, question, reason, options or warnings match. */
+  expect_warning: z.string().optional(),
+  expect_no_warning: z.string().optional(),
+  expect_text: z.string().optional(),
+  /** Exact number of options in a needs_clarification answer. */
+  expect_options: z.number().int().min(0).optional(),
+  /** The answer's timeline_hash equals the one after the previous step (repeat instructions, clarification questions). */
+  expect_hash_unchanged: z.boolean().optional(),
   note: z.string().optional(),
 });
 const Render = z.strictObject({

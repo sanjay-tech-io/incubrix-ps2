@@ -172,6 +172,7 @@ export async function runSession(doc: SessionDoc, name: string, o: RunOptions): 
 
     // 3. the steps
     let renders = 0;
+    let prevHash: string | null = ses.body.timeline_hash ?? null; // timeline_hash after the previous instruction step (for expect_hash_unchanged); starts as the untouched timeline
     let lastRenderFile: string | null = null;
     for (const [i, step] of doc.steps.entries()) {
       const started = Date.now();
@@ -245,6 +246,28 @@ export async function runSession(doc: SessionDoc, name: string, o: RunOptions): 
         sr.passed = false;
         sr.failure = `expected duration ${step.expect_duration_s} s, got ${a.duration_s} s`;
       }
+      else {
+        const warnings: string[] = a.warnings ?? [];
+        const re = (p: string) => new RegExp(p, "i");
+        const everything = [a.summary, a.question, a.reason, ...(a.options ?? []), ...warnings].filter(Boolean).join("\n");
+        if (step.expect_warning !== undefined && !warnings.some((w) => re(step.expect_warning!).test(w))) {
+          sr.passed = false;
+          sr.failure = `expected a warning matching /${step.expect_warning}/, got ${warnings.length ? JSON.stringify(warnings) : "no warnings"}`;
+        } else if (step.expect_no_warning !== undefined && warnings.some((w) => re(step.expect_no_warning!).test(w))) {
+          sr.passed = false;
+          sr.failure = `expected no warning matching /${step.expect_no_warning}/, got ${JSON.stringify(warnings.filter((w) => re(step.expect_no_warning!).test(w)))}`;
+        } else if (step.expect_text !== undefined && !re(step.expect_text).test(everything)) {
+          sr.passed = false;
+          sr.failure = `expected the answer to mention /${step.expect_text}/`;
+        } else if (step.expect_hash_unchanged && prevHash !== null && a.timeline_hash !== prevHash) {
+          sr.passed = false;
+          sr.failure = `expected the timeline_hash to stay the same as after step ${i}, it changed`;
+        } else if (step.expect_options !== undefined && (a.options ?? []).length !== step.expect_options) {
+          sr.passed = false;
+          sr.failure = `expected ${step.expect_options} option(s), got ${(a.options ?? []).length}`;
+        }
+      }
+      if (sr.timeline_hash) prevHash = sr.timeline_hash;
       result.steps.push(sr);
       log(`step ${i + 1}: ${sr.status ?? "?"} ${sr.passed ? "ok" : "FAILED " + sr.failure}`);
     }
