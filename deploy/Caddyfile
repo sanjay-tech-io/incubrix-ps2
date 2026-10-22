@@ -1,0 +1,49 @@
+# Reverse proxy of the public demo (compose.prod.yml). Caddy gets and renews the Let's Encrypt certificate by itself.
+# Only this container publishes ports (80, 443); api, worker, postgres, s3 and asr stay on the compose network.
+{
+	# HTTP/3 would need UDP 443, which we do not publish.
+	servers {
+		protocols h1 h2
+	}
+}
+
+{$PUBLIC_HOST} {
+	# No `log` directive on purpose: Caddy's access log would write the query string of presigned download links
+	# (X-Amz-Signature) to disk. Errors still go to stderr.
+
+	# Download links are presigned S3 URLs on this same host: /<bucket>/<key>?X-Amz-...
+	# Why no path prefix like /files/: the signature covers the path, so rewriting it would invalidate it.
+	# Only GET/HEAD reach storage; uploads and deletes never go through the public door.
+	@storage path /{$S3_BUCKET:incubrix}/*
+	handle @storage {
+		@read method GET HEAD
+		handle @read {
+			reverse_proxy s3:8333
+		}
+		handle {
+			respond "Method not allowed" 405
+		}
+	}
+
+	handle {
+		# Upload cap at the door, so an oversized body is not streamed to the API. The API enforces the same MAX_UPLOAD_MB.
+		request_body {
+			max_size {$MAX_UPLOAD_MB:200}MB
+		}
+		reverse_proxy api:8080
+	}
+
+	# Keep the error contract (JSON, UPPER_SNAKE_CASE code) for what Caddy itself rejects.
+	handle_errors {
+		@toolarge `{err.status_code} == 413`
+		handle @toolarge {
+			header Content-Type application/json
+			respond `{"error":{"code":"FILE_TOO_LARGE","message":"The request is larger than the upload limit of this deployment.","retryable":false,"details":{}}}` 413
+		}
+		@bad `{err.status_code} == 502 || {err.status_code} == 503 || {err.status_code} == 504`
+		handle @bad {
+			header Content-Type application/json
+			respond `{"error":{"code":"SERVICE_UNAVAILABLE","message":"The service is starting or restarting. Try again in a few seconds.","retryable":true,"details":{}}}` 503
+		}
+	}
+}

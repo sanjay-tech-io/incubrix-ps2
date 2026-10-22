@@ -1,0 +1,53 @@
+# Production override for the public demo VM. Use it together with the base file:
+#   docker compose -f docker-compose.yml -f compose.prod.yml up -d --build
+# Needs in .env: API_TOKEN (16+ chars, the API refuses to start without it) and PUBLIC_HOST (<ip-with-dashes>.sslip.io).
+# Only Caddy publishes ports (80, 443). `!reset` removes the ports the base file publishes for api (8080) and s3 (8333).
+
+x-limits: &limits
+  NODE_ENV: production
+  MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-200}
+  MAX_VIDEO_DURATION_S: ${MAX_VIDEO_DURATION_S:-300}
+  RATE_LIMIT_PER_MIN: ${RATE_LIMIT_PER_MIN:-120}
+  MAX_INGEST_JOBS: ${MAX_INGEST_JOBS:-1}
+  MAX_RENDER_JOBS: ${MAX_RENDER_JOBS:-1}
+  # Download links point at the public door (Caddy forwards GET/HEAD of /<bucket>/* to storage).
+  S3_PUBLIC_ENDPOINT: https://${PUBLIC_HOST:?set PUBLIC_HOST in .env, e.g. 34-93-140-79.sslip.io}
+
+services:
+  caddy:
+    image: caddy:2
+    restart: unless-stopped
+    ports: ["80:80", "443:443"]
+    environment:
+      PUBLIC_HOST: ${PUBLIC_HOST:?set PUBLIC_HOST in .env}
+      MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-200}
+      S3_BUCKET: ${S3_BUCKET:-incubrix}
+    volumes:
+      - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      # The certificate lives in this volume: `down` keeps it, so a restart never asks Let's Encrypt again (rate limits).
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      api: { condition: service_started }
+      s3: { condition: service_healthy }
+
+  postgres:
+    restart: unless-stopped
+
+  s3:
+    restart: unless-stopped
+    ports: !reset []
+
+  api:
+    ports: !reset []
+    environment:
+      <<: *limits
+      TRUST_PROXY: "true"
+
+  worker:
+    environment:
+      <<: *limits
+
+volumes:
+  caddy_data:
+  caddy_config:
