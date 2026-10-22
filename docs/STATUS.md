@@ -1,6 +1,6 @@
 # Project status (project memory)
 
-Updated at the end of every milestone. Last update: M6a deploy (2026-10-22), M4 (2026-10-21), on top of M3, M2, the infra workstream and M1c. Everything below was run, not assumed; "not verified" means exactly that.
+Updated at the end of every milestone. Last update: M5 (2026-10-22), M6a deploy (2026-10-22), M4 (2026-10-21), on top of M3, M2, the infra workstream and M1c. Everything below was run, not assumed; "not verified" means exactly that.
 
 ## Done and verified
 | Item | Proof (command) |
@@ -97,6 +97,17 @@ M4 NOT done: item 7 (needs the new recordings), filler ground truth, Gemini job 
 
 Secrets rotated after approval (S3 keys, DB password): old-key link 200 before, 403 after; old files intact; smoke test passes again (DEPLOY.md, "Secret rotation"). M6a NOT done or not verified: see the last section of docs/DEPLOY.md. Swagger UI not opened in a browser; reboot not tested; price is an unverified third-party list price.
 
+### M5: Outstanding items without new recordings (details and raw output: docs/REVIEW_M5.md)
+| Item | Proof |
+|---|---|
+| OpenTimelineIO export: `GET /api/v1/sessions/{id}/export/otio` (file in the body, S3 link in `X-IncuBrix-Export-Url`), clips in output order, `LinearTimeWarp` speed, captions and effects as markers; `services/otio` uses the `opentimelineio` library (Apache-2.0, evidence file) | `services/otio/tests` (9), `packages/otio/test` (6), API test with the real service reading the file back: track length within 1 frame of the timeline after cut + speed + reorder (`docs/raw/m5_otio_api_tests.txt`). **Not opened in any video editor.** |
+| Speaker-label swap detection (turn embedding vs speaker centroids, leave-one-out, margin) -> `possibleLabelSwap` -> warnings on edits touching the words | `services/asr/tests/test_swap.py` (13), engine / nlu / worker / API tests; real models on the espeak two-voice clip: 6 of 6 deliberately swapped turns found, 0 false flags (`docs/raw/m5_swap_real_run.txt`). **Synthetic voices only.** |
+| 48 scripted scenarios (130 steps, 7 with real renders) with expected results per step, in `docker compose run --rm tests`; `.github/workflows/ci.yml` runs that command on every push | `docs/raw/m5_scenarios_run2.txt` (50 of 50), `docs/raw/m5_scenarios/`; first run 43 of 50 kept in `m5_scenarios_run1.txt`. **No GitHub Actions run has happened (nothing pushed)**; a fresh-clone simulation of the same command: `docs/raw/m5_ci_simulation.txt` |
+| README: architecture (Mermaid), setup, tests, runners, demo, settings table generated from `.env.example` with a staleness test | `packages/config/test/envdoc.test.ts` |
+| Bugs found and fixed by the above | music could not be rendered on longer videos (ffmpeg expression nesting; `musicexpr.test.ts`); answer now says when a speed change overlaps an earlier one; **a fresh clone could not run because `.gitignore` `media/` hid `packages/media/src/voiced.ts` since M4** (`m5_ci_simulation_run1_failed.txt`) |
+
+M5 NOT done or not verified: see REVIEW_M5.md section 7. The live demo still runs the M6a image (no OTIO route, no swap flags, no music fix): `docker compose up -d --build` deploys M5.
+
 ## Not verified (not built or not run)
 M3 leftovers: see REVIEW_M3.md section 9. The M2 list below is partly outdated: render, batch runner and the worker are built now.
 M2 leftovers: render (501 stub), the real LLM provider (interface only), reorder/mute/bleep/captions by voice-of-speaker ("what the guest says"), music by text, batch runner CLI, deploy, a worker crash mid-job end to end (stale re-queue is tested at store level only), in-memory rate limit (one process only), API_TOKEN is unset in the default compose (open API), DNS-rebinding hardening, ASR service has no auth (internal network only). Older list follows.
@@ -174,3 +185,8 @@ Full list: `CLAUDE.md` section "Decisions" and `docs/DESIGN.md`. Headlines: Node
 | 51 | Boundary agreement with ffmpeg | none | **NOT VERIFIED until M3** |
 | 52 | 40 mutants killed | REVIEW_M1C.md section 5 | yes |
 | 53 | npm audit findings | REVIEW_M1C.md section 3: 6 dev-only, 0 in production, only fix is a major vitest upgrade (not applied) | documented, **not fixed** |
+| 54 | OpenTimelineIO export: clips in output order, speed as LinearTimeWarp, captions as markers, length equals the timeline within 1 frame when read back with the library | `packages/otio/test`, `services/otio/tests`, API test (real service) | yes in the library; **not in any editor** |
+| 55 | Possible speaker-label swaps are detected and warned about | `test_swap.py`, `m5_swap_real_run.txt`, API / nlu tests | yes on synthetic voices with deliberate swaps (6 of 6, 0 false flags); **real speech: not verified** |
+| 56 | At least 40 scripted scenarios with expected results run in CI | `scenarios/` (48), `m5_scenarios_run2.txt`, `ci.yml` | scenarios: yes (mock transcript); **GitHub Actions run: no**; fresh-clone run of the same command: see REVIEW_M5 section 6 |
+| 57 | Music renders on videos with many speech pauses | `musicexpr.test.ts`, scenario s39 | yes (200 s fixture); 60-minute video with music: **not run** |
+| 58 | The repository builds from a fresh clone | `m5_ci_simulation.txt` (after the `.gitignore` fix); the first fresh clone FAILED (`m5_ci_simulation_run1_failed.txt`) | see REVIEW_M5 section 6 |
