@@ -1,0 +1,38 @@
+# One command, no keys, no secrets: the same command a developer runs (README: "Run the tests").
+# It builds the images (API/worker image, ASR image with its speech models baked in, OpenTimelineIO service), starts Postgres and the
+# S3-compatible store, and runs every test suite: engine, contracts, config, db, store, storage, media, render (real ffmpeg), nlu, llm,
+# semantic, otio, api (incl. the 48 scripted scenarios), worker, cli, and the Python tests of services/asr and services/otio.
+# Every provider is the mock one: no Gemini/Groq key, no network at test time (the image BUILD downloads the models once).
+name: ci
+
+on:
+  push:
+  pull_request:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - name: Disk before
+        run: df -h / && docker system df
+      - name: docker compose run --rm tests
+        shell: bash  # bash -eo pipefail: a failing test run must fail the step even though the output goes through tee
+        run: docker compose run --rm --build tests 2>&1 | tee test-output.txt
+      - name: Disk after
+        if: always()
+        run: df -h / && docker system df
+      - name: Keep the test output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-output
+          path: test-output.txt
+      - name: Stop the stack
+        if: always()
+        run: docker compose down -v
