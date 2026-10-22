@@ -44,10 +44,23 @@ Only Caddy publishes ports: **80 and 443** (`ss -ltn` shows nothing else; compos
 - I could not read the billing account, so this is a list-price estimate, not a bill.
 
 ## Not done or not verified
-- Secrets: the running stack still uses the public dev defaults for the S3 keys and the database password (the rotation was not authorised in this session). `packages/config` now refuses them in production, **but the running images were built before that check**, so the next `up -d --build` will fail until `.env` has `S3_ACCESS_KEY`, `S3_SECRET_KEY`, `POSTGRES_PASSWORD` and a matching `DATABASE_URL` (the database user's password must also be changed with `ALTER USER`). Until then anyone who knows the public dev S3 secret can sign download links for any stored file.
+- Secrets: rotated afterwards, see "Secret rotation" below.
 - Swagger UI was fetched (HTML, JS, CSS and the spec return 200) but **not opened in a browser**; "Try it out" and the Authorize flow are untested.
 - Reboot survival: not tested (you asked me not to reboot). `systemctl restart docker` was not tested either.
 - Outside access: `/ready` was fetched through an external fetch service and Let's Encrypt validators reached port 443; the smoke test and the download ran from this VM against the public name (hairpin through the external IP), not from another machine.
 - A static external IP and the GCP firewall rules were not inspected (insufficient `gcloud` scopes); ports 80/443 evidently are open.
 - Load: no concurrent-user test; one in-memory rate limiter (one API process).
 - The ASR service has no authentication (internal network only).
+
+## Secret rotation (2026-10-22, after approval)
+What was done: random values for `S3_ACCESS_KEY`, `S3_SECRET_KEY` and `POSTGRES_PASSWORD` were generated and appended to `.env` only (mode 600, ignored by git; no value printed or committed; a scan of the working tree for the four secrets found them in no tracked or new file). `DATABASE_URL` was updated to the new password. The database password was changed on the existing volume with `ALTER USER` (before the `.env` change), then `docker compose up -d --build` recreated the containers; SeaweedFS reads its identity from the environment at start, so no data had to change. Production config now accepts these values (the new guard refuses the dev defaults).
+
+| Check | Result | Evidence |
+|---|---|---|
+| BEFORE: link signed with the public dev key, against the public host | HTTP 200, the whole 1,635,514-byte render | `docs/raw/m6a_rotation_before.txt` |
+| AFTER: the same link kind signed with the old key (render and original) | **HTTP 403** for both | `docs/raw/m6a_rotation_after.txt` |
+| Old stored files readable with the new key (fresh links from the API) | original: HTTP 200, sha256 prefix `f8a0bd39217b23fc` = the local file's; earlier render: HTTP 200, `e550506d1f5526cd` = the hash recorded before rotation | same file |
+| Stack after rebuild | all six services healthy; `/ready` 200; migrations: 0 applied (nothing lost) | `docker compose ps`, init log |
+| Smoke test through the public URL on a NEW clip (upload, ASR, captions, cut, render, download) | PASS in 17.3 s; render 15.4 s, h264 + aac | `docs/raw/m6a_smoke_after_rotation.txt`, `m6a_smoke_after_rotation_out/` |
+
+Limits of this check: only GET links were tested with the old key (403 on two objects); I did not try other S3 operations with the old key, but the public door only forwards GET/HEAD and storage is not published. The smoke test again ran from this VM against the public name. The database login itself was exercised by the API/worker restarting healthy and the smoke test (no separate login test). Rebuild took 3 min 14 s. A copy of the pre-rotation `.env` is in the session scratchpad (not in the repo) and contains the old values.

@@ -1,0 +1,13 @@
+
+> incubrix@0.0.0 session
+> node --import tsx apps/cli/src/session.ts sessions/m6a_smoke_after_rotation.yaml --api https://34-93-140-79.sslip.io --token <token> --out docs/raw/m6a_smoke_after_rotation_out
+
+[m6a_smoke_after_rotation] video vid_de796e24ccc84b5cb2bc, job job_0f8909e4c9c54dff8754
+[m6a_smoke_after_rotation] step 1: applied ok
+[m6a_smoke_after_rotation] step 2: applied ok
+[m6a_smoke_after_rotation] step 3: render ok 
+PASS m6a_smoke_after_rotation  -> /home/g23m143/incubrix-ps2/docs/raw/m6a_smoke_after_rotation_out
+
+real	0m17.309s
+user	0m1.561s
+sys	0m0.226s

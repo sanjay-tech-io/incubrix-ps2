@@ -95,7 +95,7 @@ M4 NOT done: item 7 (needs the new recordings), filler ground truth, Gemini job 
 | Smoke test through the public URL: upload, ASR, 2 edits, render, download | `docs/raw/m6a_smoke_session.txt` (PASS, 16.4 s), `m6a_smoke_out/` |
 | Cold start (`down` + `up -d`): `/ready` 200 after 23.8 s | `docs/raw/m6a_cold_start.txt` (one run) |
 
-M6a NOT done or not verified: see the last section of docs/DEPLOY.md. Most important: **the running stack still uses the public dev S3 keys and DB password** (rotation not authorised in the session); production config now refuses them, so the next rebuild needs the new values in `.env`. Swagger UI not opened in a browser; reboot not tested; price is an unverified third-party list price.
+Secrets rotated after approval (S3 keys, DB password): old-key link 200 before, 403 after; old files intact; smoke test passes again (DEPLOY.md, "Secret rotation"). M6a NOT done or not verified: see the last section of docs/DEPLOY.md. Swagger UI not opened in a browser; reboot not tested; price is an unverified third-party list price.
 
 ## Not verified (not built or not run)
 M3 leftovers: see REVIEW_M3.md section 9. The M2 list below is partly outdated: render, batch runner and the worker are built now.

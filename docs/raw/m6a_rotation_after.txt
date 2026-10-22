@@ -1,0 +1,11 @@
+== old default key, same object that returned 200 before rotation
+old-key link for renders/job_c870a26b97f64ede90d7/output.mp4: HTTP 403, 373 bytes, sha256 9fe02ec4085c579f
+old-key link for videos/vid_e23c4c8e65494ddc9e7e/original.mp4: HTTP 403, 375 bytes, sha256 0d9859075393a6c2
+== old stored files via fresh API links (new key)
+video status ready
+original: HTTP 200
+f8a0bd39217b23fc
+render job succeeded (old link: ders/job_c870a26b97f64ede90d7/output.mp4 )
+old render: HTTP 200
+e550506d1f5526cd
+(expected hashes: original f8a0bd39217b23fc, render e550506d1f5526cd)
