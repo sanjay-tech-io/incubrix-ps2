@@ -26,6 +26,8 @@ class Word(BaseModel):
     # speakerUncertain / overlapsSpeech.
     speaker_uncertain: Optional[bool] = None
     overlaps_speech: Optional[bool] = None
+    # Set when swap detection ran: the speaker label of this word's turn looks wrong (another speaker's voice is clearly closer).
+    possible_label_swap: Optional[bool] = None
 
     @model_validator(mode="after")
     def _ordered(self):

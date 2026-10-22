@@ -62,6 +62,32 @@ class SherpaDiarizer:
         }
         return [Turn(round(r.start * 1_000_000), round(r.end * 1_000_000), f"SPEAKER_{r.speaker:02d}") for r in result]
 
+    def _extractor(self):
+        if getattr(self, "_emb", None) is None:
+            import sherpa_onnx
+
+            emb = os.path.join(self.model_dir, EMBEDDING_MODEL)
+            self._emb = sherpa_onnx.SpeakerEmbeddingExtractor(sherpa_onnx.SpeakerEmbeddingExtractorConfig(model=emb, num_threads=self.num_threads))
+        return self._emb
+
+    def turn_embeddings(self, audio: bytes, turns: list[Turn], min_turn_us: int) -> list:
+        """One voice embedding (WeSpeaker, the same model the clustering used) per turn; None for turns shorter than min_turn_us.
+
+        A turn where two people talk at once embeds a mix of both voices; that is one reason a flag is only a warning."""
+        ex = self._extractor()
+        samples = decode_mono_16k(audio)
+        out: list = []
+        for t in turns:
+            if t.end_us - t.start_us < min_turn_us:
+                out.append(None)
+                continue
+            seg = samples[int(t.start_us * 16_000 / 1_000_000) : int(t.end_us * 16_000 / 1_000_000)]
+            stream = ex.create_stream()
+            stream.accept_waveform(sample_rate=16_000, waveform=seg)
+            stream.input_finished()
+            out.append(list(ex.compute(stream)))
+        return out
+
     def describe(self) -> dict:
         return {"provider": "sherpa", "segmentation": "pyannote-segmentation-3.0 (ONNX)", "embedding": "wespeaker_en_voxceleb_resnet34",
                 "num_speakers": self.settings.num_speakers, "cluster_threshold": self.settings.cluster_threshold}

@@ -8,6 +8,7 @@ from asr.adapters.base import Adapter
 from asr.embed import Embedder, build_embedder
 from asr.diarize import DiarizationSettings, Diarizer, assign_speakers
 from asr.schema import Transcript
+from asr.swap import SwapSettings, check_turns, mark_swapped_words, summarize
 
 
 def error(status: int, code: str, message: str, retryable: bool = False) -> JSONResponse:
@@ -51,6 +52,7 @@ def create_app(adapter: Optional[Adapter] = None, diarizer: Optional[Diarizer] =
     app = FastAPI(title="incubrix-asr")
     adp = adapter or build_adapter()
     dia_settings = DiarizationSettings.from_env(os.environ)
+    swap_settings = SwapSettings.from_env(os.environ)
     # Passing an adapter (tests) without a diarizer means "no diarization", never "read the env".
     dia = diarizer if (adapter is not None or diarizer is not None) else build_diarizer(settings=dia_settings)
 
@@ -89,8 +91,19 @@ def create_app(adapter: Optional[Adapter] = None, diarizer: Optional[Diarizer] =
                 return error(400, "BAD_NUM_SPEAKERS", "num_speakers must be >= 1")
             turns = dia.diarize(audio, num_speakers)
             t.words = assign_speakers(t.words, turns, dia_settings)
-            t.settings["diarization"] = {**dia.describe(), "uncertain_below": dia_settings.uncertain_below, "overlap_min_fraction": dia_settings.overlap_min,
-                                         "speakers_found": len({x.speaker for x in turns}), "turns": len(turns), "num_speakers_hint": num_speakers}
+            swap: dict = {"enabled": False, "reason": "switched off (DIARIZATION_SWAP_DETECTION=false)"}
+            if swap_settings.enabled:
+                embed_turns = getattr(dia, "turn_embeddings", None)
+                if embed_turns is None:
+                    swap = {"enabled": False, "reason": "this diarizer provides no turn embeddings"}
+                else:
+                    checks = check_turns(turns, embed_turns(audio, turns, swap_settings.min_turn_us), swap_settings)
+                    t.words = mark_swapped_words(t.words, turns, checks)
+                    swap = summarize(turns, checks, swap_settings)
+            t.settings["diarization"] = {
+                **dia.describe(), "uncertain_below": dia_settings.uncertain_below, "overlap_min_fraction": dia_settings.overlap_min,
+                "speakers_found": len({x.speaker for x in turns}), "turns": len(turns), "num_speakers_hint": num_speakers, "label_swap": swap,
+            }
             t.timings["diarization"] = getattr(dia, "last_timings", {})
         return t
 
