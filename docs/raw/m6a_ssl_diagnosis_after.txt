@@ -1,0 +1,118 @@
+### date 2026-10-22T13:56:01Z
+### docker compose logs --tail=80 caddy (issuance lines only)
+{"level":"warn","ts":1792677344.8729055,"logger":"http","msg":"HTTP/2 skipped because it requires TLS","network":"tcp","addr":":80"}
+{"level":"warn","ts":1792677344.8729243,"logger":"http","msg":"HTTP/3 skipped because it requires TLS","network":"tcp","addr":":80"}
+{"level":"info","ts":1792677344.8797238,"logger":"tls.obtain","msg":"acquiring lock","identifier":"34.93.140.79.sslip.io"}
+{"level":"info","ts":1792677344.888075,"logger":"tls.obtain","msg":"lock acquired","identifier":"34.93.140.79.sslip.io"}
+{"level":"info","ts":1792677344.8883662,"logger":"tls.obtain","msg":"obtaining certificate","identifier":"34.93.140.79.sslip.io"}
+{"level":"info","ts":1792677346.540999,"logger":"http.acme_client","msg":"trying to solve challenge","identifier":"34.93.140.79.sslip.io","challenge_type":"http-01","ca":"https://acme-v02.api.letsencrypt.org/directory"}
+{"level":"info","ts":1792677348.8071418,"logger":"http.acme_client","msg":"authorization finalized","identifier":"34.93.140.79.sslip.io","authz_status":"valid"}
+{"level":"info","ts":1792677348.8071923,"logger":"http.acme_client","msg":"validations succeeded; finalizing order","order":"https://acme-v02.api.letsencrypt.org/acme/order/3895733357/572721785207"}
+{"level":"info","ts":1792677351.8381598,"logger":"http.acme_client","msg":"successfully downloaded available certificate chains","count":3,"first_url":"https://acme-v02.api.letsencrypt.org/acme/cert/0533d5866f4fe2bd49fa5d48b26cc49
+{"level":"info","ts":1792677351.8461227,"logger":"tls.obtain","msg":"certificate obtained successfully","identifier":"34.93.140.79.sslip.io","issuer":"acme-v02.api.letsencrypt.org-directory"}
+{"level":"info","ts":1792677351.8462486,"logger":"tls.obtain","msg":"releasing lock","identifier":"34.93.140.79.sslip.io"}
+### host listeners
+LISTEN 0      4096         0.0.0.0:80         0.0.0.0:*   
+LISTEN 0      4096         0.0.0.0:443        0.0.0.0:*   
+LISTEN 0      4096            [::]:80            [::]:*   
+LISTEN 0      4096            [::]:443           [::]:*   
+
+### curl -vI https://34.93.140.79.sslip.io/health
+* TLSv1.3 (OUT), TLS handshake, Client hello (1):
+* TLSv1.3 (IN), TLS handshake, Server hello (2):
+* TLSv1.3 (IN), TLS change cipher, Change cipher spec (1):
+* TLSv1.3 (IN), TLS handshake, Encrypted Extensions (8):
+* TLSv1.3 (IN), TLS handshake, Certificate (11):
+* TLSv1.3 (IN), TLS handshake, CERT verify (15):
+* TLSv1.3 (IN), TLS handshake, Finished (20):
+* TLSv1.3 (OUT), TLS change cipher, Change cipher spec (1):
+* TLSv1.3 (OUT), TLS handshake, Finished (20):
+* SSL connection using TLSv1.3 / TLS_AES_128_GCM_SHA256 / X25519MLKEM768 / id-ecPublicKey
+*  subject: CN=34.93.140.79.sslip.io
+*  expire date: Jan 20 12:57:17 2027 GMT
+*  subjectAltName: host "34.93.140.79.sslip.io" matched cert's "34.93.140.79.sslip.io"
+*  issuer: C=US; O=Let's Encrypt; CN=YE1
+*  SSL certificate verify ok.
+* Connected to 34.93.140.79.sslip.io (34.93.140.79) port 443
+* using HTTP/2
+* [HTTP/2] [1] OPENED stream for https://34.93.140.79.sslip.io/health
+* [HTTP/2] [1] [:method: HEAD]
+* [HTTP/2] [1] [:scheme: https]
+* [HTTP/2] [1] [:authority: 34.93.140.79.sslip.io]
+* [HTTP/2] [1] [:path: /health]
+* [HTTP/2] [1] [user-agent: curl/8.14.1]
+* [HTTP/2] [1] [accept: */*]
+> HEAD /health HTTP/2
+* TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
+< HTTP/2 404 
+HTTP/2 404 
+### GET /health, /ready, /docs
+health 200 0(0=verified)
+ready 200 0(0=verified)
+docs 200 0(0=verified)
+### s_client 34.93.140.79.sslip.io
+   v:NotBefore: Oct 22 12:57:18 2026 GMT; NotAfter: Jan 20 12:57:17 2027 GMT
+   v:NotBefore: Sep  3 00:00:00 2025 GMT; NotAfter: Sep  2 23:59:59 2028 GMT
+   v:NotBefore: May 13 00:00:00 2026 GMT; NotAfter: Sep  2 23:59:59 2032 GMT
+   v:NotBefore: May 13 00:00:00 2026 GMT; NotAfter: Sep  2 23:59:59 2032 GMT
+subject=CN=34.93.140.79.sslip.io
+issuer=C=US, O=Let's Encrypt, CN=YE1
+Verification: OK
+Verify return code: 0 (ok)
+    Protocol  : TLSv1.3
+    Verify return code: 0 (ok)
+X509v3 Subject Alternative Name: 
+    DNS:34.93.140.79.sslip.io
+notAfter=Jan 20 12:57:17 2027 GMT
+
+### curl -vI https://34-93-140-79.sslip.io/health
+* TLSv1.3 (OUT), TLS handshake, Client hello (1):
+* TLSv1.3 (IN), TLS handshake, Server hello (2):
+* TLSv1.3 (IN), TLS change cipher, Change cipher spec (1):
+* TLSv1.3 (IN), TLS handshake, Encrypted Extensions (8):
+* TLSv1.3 (IN), TLS handshake, Certificate (11):
+* TLSv1.3 (IN), TLS handshake, CERT verify (15):
+* TLSv1.3 (IN), TLS handshake, Finished (20):
+* TLSv1.3 (OUT), TLS change cipher, Change cipher spec (1):
+* TLSv1.3 (OUT), TLS handshake, Finished (20):
+* SSL connection using TLSv1.3 / TLS_AES_128_GCM_SHA256 / X25519MLKEM768 / id-ecPublicKey
+*  subject: CN=34-93-140-79.sslip.io
+*  expire date: Jan 20 12:27:03 2027 GMT
+*  subjectAltName: host "34-93-140-79.sslip.io" matched cert's "34-93-140-79.sslip.io"
+*  issuer: C=US; O=Let's Encrypt; CN=YE2
+*  SSL certificate verify ok.
+* Connected to 34-93-140-79.sslip.io (34.93.140.79) port 443
+* using HTTP/2
+* [HTTP/2] [1] OPENED stream for https://34-93-140-79.sslip.io/health
+* [HTTP/2] [1] [:method: HEAD]
+* [HTTP/2] [1] [:scheme: https]
+* [HTTP/2] [1] [:authority: 34-93-140-79.sslip.io]
+* [HTTP/2] [1] [:path: /health]
+* [HTTP/2] [1] [user-agent: curl/8.14.1]
+* [HTTP/2] [1] [accept: */*]
+> HEAD /health HTTP/2
+* TLSv1.3 (IN), TLS handshake, Newsession Ticket (4):
+< HTTP/2 404 
+HTTP/2 404 
+### GET /health, /ready, /docs
+health 200 0(0=verified)
+ready 200 0(0=verified)
+docs 200 0(0=verified)
+### s_client 34-93-140-79.sslip.io
+   v:NotBefore: Oct 22 12:27:04 2026 GMT; NotAfter: Jan 20 12:27:03 2027 GMT
+   v:NotBefore: Sep  3 00:00:00 2025 GMT; NotAfter: Sep  2 23:59:59 2028 GMT
+   v:NotBefore: May 13 00:00:00 2026 GMT; NotAfter: Sep  2 23:59:59 2032 GMT
+   v:NotBefore: May 13 00:00:00 2026 GMT; NotAfter: Sep  2 23:59:59 2032 GMT
+subject=CN=34-93-140-79.sslip.io
+issuer=C=US, O=Let's Encrypt, CN=YE2
+Verification: OK
+Verify return code: 0 (ok)
+    Protocol  : TLSv1.3
+    Verify return code: 0 (ok)
+X509v3 Subject Alternative Name: 
+    DNS:34-93-140-79.sslip.io
+notAfter=Jan 20 12:27:03 2027 GMT
+### API with token over the dotted name
+jobs/x with token: 404 (404 = reached handler)
+### download link host (S3_PUBLIC_ENDPOINT is the dashed name): dashed name still serves storage
+no-signature 403 (403 = storage reached)

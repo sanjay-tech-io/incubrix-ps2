@@ -7,7 +7,9 @@
 	}
 }
 
-{$PUBLIC_HOST} {
+# Two names for the same site: people type the IP with dots or with dashes (sslip.io resolves both), and a name Caddy has no
+# site for gets a TLS "internal error" alert (browser: ERR_SSL_PROTOCOL_ERROR). Each name gets its own certificate.
+{$PUBLIC_HOST}, {$PUBLIC_HOST_ALT} {
 	# No `log` directive on purpose: Caddy's access log would write the query string of presigned download links
 	# (X-Amz-Signature) to disk. Errors still go to stderr.
 

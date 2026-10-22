@@ -1,6 +1,7 @@
 # Production override for the public demo VM. Use it together with the base file:
 #   docker compose -f docker-compose.yml -f compose.prod.yml up -d --build
-# Needs in .env: API_TOKEN (16+ chars, the API refuses to start without it) and PUBLIC_HOST (<ip-with-dashes>.sslip.io).
+# Needs in .env: API_TOKEN (16+ chars, the API refuses to start without it), PUBLIC_HOST (<ip-with-dashes>.sslip.io)
+# and PUBLIC_HOST_ALT (<ip.with.dots>.sslip.io): both spellings must work or one of them ends in ERR_SSL_PROTOCOL_ERROR.
 # Only Caddy publishes ports (80, 443). `!reset` removes the ports the base file publishes for api (8080) and s3 (8333).
 
 x-limits: &limits
@@ -20,6 +21,7 @@ services:
     ports: ["80:80", "443:443"]
     environment:
       PUBLIC_HOST: ${PUBLIC_HOST:?set PUBLIC_HOST in .env}
+      PUBLIC_HOST_ALT: ${PUBLIC_HOST_ALT:?set PUBLIC_HOST_ALT in .env, e.g. 34.93.140.79.sslip.io (the same IP with dots)}
       MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-200}
       S3_BUCKET: ${S3_BUCKET:-incubrix}
     volumes:

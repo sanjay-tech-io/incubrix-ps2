@@ -3,9 +3,9 @@
 Written 2026-10-22 after the commands below were run on the demo VM. Raw outputs: `docs/raw/m6a_*`. Anything not run is under "Not done or not verified".
 
 ## URL
-- API and docs: **https://34-93-140-79.sslip.io** (Swagger UI: `/docs`, spec: `/openapi.yaml`, `/health`, `/ready` need no token).
+- API and docs: **https://34-93-140-79.sslip.io** (also **https://34.93.140.79.sslip.io**, the same IP with dots; see "ERR_SSL_PROTOCOL_ERROR" below) (Swagger UI: `/docs`, spec: `/openapi.yaml`, `/health`, `/ready` need no token).
 - The name is the VM's external IP with dashes under sslip.io (free wildcard DNS; it resolves back to the IP). Certificate: Let's Encrypt, issued by Caddy on 2026-10-22 (log in `docker compose logs caddy`; challenge tls-alpn-01 on port 443).
-- **If the VM's external IP changes the URL changes** (the IP is ephemeral unless it was reserved as static; I could not check, `gcloud` here has insufficient scopes). Then set the new `PUBLIC_HOST` in `.env` and restart Caddy (below). A new name means a new certificate; sslip.io is a shared parent domain, so Let's Encrypt's per-domain limits can be hit by other users.
+- **If the VM's external IP changes the URL changes** (the IP is ephemeral unless it was reserved as static; I could not check, `gcloud` here has insufficient scopes). Then set the new `PUBLIC_HOST` and `PUBLIC_HOST_ALT` in `.env` and restart Caddy (below). A new name means a new certificate; sslip.io is a shared parent domain, so Let's Encrypt's per-domain limits can be hit by other users.
 
 ## Token
 - `API_TOKEN` is in `.env` on the VM (mode 600, never committed). Send `Authorization: Bearer <token>`. `/health`, `/ready`, `/docs`, `/openapi.yaml` need none. In Swagger UI press **Authorize** and paste it; "Try it out" then works.
@@ -64,3 +64,14 @@ What was done: random values for `S3_ACCESS_KEY`, `S3_SECRET_KEY` and `POSTGRES_
 | Smoke test through the public URL on a NEW clip (upload, ASR, captions, cut, render, download) | PASS in 17.3 s; render 15.4 s, h264 + aac | `docs/raw/m6a_smoke_after_rotation.txt`, `m6a_smoke_after_rotation_out/` |
 
 Limits of this check: only GET links were tested with the old key (403 on two objects); I did not try other S3 operations with the old key, but the public door only forwards GET/HEAD and storage is not published. The smoke test again ran from this VM against the public name. The database login itself was exercised by the API/worker restarting healthy and the smoke test (no separate login test). Rebuild took 3 min 14 s. A copy of the pre-rotation `.env` is in the session scratchpad (not in the repo) and contains the old values.
+
+## ERR_SSL_PROTOCOL_ERROR on the dotted name (2026-10-22, fixed)
+Report: from a laptop browser and a phone, `https://34.93.140.79.sslip.io/docs` gave ERR_SSL_PROTOCOL_ERROR.
+
+**Diagnosis** (raw: `docs/raw/m6a_ssl_diagnosis_before.txt`, 13:54 UTC): Caddy was fine and listening on the host (`ss -ltn`: 0.0.0.0 and [::] on 80 and 443; `docker port`: 80/tcp, 443/tcp). Its log showed no issuance error and no rate limit: it had one certificate, for `34-93-140-79.sslip.io` only. The dotted name resolves to the same IP, but Caddy had no site and no certificate for it, so the TLS handshake ended with alert 80 `internal error` (`curl -vI`: `tlsv1 alert internal error`; `openssl s_client -servername 34.93.140.79.sslip.io`: "no peer certificate available"). The same two commands with the dashed name worked (CN `34-93-140-79.sslip.io`, Let's Encrypt, verify OK). I used the dashed form in every earlier test and in all my reports, so I never exercised the form you typed. That is my gap.
+
+**Fix**: the site address in `deploy/Caddyfile` is now `{$PUBLIC_HOST}, {$PUBLIC_HOST_ALT}`; `compose.prod.yml` requires `PUBLIC_HOST_ALT` and `.env` has `PUBLIC_HOST_ALT=34.93.140.79.sslip.io` (not a secret; no secret was touched). Only Caddy was recreated (`docker compose up -d caddy`); Let's Encrypt issued the second certificate in 7 s (http-01, no rate-limit message).
+
+**Proof** (raw: `docs/raw/m6a_ssl_diagnosis_after.txt`, 13:56 UTC, same commands): `curl -vI https://34.93.140.79.sslip.io/health`: TLS 1.3, subject CN=34.93.140.79.sslip.io, SAN matches, issuer Let's Encrypt YE1, expires 2027-01-20, "SSL certificate verify ok". `openssl s_client`: subject and SAN `DNS:34.93.140.79.sslip.io`, verify return code 0. GET `/health`, `/ready`, `/docs` return 200 with verified certificates on BOTH names; the API with the token over the dotted name reaches its handler (404 for an unknown job). An external fetch service also got `{"status":"ok","service":"api"}` from `https://34.93.140.79.sslip.io/health`.
+
+Not verified: I have no browser or phone here, so I did not see `/docs` render in one; please reload it (a browser may cache the failed attempt for a minute). Download links in API answers still use the dashed name (`S3_PUBLIC_ENDPOINT`); both names reach storage. `curl -I` (HEAD) shows 404 on every route, dashed or dotted, because the API does not serve HEAD (`exposeHeadRoutes: false`); GET works, and I did not change that. The same trap exists for any other spelling (for example a bare IP, `https://34.93.140.79/`), which fails the same way because a Let's Encrypt certificate cannot be issued for a bare IP here.

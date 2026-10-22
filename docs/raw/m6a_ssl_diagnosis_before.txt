@@ -1,0 +1,103 @@
+### date 2026-10-22T13:54:31Z
+### docker compose logs --tail=80 caddy
+{"level":"info","ts":1792675786.2871547,"msg":"maxprocs: Leaving GOMAXPROCS=4: CPU quota undefined"}
+{"level":"info","ts":1792675786.2877476,"msg":"GOMEMLIMIT is updated","GOMEMLIMIT":15096449433,"previous":9223372036854775807}
+{"level":"info","ts":1792675786.2879524,"msg":"using config from file","file":"/etc/caddy/Caddyfile"}
+{"level":"info","ts":1792675786.2880943,"msg":"adapted config to JSON","adapter":"caddyfile"}
+{"level":"info","ts":1792675786.2946124,"logger":"admin","msg":"admin endpoint started","address":"localhost:2019","enforce_origin":false,"origins":["//localhost:2019","//[::1]:2019","//127.0.0.1:2019"]}
+{"level":"info","ts":1792675786.2953725,"logger":"tls.cache.maintenance","msg":"started background certificate maintenance","cache":"0x12af57945a80"}
+{"level":"info","ts":1792675786.295744,"logger":"http.auto_https","msg":"server is listening only on the HTTPS port but has no TLS connection policies; adding one to enable TLS","server_name":"srv0","https_port":443}
+{"level":"info","ts":1792675786.2959375,"logger":"http.auto_https","msg":"enabling automatic HTTP->HTTPS redirects","server_name":"srv0"}
+{"level":"info","ts":1792675786.307472,"logger":"http.log","msg":"server running","name":"srv0","protocols":["h1","h2"]}
+{"level":"warn","ts":1792675786.307619,"logger":"http","msg":"HTTP/2 skipped because it requires TLS","network":"tcp","addr":":80"}
+{"level":"warn","ts":1792675786.307628,"logger":"http","msg":"HTTP/3 skipped because it requires TLS","network":"tcp","addr":":80"}
+{"level":"info","ts":1792675786.3076322,"logger":"http.log","msg":"server running","name":"remaining_auto_https_redirects","protocols":["h1","h2","h3"]}
+{"level":"info","ts":1792675786.3076382,"logger":"http","msg":"enabling automatic TLS certificate management","domains":["34-93-140-79.sslip.io"]}
+{"level":"info","ts":1792675786.3079166,"msg":"autosaved config (load with --resume flag)","file":"/config/caddy/autosave.json"}
+{"level":"info","ts":1792675786.3079312,"msg":"serving initial configuration"}
+{"level":"info","ts":1792675786.3145835,"logger":"tls","msg":"storage cleaning happened too recently; skipping for now","storage":"FileStorage:/data/caddy","instance":"1a27b9c2-01f1-4d16-8141-ccbd25d0c419","try_again":1792762186.3145804,"try_again_in":86399.99
+{"level":"info","ts":1792675786.3148248,"logger":"tls","msg":"finished cleaning storage units"}
+
+### host listeners
+LISTEN 0      4096         0.0.0.0:80         0.0.0.0:*          
+LISTEN 0      4096         0.0.0.0:443        0.0.0.0:*          
+LISTEN 0      4096            [::]:80            [::]:*          
+LISTEN 0      4096            [::]:443           [::]:*          
+80/tcp -> 0.0.0.0:80
+80/tcp -> [::]:80
+443/tcp -> 0.0.0.0:443
+443/tcp -> [::]:443
+
+### curl -vI dotted name
+  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current
+                                 Dload  Upload   Total   Spent    Left  Speed
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0* Host 34.93.140.79.sslip.io:443 was resolved.
+* IPv6: (none)
+* IPv4: 34.93.140.79
+*   Trying 34.93.140.79:443...
+* ALPN: curl offers h2,http/1.1
+} [5 bytes data]
+* TLSv1.3 (OUT), TLS handshake, Client hello (1):
+} [1576 bytes data]
+*  CAfile: /etc/ssl/certs/ca-certificates.crt
+*  CApath: /etc/ssl/certs
+{ [5 bytes data]
+* TLSv1.3 (IN), TLS alert, internal error (592):
+{ [2 bytes data]
+* TLS connect error: error:0A000438:SSL routines::tlsv1 alert internal error
+  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0
+* closing connection #0
+curl: (35) TLS connect error: error:0A000438:SSL routines::tlsv1 alert internal error
+
+### curl -vI dashed name
+* SSL connection using TLSv1.3 / TLS_AES_128_GCM_SHA256 / X25519MLKEM768 / id-ecPublicKey
+*  subject: CN=34-93-140-79.sslip.io
+*  expire date: Jan 20 12:27:03 2027 GMT
+*  subjectAltName: host "34-93-140-79.sslip.io" matched cert's "34-93-140-79.sslip.io"
+*  issuer: C=US; O=Let's Encrypt; CN=YE2
+*  SSL certificate verify ok.
+* using HTTP/2
+* [HTTP/2] [1] OPENED stream for https://34-93-140-79.sslip.io/health
+* [HTTP/2] [1] [:method: HEAD]
+* [HTTP/2] [1] [:scheme: https]
+* [HTTP/2] [1] [:authority: 34-93-140-79.sslip.io]
+* [HTTP/2] [1] [:path: /health]
+* [HTTP/2] [1] [user-agent: curl/8.14.1]
+* [HTTP/2] [1] [accept: */*]
+> HEAD /health HTTP/2
+< HTTP/2 404 
+HTTP/2 404 
+
+### s_client dotted
+Connecting to 34.93.140.79
+4017C4CF4E7F0000:error:0A000438:SSL routines:ssl3_read_bytes:tlsv1 alert internal error:../ssl/record/rec_layer_s3.c:918:SSL alert number 80
+CONNECTED(00000003)
+---
+no peer certificate available
+---
+No client certificate CA names sent
+Negotiated TLS1.3 group: <NULL>
+---
+SSL handshake has read 7 bytes and written 1563 bytes
+Verification: OK
+---
+New, (NONE), Cipher is (NONE)
+Protocol: TLSv1.3
+This TLS version forbids renegotiation.
+Compression: NONE
+Expansion: NONE
+No ALPN negotiated
+Early data was not sent
+Verify return code: 0 (ok)
+---
+### s_client dashed
+subject=CN=34-93-140-79.sslip.io
+issuer=C=US, O=Let's Encrypt, CN=YE2
+Verification: OK
+Protocol: TLSv1.3
+Verify return code: 0 (ok)
+    Protocol  : TLSv1.3
+    Verify return code: 0 (ok)
+### dns
+34.93.140.79    34.93.140.79.sslip.io
+34.93.140.79    34-93-140-79.sslip.io
