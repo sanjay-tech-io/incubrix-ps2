@@ -12,7 +12,9 @@ Every AI tool used on this project. Only facts known from the repository and its
 |---|---|---|
 | faster-whisper (Whisper weights) | Speech to text with word timestamps | Transcripts are model output |
 | sherpa-onnx + pyannote segmentation-3.0 + WeSpeaker | Speaker diarization | Speaker labels are model output |
-| LLM adapter (`LLM_PROVIDER`, default `rules`; `groq` / `gemini` planned) | Fallback translation of instructions into operations | Not built yet. Which LLM, if any, is used in the final demo: TO BE COMPLETED BY THE CANDIDATE |
+| Gemini fallback (`LLM_PROVIDER=gemini` with a key; default `rules`; groq not built) | Translates an instruction the rules parser cannot read into a closed list of commands that our own code validates and applies | Operations that came from it are labelled in the answer and the manifest. Whether the final demo has a key: TO BE COMPLETED BY THE CANDIDATE |
+| all-MiniLM-L6-v2 (ONNX, in `services/asr`) | Sentence embeddings for meaning-based search | Search scores are model output; the edit is only applied after the user chooses |
+| WeSpeaker voice embeddings (same model as the diarization) | Possible speaker-label swap check (`services/asr/asr/swap.py`) | The `possibleLabelSwap` flag is model-derived; it only produces warnings, labels are never changed |
 
 ## AI-generated media
 `synthetic.wav` and the two-voice diarization clip are speech synthesised by espeak-ng (a rule-based formant synthesiser, not a neural model). They are flagged "AI-generated: YES" in `SOURCES.md`.
