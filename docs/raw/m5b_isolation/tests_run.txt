@@ -1,0 +1,755 @@
+2026-10-22T15:58:02Z
+ Image incubrix-test-app Building 
+ Image incubrix-ps2-asr-tests Building 
+ Image incubrix-ps2-otio-tests Building 
+ Image incubrix-ps2-otio-test Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.00kB done
+#1 DONE 0.0s
+
+#2 [asr-tests internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.13kB done
+#2 DONE 0.0s
+
+#3 [init-test internal] load build definition from Dockerfile
+#3 transferring dockerfile: 1.21kB done
+#3 DONE 0.0s
+
+#4 [otio-test internal] load build definition from Dockerfile
+#4 transferring dockerfile: 589B done
+#4 DONE 0.0s
+
+#5 [otio-test internal] load metadata for docker.io/library/python:3.12-slim
+#5 DONE 1.7s
+
+#6 [init-test internal] load metadata for docker.io/library/node:22-bookworm-slim
+#6 DONE 1.6s
+
+#7 [otio-test internal] load .dockerignore
+#7 transferring context: 2B done
+#7 DONE 0.0s
+
+#8 [init-test internal] load .dockerignore
+#8 transferring context: 98B done
+#8 DONE 0.0s
+
+#9 [asr-tests internal] load .dockerignore
+#9 transferring context: 78B done
+#9 DONE 0.0s
+
+#10 [asr-tests internal] load build context
+#10 transferring context: 215.07kB 0.1s done
+#10 DONE 0.1s
+
+#11 [otio-test internal] load build context
+#11 transferring context: 26.78kB 0.1s done
+#11 DONE 0.1s
+
+#12 [otio-tests internal] load build context
+#12 transferring context: 77.82kB 0.1s done
+#12 DONE 0.1s
+
+#13 [asr-tests base 1/5] FROM docker.io/library/python:3.12-slim@sha256:cb33f7f771ecec2ef1225cf39b159591a040391bd73e4c01f00fdfc4c47611d2
+#13 resolve docker.io/library/python:3.12-slim@sha256:cb33f7f771ecec2ef1225cf39b159591a040391bd73e4c01f00fdfc4c47611d2 0.2s done
+#13 DONE 0.2s
+
+#14 [otio-test base 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#14 CACHED
+
+#15 [otio-test base 3/5] COPY requirements.txt .
+#15 CACHED
+
+#16 [otio-test base 2/5] WORKDIR /app
+#16 CACHED
+
+#17 [otio-test base 5/5] COPY otio_service ./otio_service
+#17 CACHED
+
+#18 [asr-tests base 7/7] COPY asr ./asr
+#18 CACHED
+
+#19 [asr-tests base 6/7] RUN ASR_MODEL=base.en python fetch_models.py
+#19 CACHED
+
+#20 [asr-tests base 3/7] COPY requirements.txt .
+#20 CACHED
+
+#21 [asr-tests test 1/3] COPY requirements-dev.txt pytest.ini ./
+#21 CACHED
+
+#22 [asr-tests base 5/7] COPY fetch_models.py .
+#22 CACHED
+
+#23 [asr-tests base 4/7] RUN pip install --no-cache-dir -r requirements.txt
+#23 CACHED
+
+#24 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#24 CACHED
+
+#25 [init-test  1/22] FROM docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d
+#25 resolve docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d 0.2s done
+#25 DONE 0.2s
+
+#26 [otio-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#26 CACHED
+
+#27 [otio-tests base 5/5] COPY otio_service ./otio_service
+#27 CACHED
+
+#16 [otio-tests base 2/5] WORKDIR /app
+#16 CACHED
+
+#28 [otio-tests base 3/5] COPY requirements.txt .
+#28 CACHED
+
+#29 [otio-tests test 1/3] COPY requirements-dev.txt pytest.ini ./
+#29 CACHED
+
+#30 [otio-tests base 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#30 CACHED
+
+#31 [otio-tests test 3/3] COPY tests ./tests
+#31 CACHED
+
+#32 [asr-tests test 3/3] COPY tests ./tests
+#32 DONE 0.1s
+
+#33 [otio-tests] exporting to image
+#33 exporting layers 0.0s done
+#33 exporting manifest sha256:145dbef6185fc8c59c3b9142b860f97d12be92bcfb95f3361bfb52ecc71ed5dc done
+#33 exporting config sha256:d0aa3c2e377d3e4f9da8f72e0f50e9b07996b233634d053553a0680df6985b3f 0.0s done
+#33 exporting attestation manifest sha256:18253ff6622f58131dd589a0dafc69105f5151c3d5087b26120a9a9da0afdd42 0.0s done
+#33 exporting manifest list sha256:2f06e2b2dbf64c5473dd26dcd9b79f10c9c3d7339793b085a038543cd3b740da 0.0s done
+#33 naming to docker.io/library/incubrix-ps2-otio-tests:latest 0.0s done
+#33 unpacking to docker.io/library/incubrix-ps2-otio-tests:latest
+#33 unpacking to docker.io/library/incubrix-ps2-otio-tests:latest 0.0s done
+#33 DONE 0.3s
+
+#34 [otio-test] exporting to image
+#34 exporting layers 0.0s done
+#34 exporting manifest sha256:dfbe5ce24ffa8f04f1e43ecb7ea065f1557c754eaba69dc8c70820ee8c219799 0.1s done
+#34 exporting config sha256:d9061034e5a55377250cd04deb9722e9bf2f3ca721bbbc55e3d8e887704053cd 0.0s done
+#34 exporting attestation manifest sha256:e70c9a7745b1bd2d863bed73bc535f3521097b7ce8bac88cfcac2d6d908fb760 0.0s done
+#34 exporting manifest list sha256:d23211de8cdbe368da967917aac56075f0641333ede449a0d01e71bdf8f7df3f 0.0s done
+#34 naming to docker.io/library/incubrix-ps2-otio-test:latest done
+#34 unpacking to docker.io/library/incubrix-ps2-otio-test:latest 0.0s done
+#34 DONE 0.3s
+
+#35 [asr-tests] exporting to image
+#35 exporting layers 0.2s done
+#35 exporting manifest sha256:5473f18bab85b610c058ee221206f96e3fec6ba6d5fd283fdc86b85659896e06 0.0s done
+#35 exporting config sha256:e1053ebf6db7d40f5d5930c2739ac44e47f0c74391be63640d34afd40027bf72 0.0s done
+#35 exporting attestation manifest sha256:708490ea4f74845202cd782a6ccbc9cd10e3023f435510cd31c647e02443fe73 0.0s done
+#35 exporting manifest list sha256:b48ee6c7ac03e2c5d8a500c304c3dad221d57027bd64ef7411d8e4f2b8df24ac 0.0s done
+#35 naming to docker.io/library/incubrix-ps2-asr-tests:latest done
+#35 unpacking to docker.io/library/incubrix-ps2-asr-tests:latest 0.1s done
+#35 DONE 0.5s
+
+#36 [otio-tests] resolving provenance for metadata file
+#36 DONE 0.0s
+
+#37 [otio-test] resolving provenance for metadata file
+#37 DONE 0.0s
+
+#38 [init-test internal] load build context
+#38 transferring context: 1.31MB 0.9s done
+#38 DONE 0.9s
+
+#39 [init-test 16/22] COPY packages/llm/package.json packages/llm/
+#39 CACHED
+
+#40 [init-test  5/22] COPY packages/contracts/package.json packages/contracts/
+#40 CACHED
+
+#41 [init-test  3/22] WORKDIR /app
+#41 CACHED
+
+#42 [init-test  4/22] COPY package.json package-lock.json .npmrc ./
+#42 CACHED
+
+#43 [init-test 19/22] COPY apps/worker/package.json apps/worker/
+#43 CACHED
+
+#44 [init-test 15/22] COPY packages/semantic/package.json packages/semantic/
+#44 CACHED
+
+#45 [init-test  9/22] COPY packages/storage/package.json packages/storage/
+#45 CACHED
+
+#46 [init-test 17/22] COPY packages/otio/package.json packages/otio/
+#46 CACHED
+
+#47 [init-test  6/22] COPY packages/engine/package.json packages/engine/
+#47 CACHED
+
+#48 [init-test  8/22] COPY packages/db/package.json packages/db/
+#48 CACHED
+
+#49 [init-test  7/22] COPY packages/config/package.json packages/config/
+#49 CACHED
+
+#50 [init-test 14/22] COPY packages/render/package.json packages/render/
+#50 CACHED
+
+#51 [init-test  2/22] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core ca-certificates && rm -rf /var/lib/apt/lists/*
+#51 CACHED
+
+#52 [init-test 11/22] COPY packages/errors/package.json packages/errors/
+#52 CACHED
+
+#53 [init-test 20/22] COPY apps/cli/package.json apps/cli/
+#53 CACHED
+
+#54 [init-test 10/22] COPY packages/media/package.json packages/media/
+#54 CACHED
+
+#55 [init-test 12/22] COPY packages/nlu/package.json packages/nlu/
+#55 CACHED
+
+#56 [init-test 13/22] COPY packages/store/package.json packages/store/
+#56 CACHED
+
+#57 [init-test 18/22] COPY apps/api/package.json apps/api/
+#57 CACHED
+
+#58 [init-test 21/22] RUN npm ci
+#58 CACHED
+
+#59 [asr-tests] resolving provenance for metadata file
+#59 DONE 0.0s
+
+#60 [init-test 22/22] COPY . .
+#60 DONE 17.9s
+
+#61 [init-test] exporting to image
+#61 exporting layers
+#61 exporting layers 98.9s done
+#61 exporting manifest sha256:c9c0bd5e95f8a918cc2270aae7d2bf952833c877b75479132c852df23a2b82ad 0.0s done
+#61 exporting config sha256:67aa3be8da2722a05727747234dbc572ab99c76563970dee4646df93bc4caba8 0.0s done
+#61 exporting attestation manifest sha256:aa3f5e9f43883ded1eb41a7c52343e7ffd83627a534b8e20743849a6f319ba75 0.0s done
+#61 exporting manifest list sha256:18577b759b616722ec75c3276a65970f257d672ac11e2a7a367438c582b252a5 0.0s done
+#61 naming to docker.io/library/incubrix-test-app:latest done
+#61 unpacking to docker.io/library/incubrix-test-app:latest
+#61 unpacking to docker.io/library/incubrix-test-app:latest 18.0s done
+#61 DONE 117.1s
+
+#62 [init-test] resolving provenance for metadata file
+#62 DONE 0.0s
+ Image incubrix-test-app Built 
+ Image incubrix-ps2-otio-test Built 
+ Image incubrix-ps2-otio-tests Built 
+ Image incubrix-ps2-asr-tests Built 
+ Network incubrix-ps2_testnet Creating 
+ Container incubrix-ps2-asr-tests-1 Recreate 
+ Network incubrix-ps2_testnet Creating 
+ Network incubrix-ps2_testnet Created 
+ Network incubrix-ps2_testnet Created 
+ Container incubrix-ps2-s3-test-1 Creating 
+ Container incubrix-ps2-postgres-test-1 Creating 
+ Container incubrix-ps2-otio-test-1 Creating 
+ Container incubrix-ps2-s3-test-1 Created 
+ Container incubrix-ps2-otio-test-1 Created 
+ Container incubrix-ps2-postgres-test-1 Created 
+ Container incubrix-ps2-init-test-1 Creating 
+ Container incubrix-ps2-asr-tests-1 Recreated 
+ Container incubrix-ps2-init-test-1 Created 
+ Container incubrix-ps2-otio-test-1 Starting 
+ Container incubrix-ps2-postgres-test-1 Starting 
+ Container incubrix-ps2-s3-test-1 Starting 
+ Container incubrix-ps2-asr-tests-1 Starting 
+ Container incubrix-ps2-otio-tests-1 Starting 
+ Container incubrix-ps2-otio-test-1 Started 
+ Container incubrix-ps2-postgres-test-1 Started 
+ Container incubrix-ps2-s3-test-1 Started 
+ Container incubrix-ps2-s3-test-1 Waiting 
+ Container incubrix-ps2-postgres-test-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Started 
+ Container incubrix-ps2-otio-tests-1 Started 
+ Container incubrix-ps2-postgres-test-1 Healthy 
+ Container incubrix-ps2-s3-test-1 Healthy 
+ Container incubrix-ps2-init-test-1 Starting 
+ Container incubrix-ps2-init-test-1 Started 
+ Image incubrix-test-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.34kB done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.21kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:22-bookworm-slim
+#3 DONE 0.9s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 98B done
+#4 DONE 0.0s
+
+#5 [ 1/22] FROM docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d
+#5 resolve docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 830.19kB 0.4s done
+#6 DONE 0.4s
+
+#7 [ 7/22] COPY packages/config/package.json packages/config/
+#7 CACHED
+
+#8 [17/22] COPY packages/otio/package.json packages/otio/
+#8 CACHED
+
+#9 [19/22] COPY apps/worker/package.json apps/worker/
+#9 CACHED
+
+#10 [13/22] COPY packages/store/package.json packages/store/
+#10 CACHED
+
+#11 [20/22] COPY apps/cli/package.json apps/cli/
+#11 CACHED
+
+#12 [ 8/22] COPY packages/db/package.json packages/db/
+#12 CACHED
+
+#13 [10/22] COPY packages/media/package.json packages/media/
+#13 CACHED
+
+#14 [16/22] COPY packages/llm/package.json packages/llm/
+#14 CACHED
+
+#15 [ 3/22] WORKDIR /app
+#15 CACHED
+
+#16 [ 2/22] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core ca-certificates && rm -rf /var/lib/apt/lists/*
+#16 CACHED
+
+#17 [ 6/22] COPY packages/engine/package.json packages/engine/
+#17 CACHED
+
+#18 [ 4/22] COPY package.json package-lock.json .npmrc ./
+#18 CACHED
+
+#19 [14/22] COPY packages/render/package.json packages/render/
+#19 CACHED
+
+#20 [11/22] COPY packages/errors/package.json packages/errors/
+#20 CACHED
+
+#21 [15/22] COPY packages/semantic/package.json packages/semantic/
+#21 CACHED
+
+#22 [18/22] COPY apps/api/package.json apps/api/
+#22 CACHED
+
+#23 [12/22] COPY packages/nlu/package.json packages/nlu/
+#23 CACHED
+
+#24 [ 9/22] COPY packages/storage/package.json packages/storage/
+#24 CACHED
+
+#25 [ 5/22] COPY packages/contracts/package.json packages/contracts/
+#25 CACHED
+
+#26 [21/22] RUN npm ci
+#26 CACHED
+
+#27 [22/22] COPY . .
+#27 DONE 14.9s
+
+#28 exporting to image
+#28 exporting layers
+#28 exporting layers 82.5s done
+#28 exporting manifest sha256:e02d6182a6c90ea07a4e78228cd2691befa444beabec705deff7c49128774f79 0.0s done
+#28 exporting config sha256:06aa71c67f02cc0329177c210e26e2813c64f22a9854b0bcf756b162caed3494 0.0s done
+#28 exporting attestation manifest sha256:b0cb277aa478d1446bac1bb0145ff4bc959b13a9c17c96a3f0528b6c7159d35f 0.0s done
+#28 exporting manifest list sha256:f01643ea76880976cefc55f77a98ed208a4e48b2cc412f41a3c7c6341afbee36 0.0s done
+#28 naming to docker.io/library/incubrix-test-app:latest
+#28 naming to docker.io/library/incubrix-test-app:latest done
+#28 unpacking to docker.io/library/incubrix-test-app:latest
+#28 unpacking to docker.io/library/incubrix-test-app:latest 17.7s done
+#28 DONE 100.4s
+
+#29 resolving provenance for metadata file
+#29 DONE 0.0s
+ Image incubrix-test-app Built 
+ Container incubrix-ps2-init-test-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Waiting 
+ Container incubrix-ps2-otio-tests-1 Waiting 
+ Container incubrix-ps2-otio-test-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Exited 
+ Container incubrix-ps2-otio-tests-1 Exited 
+ Container incubrix-ps2-otio-test-1 Healthy 
+ Container incubrix-ps2-init-test-1 Exited 
+ Container incubrix-ps2-tests-run-515f25fddde0 Creating 
+ Container incubrix-ps2-tests-run-515f25fddde0 Created 
+
+> incubrix@0.0.0 test
+> npm test --workspaces --if-present
+
+
+> @incubrix/config@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/config
+
+ ✓ test/envdoc.test.ts (5 tests) 16ms
+ ✓ test/config.test.ts (12 tests) 49ms
+
+ Test Files  2 passed (2)
+      Tests  17 passed (17)
+   Start at  16:02:45
+   Duration  851ms (transform 278ms, setup 0ms, collect 431ms, tests 66ms, environment 1ms, prepare 399ms)
+
+
+> @incubrix/contracts@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/contracts
+
+ ✓ test/schema.test.ts (4 tests) 400ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  16:02:47
+   Duration  1.25s (transform 101ms, setup 0ms, collect 318ms, tests 400ms, environment 0ms, prepare 129ms)
+
+
+> @incubrix/db@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/db
+
+ ✓ test/files.test.ts (5 tests) 17ms
+ ✓ test/postgres.test.ts (8 tests) 314ms
+
+ Test Files  2 passed (2)
+      Tests  13 passed (13)
+   Start at  16:02:48
+   Duration  982ms (transform 212ms, setup 0ms, collect 348ms, tests 330ms, environment 1ms, prepare 303ms)
+
+
+> @incubrix/engine@0.0.0 test
+> eslint . && vitest run
+
+
+ RUN  v2.1.9 /app/packages/engine
+
+ ✓ test/session.test.ts (32 tests) 107ms
+ ✓ test/new_ops.test.ts (39 tests) 160ms
+ ✓ test/reorder.test.ts (26 tests) 336ms
+ ✓ test/replay.test.ts (23 tests) 76ms
+ ✓ test/frame_rounding.test.ts (14 tests) 250ms
+ ✓ test/worked_example.test.ts (11 tests | 1 skipped) 93ms
+ ✓ test/atoms.test.ts (21 tests) 60ms
+ ✓ test/search_resolve.test.ts (21 tests) 44ms
+ ✓ test/grid_warnings.test.ts (11 tests) 63ms
+ ✓ test/mutants.test.ts (14 tests) 29ms
+ ✓ test/canonical.test.ts (18 tests) 24ms
+ ✓ test/hard_cases.test.ts (6 tests) 2887ms
+   ✓ property: incremental application equals a full replay > after every command of a random edit/undo/redo sequence, snapshots agree with replaying the log 576ms
+   ✓ property: the session path (caches, incremental priming) equals a fresh full replay > after every turn of a random session (edits, undo, redo, restore, rejected turns), the cached timeline equals a replay on a brand-new engine 2256ms
+ ✓ test/schema.test.ts (4 tests) 353ms
+   ✓ the schema accepts what the engine really produces > a real session (caption, cut, question, answer, speed, restore, undo, recolour) validates, and so does its materialized timeline 316ms
+ ✓ test/lint_guard.test.ts (12 tests) 1078ms
+   ✓ engine purity lint rules > forbids Date in packages/engine/src 995ms
+
+ Test Files  14 passed (14)
+      Tests  251 passed | 1 skipped (252)
+   Start at  16:02:54
+   Duration  7.15s (transform 1.35s, setup 0ms, collect 4.86s, tests 5.56s, environment 5ms, prepare 2.57s)
+
+
+> @incubrix/errors@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/errors
+
+ ✓ test/errors.test.ts (3 tests) 8ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  16:03:02
+   Duration  665ms (transform 100ms, setup 0ms, collect 89ms, tests 8ms, environment 0ms, prepare 110ms)
+
+
+> @incubrix/llm@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/llm
+
+ ✓ test/gemini.test.ts (3 tests) 80ms
+ ✓ test/llm.test.ts (9 tests) 377ms
+
+ Test Files  2 passed (2)
+      Tests  12 passed (12)
+   Start at  16:03:03
+   Duration  1.73s (transform 679ms, setup 0ms, collect 1.34s, tests 457ms, environment 1ms, prepare 284ms)
+
+
+> @incubrix/media@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/media
+
+ ✓ test/pure.test.ts (17 tests) 24ms
+ ✓ test/voiced.test.ts (4 tests) 226ms
+ ✓ test/music.test.ts (1 test) 174ms
+ ✓ test/ffmpeg.test.ts (8 tests) 3456ms
+
+ Test Files  4 passed (4)
+      Tests  30 passed (30)
+   Start at  16:03:05
+   Duration  4.28s (transform 296ms, setup 0ms, collect 761ms, tests 3.88s, environment 2ms, prepare 723ms)
+
+
+> @incubrix/nlu@0.0.0 test
+> eslint . && vitest run
+
+
+ RUN  v2.1.9 /app/packages/nlu
+
+ ✓ test/fillers.test.ts (5 tests) 61ms
+ ✓ test/advanced.test.ts (9 tests) 143ms
+ ✓ test/rules.test.ts (24 tests) 534ms
+ ✓ test/time.test.ts (19 tests) 26ms
+ ✓ test/semantic.test.ts (5 tests) 78ms
+ ✓ test/lint_guard.test.ts (9 tests) 1038ms
+   ✓ nlu purity lint rules > forbids Date in packages/nlu/src 976ms
+
+ Test Files  6 passed (6)
+      Tests  71 passed (71)
+   Start at  16:03:12
+   Duration  3.76s (transform 1.06s, setup 0ms, collect 2.85s, tests 1.88s, environment 2ms, prepare 1.19s)
+
+
+> @incubrix/otio@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/otio
+
+ ✓ test/payload.test.ts (6 tests) 19ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  16:03:17
+   Duration  1.12s (transform 487ms, setup 0ms, collect 669ms, tests 19ms, environment 0ms, prepare 95ms)
+
+
+> @incubrix/render@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/render
+
+ ✓ test/musicexpr.test.ts (4 tests) 986ms
+stdout | test/render.test.ts > render smoke > an unedited timeline renders to the same frame count, with the flash and the tone together
+{"frames":150,"verification":{"ok":true,"timelineFrames":150,"renderedFrames":150,"frameDifference":0,"audioVsVideoUs":0,"audioVsVideoFrames":0,"problems":[]},"m":{"videoFrames":150,"events":6,"offsetsFrames":[0.002604166666666667,0.0020833333333358794,0.0020833333333358794,0.0020833333333358794,0.002604166666664298,0.0020833333333358794],"maxAbsOffsetFrames":0.002604166666666667,"unmatched":0}}
+
+ ✓ test/render.test.ts (1 test) 2889ms
+   ✓ render smoke > an unedited timeline renders to the same frame count, with the flash and the tone together 2887ms
+ ✓ test/features.test.ts (8 tests) 24098ms
+   ✓ every effect the timeline holds renders > speed keeps the pitch: a 1 kHz tone is still 1 kHz at 2x and at 4x (chained atempo) 5082ms
+   ✓ every effect the timeline holds renders > slow motion (0.5x) lengthens the video, keeps the pitch 2080ms
+   ✓ every effect the timeline holds renders > mute silences exactly the word; bleep replaces it with a 1 kHz tone at the documented level 2256ms
+   ✓ every effect the timeline holds renders > mute ALONE (no bleep, no music) renders: the aeval output must carry a named stereo layout for the AAC encoder 1381ms
+   ✓ every effect the timeline holds renders > captions: colour, text window and removal after a cut; auto-captions follow the surviving words 7976ms
+   ✓ every effect the timeline holds renders > long caption text is read from a file (quotes and colons cannot break the filter graph) 1390ms
+   ✓ background music follows the engine's ducking envelope > rendered music level equals the timeline envelope (base, ducked and mid-ramp) within 1 dB 3921ms
+ ✓ test/accuracy.test.ts (6 tests) 40137ms
+   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > 25 fps: length equals the timeline within 1 frame and the flash/tone offset is within 1 frame 4408ms
+   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > 30 fps: length equals the timeline within 1 frame and the flash/tone offset is within 1 frame 3278ms
+   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > 29.97 fps: length equals the timeline within 1 frame and the flash/tone offset is within 1 frame 3392ms
+   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > a variable-frame-rate clip renders through a CFR proxy; the original is untouched 4946ms
+   ✓ a large graph: 300 pieces stay frame-exact > one instruction with 300 cuts renders in ONE ffmpeg run, frame count exact, A/V offset within 1 frame 23682ms
+   ✓ no-audio source > fails clearly with NO_AUDIO_TRACK and renders nothing 426ms
+
+ Test Files  4 passed (4)
+      Tests  19 passed (19)
+   Start at  16:03:18
+   Duration  41.74s (transform 1.13s, setup 0ms, collect 2.83s, tests 68.11s, environment 2ms, prepare 702ms)
+
+
+> @incubrix/semantic@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/semantic
+
+ ✓ test/semantic.test.ts (3 tests) 35ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  16:04:01
+   Duration  1.50s (transform 622ms, setup 0ms, collect 990ms, tests 35ms, environment 0ms, prepare 117ms)
+
+
+> @incubrix/storage@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/storage
+
+ ✓ test/retention.test.ts (2 tests) 13ms
+ ✓ test/s3.test.ts (4 tests) 209ms
+ ✓ test/retry.test.ts (5 tests) 2522ms
+   ✓ storage 5xx handling (SeaweedFS answers 500 when it has no writable volume) > a write that fails twice with 500 and then works succeeds 761ms
+   ✓ storage 5xx handling (SeaweedFS answers 500 when it has no writable volume) > gives up after the attempt limit and throws the last error (a full store does not heal) 1756ms
+
+ Test Files  3 passed (3)
+      Tests  11 passed (11)
+   Start at  16:04:03
+   Duration  3.51s (transform 270ms, setup 0ms, collect 1.61s, tests 2.74s, environment 1ms, prepare 433ms)
+
+
+> @incubrix/store@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/store
+
+ ✓ test/log.test.ts (2 tests) 16ms
+ ✓ test/urlguard.test.ts (18 tests) 25ms
+ ✓ test/store.test.ts (20 tests) 651ms
+
+ Test Files  3 passed (3)
+      Tests  40 passed (40)
+   Start at  16:04:06
+   Duration  2.20s (transform 718ms, setup 0ms, collect 2.52s, tests 691ms, environment 1ms, prepare 633ms)
+
+
+> @incubrix/api@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/api
+
+ ✓ test/api.test.ts (35 tests) 32322ms
+   ✓ API behaviour > openapi.yaml matches the running service > real responses validate against their schemas 3498ms
+   ✓ API behaviour > possible fillers reach the parser > markers stored in the transcript manifest turn 'remove the ums' into a question; nothing is cut before the answer 308ms
+   ✓ API behaviour > errors > a session on a video that is not ready is 409 VIDEO_NOT_READY (retryable) 323ms
+   ✓ API behaviour > errors > a video without audio fails its job with NO_AUDIO_TRACK and cannot start a session 536ms
+   ✓ API behaviour > idempotency (every POST) > the same bytes uploaded twice (different keys) are stored ONCE: both videos point at the same object 582ms
+   ✓ API behaviour > idempotency (every POST) > videos: same key + same file -> same ids, one video, one job, one stored object 928ms
+   ✓ API behaviour > idempotency (every POST) > instructions: a repeated key replays the answer and does NOT apply the edit twice 328ms
+   ✓ API behaviour > jobs, cache, hints, warnings > progress goes 0 -> 100, never down; a job is queued until a worker takes it 330ms
+   ✓ API behaviour > jobs, cache, hints, warnings > the same file again is a transcript cache HIT (ASR not called); a different ASR model is a MISS 2785ms
+   ✓ API behaviour > jobs, cache, hints, warnings > num_speakers reaches the ASR/diarization call and changes the cache key 2436ms
+   ✓ API behaviour > jobs, cache, hints, warnings > variable frame rate is accepted with a warning in the job manifest and on the video 1197ms
+   ✓ API behaviour > jobs, cache, hints, warnings > a URL source is downloaded, stored byte-identical and transcribed; callback is signed and delivered 371ms
+   ✓ retention (real storage) > an expired render is deleted with its manifest, the job says expired and has no links, the original stays 2741ms
+   ✓ meaning search through the API (mock embeddings) > a meaning match is listed with its time before anything is cut; a repeated query uses the cached vector 1681ms
+   ✓ language-model fallback through the API (mock model) > is used only for text the rules cannot read; the engine applies the result; the manifest has tokens and cost; a repeat is a cache hit with no model call 2002ms
+   ✓ language-model fallback through the API (mock model) > a model reply that is not valid commands is a rejection and the timeline does not change 1183ms
+   ✓ language-model fallback through the API (mock model) > LLM_PROVIDER=gemini with an empty key: the fallback is off and the answer says so 1045ms
+   ✓ public deployment guards (M6a) > a video longer than MAX_VIDEO_DURATION_S fails its job with VIDEO_TOO_LONG before ASR runs 1683ms
+   ✓ OpenTimelineIO export > OTIO_PROVIDER=mock: returns the .otio file and an S3 link; the file has the clips in output order, speed, the caption marker, and the timeline length (±1 frame) 3817ms
+   ✓ OpenTimelineIO export > OTIO_PROVIDER=http: returns the .otio file and an S3 link; the file has the clips in output order, speed, the caption marker, and the timeline length (±1 frame) 1385ms
+   ✓ possible speaker-label swap through the API (mock ASR flags a turn on purpose) > the flag reaches the atoms, the intake warns, and an edit touching the flagged words warns 1322ms
+ ✓ test/e2e.test.ts (5 tests) 6302ms
+   ✓ worked example over HTTP (mock ASR) > uploads the clip, the job runs with progress and succeeds, the original is stored untouched 1439ms
+   ✓ worked example over HTTP (mock ASR) > step 8: render is a background job; the file matches the timeline length; the original is untouched (sha256 before and after) 4258ms
+ ✓ test/runner.test.ts (6 tests) 16466ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > determinism: the same session run 3 times through the runner gives the same timeline_hash at every step 13928ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a step that does not match its expectation fails the session, and the failure is kept in results.json 418ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > per-step expectations on the answer text: expect_warning, expect_no_warning, expect_text, expect_options (a mismatch fails the step and says what) 435ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a video without audio stops at intake with NO_AUDIO_TRACK and the session says so 627ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > batch: runs every file in a folder, one result folder each, summary.json lists pass and fail 761ms
+ ✓ test/scenarios.test.ts (50 tests) 88753ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s01_worked_example: Worked example, 8 steps, with the numbers worked out by hand from the fixture 7042ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s02_undo_redo_new_edit_clears_redo: Undo/redo: 1 instruction = 1 undo; a new edit clears redo 450ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s03_nothing_to_undo: Rejected answers are normal answers and change nothing 378ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s04_caption_sentence_cut_then_restored: Hard case: caption added, its sentence cut, cut restored (caption returns) 417ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s05_partial_cut_of_captioned_phrase: Advanced: documented rule for a partial cut of a captioned phrase 378ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s06_reorder_then_mute_a_word: Hard case: section reordered, then a word muted 7356ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s07_filler_removal_into_a_bleeped_word: Hard case: filler removal cutting into a bleeped word 392ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s08_remove_range_sent_twice: Hard case: 'remove 0:30-0:40' sent twice 490ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s09_caption_beyond_the_end: Hard case: 'add a caption at 5:00' on a shorter video 389ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s10_time_phrases: Hard case: '80 seconds', 'a minute twenty', 'the last 10 seconds' 384ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s11_undo_second_to_last_cut_keep_music: Hard case: 'undo the second-to-last cut but keep the music' 17558ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s12_make_it_bigger_without_a_caption: Hard case: 'make it bigger' with no caption 353ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s13_everything_after_thanks_said_four_times: Hard case: 'remove everything after I say thanks' (said four times) 387ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s14_everything_after_thanks_first_one: Hard case: the answer picks the first of four 'thanks' 427ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s15_speed_up_10x: Hard case: 'speed up 10x' is outside the documented range 350ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s16_cut_everything: Hard case: 'cut everything' 389ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s17_three_parts_one_impossible: Hard case: a three-part instruction with one impossible part 435ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s18_guest_old_job_assumes_host_asks_lead_in: Advanced: 'remove everything the guest says about their old job' removes only the guest lines and asks about the lead-in 1965ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s19_guest_old_job_with_the_lead_in: Advanced: second option also removes the host's lead-in 332ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s20_possible_label_swap_warns: Outstanding: possible speaker-label swaps warn 340ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s21_overlapping_speech_warns: Outstanding: overlapping speech warns 391ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s22_uncertain_speaker_label_warns: Outstanding: an uncertain speaker label warns 319ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s23_one_speaker_video_has_no_guest: Rejected, not guessed: 'the guest' in a one-speaker video 370ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s24_variable_frame_rate_phone_video: Hard case: a phone video with variable frame rate 3572ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s25_video_without_audio_fails_clearly: Outstanding: a video with no audio track fails clearly 306ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s26_sped_up_caption_keeps_a_minimum: Advanced: sped-up captions keep a readable minimum (about 0.7 s) 379ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s27_overlapping_speed_changes: Advanced: documented rule for overlapping speed changes (the later one replaces the earlier) 400ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s28_repeated_instructions_are_safe: Advanced: repeated instructions are safe 409ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s29_pricing_asks_which_of_three: Advanced: ambiguity asks, with specific options 433ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s30_meaning_search_cost_finds_pricing: Advanced: meaning-based search ('cost' finds 'pricing') shows matches before cutting 438ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s31_nothing_matches_is_rejected: Rejected, not guessed: a topic that is not in the video 368ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s32_make_it_shorter_asks_with_options: Advanced: 'make it shorter' asks with measurable options 418ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s33_the_boring_part_states_its_assumption: Advanced: 'the boring part' says what it can and cannot judge 377ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s34_put_back_what_i_removed_lists_the_cuts: Advanced: 'put back what I removed' with two cuts asks which 398ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s35_that_caption_with_two_captions_asks: Advanced: 'that caption' with two captions asks which 390ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s36_remove_fillers_then_undo: Must-have: remove fillers (um, uh, 'like' only as a filler) 379ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s37_silences_and_a_protected_pause: Advanced: deliberate pauses survive silence removal 458ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s38_keep_only_and_restore_edit_n: Must-have: keep only a range; restore a specific earlier edit 438ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s39_music_ducks_and_renders: Must-have: background music that ducks under speech, rendered 16829ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s40_low_confidence_word_warns_before_bleeping: Outstanding: low-confidence words are flagged, not bleeped blindly 1223ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s41_auto_captions_follow_cut_and_speed: Must-have: auto-captions from the words that survive 5303ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s42_original_time_policy_is_stated: Must-have: one stated time policy, mentioned in answers 474ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s43_caption_styling_edits: Must-have: caption text, colour, size, bold, position 457ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s44_unreadable_instruction_is_rejected: Three-way answers: an instruction nobody can read is rejected, not guessed 386ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s45_cut_beyond_the_end: Out of range is rejected 410ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s46_slow_motion: Must-have: speed up / slow down 5565ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s47_move_into_itself_is_rejected: Reorder: a target inside the moved span is rejected 407ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s48_cut_then_caption_follows_the_words: Must-have: captions stick to their words after a cut 389ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > determinism: six scenarios run again twice give the same timeline_hash at every step 5922ms
+ ✓ test/ratelimit.test.ts (5 tests) 7ms
+
+ Test Files  5 passed (5)
+      Tests  101 passed (101)
+   Start at  16:04:09
+   Duration  150.24s (transform 1.24s, setup 0ms, collect 4.77s, tests 143.85s, environment 1ms, prepare 494ms)
+
+
+> @incubrix/cli@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/cli
+
+ ✓ test/format.test.ts (2 tests) 97ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  16:06:40
+   Duration  756ms (transform 86ms, setup 0ms, collect 227ms, tests 97ms, environment 0ms, prepare 109ms)
+
+
+> @incubrix/worker@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/worker
+
+ ✓ test/callback.test.ts (3 tests) 60ms
+ ✓ test/atoms.test.ts (6 tests) 16ms
+
+ Test Files  2 passed (2)
+      Tests  9 passed (9)
+   Start at  16:06:41
+   Duration  1.20s (transform 478ms, setup 0ms, collect 639ms, tests 76ms, environment 1ms, prepare 271ms)
+
+
+real	8m40.519s
+user	0m2.301s
+sys	0m1.291s
+exit code: 0
+2026-10-22T16:06:43Z

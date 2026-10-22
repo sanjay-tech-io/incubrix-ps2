@@ -1,5 +1,5 @@
 # docker compose up            -> postgres, s3, init (migrations + bucket), api, worker, asr (REAL models by default)
-# docker compose run --rm tests -> npm test with real Postgres and S3 (integration tests included)
+# docker compose run --rm tests -> npm test with its OWN Postgres, S3 and OpenTimelineIO service (the *-test services, own network); never touches the running stack
 x-env: &env
   env_file:
     - .env.example
@@ -113,27 +113,100 @@ services:
     profiles: ["test"]
     restart: "no"
 
+  # ---- TEST STACK -------------------------------------------------------------------------------------------------------
+  # `docker compose run --rm tests` must never restart or touch the running stack (it once restarted the live Postgres, API and
+  # worker). So `tests` depends only on the *-test services below: their own Postgres, S3 store, init and OpenTimelineIO service,
+  # on their own network (`testnet`, the live services are not on it), with throwaway storage (tmpfs), test-only credentials
+  # (never the live secrets) and their own image tag (building it does not retag `incubrix-app`, which the live containers use).
+  # The *-test containers keep running after the tests (compose leaves dependencies up); scripts/test.sh removes them.
+  postgres-test:
+    image: postgres:16
+    profiles: ["test"]
+    environment: { POSTGRES_USER: incubrix, POSTGRES_PASSWORD: test-only-password, POSTGRES_DB: incubrix }
+    tmpfs: [/var/lib/postgresql/data]
+    networks: [testnet]
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U incubrix -d incubrix"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  s3-test:
+    image: chrislusf/seaweedfs:latest
+    profiles: ["test"]
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >
+        export AWS_ACCESS_KEY_ID="$$S3_ACCESS_KEY" AWS_SECRET_ACCESS_KEY="$$S3_SECRET_KEY";
+        exec weed server -dir=/data -s3 -s3.port=8333 -ip.bind=0.0.0.0 -master.volumeSizeLimitMB=256 -volume.max=80
+    environment: { S3_ACCESS_KEY: test-only-access, S3_SECRET_KEY: test-only-secret-key-0123456789 }
+    tmpfs: [/data]
+    networks: [testnet]
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O /dev/null http://localhost:9333/cluster/status && nc -z localhost 8333"]
+      interval: 3s
+      timeout: 3s
+      retries: 30
+
+  otio-test:
+    build: { context: ./services/otio, target: runtime }
+    profiles: ["test"]
+    networks: [testnet]
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8001/ready').status==200 else 1)"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  init-test:
+    <<: *app
+    image: incubrix-test-app
+    profiles: ["test"]
+    restart: "no"
+    command: ["node", "scripts/init.ts"]
+    environment:
+      DATABASE_URL: postgres://incubrix:test-only-password@postgres-test:5432/incubrix
+      S3_ENDPOINT: http://s3-test:8333
+      S3_ACCESS_KEY: test-only-access
+      S3_SECRET_KEY: test-only-secret-key-0123456789
+    networks: [testnet]
+    depends_on:
+      postgres-test: { condition: service_healthy }
+      s3-test: { condition: service_healthy }
+
   tests:
     <<: *app
+    image: incubrix-test-app
     profiles: ["test"]
     restart: "no"
     command: ["npm", "test"]
+    networks: [testnet]
     environment:
-      # Admin database of the compose Postgres: the db tests create and drop their own databases.
-      TEST_DATABASE_URL: postgres://incubrix:${POSTGRES_PASSWORD:-incubrix-dev}@postgres:5432/postgres
+      # Admin database of the TEST Postgres: the db tests create and drop their own databases.
+      TEST_DATABASE_URL: postgres://incubrix:test-only-password@postgres-test:5432/postgres
+      DATABASE_URL: postgres://incubrix:test-only-password@postgres-test:5432/incubrix
+      S3_ENDPOINT: http://s3-test:8333
+      S3_ACCESS_KEY: test-only-access
+      S3_SECRET_KEY: test-only-secret-key-0123456789
       TEST_S3: "1"
-      # Tests never use the real models: mock providers, set explicitly.
+      # Tests never use the real models or keys: mock providers, set explicitly; no key from a developer's .env reaches them.
       ASR_PROVIDER: mock
       DIARIZATION_PROVIDER: mock
       LLM_PROVIDER: rules
       EMBED_PROVIDER: mock
+      GEMINI_API_KEY: ""
+      GROQ_API_KEY: ""
+      API_TOKEN: ""
       # The export tests use the real OpenTimelineIO service (the API tests also run the mock exporter).
-      TEST_OTIO_URL: http://otio:8001
+      TEST_OTIO_URL: http://otio-test:8001
     depends_on:
-      init: { condition: service_completed_successfully }
+      init-test: { condition: service_completed_successfully }
       asr-tests: { condition: service_completed_successfully }
       otio-tests: { condition: service_completed_successfully }
-      otio: { condition: service_healthy }
+      otio-test: { condition: service_healthy }
+
+networks:
+  testnet: {}
 
 volumes:
   pgdata:
