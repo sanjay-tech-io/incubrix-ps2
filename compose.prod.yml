@@ -11,8 +11,10 @@ x-limits: &limits
   RATE_LIMIT_PER_MIN: ${RATE_LIMIT_PER_MIN:-120}
   MAX_INGEST_JOBS: ${MAX_INGEST_JOBS:-1}
   MAX_RENDER_JOBS: ${MAX_RENDER_JOBS:-1}
-  # Download links point at the public door (Caddy forwards GET/HEAD of /<bucket>/* to storage).
-  S3_PUBLIC_ENDPOINT: https://${PUBLIC_HOST:?set PUBLIC_HOST in .env, e.g. 34-93-140-79.sslip.io}
+  # Download links point at the public door (Caddy forwards GET/HEAD of /<bucket>/* to storage). They use the dotted name
+  # (PUBLIC_HOST_ALT). The signature covers the Host header, so such a link works on the dotted name only; the site itself
+  # (API, docs, health) answers on both names.
+  S3_PUBLIC_ENDPOINT: https://${PUBLIC_HOST_ALT:?set PUBLIC_HOST_ALT in .env, e.g. 34.93.140.79.sslip.io}
 
 services:
   caddy:

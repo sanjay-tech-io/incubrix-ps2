@@ -1,0 +1,28 @@
+### 2026-10-22T14:24:24Z (after redeploying with the production override; COMPOSE_FILE now comes from .env)
+listeners:
+LISTEN 0      4096         0.0.0.0:80         0.0.0.0:*   
+LISTEN 0      4096         0.0.0.0:443        0.0.0.0:*   
+LISTEN 0      4096            [::]:80            [::]:*   
+LISTEN 0      4096            [::]:443           [::]:*   
+--- HEAD https://34.93.140.79.sslip.io/health
+HTTP/2 200 
+content-type: application/json; charset=utf-8
+content-length: 31
+    GET status: 200   HEAD body bytes: 0
+--- HEAD https://34.93.140.79.sslip.io/ready
+HTTP/2 200 
+content-type: application/json; charset=utf-8
+content-length: 34
+    GET status: 200   HEAD body bytes: 0
+--- HEAD https://34-93-140-79.sslip.io/health
+HTTP/2 200 
+content-type: application/json; charset=utf-8
+content-length: 31
+    GET status: 200   HEAD body bytes: 0
+--- HEAD https://34-93-140-79.sslip.io/ready
+HTTP/2 200 
+content-type: application/json; charset=utf-8
+content-length: 34
+    GET status: 200   HEAD body bytes: 0
+--- HEAD on an API route without token:
+HTTP/2 401 

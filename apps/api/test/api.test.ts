@@ -25,10 +25,22 @@ describe.skipIf(!integration)("API behaviour", () => {
     const fromSpec = new Set<string>();
     for (const [path, item] of Object.entries<any>(spec.paths)) for (const m of Object.keys(item)) fromSpec.add(`${m.toUpperCase()} ${path}`);
 
+    // HEAD is part of the route test: the served set now contains HEAD /health and HEAD /ready, and so must the spec.
     it("every route the server answers is in openapi.yaml, and every path in openapi.yaml is served", () => {
       const served = new Set(s.app.routeTable.map((r) => `${r.method} ${r.url.replace(/:([a-z_]+)/g, "{$1}")}`));
       expect([...served].filter((r) => !fromSpec.has(r))).toEqual([]);
       expect([...fromSpec].filter((r) => !served.has(r))).toEqual([]);
+    });
+
+    it("HEAD /health and /ready answer like GET (same status) with no body, and need no token", async () => {
+      for (const path of ["/health", "/ready"]) {
+        const g = await fetch(`${s.base}${path}`);
+        const h = await fetch(`${s.base}${path}`, { method: "HEAD" });
+        expect([h.status, await h.text()]).toEqual([g.status, ""]);
+        expect(h.headers.get("content-type")).toBe(g.headers.get("content-type"));
+        expect(h.headers.get("x-correlation-id")).not.toBeNull();
+      }
+      expect((await fetch(`${s.base}/api/v1/jobs/x`, { method: "HEAD" })).status).toBe(404); // HEAD is not opened up elsewhere
     });
 
     it("everything except /health and /ready lives under /api/v1", () => {

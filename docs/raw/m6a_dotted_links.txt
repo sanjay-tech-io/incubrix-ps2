@@ -1,0 +1,9 @@
+render succeeded
+video link host = 34.93.140.79.sslip.io
+manifest link host = 34.93.140.79.sslip.io
+dotted-signed link, dotted host: HTTP 200
+dotted-signed link, dashed host: HTTP 403
+50ccd83fd27f6acf
+50ccd83fd27f6acf
+old video via DASHED api host: link host = 34.93.140.79.sslip.io
+old stored original: HTTP 200

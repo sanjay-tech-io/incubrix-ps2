@@ -97,7 +97,7 @@ export async function buildApp(d: ApiDeps): Promise<FastifyInstance & { routeTab
   app.addHook("onRoute", (r) => {
     // The documentation routes are tooling, not API: the contract test compares only the documented API routes.
     if (isDocPath(r.url.replace(/:name$/, "x"))) return;
-    for (const m of Array.isArray(r.method) ? r.method : [r.method]) if (m !== "HEAD" && m !== "OPTIONS") routeTable.push({ method: m, url: r.url });
+    for (const m of Array.isArray(r.method) ? r.method : [r.method]) if (m !== "OPTIONS") routeTable.push({ method: m, url: r.url });
   });
 
   await app.register(multipart, { limits: { fileSize: cfg.MAX_UPLOAD_MB * 1024 * 1024, files: 1, fields: 10, fieldSize: 2000 } });
@@ -152,8 +152,10 @@ export async function buildApp(d: ApiDeps): Promise<FastifyInstance & { routeTab
   registerDocs(app, new URL("../../../openapi.yaml", import.meta.url));
 
   // ---- ops -------------------------------------------------------------------------------------------------------
-  app.get("/health", async () => ({ status: "ok", service: "api" }));
-  app.get("/ready", async (_req, reply) => {
+  // HEAD is registered next to GET on purpose (uptime checkers and `curl -I` use it). Same handler, so the same status;
+  // Fastify sends no body for HEAD. Auto-created HEAD routes stay off (exposeHeadRoutes: false) so HEAD is not open elsewhere.
+  const health = async () => ({ status: "ok", service: "api" });
+  const ready = async (_req: FastifyRequest, reply: FastifyReply) => {
     try {
       await pool.query("select 1");
       await d.s3.send(new HeadBucketCommand({ Bucket: cfg.S3_BUCKET }));
@@ -162,7 +164,9 @@ export async function buildApp(d: ApiDeps): Promise<FastifyInstance & { routeTab
       d.log.warn({ err: (e as Error).message }, "not ready");
       return reply.status(503).send(errorBody("SERVICE_UNAVAILABLE", "Database or storage is not reachable."));
     }
-  });
+  };
+  app.route({ method: ["GET", "HEAD"], url: "/health", handler: health });
+  app.route({ method: ["GET", "HEAD"], url: "/ready", handler: ready });
 
   // ---- videos ----------------------------------------------------------------------------------------------------
   app.post("/api/v1/videos", async (req, reply) => {

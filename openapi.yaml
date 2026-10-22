@@ -26,6 +26,13 @@ paths:
       security: []
       responses:
         "200": { description: Process is up, content: { application/json: { schema: { $ref: "#/components/schemas/Health" } } } }
+    head:
+      tags: [ops]
+      operationId: healthHead
+      summary: Liveness, headers only (same status as GET, no body)
+      security: []
+      responses:
+        "200": { description: Process is up }
   /ready:
     get:
       tags: [ops]
@@ -35,6 +42,14 @@ paths:
       responses:
         "200": { description: Ready, content: { application/json: { schema: { $ref: "#/components/schemas/Health" } } } }
         "503": { $ref: "#/components/responses/Error" }
+    head:
+      tags: [ops]
+      operationId: readyHead
+      summary: Readiness, headers only (same status as GET, no body)
+      security: []
+      responses:
+        "200": { description: Ready }
+        "503": { description: Database or storage is not reachable }
   /api/v1/videos:
     post:
       tags: [videos]

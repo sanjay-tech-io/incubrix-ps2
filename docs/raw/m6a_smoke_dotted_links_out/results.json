@@ -1,0 +1,137 @@
+{
+  "name": "m6a_smoke_dotted_links",
+  "video": "media/m6a_smoke_dotted.mp4",
+  "passed": true,
+  "video_id": "vid_64dd9935671542188515",
+  "session_id": "ses_3aced9670d414c1886c1",
+  "intake": {
+    "job_id": "job_29c05ba00b844695bdf6",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 9284
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "add captions",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "auto_caption",
+          "style": {
+            "color": "#ffffff",
+            "sizePt": 32,
+            "bold": true
+          }
+        }
+      ],
+      "summary": "Length 0:17.480 -> 0:17.480 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f3519b9d5b12f5d34f9dbda81bfe0db08575ec37a60875372a43ba5770e5e6a4",
+      "duration_s": 17.48,
+      "ms": 28,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "cut 0:05-0:07",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_13060ffc77a0",
+              "offsetUs": 1020000
+            },
+            "end": {
+              "atom": "a_b99704609ff9",
+              "offsetUs": 0
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 0:17.480 -> 0:15.440 (-0:02.040). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "0:07.000 is inside the word \"from\", so the cut point moved to 0:07.040, the nearest word edge (no silence nearby).",
+        "This edit touches words the transcript is unsure about: \"tool\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "9406acd165d740579bafcdc5ae6d60986adb83211b10f278abede648860f257c",
+      "duration_s": 15.44,
+      "ms": 24,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": null,
+      "answer_sent": null,
+      "expected": "succeeded",
+      "passed": true,
+      "http_status": 202,
+      "status": "succeeded",
+      "operations": null,
+      "summary": null,
+      "question": null,
+      "options": null,
+      "reason": null,
+      "llm": null,
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": null,
+      "warnings": null,
+      "timeline_hash": "9406acd165d740579bafcdc5ae6d60986adb83211b10f278abede648860f257c",
+      "duration_s": 15.44,
+      "ms": 4088,
+      "note": null,
+      "failure": null,
+      "kind": "render",
+      "render": {
+        "job_id": "job_e11b8cd0497148bdb698",
+        "job_status": "succeeded",
+        "error": null,
+        "file": "render_1.mp4",
+        "frames": 386,
+        "duration_s": 15.44,
+        "timeline_hash": "9406acd165d740579bafcdc5ae6d60986adb83211b10f278abede648860f257c",
+        "render_seconds_per_output_minute": 9.5,
+        "source_unchanged": true,
+        "manifest_file": "render_1_manifest.json"
+      }
+    }
+  ],
+  "final": {
+    "timeline_hash": "9406acd165d740579bafcdc5ae6d60986adb83211b10f278abede648860f257c",
+    "duration_s": 15.44
+  },
+  "error": null
+}

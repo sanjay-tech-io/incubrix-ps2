@@ -1,0 +1,9 @@
+
+> incubrix@0.0.0 session
+> node --import tsx apps/cli/src/session.ts sessions/m6a_smoke_dotted_links.yaml --api https://34.93.140.79.sslip.io --token <token> --out docs/raw/m6a_smoke_dotted_links_out
+
+[m6a_smoke_dotted_links] video vid_64dd9935671542188515, job job_29c05ba00b844695bdf6
+[m6a_smoke_dotted_links] step 1: applied ok
+[m6a_smoke_dotted_links] step 2: applied ok
+[m6a_smoke_dotted_links] step 3: render ok 
+PASS m6a_smoke_dotted_links  -> /home/g23m143/incubrix-ps2/docs/raw/m6a_smoke_dotted_links_out
