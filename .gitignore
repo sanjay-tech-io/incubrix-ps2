@@ -3,9 +3,9 @@ dist/
 coverage/
 .env
 *.log
+# Only the top-level folder of generated/recorded videos. An unanchored 'media/' also ignored packages/media/ (voiced.ts was never committed because of it).
 /media/
 test-pack/**/*.mp4
 test-pack/**/*.mov
 test-pack/**/*.png
-media/
 docs/raw/_*

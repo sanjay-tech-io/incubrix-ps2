@@ -1,0 +1,871 @@
+2026-10-22T15:21:16Z
+ Image cisim-otio-tests Building 
+ Image cisim-otio Building 
+ Image incubrix-app Building 
+ Image cisim-asr-tests Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.50kB done
+#1 DONE 0.0s
+
+#2 [init internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.21kB done
+#2 DONE 0.0s
+
+#3 [asr-tests internal] load build definition from Dockerfile
+#3 transferring dockerfile: 1.13kB done
+#3 DONE 0.1s
+
+#4 [otio-tests internal] load build definition from Dockerfile
+#4 transferring dockerfile: 589B 0.0s done
+#4 DONE 0.1s
+
+#5 [otio-tests internal] load metadata for docker.io/library/python:3.12-slim
+#5 DONE 1.2s
+
+#6 [init internal] load metadata for docker.io/library/node:22-bookworm-slim
+#6 DONE 1.2s
+
+#7 [otio-tests internal] load .dockerignore
+#7 transferring context: 2B done
+#7 DONE 0.0s
+
+#8 [asr-tests internal] load .dockerignore
+#8 transferring context: 78B done
+#8 DONE 0.1s
+
+#9 [init internal] load .dockerignore
+#9 transferring context: 98B done
+#9 DONE 0.0s
+
+#10 [asr-tests internal] load build context
+#10 transferring context: 55.29kB 0.0s done
+#10 DONE 0.0s
+
+#11 [otio base 1/5] FROM docker.io/library/python:3.12-slim@sha256:cb33f7f771ecec2ef1225cf39b159591a040391bd73e4c01f00fdfc4c47611d2
+#11 resolve docker.io/library/python:3.12-slim@sha256:cb33f7f771ecec2ef1225cf39b159591a040391bd73e4c01f00fdfc4c47611d2 0.1s done
+#11 DONE 0.1s
+
+#12 [otio-tests internal] load build context
+#12 transferring context: 77.82kB 0.0s done
+#12 DONE 0.1s
+
+#13 [init  1/22] FROM docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d
+#13 resolve docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d 0.0s done
+#13 DONE 0.0s
+
+#14 [otio internal] load build context
+#14 transferring context: 26.78kB done
+#14 DONE 0.1s
+
+#15 [asr-tests base 4/7] RUN pip install --no-cache-dir -r requirements.txt
+#15 CACHED
+
+#16 [asr-tests base 5/7] COPY fetch_models.py .
+#16 CACHED
+
+#17 [asr-tests base 3/7] COPY requirements.txt .
+#17 CACHED
+
+#18 [asr-tests base 6/7] RUN ASR_MODEL=base.en python fetch_models.py
+#18 CACHED
+
+#19 [otio base 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#19 CACHED
+
+#20 [otio base 3/5] COPY requirements.txt .
+#20 CACHED
+
+#21 [otio-tests base 5/5] COPY otio_service ./otio_service
+#21 CACHED
+
+#22 [otio-tests base 2/5] WORKDIR /app
+#22 CACHED
+
+#23 [otio-tests test 1/3] COPY requirements-dev.txt pytest.ini ./
+#23 CACHED
+
+#24 [otio-tests base 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#24 CACHED
+
+#25 [otio-tests base 3/5] COPY requirements.txt .
+#25 CACHED
+
+#26 [otio-tests base 5/5] COPY otio_service ./otio_service
+#26 CACHED
+
+#27 [otio-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#27 CACHED
+
+#28 [otio-tests test 3/3] COPY tests ./tests
+#28 CACHED
+
+#29 [otio-tests] exporting to image
+#29 exporting layers
+#29 ...
+
+#30 [asr-tests base 7/7] COPY asr ./asr
+#30 DONE 0.1s
+
+#29 [otio-tests] exporting to image
+#29 exporting layers 0.0s done
+#29 exporting manifest sha256:37c80e4660a30b6cf1eaeef3a8c903b7c78411fdae53851c252aad7227c1d3f4 0.0s done
+#29 exporting config sha256:1fe26999d76ac977da924c34c07446d0be27bbbcdc9f167b6fc44f90ca5ab6de 0.0s done
+#29 ...
+
+#31 [init internal] load build context
+#31 transferring context: 8.31MB 0.2s done
+#31 DONE 0.3s
+
+#32 [init  2/22] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core ca-certificates && rm -rf /var/lib/apt/lists/*
+#32 CACHED
+
+#33 [init  3/22] WORKDIR /app
+#33 CACHED
+
+#34 [asr-tests test 1/3] COPY requirements-dev.txt pytest.ini ./
+#34 DONE 0.2s
+
+#29 [otio-tests] exporting to image
+#29 exporting attestation manifest sha256:a24f4123fbb3ae63feb635e5ec233df02a29cf970f4b66f706bd87eb235911d8 0.0s done
+#29 exporting manifest list sha256:7018e1b9e3665fbb0ebf237710a832e21d825c7f3f53e77669a8a645bfbf0b14
+#29 ...
+
+#35 [init  4/22] COPY package.json package-lock.json .npmrc ./
+#35 DONE 0.1s
+
+#36 [otio] exporting to image
+#36 exporting layers 0.0s done
+#36 exporting manifest sha256:c508a7dfd0d6ba238518c0da0cce87336f9c83d4e9baaf7d599644c88f5dff71 0.0s done
+#36 exporting config sha256:3ff8f46fd29618560454cc1fcb7edcabb98225b58d937839ce975ef292df698b 0.0s done
+#36 exporting attestation manifest sha256:436ae03bfc3a35d6d77de30640b3ff24b9a98fe6d5bb5c2172cf74b025fea8fe 0.1s done
+#36 exporting manifest list sha256:bc248bc3478f35e737cb05c7e61dfa1996dc40b521eb8cdafe657278a1a5f045 0.0s done
+#36 naming to docker.io/library/cisim-otio:latest 0.0s done
+#36 unpacking to docker.io/library/cisim-otio:latest 0.0s done
+#36 DONE 0.4s
+
+#29 [otio-tests] exporting to image
+#29 exporting manifest list sha256:7018e1b9e3665fbb0ebf237710a832e21d825c7f3f53e77669a8a645bfbf0b14 0.0s done
+#29 naming to docker.io/library/cisim-otio-tests:latest done
+#29 unpacking to docker.io/library/cisim-otio-tests:latest 0.0s done
+#29 DONE 0.4s
+
+#37 [init  5/22] COPY packages/contracts/package.json packages/contracts/
+#37 DONE 0.1s
+
+#38 [init  6/22] COPY packages/engine/package.json packages/engine/
+#38 DONE 0.1s
+
+#39 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#39 ...
+
+#40 [init  7/22] COPY packages/config/package.json packages/config/
+#40 DONE 0.1s
+
+#41 [init  8/22] COPY packages/db/package.json packages/db/
+#41 DONE 0.1s
+
+#42 [init  9/22] COPY packages/storage/package.json packages/storage/
+#42 DONE 0.1s
+
+#43 [otio] resolving provenance for metadata file
+#43 DONE 0.0s
+
+#44 [otio-tests] resolving provenance for metadata file
+#44 DONE 0.0s
+
+#45 [init 10/22] COPY packages/media/package.json packages/media/
+#45 DONE 0.0s
+
+#39 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#39 ...
+
+#46 [init 11/22] COPY packages/errors/package.json packages/errors/
+#46 DONE 0.0s
+
+#47 [init 12/22] COPY packages/nlu/package.json packages/nlu/
+#47 DONE 0.0s
+
+#48 [init 13/22] COPY packages/store/package.json packages/store/
+#48 DONE 0.1s
+
+#49 [init 14/22] COPY packages/render/package.json packages/render/
+#49 DONE 0.0s
+
+#50 [init 15/22] COPY packages/semantic/package.json packages/semantic/
+#50 DONE 0.0s
+
+#51 [init 16/22] COPY packages/llm/package.json packages/llm/
+#51 DONE 0.0s
+
+#39 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#39 ...
+
+#52 [init 17/22] COPY packages/otio/package.json packages/otio/
+#52 DONE 0.0s
+
+#53 [init 18/22] COPY apps/api/package.json apps/api/
+#53 DONE 0.0s
+
+#54 [init 19/22] COPY apps/worker/package.json apps/worker/
+#54 DONE 0.0s
+
+#55 [init 20/22] COPY apps/cli/package.json apps/cli/
+#55 DONE 0.0s
+
+#56 [init 21/22] RUN npm ci
+#56 ...
+
+#39 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#39 1.749 Requirement already satisfied: faster-whisper==1.2.1 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 1)) (1.2.1)
+#39 1.750 Requirement already satisfied: ctranslate2==4.8.3 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 2)) (4.8.3)
+#39 1.752 Requirement already satisfied: av==16.1.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 3)) (16.1.0)
+#39 1.753 Requirement already satisfied: onnxruntime==1.31.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 4)) (1.31.0)
+#39 1.754 Requirement already satisfied: numpy==2.5.4 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 5)) (2.5.4)
+#39 1.756 Requirement already satisfied: huggingface_hub==2.2.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 6)) (2.2.0)
+#39 1.757 Requirement already satisfied: tokenizers==0.23.3 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 7)) (0.23.3)
+#39 1.758 Requirement already satisfied: sherpa-onnx==1.13.8 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 8)) (1.13.8)
+#39 1.759 Requirement already satisfied: fastapi==0.151.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 9)) (0.151.0)
+#39 1.760 Requirement already satisfied: starlette==1.9.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 10)) (1.9.0)
+#39 1.761 Requirement already satisfied: pydantic==2.14.1 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 11)) (2.14.1)
+#39 1.762 Requirement already satisfied: uvicorn==0.54.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 12)) (0.54.0)
+#39 1.762 Requirement already satisfied: python-multipart==0.0.32 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 13)) (0.0.32)
+#39 1.943 Collecting pytest==9.1.1 (from -r requirements-dev.txt (line 2))
+#39 2.052   Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+#39 2.099 Collecting httpx==0.28.1 (from -r requirements-dev.txt (line 3))
+#39 2.126   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#39 2.140 Requirement already satisfied: tqdm in /usr/local/lib/python3.12/site-packages (from faster-whisper==1.2.1->-r /app/requirements.txt (line 1)) (4.70.1)
+#39 2.145 Requirement already satisfied: pyyaml<7,>=5.3 in /usr/local/lib/python3.12/site-packages (from ctranslate2==4.8.3->-r /app/requirements.txt (line 2)) (6.0.3)
+#39 2.152 Requirement already satisfied: flatbuffers in /usr/local/lib/python3.12/site-packages (from onnxruntime==1.31.0->-r /app/requirements.txt (line 4)) (25.12.19)
+#39 2.154 Requirement already satisfied: packaging in /usr/local/lib/python3.12/site-packages (from onnxruntime==1.31.0->-r /app/requirements.txt (line 4)) (26.3)
+#39 2.155 Requirement already satisfied: protobuf>=4.25.8 in /usr/local/lib/python3.12/site-packages (from onnxruntime==1.31.0->-r /app/requirements.txt (line 4)) (7.36.2)
+#39 2.183 Requirement already satisfied: click<9.0.0,>=8.4.2 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (8.5.0)
+#39 2.184 Requirement already satisfied: filelock>=3.10.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (4.2.4)
+#39 2.186 Requirement already satisfied: fsspec>=2023.5.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (2026.9.0)
+#39 2.188 Requirement already satisfied: hf-xet<2.0.0,>=1.6.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (1.7.0)
+#39 2.189 Requirement already satisfied: httpx2<3,>=2.0.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (2.16.0)
+#39 2.190 Requirement already satisfied: typing-extensions>=4.1.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (4.16.0)
+#39 2.202 Requirement already satisfied: sherpa-onnx-core==1.13.8 in /usr/local/lib/python3.12/site-packages (from sherpa-onnx==1.13.8->-r /app/requirements.txt (line 8)) (1.13.8)
+#39 2.219 Requirement already satisfied: typing-inspection>=0.4.2 in /usr/local/lib/python3.12/site-packages (from fastapi==0.151.0->-r /app/requirements.txt (line 9)) (0.4.4)
+#39 2.221 Requirement already satisfied: annotated-doc>=0.0.2 in /usr/local/lib/python3.12/site-packages (from fastapi==0.151.0->-r /app/requirements.txt (line 9)) (0.0.5)
+#39 2.221 Requirement already satisfied: opentelemetry-api>=1.44.0 in /usr/local/lib/python3.12/site-packages (from fastapi==0.151.0->-r /app/requirements.txt (line 9)) (1.45.1)
+#39 2.227 Requirement already satisfied: anyio<5,>=4.0.0 in /usr/local/lib/python3.12/site-packages (from starlette==1.9.0->-r /app/requirements.txt (line 10)) (4.15.1)
+#39 2.235 Requirement already satisfied: annotated-types>=0.6.0 in /usr/local/lib/python3.12/site-packages (from pydantic==2.14.1->-r /app/requirements.txt (line 11)) (0.8.0)
+#39 2.236 Requirement already satisfied: pydantic-core==2.50.1 in /usr/local/lib/python3.12/site-packages (from pydantic==2.14.1->-r /app/requirements.txt (line 11)) (2.50.1)
+#39 2.243 Requirement already satisfied: h11>=0.8 in /usr/local/lib/python3.12/site-packages (from uvicorn==0.54.0->-r /app/requirements.txt (line 12)) (0.16.0)
+#39 2.276 Collecting iniconfig>=1.0.1 (from pytest==9.1.1->-r requirements-dev.txt (line 2))
+#39 2.302   Downloading iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+#39 2.338 Collecting pluggy<2,>=1.5 (from pytest==9.1.1->-r requirements-dev.txt (line 2))
+#39 2.373   Downloading pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+#39 2.424 Collecting pygments>=2.7.2 (from pytest==9.1.1->-r requirements-dev.txt (line 2))
+#39 2.449   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+#39 2.550 Collecting certifi (from httpx==0.28.1->-r requirements-dev.txt (line 3))
+#39 2.579   Downloading certifi-2026.10.19-py3-none-any.whl.metadata (2.5 kB)
+#39 2.638 Collecting httpcore==1.* (from httpx==0.28.1->-r requirements-dev.txt (line 3))
+#39 2.666   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#39 2.685 Requirement already satisfied: idna in /usr/local/lib/python3.12/site-packages (from httpx==0.28.1->-r requirements-dev.txt (line 3)) (3.20)
+#39 2.754 Requirement already satisfied: httpcore2==2.16.0 in /usr/local/lib/python3.12/site-packages (from httpx2<3,>=2.0.0->huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (2.16.0)
+#39 2.755 Requirement already satisfied: truststore>=0.10 in /usr/local/lib/python3.12/site-packages (from httpx2<3,>=2.0.0->huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (0.10.5)
+#39 2.846 Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+#39 2.923 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#39 2.946 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#39 2.969 Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+#39 2.993 Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
+#39 3.015 Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+#39 3.058    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 27.6 MB/s eta 0:00:00
+#39 3.081 Downloading certifi-2026.10.19-py3-none-any.whl (136 kB)
+#39 3.177 Installing collected packages: pygments, pluggy, iniconfig, certifi, pytest, httpcore, httpx
+#39 5.859 Successfully installed certifi-2026.10.19 httpcore-1.0.9 httpx-0.28.1 iniconfig-2.3.1 pluggy-1.7.0 pygments-2.21.0 pytest-9.1.1
+#39 5.859 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#39 6.066 
+#39 6.066 [notice] A new release of pip is available: 25.0.1 -> 26.2.2
+#39 6.066 [notice] To update, run: pip install --upgrade pip
+#39 DONE 6.4s
+
+#56 [init 21/22] RUN npm ci
+#56 ...
+
+#57 [asr-tests test 3/3] COPY tests ./tests
+#57 DONE 0.1s
+
+#58 [asr-tests] exporting to image
+#58 exporting layers
+#58 exporting layers 1.3s done
+#58 exporting manifest sha256:292bfa71ebec15eb2f81be4f8b01fc723cae4671964530a8321bddf81a9cbca2 0.0s done
+#58 exporting config sha256:1f90c30dcc108393144ee5210d3d2eff7d3baa047abbe6f26203b79e0c75a416 0.0s done
+#58 exporting attestation manifest sha256:b948500637fe9570d0dd94907488a3b5cc3bb740d85a2c6889e5a58e83ac23d7 0.0s done
+#58 exporting manifest list sha256:009ac9f476c4f968c8ffa1aec801114699da723e2bb630304d44d10d79c06453 0.0s done
+#58 naming to docker.io/library/cisim-asr-tests:latest
+#58 naming to docker.io/library/cisim-asr-tests:latest done
+#58 unpacking to docker.io/library/cisim-asr-tests:latest
+#58 unpacking to docker.io/library/cisim-asr-tests:latest 0.5s done
+#58 DONE 2.0s
+
+#56 [init 21/22] RUN npm ci
+#56 ...
+
+#59 [asr-tests] resolving provenance for metadata file
+#59 DONE 0.0s
+
+#56 [init 21/22] RUN npm ci
+#56 11.58 npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+#56 14.58 
+#56 14.58 added 271 packages, and audited 288 packages in 14s
+#56 14.58 
+#56 14.58 76 packages are looking for funding
+#56 14.58   run `npm fund` for details
+#56 14.62 
+#56 14.62 6 vulnerabilities (3 moderate, 1 high, 2 critical)
+#56 14.62 
+#56 14.62 To address all issues (including breaking changes), run:
+#56 14.62   npm audit fix --force
+#56 14.62 
+#56 14.62 Run `npm audit` for details.
+#56 14.62 npm notice
+#56 14.62 npm notice New major version of npm available! 10.9.9 -> 12.2.1
+#56 14.62 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+#56 14.62 npm notice To update run: npm install -g npm@12.2.1
+#56 14.62 npm notice
+#56 DONE 15.9s
+
+#60 [init 22/22] COPY . .
+#60 DONE 0.3s
+
+#61 [init] exporting to image
+#61 exporting layers
+#61 exporting layers 11.6s done
+#61 exporting manifest sha256:0c5002c4aedf967b2a28604ac420d4ca57c89d554017bfed08823a1a0de0159a 0.0s done
+#61 exporting config sha256:2b930a28e58955bc52f334358b0d41266003cb4f5bd2135462dcf5fc340515f5 0.0s done
+#61 exporting attestation manifest sha256:52118235476483eaad19c998a55be33db6a2a4eaf6e40314c57402aa0e358ad9 0.0s done
+#61 exporting manifest list sha256:063969c0cc9d0851f0b25871127bf546d3d30bc5ca8a719326a05a9982209254 0.0s done
+#61 naming to docker.io/library/incubrix-app:latest
+#61 naming to docker.io/library/incubrix-app:latest done
+#61 unpacking to docker.io/library/incubrix-app:latest
+#61 unpacking to docker.io/library/incubrix-app:latest 4.7s done
+#61 DONE 16.4s
+
+#62 [init] resolving provenance for metadata file
+#62 DONE 0.0s
+ Image cisim-asr-tests Built 
+ Image incubrix-app Built 
+ Image cisim-otio Built 
+ Image cisim-otio-tests Built 
+ Network cisim_default Creating 
+ Network cisim_default Creating 
+ Volume cisim_pgdata Creating 
+ Volume cisim_s3data Creating 
+ Volume cisim_pgdata Creating 
+ Volume cisim_s3data Creating 
+ Volume cisim_pgdata Created 
+ Volume cisim_pgdata Created 
+ Volume cisim_s3data Created 
+ Volume cisim_s3data Created 
+ Network cisim_default Created 
+ Network cisim_default Created 
+ Container cisim-s3-1 Creating 
+ Container cisim-postgres-1 Creating 
+ Container cisim-asr-tests-1 Creating 
+ Container cisim-otio-tests-1 Creating 
+ Container cisim-otio-1 Creating 
+ Container cisim-postgres-1 Created 
+ Container cisim-s3-1 Created 
+ Container cisim-init-1 Creating 
+ Container cisim-otio-1 Created 
+ Container cisim-otio-tests-1 Created 
+ Container cisim-asr-tests-1 Created 
+ Container cisim-init-1 Created 
+ Container cisim-otio-1 Starting 
+ Container cisim-asr-tests-1 Starting 
+ Container cisim-otio-tests-1 Starting 
+ Container cisim-s3-1 Starting 
+ Container cisim-postgres-1 Starting 
+ Container cisim-otio-1 Started 
+ Container cisim-asr-tests-1 Started 
+ Container cisim-otio-tests-1 Started 
+ Container cisim-s3-1 Started 
+ Container cisim-postgres-1 Started 
+ Container cisim-postgres-1 Waiting 
+ Container cisim-s3-1 Waiting 
+ Container cisim-postgres-1 Healthy 
+ Container cisim-s3-1 Healthy 
+ Container cisim-init-1 Starting 
+ Container cisim-init-1 Started 
+ Image incubrix-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.98kB done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.21kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:22-bookworm-slim
+#3 DONE 0.9s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 98B done
+#4 DONE 0.0s
+
+#5 [ 1/22] FROM docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d
+#5 resolve docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 50.08kB 0.1s done
+#6 DONE 0.1s
+
+#7 [15/22] COPY packages/semantic/package.json packages/semantic/
+#7 CACHED
+
+#8 [19/22] COPY apps/worker/package.json apps/worker/
+#8 CACHED
+
+#9 [10/22] COPY packages/media/package.json packages/media/
+#9 CACHED
+
+#10 [17/22] COPY packages/otio/package.json packages/otio/
+#10 CACHED
+
+#11 [ 4/22] COPY package.json package-lock.json .npmrc ./
+#11 CACHED
+
+#12 [ 2/22] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core ca-certificates && rm -rf /var/lib/apt/lists/*
+#12 CACHED
+
+#13 [ 8/22] COPY packages/db/package.json packages/db/
+#13 CACHED
+
+#14 [18/22] COPY apps/api/package.json apps/api/
+#14 CACHED
+
+#15 [ 9/22] COPY packages/storage/package.json packages/storage/
+#15 CACHED
+
+#16 [ 7/22] COPY packages/config/package.json packages/config/
+#16 CACHED
+
+#17 [13/22] COPY packages/store/package.json packages/store/
+#17 CACHED
+
+#18 [20/22] COPY apps/cli/package.json apps/cli/
+#18 CACHED
+
+#19 [ 5/22] COPY packages/contracts/package.json packages/contracts/
+#19 CACHED
+
+#20 [ 3/22] WORKDIR /app
+#20 CACHED
+
+#21 [11/22] COPY packages/errors/package.json packages/errors/
+#21 CACHED
+
+#22 [16/22] COPY packages/llm/package.json packages/llm/
+#22 CACHED
+
+#23 [21/22] RUN npm ci
+#23 CACHED
+
+#24 [ 6/22] COPY packages/engine/package.json packages/engine/
+#24 CACHED
+
+#25 [14/22] COPY packages/render/package.json packages/render/
+#25 CACHED
+
+#26 [12/22] COPY packages/nlu/package.json packages/nlu/
+#26 CACHED
+
+#27 [22/22] COPY . .
+#27 CACHED
+
+#28 exporting to image
+#28 exporting layers
+#28 exporting layers 0.0s done
+#28 exporting manifest sha256:255832a9654d0d3dce76b4d0fe3d41b301e2631b5cfcbf024139575134dda428 0.0s done
+#28 exporting config sha256:efcccd86148dff5d5d268e30516aaac10eae5215ae9ebbec5142b002f20651b7 0.0s done
+#28 exporting attestation manifest sha256:df912c9b98d97bbfa0f100a1338a7d477c69dfe050c8b2ab359d3ad19badffdd 0.0s done
+#28 exporting manifest list sha256:20165c828b65b136fb8dc79ff36c684b94a124a4cc3ee0ed10f2a01e7ec564f5 0.0s done
+#28 naming to docker.io/library/incubrix-app:latest
+#28 naming to docker.io/library/incubrix-app:latest done
+#28 unpacking to docker.io/library/incubrix-app:latest done
+#28 DONE 0.2s
+
+#29 resolving provenance for metadata file
+#29 DONE 0.0s
+ Image incubrix-app Built 
+ Container cisim-otio-1 Waiting 
+ Container cisim-init-1 Waiting 
+ Container cisim-asr-tests-1 Waiting 
+ Container cisim-otio-tests-1 Waiting 
+ Container cisim-otio-tests-1 Exited 
+ Container cisim-init-1 Exited 
+ Container cisim-asr-tests-1 Exited 
+ Container cisim-otio-1 Healthy 
+ Container cisim-tests-run-f976c00dfcad Creating 
+ Container cisim-tests-run-f976c00dfcad Created 
+
+> incubrix@0.0.0 test
+> npm test --workspaces --if-present
+
+
+> @incubrix/config@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/config
+
+ ✓ test/envdoc.test.ts (5 tests) 13ms
+ ✓ test/config.test.ts (12 tests) 33ms
+
+ Test Files  2 passed (2)
+      Tests  17 passed (17)
+   Start at  15:22:07
+   Duration  728ms (transform 232ms, setup 0ms, collect 401ms, tests 46ms, environment 1ms, prepare 258ms)
+
+
+> @incubrix/contracts@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/contracts
+
+ ✓ test/schema.test.ts (4 tests) 428ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  15:22:08
+   Duration  1.13s (transform 101ms, setup 0ms, collect 242ms, tests 428ms, environment 0ms, prepare 99ms)
+
+
+> @incubrix/db@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/db
+
+ ✓ test/files.test.ts (5 tests) 15ms
+ ✓ test/postgres.test.ts (8 tests) 536ms
+
+ Test Files  2 passed (2)
+      Tests  13 passed (13)
+   Start at  15:22:10
+   Duration  1.13s (transform 136ms, setup 0ms, collect 235ms, tests 551ms, environment 1ms, prepare 223ms)
+
+
+> @incubrix/engine@0.0.0 test
+> eslint . && vitest run
+
+
+ RUN  v2.1.9 /app/packages/engine
+
+ ✓ test/new_ops.test.ts (39 tests) 137ms
+ ✓ test/session.test.ts (32 tests) 146ms
+ ✓ test/reorder.test.ts (26 tests) 346ms
+ ✓ test/replay.test.ts (23 tests) 57ms
+ ✓ test/frame_rounding.test.ts (14 tests) 289ms
+ ✓ test/worked_example.test.ts (11 tests | 1 skipped) 92ms
+ ✓ test/search_resolve.test.ts (21 tests) 74ms
+ ✓ test/atoms.test.ts (21 tests) 41ms
+ ✓ test/grid_warnings.test.ts (11 tests) 115ms
+ ✓ test/mutants.test.ts (14 tests) 42ms
+ ✓ test/canonical.test.ts (18 tests) 39ms
+ ✓ test/hard_cases.test.ts (6 tests) 3211ms
+   ✓ property: incremental application equals a full replay > after every command of a random edit/undo/redo sequence, snapshots agree with replaying the log 554ms
+   ✓ property: the session path (caches, incremental priming) equals a fresh full replay > after every turn of a random session (edits, undo, redo, restore, rejected turns), the cached timeline equals a replay on a brand-new engine 2594ms
+ ✓ test/schema.test.ts (4 tests) 529ms
+   ✓ the schema accepts what the engine really produces > a real session (caption, cut, question, answer, speed, restore, undo, recolour) validates, and so does its materialized timeline 480ms
+ ✓ test/lint_guard.test.ts (12 tests) 1051ms
+   ✓ engine purity lint rules > forbids Date in packages/engine/src 945ms
+
+ Test Files  14 passed (14)
+      Tests  251 passed | 1 skipped (252)
+   Start at  15:22:15
+   Duration  7.37s (transform 1.32s, setup 0ms, collect 5.07s, tests 6.17s, environment 6ms, prepare 2.54s)
+
+
+> @incubrix/errors@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/errors
+
+ ✓ test/errors.test.ts (3 tests) 8ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  15:22:23
+   Duration  603ms (transform 112ms, setup 0ms, collect 87ms, tests 8ms, environment 0ms, prepare 144ms)
+
+
+> @incubrix/llm@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/llm
+
+ ✓ test/gemini.test.ts (3 tests) 81ms
+ ✓ test/llm.test.ts (9 tests) 377ms
+
+ Test Files  2 passed (2)
+      Tests  12 passed (12)
+   Start at  15:22:24
+   Duration  1.95s (transform 792ms, setup 0ms, collect 1.57s, tests 458ms, environment 1ms, prepare 293ms)
+
+
+> @incubrix/media@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/media
+
+ ❯ test/music.test.ts (0 test)
+ ❯ test/pure.test.ts (0 test)
+ ❯ test/ffmpeg.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/ffmpeg.test.ts [ test/ffmpeg.test.ts ]
+ FAIL  test/music.test.ts [ test/music.test.ts ]
+ FAIL  test/pure.test.ts [ test/pure.test.ts ]
+Error: Failed to load url ./voiced.ts (resolved id: ./voiced.ts) in /app/packages/media/src/index.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51969:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ Test Files  3 failed (3)
+      Tests  no tests
+   Start at  15:22:27
+   Duration  1.07s (transform 338ms, setup 0ms, collect 0ms, tests 0ms, environment 1ms, prepare 868ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /app/packages/media
+npm error workspace @incubrix/media@0.0.0
+npm error location /app/packages/media
+npm error command failed
+npm error command sh -c vitest run
+
+
+> @incubrix/nlu@0.0.0 test
+> eslint . && vitest run
+
+
+ RUN  v2.1.9 /app/packages/nlu
+
+ ✓ test/fillers.test.ts (5 tests) 243ms
+ ✓ test/advanced.test.ts (9 tests) 373ms
+ ❯ test/rules.test.ts (24 tests | 1 failed) 1222ms
+   × background music > 'add background music' sets the built-in track; 'remove the music' clears it; the sha matches packages/media 378ms
+     → Failed to load url ./voiced.ts (resolved id: ./voiced.ts) in /app/packages/media/src/index.ts. Does the file exist?
+ ✓ test/time.test.ts (19 tests) 53ms
+ ✓ test/semantic.test.ts (5 tests) 204ms
+ ✓ test/lint_guard.test.ts (9 tests) 1552ms
+   ✓ nlu purity lint rules > forbids Date in packages/nlu/src 1469ms
+
+⎯⎯⎯⎯⎯⎯⎯ Failed Tests 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/rules.test.ts > background music > 'add background music' sets the built-in track; 'remove the music' clears it; the sha matches packages/media
+Error: Failed to load url ./voiced.ts (resolved id: ./voiced.ts) in /app/packages/media/src/index.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51969:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 5 passed (6)
+      Tests  1 failed | 70 passed (71)
+   Start at  15:22:31
+   Duration  6.60s (transform 1.56s, setup 0ms, collect 4.75s, tests 3.65s, environment 6ms, prepare 1.84s)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /app/packages/nlu
+npm error workspace @incubrix/nlu@0.0.0
+npm error location /app/packages/nlu
+npm error command failed
+npm error command sh -c eslint . && vitest run
+
+
+> @incubrix/otio@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/otio
+
+ ✓ test/payload.test.ts (6 tests) 30ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  15:22:38
+   Duration  2.44s (transform 979ms, setup 0ms, collect 1.32s, tests 30ms, environment 0ms, prepare 238ms)
+
+
+> @incubrix/render@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/render
+
+ ❯ test/accuracy.test.ts (0 test)
+ ❯ test/features.test.ts (0 test)
+ ❯ test/render.test.ts (0 test)
+ ✓ test/musicexpr.test.ts (4 tests) 1581ms
+   ✓ musicGainExpr > 3 speech stretches (13 keyframes): ffmpeg accepts it and its value equals the envelope (within 0.05 dB) at every probe 592ms
+   ✓ musicGainExpr > 60 speech stretches (241 keyframes): ffmpeg accepts it and its value equals the envelope (within 0.05 dB) at every probe 314ms
+   ✓ musicGainExpr > 700 speech stretches (2801 keyframes): ffmpeg accepts it and its value equals the envelope (within 0.05 dB) at every probe 318ms
+   ✓ musicGainExpr > also for the last part of a long envelope (a probe window far from the start, 2,801 keyframes) 354ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 3 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/accuracy.test.ts [ test/accuracy.test.ts ]
+ FAIL  test/features.test.ts [ test/features.test.ts ]
+ FAIL  test/render.test.ts [ test/render.test.ts ]
+Error: Failed to load url ./voiced.ts (resolved id: ./voiced.ts) in /app/packages/media/src/index.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51969:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/3]⎯
+
+ Test Files  3 failed | 1 passed (4)
+      Tests  4 passed (4)
+   Start at  15:22:42
+   Duration  4.43s (transform 2.03s, setup 0ms, collect 1.27s, tests 1.58s, environment 21ms, prepare 1.84s)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /app/packages/render
+npm error workspace @incubrix/render@0.0.0
+npm error location /app/packages/render
+npm error command failed
+npm error command sh -c vitest run
+
+
+> @incubrix/semantic@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/semantic
+
+ ✓ test/semantic.test.ts (3 tests) 49ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  15:22:47
+   Duration  2.83s (transform 1.15s, setup 0ms, collect 1.76s, tests 49ms, environment 0ms, prepare 186ms)
+
+
+> @incubrix/storage@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/storage
+
+ ✓ test/retention.test.ts (2 tests) 31ms
+ ✓ test/s3.test.ts (4 tests) 465ms
+ ✓ test/retry.test.ts (5 tests) 2540ms
+   ✓ storage 5xx handling (SeaweedFS answers 500 when it has no writable volume) > a write that fails twice with 500 and then works succeeds 768ms
+   ✓ storage 5xx handling (SeaweedFS answers 500 when it has no writable volume) > gives up after the attempt limit and throws the last error (a full store does not heal) 1756ms
+
+ Test Files  3 passed (3)
+      Tests  11 passed (11)
+   Start at  15:22:51
+   Duration  4.56s (transform 535ms, setup 0ms, collect 3.24s, tests 3.04s, environment 1ms, prepare 884ms)
+
+
+> @incubrix/store@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/store
+
+ ✓ test/urlguard.test.ts (18 tests) 27ms
+ ✓ test/log.test.ts (2 tests) 32ms
+ ✓ test/store.test.ts (20 tests) 788ms
+
+ Test Files  3 passed (3)
+      Tests  40 passed (40)
+   Start at  15:22:56
+   Duration  3.47s (transform 1.08s, setup 0ms, collect 3.89s, tests 847ms, environment 17ms, prepare 1.29s)
+
+
+> @incubrix/api@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/api
+
+ ❯ test/api.test.ts (0 test)
+ ❯ test/e2e.test.ts (0 test)
+ ❯ test/runner.test.ts (0 test)
+ ❯ test/scenarios.test.ts (0 test)
+ ✓ test/ratelimit.test.ts (5 tests) 7ms
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 4 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/api.test.ts [ test/api.test.ts ]
+ FAIL  test/e2e.test.ts [ test/e2e.test.ts ]
+ FAIL  test/runner.test.ts [ test/runner.test.ts ]
+ FAIL  test/scenarios.test.ts [ test/scenarios.test.ts ]
+Error: Failed to load url ./voiced.ts (resolved id: ./voiced.ts) in /app/packages/media/src/index.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51969:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/4]⎯
+
+ Test Files  4 failed | 1 passed (5)
+      Tests  5 passed (5)
+   Start at  15:23:00
+   Duration  4.98s (transform 943ms, setup 0ms, collect 226ms, tests 7ms, environment 1ms, prepare 539ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /app/apps/api
+npm error workspace @incubrix/api@0.0.0
+npm error location /app/apps/api
+npm error command failed
+npm error command sh -c vitest run
+
+
+> @incubrix/cli@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/cli
+
+ ✓ test/format.test.ts (2 tests) 95ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  15:23:06
+   Duration  805ms (transform 89ms, setup 0ms, collect 272ms, tests 95ms, environment 0ms, prepare 94ms)
+
+
+> @incubrix/worker@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/worker
+
+ ✓ test/callback.test.ts (3 tests) 118ms
+ ❯ test/atoms.test.ts (0 test)
+
+⎯⎯⎯⎯⎯⎯ Failed Suites 1 ⎯⎯⎯⎯⎯⎯⎯
+
+ FAIL  test/atoms.test.ts [ test/atoms.test.ts ]
+Error: Failed to load url ./voiced.ts (resolved id: ./voiced.ts) in /app/packages/media/src/index.ts. Does the file exist?
+ ❯ loadAndTransform ../../node_modules/vite/dist/node/chunks/dep-BK3b2jBa.js:51969:17
+
+⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯⎯[1/1]⎯
+
+ Test Files  1 failed | 1 passed (2)
+      Tests  3 passed (3)
+   Start at  15:23:07
+   Duration  978ms (transform 446ms, setup 0ms, collect 88ms, tests 118ms, environment 1ms, prepare 252ms)
+
+npm error Lifecycle script `test` failed with error:
+npm error code 1
+npm error path /app/apps/worker
+npm error workspace @incubrix/worker@0.0.0
+npm error location /app/apps/worker
+npm error command failed
+npm error command sh -c vitest run
+
+
+real	1m52.345s
+user	0m1.267s
+sys	0m0.600s
+exit code: 1
