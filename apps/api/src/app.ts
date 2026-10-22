@@ -17,7 +17,8 @@ import { ApiError, ERRORS, errorBody } from "@incubrix/errors";
 import { applyParsed, topicRequest, type InstructionParser, type SideData } from "@incubrix/nlu";
 import type { SemanticService } from "@incubrix/semantic";
 import type { CallInfo, LlmFallback } from "@incubrix/llm";
-import { presignGet, putFile } from "@incubrix/storage";
+import { presignGet, putFile, putText } from "@incubrix/storage";
+import { buildOtioPayload, type OtioExporter } from "@incubrix/otio";
 import { isDocPath, registerDocs } from "./docs.ts";
 import {
   appendTurn, assertUrlAllowed, findStoredOriginal, createJob, createSession, createVideo, getJob, getSession, getVideo, jobView, lockSession, requestHash, tx, withIdempotency,
@@ -42,6 +43,8 @@ export interface ApiDeps {
   semantic?: SemanticService | null;
   /** Language-model fallback (null = off). Used only when the rules parser does not understand an instruction. */
   llm?: LlmFallback | null;
+  /** OpenTimelineIO exporter (OTIO_PROVIDER: the Python service, or the mock). */
+  otio: OtioExporter;
   now?: () => number;
 }
 
@@ -356,6 +359,32 @@ export async function buildApp(d: ApiDeps): Promise<FastifyInstance & { routeTab
       };
     });
     return { session_id, timeline: tl, timeline_hash: timelineHash(tl), duration_s: tl.durationUs / 1e6, effects };
+  });
+
+  // Export the CURRENT timeline as OpenTimelineIO. Synchronous: building the file is milliseconds (no media is read).
+  // Body = the .otio file; the same bytes are stored in S3 under the timeline hash and the presigned link is in a header.
+  app.get("/api/v1/sessions/:session_id/export/otio", async (req, reply) => {
+    const { session_id } = req.params as { session_id: string };
+    const rt = await runtimes.get(pool, session_id);
+    const tl = materialize(rt.ctx, rt.state.log);
+    const hash = timelineHash(tl);
+    const name = (rt.video.filename ?? "original.mp4").replace(/[^\w.\- ]/g, "_");
+    const payload = buildOtioPayload(rt.ctx, tl, {
+      name: `session ${session_id}`, sourceName: name, aiGenerated: rt.video.ai_generated,
+      extra: { session_id, rights: rt.video.rights ?? null, otio_provider: d.otio.provider },
+    });
+    const text = await d.otio.export(payload);
+    // Keyed by the hash: the same timeline always lands on the same object.
+    const key = `exports/${session_id}/${hash}.otio`;
+    await putText(d.s3, cfg.S3_BUCKET, key, text, "application/json");
+    const link = await presignGet(d.s3Public, cfg.S3_BUCKET, key, 3600);
+    return reply
+      .header("Content-Type", "application/json; charset=utf-8")
+      .header("Content-Disposition", `attachment; filename="${session_id}.otio"`)
+      .header("X-IncuBrix-Timeline-Hash", hash)
+      .header("X-IncuBrix-Export-Provider", d.otio.provider)
+      .header("X-IncuBrix-Export-Url", link)
+      .send(text);
   });
 
   app.get("/api/v1/sessions/:session_id/history", async (req) => {

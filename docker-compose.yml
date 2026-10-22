@@ -57,6 +57,7 @@ services:
     ports: ["8080:8080"]
     depends_on:
       init: { condition: service_completed_successfully }
+      otio: { condition: service_healthy }
     healthcheck:
       test: ["CMD", "node", "-e", "fetch('http://localhost:8080/ready').then(r=>process.exit(r.ok?0:1)).catch(()=>process.exit(1))"]
       interval: 3s
@@ -89,6 +90,23 @@ services:
       timeout: 3s
       retries: 20
 
+  # OpenTimelineIO export (the OpenTimelineIO Python library, Apache-2.0). Internal only: the API calls it.
+  otio:
+    <<: *env
+    build: { context: ./services/otio, target: runtime }
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8001/ready').status==200 else 1)"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+  # Python tests of services/otio (every exported file is read back with the library). `tests` waits for it.
+  otio-tests:
+    build: { context: ./services/otio, target: test }
+    profiles: ["test"]
+    restart: "no"
+
   # Python tests of services/asr (mock adapters only, no model is loaded). `tests` waits for it.
   asr-tests:
     build: { context: ./services/asr, target: test }
@@ -109,9 +127,13 @@ services:
       DIARIZATION_PROVIDER: mock
       LLM_PROVIDER: rules
       EMBED_PROVIDER: mock
+      # The export tests use the real OpenTimelineIO service (the API tests also run the mock exporter).
+      TEST_OTIO_URL: http://otio:8001
     depends_on:
       init: { condition: service_completed_successfully }
       asr-tests: { condition: service_completed_successfully }
+      otio-tests: { condition: service_completed_successfully }
+      otio: { condition: service_healthy }
 
 volumes:
   pgdata:

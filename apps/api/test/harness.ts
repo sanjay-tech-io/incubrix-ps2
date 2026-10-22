@@ -3,6 +3,7 @@ import type { AddressInfo } from "node:net";
 import type { S3Client } from "@aws-sdk/client-s3";
 import { loadConfig, type Config } from "@incubrix/config";
 import { createParser } from "@incubrix/nlu";
+import { HttpOtioExporter, MockOtioExporter } from "@incubrix/otio";
 import { createSemantic } from "@incubrix/semantic";
 import type { LlmFallback } from "@incubrix/llm";
 import { ensureBucket, makeS3 } from "@incubrix/storage";
@@ -40,7 +41,7 @@ export async function startStack(o: { llm?: LlmFallback | null; asr?: AsrClient;
   const cfg = loadConfig({
     ...process.env,
     DATABASE_URL: db.url, ASR_PROVIDER: "mock", DIARIZATION_PROVIDER: "mock", LLM_PROVIDER: "rules", EMBED_PROVIDER: "mock", URL_ALLOW_PRIVATE: "true",
-    API_TOKEN: "", RATE_LIMIT_PER_MIN: "100000", WORKER_POLL_MS: "50", ...o.env,
+    OTIO_PROVIDER: "mock", API_TOKEN: "", RATE_LIMIT_PER_MIN: "100000", WORKER_POLL_MS: "50", ...o.env,
   });
   const s3 = makeS3(cfg);
   // The shared compose bucket (created by init) is used on purpose: SeaweedFS answers 500 to the first write into a brand-new bucket.
@@ -53,7 +54,7 @@ export async function startStack(o: { llm?: LlmFallback | null; asr?: AsrClient;
   let app!: Stack["app"];
   let base = "";
   const start = async () => {
-    app = await buildApp({ pool: db.pool, s3, s3Public: s3, cfg, log, parser, semantic: createSemantic(cfg, db.pool), get llm() { return currentLlm; } });
+    app = await buildApp({ pool: db.pool, s3, s3Public: s3, cfg, log, parser, otio: cfg.OTIO_PROVIDER === "http" ? new HttpOtioExporter({ url: cfg.OTIO_URL }) : new MockOtioExporter(), semantic: createSemantic(cfg, db.pool), get llm() { return currentLlm; } });
     await app.listen({ port: 0, host: "127.0.0.1" });
     base = `http://127.0.0.1:${(app.server.address() as AddressInfo).port}`;
   };

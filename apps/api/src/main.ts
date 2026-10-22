@@ -4,6 +4,7 @@ import { createParser } from "@incubrix/nlu";
 import { makeS3, verifyBucketWritable } from "@incubrix/storage";
 import { GeminiProvider, LlmFallback } from "@incubrix/llm";
 import { createSemantic } from "@incubrix/semantic";
+import { HttpOtioExporter, MockOtioExporter } from "@incubrix/otio";
 import { assertFreeDisk, getLlmCache, makeLogger, putLlmCache } from "@incubrix/store";
 import { buildApp } from "./app.ts";
 
@@ -28,7 +29,7 @@ const llm =
       })
     : null;
 if (cfg.LLM_PROVIDER === "gemini" && !llm) log.warn("LLM_PROVIDER=gemini but GEMINI_API_KEY or GEMINI_MODEL is empty: the language-model fallback is OFF");
-const app = await buildApp({ pool, s3, s3Public, cfg, log, parser, semantic: createSemantic(cfg, pool, log), llm });
+const app = await buildApp({ pool, s3, s3Public, cfg, log, parser, otio: cfg.OTIO_PROVIDER === "http" ? new HttpOtioExporter({ url: cfg.OTIO_URL }) : new MockOtioExporter(), semantic: createSemantic(cfg, pool, log), llm });
 
 for (const sig of ["SIGTERM", "SIGINT"] as const) process.on(sig, () => void app.close().then(() => pool.end()).then(() => process.exit(0)));
 await app.listen({ port: cfg.PORT, host: "0.0.0.0" });

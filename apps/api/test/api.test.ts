@@ -6,6 +6,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import { parse } from "yaml";
 import { verifySignature } from "../../worker/src/callback.ts";
 import { MockAsrClient } from "../../worker/src/asr.ts";
+import { makeFixture } from "../../../packages/engine/test/fixtures/transcript.ts";
 import { makeClip } from "./clips.ts";
 import { ingest, integration, startStack, type Stack } from "./harness.ts";
 
@@ -548,6 +549,87 @@ describe.skipIf(!integration)("public deployment guards (M6a)", () => {
       expect(y.status).toBe(200);
       expect(await y.text()).toBe(readFileSync(new URL("../../../openapi.yaml", import.meta.url), "utf8"));
       expect((await fetch(`${s.base}/api/v1/jobs/x`)).status).toBe(401);
+    } finally {
+      await s.stop();
+    }
+  });
+});
+
+describe.skipIf(!integration)("OpenTimelineIO export", () => {
+  const fixtureWords = makeFixture().atoms.filter((a) => a.kind === "word").map((a) => ({ text: a.text, start_us: a.startUs, end_us: a.endUs, confidence_permille: 950, speaker: "S1" }));
+  const otioUrl = process.env.TEST_OTIO_URL; // set by docker compose: the real OpenTimelineIO service
+
+  /** A session with cut + speed + reorder + a caption, through the API. */
+  async function editedSession(s: Stack) {
+    const { videoId, job } = await ingest(s, makeClip({ seconds: 200 }));
+    expect(job.status).toBe("succeeded");
+    const ses = await s.call("POST", "/api/v1/sessions", { video_id: videoId });
+    const id = ses.body.session_id as string;
+    for (const say of ['add a caption "Welcome!" on "welcome to the channel"', "cut the first 30 seconds", "speed up 1:00-1:30 by 2x", "move 0:20-0:30 to the end"]) {
+      const r = await s.call("POST", `/api/v1/sessions/${id}/instructions`, { say });
+      expect(r.body.status, say).toBe("applied");
+    }
+    return id;
+  }
+
+  const exportOtio = (s: Stack, id: string) => fetch(`${s.base}/api/v1/sessions/${id}/export/otio`, { headers: s.cfg.API_TOKEN ? { authorization: `Bearer ${s.cfg.API_TOKEN}` } : {} });
+
+  for (const provider of otioUrl ? ["mock", "http"] : ["mock"]) {
+    it(`OTIO_PROVIDER=${provider}: returns the .otio file and an S3 link; the file has the clips in output order, speed, the caption marker, and the timeline length (±1 frame)`, async () => {
+      const s = await startStack({ words: fixtureWords, env: { OTIO_PROVIDER: provider, ...(otioUrl ? { OTIO_URL: otioUrl } : {}) } });
+      try {
+        const id = await editedSession(s);
+        const tl = (await s.call("GET", `/api/v1/sessions/${id}/timeline`)).body;
+        const r = await exportOtio(s, id);
+        expect(r.status).toBe(200);
+        expect(r.headers.get("content-type")).toContain("application/json");
+        expect(r.headers.get("content-disposition")).toMatch(/attachment; filename="[^"]+\.otio"/);
+        expect(r.headers.get("x-incubrix-timeline-hash")).toBe(tl.timeline_hash);
+        expect(r.headers.get("x-incubrix-export-provider")).toBe(provider === "http" ? "opentimelineio" : "mock");
+        const text = await r.text();
+        const doc = JSON.parse(text);
+        expect(doc.OTIO_SCHEMA).toBe("Timeline.1");
+        expect(doc.metadata.incubrix.timeline_hash).toBe(tl.timeline_hash);
+
+        // the S3 link serves the same bytes
+        const link = r.headers.get("x-incubrix-export-url")!;
+        expect(link).toMatch(/^https?:\/\//);
+        expect(await (await fetch(link)).text()).toBe(text);
+        // exporting again gives the same bytes (deterministic)
+        expect(await (await exportOtio(s, id)).text()).toBe(text);
+
+        // read it back: structure from the JSON itself, durations from the OpenTimelineIO library when the service is there
+        const video = doc.tracks.children.find((t: any) => t.kind === "Video");
+        const fps = 25; // makeClip default
+        const clips = video.children as any[];
+        expect(clips.length).toBeGreaterThanOrEqual(4);
+        expect(clips.some((c) => c.effects.length === 1 && c.effects[0].OTIO_SCHEMA === "LinearTimeWarp.1" && c.effects[0].time_scalar === 2)).toBe(true);
+        const starts = clips.map((c) => c.metadata.incubrix.src_start_us as number);
+        expect(starts.some((v, i) => i > 0 && v < starts[i - 1]!)).toBe(true); // reorder: output order differs from source order
+        const total = clips.reduce((n, c) => n + c.source_range.duration.value, 0);
+        expect(Math.abs(total - tl.duration_s * fps)).toBeLessThanOrEqual(1);
+        expect(video.markers.map((m: any) => m.name)).toContain("Welcome!");
+
+        if (otioUrl) {
+          const info = await (await fetch(`${otioUrl}/inspect`, { method: "POST", body: text })).json();
+          const v = info.tracks.find((t: any) => t.kind.endsWith("Video"));
+          expect(Math.abs(info.duration_units - tl.duration_s * fps), "library duration vs timeline").toBeLessThanOrEqual(1);
+          expect(Math.abs(v.duration_units - tl.duration_s * fps)).toBeLessThanOrEqual(1);
+          expect(v.clips.map((c: any) => c.time_scalar)).toContain(2);
+          expect(v.markers.map((m: any) => m.name)).toContain("Welcome!");
+        }
+      } finally {
+        await s.stop();
+      }
+    }, 240_000);
+  }
+
+  it("needs the token like every other route, and an unknown session is 404 SESSION_NOT_FOUND", async () => {
+    const s = await startStack({ words: fixtureWords, env: { API_TOKEN: "demo-token-1234567890", OTIO_PROVIDER: "mock" } });
+    try {
+      expect((await fetch(`${s.base}/api/v1/sessions/ses_x/export/otio`)).status).toBe(401);
+      const r = await s.call("GET", "/api/v1/sessions/ses_x/export/otio");
+      expect([r.status, r.body.error.code]).toEqual([404, "SESSION_NOT_FOUND"]);
     } finally {
       await s.stop();
     }

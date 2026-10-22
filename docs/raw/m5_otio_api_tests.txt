@@ -1,0 +1,546 @@
+ Image incubrix-app Building 
+ Image incubrix-ps2-otio-tests Building 
+ Image incubrix-ps2-asr-tests Building 
+ Image incubrix-ps2-otio Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 1.96kB done
+#1 DONE 0.0s
+
+#2 [otio internal] load build definition from Dockerfile
+#2 transferring dockerfile: 589B done
+#2 DONE 0.0s
+
+#3 [asr-tests internal] load build definition from Dockerfile
+#3 transferring dockerfile: 1.13kB done
+#3 DONE 0.0s
+
+#4 [init internal] load build definition from Dockerfile
+#4 transferring dockerfile: 1.21kB done
+#4 DONE 0.0s
+
+#5 [asr-tests internal] load metadata for docker.io/library/python:3.12-slim
+#5 DONE 0.8s
+
+#6 [otio-tests internal] load .dockerignore
+#6 transferring context: 2B done
+#6 DONE 0.0s
+
+#7 [asr-tests internal] load .dockerignore
+#7 transferring context: 78B done
+#7 DONE 0.0s
+
+#8 [otio-tests internal] load build context
+#8 transferring context: 12.31kB done
+#8 DONE 0.0s
+
+#9 [asr-tests internal] load build context
+#9 transferring context: 79.10kB 0.0s done
+#9 DONE 0.0s
+
+#10 [otio internal] load build context
+#10 transferring context: 26.78kB done
+#10 DONE 0.1s
+
+#11 [asr-tests base 1/5] FROM docker.io/library/python:3.12-slim@sha256:cb33f7f771ecec2ef1225cf39b159591a040391bd73e4c01f00fdfc4c47611d2
+#11 resolve docker.io/library/python:3.12-slim@sha256:cb33f7f771ecec2ef1225cf39b159591a040391bd73e4c01f00fdfc4c47611d2
+#11 resolve docker.io/library/python:3.12-slim@sha256:cb33f7f771ecec2ef1225cf39b159591a040391bd73e4c01f00fdfc4c47611d2 0.1s done
+#11 DONE 0.1s
+
+#12 [otio-tests base 3/5] COPY requirements.txt .
+#12 CACHED
+
+#13 [otio-tests base 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#13 CACHED
+
+#14 [otio-tests test 1/3] COPY requirements-dev.txt pytest.ini ./
+#14 CACHED
+
+#15 [otio-tests base 5/5] COPY otio_service ./otio_service
+#15 CACHED
+
+#16 [otio-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#16 CACHED
+
+#17 [asr-tests base 2/5] WORKDIR /app
+#17 CACHED
+
+#18 [asr-tests base 4/7] RUN pip install --no-cache-dir -r requirements.txt
+#18 CACHED
+
+#19 [asr-tests base 3/7] COPY requirements.txt .
+#19 CACHED
+
+#20 [asr-tests base 6/7] RUN ASR_MODEL=base.en python fetch_models.py
+#20 CACHED
+
+#21 [asr-tests base 5/7] COPY fetch_models.py .
+#21 CACHED
+
+#22 [asr-tests base 7/7] COPY asr ./asr
+#22 CACHED
+
+#23 [asr-tests test 1/3] COPY requirements-dev.txt pytest.ini ./
+#23 CACHED
+
+#24 [otio] exporting to image
+#24 exporting layers done
+#24 exporting manifest sha256:f1c50bbba9d0d840579667bf59db871b25b9774fdfde881eec0ac04730be3dbf 0.0s done
+#24 exporting config sha256:ba845630467ac8afa20ded737481adfde139004945a1fddefd0ff574662dba4f 0.0s done
+#24 exporting attestation manifest sha256:23af30ff4e59cfccf6d02ddd9f2e5f5286850ee2ed1875f4d42c6f199bff5b84
+#24 exporting attestation manifest sha256:23af30ff4e59cfccf6d02ddd9f2e5f5286850ee2ed1875f4d42c6f199bff5b84 0.0s done
+#24 exporting manifest list sha256:1cbb7de6d8d935793fdfdd94aadf9e757afb57389fedebcf88e095b1727eb7cb 0.0s done
+#24 naming to docker.io/library/incubrix-ps2-otio:latest done
+#24 unpacking to docker.io/library/incubrix-ps2-otio:latest 0.0s done
+#24 DONE 0.2s
+
+#25 [otio-tests test 3/3] COPY tests ./tests
+#25 DONE 0.2s
+
+#26 [otio-tests] exporting to image
+#26 exporting layers 0.1s done
+#26 exporting manifest sha256:c326417b7a04dafe4c0471744f74dae0ff1238ea1fae245e2af083b03298142b 0.0s done
+#26 exporting config sha256:65d180c404f5965b1eeb5e2a489b6aec1c90ef6424976692ab9f843dce30dfd2 0.0s done
+#26 exporting attestation manifest sha256:efd36d466fabf5be3fd667d90c44aab24cba741ba768e8b6e44e618516146b99 0.0s done
+#26 exporting manifest list sha256:d2ab517e0d7850389a8b7d8a06c18ccfced61522fd917122d55fbd238cdbf6fb 0.0s done
+#26 naming to docker.io/library/incubrix-ps2-otio-tests:latest done
+#26 unpacking to docker.io/library/incubrix-ps2-otio-tests:latest 0.0s done
+#26 DONE 0.4s
+
+#27 [init internal] load metadata for docker.io/library/node:22-bookworm-slim
+#27 DONE 1.4s
+
+#28 [init internal] load .dockerignore
+#28 transferring context: 98B done
+#28 DONE 0.0s
+
+#29 [otio] resolving provenance for metadata file
+#29 DONE 0.0s
+
+#30 [init internal] load build context
+#30 ...
+
+#31 [init  1/22] FROM docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d
+#31 resolve docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d 0.1s done
+#31 DONE 0.1s
+
+#30 [init internal] load build context
+#30 ...
+
+#32 [otio-tests] resolving provenance for metadata file
+#32 DONE 0.0s
+
+#30 [init internal] load build context
+#30 transferring context: 4.76MB 0.8s done
+#30 DONE 0.8s
+
+#33 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#33 ...
+
+#34 [init  2/22] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core ca-certificates && rm -rf /var/lib/apt/lists/*
+#34 CACHED
+
+#35 [init  3/22] WORKDIR /app
+#35 CACHED
+
+#36 [init  4/22] COPY package.json package-lock.json .npmrc ./
+#36 DONE 0.1s
+
+#37 [init  5/22] COPY packages/contracts/package.json packages/contracts/
+#37 DONE 0.0s
+
+#38 [init  6/22] COPY packages/engine/package.json packages/engine/
+#38 DONE 0.0s
+
+#39 [init  7/22] COPY packages/config/package.json packages/config/
+#39 DONE 0.0s
+
+#33 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#33 ...
+
+#40 [init  8/22] COPY packages/db/package.json packages/db/
+#40 DONE 0.0s
+
+#41 [init  9/22] COPY packages/storage/package.json packages/storage/
+#41 DONE 0.0s
+
+#42 [init 10/22] COPY packages/media/package.json packages/media/
+#42 DONE 0.0s
+
+#43 [init 11/22] COPY packages/errors/package.json packages/errors/
+#43 DONE 0.0s
+
+#44 [init 12/22] COPY packages/nlu/package.json packages/nlu/
+#44 DONE 0.0s
+
+#45 [init 13/22] COPY packages/store/package.json packages/store/
+#45 DONE 0.0s
+
+#33 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#33 1.767 Requirement already satisfied: faster-whisper==1.2.1 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 1)) (1.2.1)
+#33 1.769 Requirement already satisfied: ctranslate2==4.8.3 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 2)) (4.8.3)
+#33 1.770 Requirement already satisfied: av==16.1.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 3)) (16.1.0)
+#33 1.771 Requirement already satisfied: onnxruntime==1.31.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 4)) (1.31.0)
+#33 1.772 Requirement already satisfied: numpy==2.5.4 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 5)) (2.5.4)
+#33 1.774 Requirement already satisfied: huggingface_hub==2.2.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 6)) (2.2.0)
+#33 1.775 Requirement already satisfied: tokenizers==0.23.3 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 7)) (0.23.3)
+#33 1.776 Requirement already satisfied: sherpa-onnx==1.13.8 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 8)) (1.13.8)
+#33 1.777 Requirement already satisfied: fastapi==0.151.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 9)) (0.151.0)
+#33 1.778 Requirement already satisfied: starlette==1.9.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 10)) (1.9.0)
+#33 1.780 Requirement already satisfied: pydantic==2.14.1 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 11)) (2.14.1)
+#33 1.780 Requirement already satisfied: uvicorn==0.54.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 12)) (0.54.0)
+#33 1.782 Requirement already satisfied: python-multipart==0.0.32 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 13)) (0.0.32)
+#33 ...
+
+#46 [init 14/22] COPY packages/render/package.json packages/render/
+#46 DONE 0.0s
+
+#47 [init 15/22] COPY packages/semantic/package.json packages/semantic/
+#47 DONE 0.0s
+
+#33 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#33 1.969 Collecting pytest==9.1.1 (from -r requirements-dev.txt (line 2))
+#33 ...
+
+#48 [init 16/22] COPY packages/llm/package.json packages/llm/
+#48 DONE 0.1s
+
+#49 [init 17/22] COPY packages/otio/package.json packages/otio/
+#49 DONE 0.0s
+
+#33 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#33 2.086   Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+#33 ...
+
+#50 [init 18/22] COPY apps/api/package.json apps/api/
+#50 DONE 0.1s
+
+#51 [init 19/22] COPY apps/worker/package.json apps/worker/
+#51 DONE 0.0s
+
+#33 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#33 2.145 Collecting httpx==0.28.1 (from -r requirements-dev.txt (line 3))
+#33 2.169   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#33 2.183 Requirement already satisfied: tqdm in /usr/local/lib/python3.12/site-packages (from faster-whisper==1.2.1->-r /app/requirements.txt (line 1)) (4.70.1)
+#33 2.187 Requirement already satisfied: pyyaml<7,>=5.3 in /usr/local/lib/python3.12/site-packages (from ctranslate2==4.8.3->-r /app/requirements.txt (line 2)) (6.0.3)
+#33 ...
+
+#52 [init 20/22] COPY apps/cli/package.json apps/cli/
+#52 DONE 0.0s
+
+#33 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#33 2.193 Requirement already satisfied: flatbuffers in /usr/local/lib/python3.12/site-packages (from onnxruntime==1.31.0->-r /app/requirements.txt (line 4)) (25.12.19)
+#33 2.194 Requirement already satisfied: packaging in /usr/local/lib/python3.12/site-packages (from onnxruntime==1.31.0->-r /app/requirements.txt (line 4)) (26.3)
+#33 2.195 Requirement already satisfied: protobuf>=4.25.8 in /usr/local/lib/python3.12/site-packages (from onnxruntime==1.31.0->-r /app/requirements.txt (line 4)) (7.36.2)
+#33 2.220 Requirement already satisfied: click<9.0.0,>=8.4.2 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (8.5.0)
+#33 2.222 Requirement already satisfied: filelock>=3.10.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (4.2.4)
+#33 2.223 Requirement already satisfied: fsspec>=2023.5.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (2026.9.0)
+#33 2.224 Requirement already satisfied: hf-xet<2.0.0,>=1.6.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (1.7.0)
+#33 2.225 Requirement already satisfied: httpx2<3,>=2.0.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (2.16.0)
+#33 2.228 Requirement already satisfied: typing-extensions>=4.1.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (4.16.0)
+#33 2.259 Requirement already satisfied: sherpa-onnx-core==1.13.8 in /usr/local/lib/python3.12/site-packages (from sherpa-onnx==1.13.8->-r /app/requirements.txt (line 8)) (1.13.8)
+#33 2.276 Requirement already satisfied: typing-inspection>=0.4.2 in /usr/local/lib/python3.12/site-packages (from fastapi==0.151.0->-r /app/requirements.txt (line 9)) (0.4.4)
+#33 2.277 Requirement already satisfied: annotated-doc>=0.0.2 in /usr/local/lib/python3.12/site-packages (from fastapi==0.151.0->-r /app/requirements.txt (line 9)) (0.0.5)
+#33 2.278 Requirement already satisfied: opentelemetry-api>=1.44.0 in /usr/local/lib/python3.12/site-packages (from fastapi==0.151.0->-r /app/requirements.txt (line 9)) (1.45.1)
+#33 2.283 Requirement already satisfied: anyio<5,>=4.0.0 in /usr/local/lib/python3.12/site-packages (from starlette==1.9.0->-r /app/requirements.txt (line 10)) (4.15.1)
+#33 2.293 Requirement already satisfied: annotated-types>=0.6.0 in /usr/local/lib/python3.12/site-packages (from pydantic==2.14.1->-r /app/requirements.txt (line 11)) (0.8.0)
+#33 2.294 Requirement already satisfied: pydantic-core==2.50.1 in /usr/local/lib/python3.12/site-packages (from pydantic==2.14.1->-r /app/requirements.txt (line 11)) (2.50.1)
+#33 2.301 Requirement already satisfied: h11>=0.8 in /usr/local/lib/python3.12/site-packages (from uvicorn==0.54.0->-r /app/requirements.txt (line 12)) (0.16.0)
+#33 2.332 Collecting iniconfig>=1.0.1 (from pytest==9.1.1->-r requirements-dev.txt (line 2))
+#33 2.357   Downloading iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+#33 2.391 Collecting pluggy<2,>=1.5 (from pytest==9.1.1->-r requirements-dev.txt (line 2))
+#33 2.415   Downloading pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+#33 2.473 Collecting pygments>=2.7.2 (from pytest==9.1.1->-r requirements-dev.txt (line 2))
+#33 2.497   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+#33 2.571 Collecting certifi (from httpx==0.28.1->-r requirements-dev.txt (line 3))
+#33 2.595   Downloading certifi-2026.10.19-py3-none-any.whl.metadata (2.5 kB)
+#33 2.642 Collecting httpcore==1.* (from httpx==0.28.1->-r requirements-dev.txt (line 3))
+#33 2.666   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#33 2.682 Requirement already satisfied: idna in /usr/local/lib/python3.12/site-packages (from httpx==0.28.1->-r requirements-dev.txt (line 3)) (3.20)
+#33 2.751 Requirement already satisfied: httpcore2==2.16.0 in /usr/local/lib/python3.12/site-packages (from httpx2<3,>=2.0.0->huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (2.16.0)
+#33 2.752 Requirement already satisfied: truststore>=0.10 in /usr/local/lib/python3.12/site-packages (from httpx2<3,>=2.0.0->huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (0.10.5)
+#33 2.835 Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+#33 3.006 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#33 3.054 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#33 3.103 Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+#33 3.136 Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
+#33 3.172 Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+#33 3.470    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 4.5 MB/s eta 0:00:00
+#33 3.502 Downloading certifi-2026.10.19-py3-none-any.whl (136 kB)
+#33 3.605 Installing collected packages: pygments, pluggy, iniconfig, certifi, pytest, httpcore, httpx
+#33 5.942 Successfully installed certifi-2026.10.19 httpcore-1.0.9 httpx-0.28.1 iniconfig-2.3.1 pluggy-1.7.0 pygments-2.21.0 pytest-9.1.1
+#33 5.943 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#33 6.173 
+#33 6.173 [notice] A new release of pip is available: 25.0.1 -> 26.2.2
+#33 6.173 [notice] To update, run: pip install --upgrade pip
+#33 DONE 6.5s
+
+#53 [init 21/22] RUN npm ci
+#53 ...
+
+#54 [asr-tests test 3/3] COPY tests ./tests
+#54 DONE 0.1s
+
+#55 [asr-tests] exporting to image
+#55 exporting layers
+#55 exporting layers 1.3s done
+#55 exporting manifest sha256:adcee2bcea63422c90249562531ec03ce4ad78ae08df3fbfddc9fabf10be6e68 0.0s done
+#55 exporting config sha256:0066a9443d87946439c17c99dfb917683f23d1b9a538998b4a49fdd3fb1e559b 0.0s done
+#55 exporting attestation manifest sha256:8967be7a02aedb248fb27dcda4b3848e03fd1451e6d408e3e04c4213be25e00a 0.0s done
+#55 exporting manifest list sha256:f752947233c4ea6b5f0840b219b4a7bfb9c5441510810a85ce7c1bba2963c31b 0.0s done
+#55 naming to docker.io/library/incubrix-ps2-asr-tests:latest
+#55 naming to docker.io/library/incubrix-ps2-asr-tests:latest done
+#55 unpacking to docker.io/library/incubrix-ps2-asr-tests:latest
+#55 unpacking to docker.io/library/incubrix-ps2-asr-tests:latest 0.5s done
+#55 DONE 2.0s
+
+#53 [init 21/22] RUN npm ci
+#53 ...
+
+#56 [asr-tests] resolving provenance for metadata file
+#56 DONE 0.0s
+
+#53 [init 21/22] RUN npm ci
+#53 11.12 npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.
+#53 14.41 
+#53 14.41 added 271 packages, and audited 288 packages in 13s
+#53 14.41 
+#53 14.41 76 packages are looking for funding
+#53 14.41   run `npm fund` for details
+#53 14.44 
+#53 14.44 6 vulnerabilities (3 moderate, 1 high, 2 critical)
+#53 14.44 
+#53 14.44 To address all issues (including breaking changes), run:
+#53 14.44   npm audit fix --force
+#53 14.44 
+#53 14.44 Run `npm audit` for details.
+#53 14.44 npm notice
+#53 14.44 npm notice New major version of npm available! 10.9.9 -> 12.2.1
+#53 14.44 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.1
+#53 14.44 npm notice To update run: npm install -g npm@12.2.1
+#53 14.44 npm notice
+#53 DONE 15.6s
+
+#57 [init 22/22] COPY . .
+#57 DONE 16.6s
+
+#58 [init] exporting to image
+#58 exporting layers
+#58 exporting layers 81.8s done
+#58 exporting manifest sha256:05a95b38292ce952120746b52b92e250e5dcc75ccda208d5995b2ba9fcfcee9a 0.0s done
+#58 exporting config sha256:2ddc0655a17954c515e4bcebad216009ac83c8e77ad039710b3e948acf1a08ce 0.0s done
+#58 exporting attestation manifest sha256:652ed8fa29c8aba98f4cd468fa66bb205a5e3923b0732640e09834b30d1c64c3 0.0s done
+#58 exporting manifest list sha256:89687ebb0f4519d064903f316150ed78c14fc1a9ce5067a3bf02c969b4dd881f 0.0s done
+#58 naming to docker.io/library/incubrix-app:latest
+#58 naming to docker.io/library/incubrix-app:latest done
+#58 unpacking to docker.io/library/incubrix-app:latest
+#58 unpacking to docker.io/library/incubrix-app:latest 22.9s done
+#58 DONE 104.9s
+
+#59 [init] resolving provenance for metadata file
+#59 DONE 0.0s
+ Image incubrix-ps2-otio Built 
+ Image incubrix-ps2-otio-tests Built 
+ Image incubrix-ps2-asr-tests Built 
+ Image incubrix-app Built 
+ Container incubrix-ps2-asr-tests-1 Recreate 
+ Container incubrix-ps2-postgres-1 Recreate 
+ Container incubrix-ps2-otio-1 Creating 
+ Container incubrix-ps2-s3-1 Recreate 
+ Container incubrix-ps2-otio-tests-1 Creating 
+ Container incubrix-ps2-otio-tests-1 Created 
+ Container incubrix-ps2-otio-1 Created 
+ Container incubrix-ps2-postgres-1 Recreated 
+ Container incubrix-ps2-asr-tests-1 Recreated 
+ Container incubrix-ps2-s3-1 Recreated 
+ Container incubrix-ps2-init-1 Recreate 
+ Container incubrix-ps2-init-1 Recreated 
+ Container incubrix-ps2-postgres-1 Starting 
+ Container incubrix-ps2-s3-1 Starting 
+ Container incubrix-ps2-asr-tests-1 Starting 
+ Container incubrix-ps2-otio-1 Starting 
+ Container incubrix-ps2-otio-tests-1 Starting 
+ Container incubrix-ps2-postgres-1 Started 
+ Container incubrix-ps2-s3-1 Started 
+ Container incubrix-ps2-postgres-1 Waiting 
+ Container incubrix-ps2-s3-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Started 
+ Container incubrix-ps2-otio-1 Started 
+ Container incubrix-ps2-otio-tests-1 Started 
+ Container incubrix-ps2-postgres-1 Healthy 
+ Container incubrix-ps2-s3-1 Healthy 
+ Container incubrix-ps2-init-1 Starting 
+ Container incubrix-ps2-init-1 Started 
+ Image incubrix-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.30kB done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.21kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:22-bookworm-slim
+#3 DONE 0.9s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 98B done
+#4 DONE 0.0s
+
+#5 [ 1/22] FROM docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d
+#5 resolve docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d 0.1s done
+#5 DONE 0.1s
+
+#6 [internal] load build context
+#6 transferring context: 820.15kB 0.5s done
+#6 DONE 0.6s
+
+#7 [17/22] COPY packages/otio/package.json packages/otio/
+#7 CACHED
+
+#8 [11/22] COPY packages/errors/package.json packages/errors/
+#8 CACHED
+
+#9 [ 4/22] COPY package.json package-lock.json .npmrc ./
+#9 CACHED
+
+#10 [ 7/22] COPY packages/config/package.json packages/config/
+#10 CACHED
+
+#11 [18/22] COPY apps/api/package.json apps/api/
+#11 CACHED
+
+#12 [20/22] COPY apps/cli/package.json apps/cli/
+#12 CACHED
+
+#13 [ 2/22] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core ca-certificates && rm -rf /var/lib/apt/lists/*
+#13 CACHED
+
+#14 [ 6/22] COPY packages/engine/package.json packages/engine/
+#14 CACHED
+
+#15 [12/22] COPY packages/nlu/package.json packages/nlu/
+#15 CACHED
+
+#16 [14/22] COPY packages/render/package.json packages/render/
+#16 CACHED
+
+#17 [ 9/22] COPY packages/storage/package.json packages/storage/
+#17 CACHED
+
+#18 [ 8/22] COPY packages/db/package.json packages/db/
+#18 CACHED
+
+#19 [ 3/22] WORKDIR /app
+#19 CACHED
+
+#20 [10/22] COPY packages/media/package.json packages/media/
+#20 CACHED
+
+#21 [16/22] COPY packages/llm/package.json packages/llm/
+#21 CACHED
+
+#22 [ 5/22] COPY packages/contracts/package.json packages/contracts/
+#22 CACHED
+
+#23 [13/22] COPY packages/store/package.json packages/store/
+#23 CACHED
+
+#24 [19/22] COPY apps/worker/package.json apps/worker/
+#24 CACHED
+
+#25 [15/22] COPY packages/semantic/package.json packages/semantic/
+#25 CACHED
+
+#26 [21/22] RUN npm ci
+#26 CACHED
+
+#27 [22/22] COPY . .
+#27 DONE 13.4s
+
+#28 exporting to image
+#28 exporting layers
+#28 exporting layers 81.1s done
+#28 exporting manifest sha256:9b6471709ad4f8b37ad5631a68c7b301f73fc80f1ee50876a37747ef2744f213 0.0s done
+#28 exporting config sha256:4566cf49ff36560a33bc7fa09b45a7350a2b12ac5b31b8942b338fd84033d232 0.0s done
+#28 exporting attestation manifest sha256:642a23cd14554c50dc19b0ce425bdba8d7bec9bf19be158a6f21f8618f7622cc 0.0s done
+#28 exporting manifest list sha256:9ab60c3c87188a2b23ed1ad8fa657b0dc2208ba72d30859c340d574a2559b2e0 0.0s done
+#28 naming to docker.io/library/incubrix-app:latest done
+#28 unpacking to docker.io/library/incubrix-app:latest
+#28 unpacking to docker.io/library/incubrix-app:latest 15.6s done
+#28 DONE 97.0s
+
+#29 resolving provenance for metadata file
+#29 DONE 0.0s
+ Image incubrix-app Built 
+ Container incubrix-ps2-otio-tests-1 Waiting 
+ Container incubrix-ps2-otio-1 Waiting 
+ Container incubrix-ps2-init-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Exited 
+ Container incubrix-ps2-otio-tests-1 Exited 
+ Container incubrix-ps2-otio-1 Healthy 
+ Container incubrix-ps2-init-1 Exited 
+ Container incubrix-ps2-tests-run-16ad473c5867 Creating 
+ Container incubrix-ps2-tests-run-16ad473c5867 Created 
+
+> @incubrix/otio@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/otio
+
+ ✓ test/payload.test.ts (6 tests) 23ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  14:42:34
+   Duration  1.37s (transform 602ms, setup 0ms, collect 785ms, tests 23ms, environment 0ms, prepare 160ms)
+
+
+> @incubrix/api@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/api
+
+ ✓ test/api.test.ts (34 tests) 47421ms
+   ✓ API behaviour > openapi.yaml matches the running service > real responses validate against their schemas 3546ms
+   ✓ API behaviour > possible fillers reach the parser > markers stored in the transcript manifest turn 'remove the ums' into a question; nothing is cut before the answer 379ms
+   ✓ API behaviour > errors > a session on a video that is not ready is 409 VIDEO_NOT_READY (retryable) 302ms
+   ✓ API behaviour > errors > a video without audio fails its job with NO_AUDIO_TRACK and cannot start a session 457ms
+   ✓ API behaviour > errors > a private URL is refused when private addresses are not allowed (the SSRF guard) 343ms
+   ✓ API behaviour > idempotency (every POST) > the same bytes uploaded twice (different keys) are stored ONCE: both videos point at the same object 620ms
+   ✓ API behaviour > idempotency (every POST) > videos: same key + same file -> same ids, one video, one job, one stored object 831ms
+   ✓ API behaviour > idempotency (every POST) > sessions: same key + same body -> same session; different body -> 409 388ms
+   ✓ API behaviour > idempotency (every POST) > instructions: a repeated key replays the answer and does NOT apply the edit twice 784ms
+   ✓ API behaviour > jobs, cache, hints, warnings > progress goes 0 -> 100, never down; a job is queued until a worker takes it 1688ms
+   ✓ API behaviour > jobs, cache, hints, warnings > the same file again is a transcript cache HIT (ASR not called); a different ASR model is a MISS 9203ms
+   ✓ API behaviour > jobs, cache, hints, warnings > num_speakers reaches the ASR/diarization call and changes the cache key 7005ms
+   ✓ API behaviour > jobs, cache, hints, warnings > variable frame rate is accepted with a warning in the job manifest and on the video 1811ms
+   ✓ API behaviour > jobs, cache, hints, warnings > a URL source is downloaded, stored byte-identical and transcribed; callback is signed and delivered 356ms
+   ✓ auth, rate limit, correlation id > API_TOKEN protects everything except /health and /ready; the token is never logged 390ms
+   ✓ auth, rate limit, correlation id > rate limit: the N+1th request in a minute is 429 RATE_LIMITED with Retry-After 308ms
+   ✓ auth, rate limit, correlation id > X-Correlation-Id is echoed, or generated when missing 346ms
+   ✓ retention (real storage) > an expired render is deleted with its manifest, the job says expired and has no links, the original stays 3248ms
+   ✓ meaning search through the API (mock embeddings) > a meaning match is listed with its time before anything is cut; a repeated query uses the cached vector 1851ms
+   ✓ language-model fallback through the API (mock model) > is used only for text the rules cannot read; the engine applies the result; the manifest has tokens and cost; a repeat is a cache hit with no model call 2247ms
+   ✓ language-model fallback through the API (mock model) > a model reply that is not valid commands is a rejection and the timeline does not change 1230ms
+   ✓ language-model fallback through the API (mock model) > LLM_PROVIDER=gemini with an empty key: the fallback is off and the answer says so 1258ms
+   ✓ public deployment guards (M6a) > a video longer than MAX_VIDEO_DURATION_S fails its job with VIDEO_TOO_LONG before ASR runs 1823ms
+   ✓ OpenTimelineIO export > OTIO_PROVIDER=mock: returns the .otio file and an S3 link; the file has the clips in output order, speed, the caption marker, and the timeline length (±1 frame) 3879ms
+   ✓ OpenTimelineIO export > OTIO_PROVIDER=http: returns the .otio file and an S3 link; the file has the clips in output order, speed, the caption marker, and the timeline length (±1 frame) 1521ms
+ ✓ test/e2e.test.ts (5 tests) 6204ms
+   ✓ worked example over HTTP (mock ASR) > uploads the clip, the job runs with progress and succeeds, the original is stored untouched 1413ms
+   ✓ worked example over HTTP (mock ASR) > step 8: render is a background job; the file matches the timeline length; the original is untouched (sha256 before and after) 3994ms
+ ✓ test/runner.test.ts (5 tests) 15445ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > determinism: the same session run 3 times through the runner gives the same timeline_hash at every step 13126ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a step that does not match its expectation fails the session, and the failure is kept in results.json 439ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a video without audio stops at intake with NO_AUDIO_TRACK and the session says so 596ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > batch: runs every file in a folder, one result folder each, summary.json lists pass and fail 853ms
+ ✓ test/ratelimit.test.ts (5 tests) 7ms
+
+ Test Files  4 passed (4)
+      Tests  49 passed (49)
+   Start at  14:42:36
+   Duration  74.56s (transform 1.19s, setup 0ms, collect 4.16s, tests 69.08s, environment 1ms, prepare 440ms)
+

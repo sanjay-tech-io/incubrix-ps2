@@ -17,6 +17,7 @@
     "@incubrix/errors": "*",
     "@incubrix/llm": "*",
     "@incubrix/nlu": "*",
+    "@incubrix/otio": "*",
     "@incubrix/semantic": "*",
     "@incubrix/storage": "*",
     "@incubrix/store": "*",

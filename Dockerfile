@@ -15,6 +15,7 @@ COPY packages/store/package.json packages/store/
 COPY packages/render/package.json packages/render/
 COPY packages/semantic/package.json packages/semantic/
 COPY packages/llm/package.json packages/llm/
+COPY packages/otio/package.json packages/otio/
 COPY apps/api/package.json apps/api/
 COPY apps/worker/package.json apps/worker/
 COPY apps/cli/package.json apps/cli/

@@ -166,6 +166,32 @@ paths:
         "200": { description: Timeline, content: { application/json: { schema: { $ref: "#/components/schemas/TimelineResponse" } } } }
         "401": { $ref: "#/components/responses/Error" }
         "404": { $ref: "#/components/responses/Error" }
+  /api/v1/sessions/{session_id}/export/otio:
+    get:
+      tags: [sessions]
+      operationId: exportOtio
+      summary: Export the current timeline as an OpenTimelineIO (.otio) file
+      description: |
+        The body is the .otio file (JSON). One clip per piece of the edited timeline, in OUTPUT order, on a video and an audio track.
+        A clip's `source_range` is (start in the source, duration in the OUTPUT) in frames of the source's frame rate; a sped-up or
+        slowed clip carries a `LinearTimeWarp` whose `time_scalar` is the speed, so it reads speed x duration of source and the track
+        length equals the rendered length. Captions, text overlays, auto-caption cues, mutes and bleeps are markers on the video track
+        at output time. The exact source span in microseconds is in each clip's `metadata.incubrix`. The same bytes are stored in
+        S3-compatible storage under the timeline hash and a download link is returned in `X-IncuBrix-Export-Url` (valid 1 hour).
+      parameters:
+        - { $ref: "#/components/parameters/SessionId" }
+      responses:
+        "200":
+          description: The .otio file
+          headers:
+            Content-Disposition: { schema: { type: string }, description: 'attachment; filename="<session_id>.otio"' }
+            X-IncuBrix-Timeline-Hash: { schema: { type: string }, description: timeline_hash of the exported timeline }
+            X-IncuBrix-Export-Provider: { schema: { type: string, enum: [opentimelineio, mock] }, description: Which exporter wrote the file }
+            X-IncuBrix-Export-Url: { schema: { type: string, format: uri }, description: Presigned S3 link to the same file }
+          content: { application/json: { schema: { type: object, description: "OpenTimelineIO Timeline.1 JSON" } } }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "503": { $ref: "#/components/responses/Error" }
   /api/v1/sessions/{session_id}/history:
     get:
       tags: [sessions]

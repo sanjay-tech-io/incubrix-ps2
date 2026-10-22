@@ -82,6 +82,10 @@ const base = z.object({
     VOICED_GAP_MAX_MS: z.coerce.number().int().min(100).max(10000).default(1200),
     LOW_CONFIDENCE_PERMILLE: z.coerce.number().int().min(0).max(1000).default(600),
 
+    // OpenTimelineIO export: http = services/otio (the OpenTimelineIO Python library), mock = hand-written OTIO JSON (tests, no service).
+    OTIO_PROVIDER: z.enum(["http", "mock"]).default("http"),
+    OTIO_URL: z.url().default("http://otio:8001"),
+
     // --- M3: render ---
     RENDER_PRESET: z.enum(["ultrafast", "superfast", "veryfast", "faster", "fast", "medium", "slow", "slower", "veryslow"]).default("veryfast"),
     RENDER_CRF: z.coerce.number().int().min(0).max(51).default(20),
