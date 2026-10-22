@@ -1,25 +1,30 @@
-# The cuts lie inside silences (84.4-90, 100.4-108, 115.4-130 s of the fixture), so they are exact and the lengths are whole numbers.
+# Original instructions restored (M5b). Lengths are worked out by hand from the fixture (docs/REQUIREMENTS.md Outstanding: "cuts snap to nearby silence (no clipped words)"):
+# 0:15.000 is inside the word "fast." (14.8-15.2), the nearest silence is 15.2, so the first cut is 10.0-15.2 = 5.2 s (194.8 s).
+# Edited 0:30-0:35 is source 35.2-40.2, both inside silences (33.8-36.0, 39.2-42.0): exactly 5.0 s. Edited 1:00-1:05 (after only the first cut) is
+# source 65.2-70.2, inside "Now" (65.0-65.4) and "projects." (70.0-70.4): the cut becomes 65.0-70.4 = 5.4 s.
 brief: "Undo/redo: 1 instruction = 1 undo; a new edit clears redo"
 fixture: single
 steps:
-  - say: "cut 2:00-2:05"
+  - say: "cut 0:10-0:15"
     expect: applied
-    expect_duration_s: 195
-  - say: "cut 1:42-1:46"
+    expect_duration_s: 194.8
+    expect_warning: "nearest silence"
+  - say: "cut 0:30-0:35"
     expect: applied
-    expect_duration_s: 191
+    expect_duration_s: 189.8
   - say: "undo"
     expect: applied
-    expect_duration_s: 195
+    expect_duration_s: 194.8
   - say: "redo"
     expect: applied
-    expect_duration_s: 191
+    expect_duration_s: 189.8
   - say: "undo"
     expect: applied
-    expect_duration_s: 195
-  - say: "cut 1:26-1:29"
+    expect_duration_s: 194.8
+  - say: "cut 1:00-1:05"
     expect: applied
-    expect_duration_s: 192
+    expect_duration_s: 189.4
+    expect_warning: "nearest silence"
   - say: "redo"
     expect: rejected
     expect_text: "nothing to redo"

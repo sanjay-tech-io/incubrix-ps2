@@ -1,20 +1,23 @@
+# Original instructions restored (M5b). Hand-worked lengths: cut 1 = 10.0-15.2 (the end is inside "fast.", snapped to 15.2) = 5.2 s -> 194.8; edited 0:20-0:25 is source 25.2-30.2
+# (25.2 is the boundary between the touching words "only" and "a", 30.2 is inside the silence 29.2-31.0) = 5.0 s -> 189.8; edited 0:30-0:35 is source 40.2-45.2 (silences 39.2-42.0 and 44.0-48.0)
+# = 5.0 s -> 184.8. Undoing the second cut (edit 3; edit 1 is the music) gives back 5.0 s -> 189.8.
 brief: "Hard case: 'undo the second-to-last cut but keep the music'"
 fixture: single
 steps:
   - say: "add background music"
     expect: applied
-  - say: "cut 2:15-2:19"
+  - say: "cut 0:10-0:15"
     expect: applied
-    expect_duration_s: 196
-  - say: "cut 2:00-2:05"
+    expect_duration_s: 194.8
+  - say: "cut 0:20-0:25"
     expect: applied
-    expect_duration_s: 191
-  - say: "cut 1:42-1:46"
+    expect_duration_s: 189.8
+  - say: "cut 0:30-0:35"
     expect: applied
-    expect_duration_s: 187
+    expect_duration_s: 184.8
   - say: "undo the second-to-last cut but keep the music"
     expect: applied
-    expect_duration_s: 192
+    expect_duration_s: 189.8
     expect_text: "music"
   - render: true
     expect: succeeded

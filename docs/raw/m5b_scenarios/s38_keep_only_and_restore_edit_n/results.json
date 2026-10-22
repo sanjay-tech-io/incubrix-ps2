@@ -1,0 +1,135 @@
+{
+  "name": "s38_keep_only_and_restore_edit_n",
+  "video": "/tmp/incubrix-test-clips/clip_200s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_cc1ad5145cb24b21897c",
+  "session_id": "ses_eeb412d51ced4d31b640",
+  "intake": {
+    "job_id": "job_c22737065ee241e7a044",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 399
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "cut 0:05-0:10",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_aa7243233e2c",
+              "offsetUs": 600000
+            },
+            "end": {
+              "atom": "a_acba4c5c3674",
+              "offsetUs": 800000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:15.000 (-0:05.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "acfbdd30a1b27e8576773c3afa2e501516ecea72d7e7febd316f70aa20f9322d",
+      "duration_s": 195,
+      "ms": 7,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "keep only 0:30-1:30",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "keep_only",
+          "span": {
+            "start": {
+              "atom": "a_0920b55a6c5e",
+              "offsetUs": 1200000
+            },
+            "end": {
+              "atom": "a_2f56379b7968",
+              "offsetUs": 3000000
+            }
+          }
+        }
+      ],
+      "summary": "Length 3:15.000 -> 1:00.000 (-2:15.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "ae94242baa11cb6380d82c97ecd107a5bf54c8e99010b10e241c7de5d6cdf822",
+      "duration_s": 60,
+      "ms": 9,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "restore edit 1",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "restore",
+          "targetGroup": 1
+        }
+      ],
+      "summary": "Length 1:00.000 -> 1:00.000 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "Nothing changed: the timeline is identical to before (this edit was already in effect)."
+      ],
+      "timeline_hash": "ae94242baa11cb6380d82c97ecd107a5bf54c8e99010b10e241c7de5d6cdf822",
+      "duration_s": 60,
+      "ms": 9,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "ae94242baa11cb6380d82c97ecd107a5bf54c8e99010b10e241c7de5d6cdf822",
+    "duration_s": 60
+  },
+  "error": null
+}

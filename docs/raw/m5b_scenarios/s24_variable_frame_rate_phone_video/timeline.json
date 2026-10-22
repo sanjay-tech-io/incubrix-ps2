@@ -1,0 +1,94 @@
+{
+  "session_id": "ses_b6c68f49eb99445c9ddf",
+  "timeline": {
+    "sourceSha256": "fcfa5cd25416ef184e39900e5ddc995dca0bae23a0b9210f45d03a7fd415041d",
+    "segments": [
+      {
+        "id": "seg_0",
+        "span": {
+          "start": {
+            "atom": "a_4df0271e561e",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_d3dc028ef8fc",
+            "offsetUs": 600000
+          }
+        }
+      },
+      {
+        "id": "seg_1",
+        "span": {
+          "start": {
+            "atom": "a_4bb00c6af5c5",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_e7c8e5fc60bf",
+            "offsetUs": 800000
+          }
+        }
+      }
+    ],
+    "speedRegions": [
+      {
+        "span": {
+          "start": {
+            "atom": "a_a88c59350f19",
+            "offsetUs": 1800000
+          },
+          "end": {
+            "atom": "a_11fcb4b3724a",
+            "offsetUs": 0
+          }
+        },
+        "rate": {
+          "num": 2,
+          "den": 1
+        }
+      }
+    ],
+    "effects": [
+      {
+        "id": "fx_0_0",
+        "range": {
+          "from": "a_a07c2b30cb7d",
+          "to": "a_250049af9ccd"
+        },
+        "params": {
+          "kind": "caption",
+          "text": "Hi",
+          "style": {
+            "color": "#ffffff",
+            "sizePt": 32,
+            "bold": true
+          },
+          "position": "bottom"
+        },
+        "state": "active",
+        "partial": false,
+        "fragmented": false,
+        "createdInGroup": 1
+      }
+    ],
+    "protectedPauses": [],
+    "music": null,
+    "autoCaption": null,
+    "durationUs": 24920000
+  },
+  "timeline_hash": "d073c2c26fa9a9ff358c23c39a535e8f46a7900fc9d5c02cf26ece4ab43ef821",
+  "duration_s": 24.92,
+  "effects": [
+    {
+      "id": "fx_0_0",
+      "kind": "caption",
+      "text": "Hi",
+      "state": "active",
+      "partial": false,
+      "fragmented": false,
+      "start_s": 3.2,
+      "end_s": 4.4,
+      "start": "0:03.200"
+    }
+  ]
+}

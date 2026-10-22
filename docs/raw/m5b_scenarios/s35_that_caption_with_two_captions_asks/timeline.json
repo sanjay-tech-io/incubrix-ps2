@@ -1,0 +1,96 @@
+{
+  "session_id": "ses_e7a83e466d3e42089f03",
+  "timeline": {
+    "sourceSha256": "9dcb92ec2118de4d2cf88d564cd3bf9375959917d20379bc147b01e946006e5c",
+    "segments": [
+      {
+        "id": "seg_0",
+        "span": {
+          "start": {
+            "atom": "a_02c55e8ba265",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_953d7bd1f5f8",
+            "offsetUs": 7600000
+          }
+        }
+      }
+    ],
+    "speedRegions": [],
+    "effects": [
+      {
+        "id": "fx_0_0",
+        "range": {
+          "from": "a_654a07ac33cd",
+          "to": "a_3297bfffa6fd"
+        },
+        "params": {
+          "kind": "caption",
+          "text": "One",
+          "style": {
+            "color": "#ffffff",
+            "sizePt": 32,
+            "bold": true
+          },
+          "position": "bottom"
+        },
+        "state": "active",
+        "partial": false,
+        "fragmented": false,
+        "createdInGroup": 1
+      },
+      {
+        "id": "fx_1_0",
+        "range": {
+          "from": "a_7e29ded50daf",
+          "to": "a_c2ef3e8b8fc9"
+        },
+        "params": {
+          "kind": "caption",
+          "text": "Two",
+          "style": {
+            "color": "#ff0000",
+            "sizePt": 32,
+            "bold": true
+          },
+          "position": "bottom"
+        },
+        "state": "active",
+        "partial": false,
+        "fragmented": false,
+        "createdInGroup": 2
+      }
+    ],
+    "protectedPauses": [],
+    "music": null,
+    "autoCaption": null,
+    "durationUs": 200000000
+  },
+  "timeline_hash": "4b209520da8c4ed3bee1af18dd338e89ef2e822a9ed99bf59d2883d956e6d873",
+  "duration_s": 200,
+  "effects": [
+    {
+      "id": "fx_0_0",
+      "kind": "caption",
+      "text": "One",
+      "state": "active",
+      "partial": false,
+      "fragmented": false,
+      "start_s": 42,
+      "end_s": 44,
+      "start": "0:42.000"
+    },
+    {
+      "id": "fx_1_0",
+      "kind": "caption",
+      "text": "Two",
+      "state": "active",
+      "partial": false,
+      "fragmented": false,
+      "start_s": 48,
+      "end_s": 50,
+      "start": "0:48.000"
+    }
+  ]
+}

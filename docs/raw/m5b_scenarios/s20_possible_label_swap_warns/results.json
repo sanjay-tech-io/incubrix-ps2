@@ -1,0 +1,108 @@
+{
+  "name": "s20_possible_label_swap_warns",
+  "video": "/tmp/incubrix-test-clips/clip_50s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_157590de8d054ee98e2f",
+  "session_id": "ses_eade5599128b495b86ee",
+  "intake": {
+    "job_id": "job_b615e2e88a3d4804922c",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "48 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "Some words overlap another speaker; edits touching them will warn.",
+      "10 word(s) may have the wrong speaker label (their voice is closer to another speaker); edits touching them will warn. Labels are never changed automatically.",
+      "2 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 310
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "cut 0:18-0:22",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_dae292d10fe2",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_e0f88fe94105",
+              "offsetUs": 50000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 0:50.000 -> 0:46.000 (-0:04.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "This edit touches words the transcript is unsure about: \"The\" (possible speaker-label swap), \"old\" (possible speaker-label swap), \"job\" (possible speaker-label swap), \"was\" (possible speaker-label swap), \"hard\" (possible speaker-label swap) and 5 more. Check the result."
+      ],
+      "timeline_hash": "070d39be96b5ab1563c2ed2f030e7f187b1a67713cc87c3a71625cb094f38b9a",
+      "duration_s": 46,
+      "ms": 7,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "cut 0:01-0:05",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_95273d1632e9",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_033c9f2b9238",
+              "offsetUs": 450000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 0:46.000 -> 0:42.000 (-0:04.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "ea91f1b7669bafa3df74a1250a073561e7f7d6b35d2a223ba5988467e5a4bc6e",
+      "duration_s": 42,
+      "ms": 7,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "ea91f1b7669bafa3df74a1250a073561e7f7d6b35d2a223ba5988467e5a4bc6e",
+    "duration_s": 42
+  },
+  "error": null
+}

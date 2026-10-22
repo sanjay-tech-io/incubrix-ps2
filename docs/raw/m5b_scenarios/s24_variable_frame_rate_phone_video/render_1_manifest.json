@@ -1,0 +1,112 @@
+{
+  "seed": null,
+  "render": {
+    "proxy": {
+      "fps": "25/1",
+      "colour": "none",
+      "sha256": "71ed8d7bac5df90a8174c624a2e17fa8629a23be9be351c3ddda8c3f89804abb",
+      "reasons": [
+        "variable frame rate source"
+      ],
+      "warnings": [
+        "variable frame rate source rendered through a constant-frame-rate H.264 proxy at 25/1 fps; frames may be duplicated or dropped to fit the grid"
+      ],
+      "created_by": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers",
+      "storage_key": "videos/vid_ef7b7271f14f474c91e0/proxy_cfr_25-1_v1.mp4",
+      "source_sha256": "fcfa5cd25416ef184e39900e5ddc995dca0bae23a0b9210f45d03a7fd415041d"
+    },
+    "job_id": "job_260d8b295a9d427f9046",
+    "output": {
+      "fps": "25/1",
+      "width": 160,
+      "height": 120,
+      "pixFmt": "yuv420p",
+      "seconds": 24.92,
+      "audioCodec": "aac",
+      "size_bytes": 258610,
+      "videoCodec": "h264",
+      "videoFrames": 623,
+      "audioDurationUs": 24920000,
+      "videoDurationUs": 24920000,
+      "formatDurationUs": 24920000
+    },
+    "pieces": 4,
+    "source": {
+      "video_id": "vid_ef7b7271f14f474c91e0",
+      "unchanged": true,
+      "sha256_before": "fcfa5cd25416ef184e39900e5ddc995dca0bae23a0b9210f45d03a7fd415041d",
+      "sha256_after_local": "fcfa5cd25416ef184e39900e5ddc995dca0bae23a0b9210f45d03a7fd415041d",
+      "sha256_after_stored": "fcfa5cd25416ef184e39900e5ddc995dca0bae23a0b9210f45d03a7fd415041d"
+    },
+    "session_id": "ses_b6c68f49eb99445c9ddf",
+    "timeline_hash": "d073c2c26fa9a9ff358c23c39a535e8f46a7900fc9d5c02cf26ece4ab43ef821",
+    "rendered_frames": 623,
+    "timeline_frames": 623,
+    "frame_difference": 0,
+    "ffmpeg_peak_rss_mb": 74,
+    "filter_script_sha256": "a5319d2bceb17d7b905b64bd534f9ffd39bc8b0784df8437ed7e9c3b7201498b",
+    "audio_minus_video_frames": 0,
+    "render_seconds_per_output_minute": 2.6
+  },
+  "rights": {
+    "software": {
+      "engine": "own code",
+      "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+      "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked"
+    },
+    "reference": "SOURCES.md",
+    "source_media": "not stated by the uploader"
+  },
+  "timings": {
+    "proxy_s": 0.641,
+    "total_s": 2.099,
+    "render_s": 1.42,
+    "upload_s": 0.012,
+    "verify_s": 0.009,
+    "fetch_original_s": 0.01
+  },
+  "settings": {
+    "crf": 20,
+    "fps": "25/1",
+    "audio": "aac 192k 48 kHz stereo",
+    "bleep": "1 kHz sine, level 0.25",
+    "preset": "veryfast",
+    "pix_fmt": "yuv420p",
+    "movflags": "+faststart",
+    "max_height": 0,
+    "caption_size": "sizePt relative to a 720-line frame"
+  },
+  "warnings": [
+    "Variable frame rate detected. Times are exact for the original's timestamps, but frame-accurate cuts need a constant-frame-rate proxy at 25/1 fps, which the renderer builds from the original (M3, not built yet).",
+    "33 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+    "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them.",
+    "video starts 120 ms after the audio in the original; the render keeps that offset.",
+    "variable frame rate source rendered through a constant-frame-rate H.264 proxy at 25/1 fps; frames may be duplicated or dropped to fit the grid"
+  ],
+  "providers": {
+    "font": "DejaVu Sans / DejaVu Sans Bold (Bitstream Vera + public-domain changes licence; commercial use allowed), see SOURCES.md",
+    "media": {
+      "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers"
+    },
+    "music": null,
+    "audio_codec": {
+      "name": "aac (ffmpeg native encoder)"
+    },
+    "video_codec": {
+      "name": "libx264",
+      "note": "H.264 (GPL libx264 inside the ffmpeg build; used as an external program, not linked)"
+    }
+  },
+  "ai_generated": {
+    "music": false,
+    "transcript_words": true,
+    "captions_text_is_user_text": false,
+    "input_media_marked_ai_generated": false
+  },
+  "cost_estimate": {
+    "usd": null,
+    "note": "No price per CPU second is configured, so no money figure is given.",
+    "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+    "cpu_seconds": 2.801
+  }
+}

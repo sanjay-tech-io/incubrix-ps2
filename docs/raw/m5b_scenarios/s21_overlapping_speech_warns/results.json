@@ -1,0 +1,68 @@
+{
+  "name": "s21_overlapping_speech_warns",
+  "video": "/tmp/incubrix-test-clips/clip_50s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_2ac1f157327b4ca28c56",
+  "session_id": "ses_defa192794ef458aa683",
+  "intake": {
+    "job_id": "job_2852e1f35b7049738f72",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "48 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "Some words overlap another speaker; edits touching them will warn.",
+      "10 word(s) may have the wrong speaker label (their voice is closer to another speaker); edits touching them will warn. Labels are never changed automatically.",
+      "2 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 300
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "cut 0:29-0:33",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_e02b1b1b51c4",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_89b8891cec26",
+              "offsetUs": 850000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 0:50.000 -> 0:46.000 (-0:04.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "This edit touches words the transcript is unsure about: \"software\" (overlapping speech). Check the result."
+      ],
+      "timeline_hash": "3d1583ea24afdb4f87e4f80004afe2685d703b2a3afad1dc59a965e110c0aac9",
+      "duration_s": 46,
+      "ms": 7,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "3d1583ea24afdb4f87e4f80004afe2685d703b2a3afad1dc59a965e110c0aac9",
+    "duration_s": 46
+  },
+  "error": null
+}

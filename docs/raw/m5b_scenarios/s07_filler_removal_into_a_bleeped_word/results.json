@@ -1,0 +1,130 @@
+{
+  "name": "s07_filler_removal_into_a_bleeped_word",
+  "video": "/tmp/incubrix-test-clips/clip_200s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_543ec0d79cc945feaf5f",
+  "session_id": "ses_3e6e25f5a9fe4c6fbfb9",
+  "intake": {
+    "job_id": "job_77de55e0f6f04ef9be34",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 549
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "bleep \"um\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "add_effect",
+          "effectId": "fx_0_0",
+          "range": {
+            "from": "a_d675eed8eb75",
+            "to": "a_d675eed8eb75"
+          },
+          "params": {
+            "kind": "bleep"
+          }
+        },
+        {
+          "type": "add_effect",
+          "effectId": "fx_1_0",
+          "range": {
+            "from": "a_604ac5c09c9e",
+            "to": "a_604ac5c09c9e"
+          },
+          "params": {
+            "kind": "bleep"
+          }
+        },
+        {
+          "type": "add_effect",
+          "effectId": "fx_2_0",
+          "range": {
+            "from": "a_c592469b8359",
+            "to": "a_c592469b8359"
+          },
+          "params": {
+            "kind": "bleep"
+          }
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:20.000 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "\"um\" occurs 3 times; all of them are bleeped."
+      ],
+      "timeline_hash": "be83211308050f29e8046bd62a003c90b56efee5fe752870b26574d889b6ae42",
+      "duration_s": 200,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "remove filler words",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "reason": "filler",
+          "span": {
+            "start": {
+              "atom": "a_204cd855fbe2",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_a90b16947e44",
+              "offsetUs": 0
+            }
+          }
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:19.600 (-0:00.400). bleep on \"Um\" moved from 1:00.000 to 0:59.600. bleep on \"Um\" moved from 2:50.000 to 2:49.600. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "Kept the filler \"Um\" at 0:06.000: it is inside a bleep you added, so it was not removed.",
+        "Kept the filler \"Um\" at 1:00.000: it is inside a bleep you added, so it was not removed.",
+        "Kept the filler \"Um\" at 2:50.000: it is inside a bleep you added, so it was not removed.",
+        "4 possible untranscribed filler(s) were NOT cut (the speech-to-text dropped them, or they are breaths, laughs or coughs): 0:00.000-0:00.940 (0.94 s, 96.2 dB vs speech, confidence 20%); 0:01.040-0:02.000 (0.96 s, 90.1 dB vs speech, confidence 20%); 0:04.400-0:05.100 (0.70 s, 94.9 dB vs speech, confidence 20%); 0:05.480-0:06.000 (0.52 s, 86.7 dB vs speech, confidence 5%). Say \"remove the possible fillers\" to choose."
+      ],
+      "timeline_hash": "bb5f2c80207c7ab1032298d178ac1bc3d535b81c31959d212c55697c6749b670",
+      "duration_s": 199.6,
+      "ms": 14,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "bb5f2c80207c7ab1032298d178ac1bc3d535b81c31959d212c55697c6749b670",
+    "duration_s": 199.6
+  },
+  "error": null
+}

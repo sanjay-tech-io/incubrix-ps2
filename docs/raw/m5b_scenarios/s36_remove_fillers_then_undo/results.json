@@ -1,0 +1,133 @@
+{
+  "name": "s36_remove_fillers_then_undo",
+  "video": "/tmp/incubrix-test-clips/clip_200s_speech_cfr_25.mp4",
+  "passed": true,
+  "video_id": "vid_a8206d0b19ae45ae8c31",
+  "session_id": "ses_adabece0e7d64837b156",
+  "intake": {
+    "job_id": "job_7e62ec72389540599ffd",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "157 word(s) lie completely inside a detected silence (possibly invented by the speech-to-text); they were kept unchanged.",
+      "4 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 373
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "remove filler words",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "reason": "filler",
+          "span": {
+            "start": {
+              "atom": "a_d675eed8eb75",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_29abef47b314",
+              "offsetUs": 0
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "filler",
+          "span": {
+            "start": {
+              "atom": "a_204cd855fbe2",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_a90b16947e44",
+              "offsetUs": 0
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "filler",
+          "span": {
+            "start": {
+              "atom": "a_604ac5c09c9e",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_c8b1564b71c4",
+              "offsetUs": 0
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "filler",
+          "span": {
+            "start": {
+              "atom": "a_c592469b8359",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_5d3c99d6f18f",
+              "offsetUs": 0
+            }
+          }
+        }
+      ],
+      "summary": "Length 3:20.000 -> 3:18.400 (-0:01.600). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "4 possible untranscribed filler(s) were NOT cut (the speech-to-text dropped them, or they are breaths, laughs or coughs): 0:00.000-0:00.940 (0.94 s, 96.2 dB vs speech, confidence 20%); 0:01.040-0:02.000 (0.96 s, 90.1 dB vs speech, confidence 20%); 0:04.400-0:05.100 (0.70 s, 94.9 dB vs speech, confidence 20%); 0:05.480-0:06.000 (0.52 s, 86.7 dB vs speech, confidence 5%). Say \"remove the possible fillers\" to choose."
+      ],
+      "timeline_hash": "f18dd7acbb812f81824dfca0e2e76df375c32060e35f9ebe835090be7b62b807",
+      "duration_s": 198.4,
+      "ms": 11,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "undo",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [],
+      "summary": "Undid edit 1. Length 3:18.400 -> 3:20.000 (+0:01.600). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "878114337fcc4a977a2e3259b2b866ca84c356e4555ddc4dbe81b13250027f4c",
+      "duration_s": 200,
+      "ms": 8,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "878114337fcc4a977a2e3259b2b866ca84c356e4555ddc4dbe81b13250027f4c",
+    "duration_s": 200
+  },
+  "error": null
+}

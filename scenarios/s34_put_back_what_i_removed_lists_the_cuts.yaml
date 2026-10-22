@@ -1,15 +1,18 @@
+# Original instructions restored (M5b). Lengths by hand: cut 1 = 5.2 s (194.8), cut 2 = edited 0:30-0:35 = source 35.2-40.2 inside silences = 5.0 s (189.8). The options are listed
+# in edit order, so "the first one" puts back edit 1 (+5.2 s) -> 195.0 (only the 5.0 s cut remains).
 brief: "Advanced: 'put back what I removed' with two cuts asks which"
 fixture: single
 steps:
-  - say: "cut 1:42-1:46"
+  - say: "cut 0:10-0:15"
     expect: applied
-    expect_duration_s: 196
-  - say: "cut 1:26-1:29"
+    expect_duration_s: 194.8
+  - say: "cut 0:30-0:35"
     expect: applied
-    expect_duration_s: 193
+    expect_duration_s: 189.8
   - say: "put back what I removed"
     expect: needs_clarification
     expect_options: 2
     expect_hash_unchanged: true
   - answer: "the first one"
     expect: applied
+    expect_duration_s: 195
