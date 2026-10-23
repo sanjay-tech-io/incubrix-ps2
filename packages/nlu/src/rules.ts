@@ -476,7 +476,7 @@ function speakerNames(ctx: EngineContext): Map<string, string> {
 
 function handleSpeakerTopic(env: Env, who: string, topic: string): Parsed {
   const names = speakerNames(env.ctx);
-  if (names.size <= 1) return reject(env, "Only one speaker was found in this video, so I cannot tell a guest from a host. Say what to remove by time, topic or phrase.");
+  if (names.size <= 1) return reject(env, "Only one speaker was found in this video, so I cannot tell a guest from a host. If the video really has two or more people, the diarization may have merged their voices: upload it again with the num_speakers hint (for example num_speakers=2 in the upload form or in the JSON for a URL). Or say what to remove by time, topic or phrase.");
   const labelOf = (name: string): string | null => [...names.entries()].find(([, n]) => n.toLowerCase() === name.toLowerCase())?.[0] ?? null;
   const sample = (label: string): string => {
     const first = buildPassages(env.ctx.index.atoms).find((p) => p.speaker === label);

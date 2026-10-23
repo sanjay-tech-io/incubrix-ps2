@@ -58,6 +58,8 @@ const base = z.object({
     // true only behind a reverse proxy that overwrites X-Forwarded-For (Caddy does): the rate limit then sees the real client IP.
     TRUST_PROXY: bool.default(false),
     MAX_UPLOAD_MB: z.coerce.number().int().min(1).max(20000).default(2048),
+    // Total time a video URL download may take (seconds). A 2 GB file on a slow link needs far more than the old fixed 10 minutes.
+    DOWNLOAD_TIMEOUT_S: z.coerce.number().int().min(10).max(86400).default(3600),
     // Only for tests: allow video URLs that point to loopback/private addresses.
     URL_ALLOW_PRIVATE: bool.default(false),
     // A running job with no progress update for this long belonged to a crashed worker and is re-queued.

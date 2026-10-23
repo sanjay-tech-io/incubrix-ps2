@@ -130,6 +130,11 @@ describe("'remove everything the guest says about <topic>'", () => {
     const one = driver(ctx).say("remove everything the guest says about pricing");
     expect(one.answer.status).toBe("rejected");
     expect(one.answer.reason).toMatch(/only one speaker/i);
+    // The answer must not stop at "can't": it says the voices may have been merged and names the hint to use on upload.
+    expect(one.answer.reason).toMatch(/num_speakers/);
+    expect(one.answer.reason).toMatch(/merged|may have|could be/i);
+    expect(one.answer.reason).toMatch(/upload (it|the video) again/i);
+    expect(one.answer.reason).toMatch(/time, topic or phrase/i);
     const two = driver(twoSpeakers());
     const q = two.say("remove everything speaker B says about the old job");
     expect(q.answer.question).not.toMatch(/assum/i);

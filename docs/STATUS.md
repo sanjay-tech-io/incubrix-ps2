@@ -1,6 +1,6 @@
 # Project status (project memory)
 
-Updated at the end of every milestone. Last update: M5c real-footage run (2026-10-23), M5 (2026-10-22), M6a deploy (2026-10-22), M4 (2026-10-21), on top of M3, M2, the infra workstream and M1c. Everything below was run, not assumed; "not verified" means exactly that.
+Updated at the end of every milestone. Last update: M5d fixes (2026-10-23), M5c real-footage run (2026-10-23), M5 (2026-10-22), M6a deploy (2026-10-22), M4 (2026-10-21), on top of M3, M2, the infra workstream and M1c. Everything below was run, not assumed; "not verified" means exactly that.
 
 ## Done and verified
 | Item | Proof (command) |
@@ -120,6 +120,19 @@ M5 NOT done or not verified: see REVIEW_M5.md section 7. **Live demo redeployed 
 
 M5c NOT verified: any real two-person edit (none exists); filler ground truth; diarization on real speech (fails); audio sync by ear; the worked-example run through the public URL (the 200 MB upload hit `fetch failed`, cause not confirmed; run over the Docker network instead); full-resolution frame checks before/after the cut (720p only). Side effect to know: an `.env` change plus `docker compose up -d worker` recreated api, postgres, s3 and asr (about a minute of downtime of the live demo at ~16:35 UTC); `RENDER_MAX_HEIGHT` and the diarization threshold are back to their defaults (0 / 0.5).
 
+### M5d: diarization default, public 2 GB uploads, token rotation (details: docs/TEST_MEDIA.md "M5d update", docs/DEPLOY.md last section, raw `docs/raw/m5d_*`)
+| Item | Result | Proof |
+|---|---|---|
+| Diarization default from a sweep over ALL clips (11 thresholds x 6 clips, real diarizer) | **no threshold is right on all 6**; 0.25-0.30 right on 5 of 6; default changed 0.5 -> **0.3** (0.5 was right on 2 of 6); range is two grid points wide, not robust | `docs/raw/m5d_diarization_sweep.jsonl`, `..._table.md`, `scripts/sweep_table.mjs`, `docs/raw/m5d_turn_embeddings.json` |
+| `num_speakers` hint made reliable; answer suggests it when one speaker is found for a guest/host request | hint fallback (`asr/cluster.py`, 8 tests): dialogue clip 142/142 words right with and without the hint (was 93/142, 1 speaker); the answer names the hint (nlu test) | `test-pack/real/two_voice/asr_after_*.json`, `test-pack/real/m5d/` |
+| Re-run 13b and NASA through the public URL | 13b PASS (hint), 13d PASS (no hint); NASA with hint **still FAILS** (one effective speaker), NASA without hint asks "Speaker A, B or C" (found 3, expected 2, guest = C) | `test-pack/real/m5d/` |
+| Public upload: cause of "fetch failed after 6 s" | Caddy cap 200 MB (decimal) vs a 200.4 MB file; the reject raced the client's write (1 in 6 `ECONNRESET`); fixed: cap 2048 MiB in Caddy + API, early 413 on a declared oversize, runner shows the cause | `docs/raw/m5d_upload_before.txt`, `m5d_upload_after.txt` |
+| Proof through https://34-93-140-79.sslip.io | `test_single.mp4` 6/6 Node-fetch uploads 202; 2.2 GiB rejected 413 `FILE_TOO_LARGE` in 0.1 s 7/7; 2,000,000,000 bytes accepted in 352 s (> 300 s) with identical sha256 | `docs/raw/m5d_upload_2gb.txt`, `m5d_upload_over_cap.txt` |
+| New defect found and fixed: Node fetch cuts any request waiting more than 300 s (`UND_ERR_HEADERS_TIMEOUT`), so the ASR call failed on long/busy transcriptions | ASR client now `node:http`; 310 s answer received; `DOWNLOAD_TIMEOUT_S` for URL downloads (was a fixed 10 min) | `docs/raw/m5d_fetch_headers_timeout.txt`, `m5d_asr_client_310s.txt`, `apps/worker/test/{asr,download}.test.ts` |
+| API token rotation | had never been rotated; done; old token 401, new token passes, no token 401; values not in git or logs | `docs/raw/m5d_token_rotation.txt` |
+
+M5d NOT verified: URL intake of a large file through the public URL; the 2 GB ingest after the ASR-client fix (the 2 GB file's ingest failed with the 5-minute fetch limit before the fix, and its storage object was deleted); NASA host/guest separation with a hint; the dialogue results are on a synthetic clip; the batch was not re-run after the threshold change; the database password (shown once in my terminal output) is not rotated.
+
 ## Not verified (not built or not run)
 M3 leftovers: see REVIEW_M3.md section 9. The M2 list below is partly outdated: render, batch runner and the worker are built now.
 M2 leftovers: render (501 stub), the real LLM provider (interface only), reorder/mute/bleep/captions by voice-of-speaker ("what the guest says"), music by text, batch runner CLI, deploy, a worker crash mid-job end to end (stale re-queue is tested at store level only), in-memory rate limit (one process only), API_TOKEN is unset in the default compose (open API), DNS-rebinding hardening, ASR service has no auth (internal network only). Older list follows.
@@ -132,7 +145,7 @@ Full list: `CLAUDE.md` section "Decisions" and `docs/DESIGN.md`. Headlines: Node
 
 ## Open items
 - ~~Record the single-speaker test video~~ superseded: no new recordings; `test_single.mp4` is used and the differences are in docs/TEST_MEDIA.md.
-- Diarization default (threshold 0.5) finds 1 speaker on every two-speaker clip tried; the hint is unreliable (docs/TEST_MEDIA.md section 3). Decide what to do before any two-speaker claim.
+- Diarization: default is now 0.3 (best of a sweep, right on 5 of 6 clips, narrow range); on real two-person speech it still over-splits (NASA: 3 for 2) and the hint does not help there (docs/TEST_MEDIA.md, M5d update). Any two-speaker claim needs a real two-person recording.
 - Decide how to resolve "the intro"/"that caption" style references (parser/history lookup, M2/M4).
 - Boundaries between two touching words cannot be frame-snapped; check the drift once M3 can render (REVIEW_M1B doubt 2).
 - Install/verify Docker on the GCP VM before M2.

@@ -12,7 +12,7 @@ Words come back with integer microseconds, integer permille confidence and, when
 | `DIARIZATION_PROVIDER` | `none` in the service, `mock` in `.env.example` | `sherpa` (real) / `mock` / `none` |
 | `DIARIZATION_MODEL_DIR` | `/models/diarization` | where the two ONNX files live |
 | `DIARIZATION_NUM_SPEAKERS` | `-1` | fixed speaker count, `-1` = clustering decides |
-| `DIARIZATION_CLUSTER_THRESHOLD` | `0.5` | clustering distance threshold when the count is `-1` |
+| `DIARIZATION_CLUSTER_THRESHOLD` | `0.3` | clustering cosine-distance threshold when no speaker count is given (sweep of 11 values over 6 clips: docs/TEST_MEDIA.md section 3) |
 | `DIARIZATION_UNCERTAIN_BELOW` | `0.6` | `speaker_uncertain` when the winning speaker covers less than this fraction of the word |
 | `DIARIZATION_OVERLAP_MIN_FRACTION` | `0.2` | `overlaps_speech` when a second speaker covers at least this fraction of the word |
 

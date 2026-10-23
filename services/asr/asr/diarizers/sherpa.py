@@ -4,10 +4,12 @@ from typing import Optional
 import time
 
 from asr.audio import decode_mono_16k
+from asr.cluster import apply_hint
 from asr.diarize import DiarizationSettings, Turn
 
 SEGMENTATION_MODEL = "sherpa-onnx-pyannote-segmentation-3-0/model.onnx"  # pyannote segmentation-3.0, ONNX export
 EMBEDDING_MODEL = "wespeaker_en_voxceleb_resnet34.onnx"  # WeSpeaker ResNet34
+HINT_MIN_TURN_US = 1_000_000  # turns at least this long get a voice embedding for the hint fallback (asr/cluster.py)
 
 
 class SherpaDiarizer:
@@ -26,6 +28,7 @@ class SherpaDiarizer:
         self._sds: dict = {}  # one diarizer per requested speaker count (the count is part of its config)
         self.load_s = None
         self.last_timings: dict = {}
+        self.last_hint_fallback = False  # True when the last call had to re-cluster to honour the num_speakers hint
 
     def _load(self, num_speakers: int):
         if num_speakers not in self._sds:
@@ -60,7 +63,12 @@ class SherpaDiarizer:
             "process_s": round(time.perf_counter() - t0, 3),
             "peak_rss_mb": round(resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1024, 1),
         }
-        return [Turn(round(r.start * 1_000_000), round(r.end * 1_000_000), f"SPEAKER_{r.speaker:02d}") for r in result]
+        turns = [Turn(round(r.start * 1_000_000), round(r.end * 1_000_000), f"SPEAKER_{r.speaker:02d}") for r in result]
+        # The library sometimes ignores a requested count (the scripted dialogue clip came back with one speaker for 2). A hint of
+        # 2+ speakers that comes back with fewer labels is honoured by clustering the turn embeddings ourselves (asr/cluster.py).
+        hint = num_speakers if num_speakers is not None else (self.settings.num_speakers if self.settings.num_speakers >= 2 else None)
+        turns, self.last_hint_fallback = apply_hint(turns, hint, lambda ts: self.turn_embeddings(audio, ts, HINT_MIN_TURN_US))
+        return turns
 
     def _extractor(self):
         if getattr(self, "_emb", None) is None:

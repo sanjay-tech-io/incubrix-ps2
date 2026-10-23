@@ -90,7 +90,15 @@ class Http {
     // 429 RATE_LIMITED is retryable by definition: wait Retry-After (default 5 s) and send the same request again.
     let r: Response;
     for (let attempt = 0; ; attempt++) {
-      r = await fetch(this.base + path, { method, headers: h, ...(payload !== undefined ? { body: payload } : {}) });
+      try {
+        r = await fetch(this.base + path, { method, headers: h, ...(payload !== undefined ? { body: payload } : {}) });
+      } catch (e) {
+        // Node's fetch only says "fetch failed"; the reason (ECONNRESET, ECONNREFUSED, ...) is in the cause. A reset while a big
+        // body is being written is what a reverse proxy does when the file is over its upload limit (found on the public demo).
+        const code = (e as { cause?: { code?: string } }).cause?.code;
+        const hint = code === "ECONNRESET" && payload instanceof FormData ? " (the server closed the connection while the file was being sent: usually the upload limit, MAX_UPLOAD_MB)" : "";
+        throw new Error(`${method} ${path}: ${(e as Error).message}${code ? ` [${code}]` : ""}${hint}`);
+      }
       if (r.status !== 429 || attempt >= 20) break;
       await sleep(Number(r.headers.get("retry-after") ?? 5) * 1000 + 100);
     }

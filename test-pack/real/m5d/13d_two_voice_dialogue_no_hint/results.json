@@ -1,0 +1,55 @@
+{
+  "name": "13d_two_voice_dialogue_no_hint",
+  "video": "media/two_voice_dialogue.mp4",
+  "passed": true,
+  "video_id": "vid_1f0ab9522e0d45d388f6",
+  "session_id": "ses_5501f9c0e1d04056acca",
+  "intake": {
+    "job_id": "job_e5aae23a86ee4d82a2df",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "1 word(s) had no length after cleaning and were dropped.",
+      "2 speakers were detected; if that is wrong, upload again with the num_speakers hint.",
+      "20 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 34449
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "remove everything the guest says about their old job",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "Assuming Speaker A (the first speaker I heard) is the host and Speaker B is the guest. Speaker B talks about \"old job\" in 4 lines. The question just before it (the lead-in) is \"So tell me about your old job.\" at 0:07.293. Should I remove the lead-in too? (Nothing is cut until you choose.)",
+      "options": [
+        "only the guest's (Speaker B) 4 lines about \"old job\" (0:10.308, 0:28.051, 0:37.127, 0:46.780); keep the lead-in",
+        "also the lead-in question \"So tell me about your old job.\" at 0:07.293"
+      ],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": 4,
+      "time_policy": "current",
+      "warnings": [
+        "3 word(s) in these lines have an uncertain speaker label (the diarization may have swapped the speakers there); check Speaker B's lines before relying on this."
+      ],
+      "timeline_hash": "c86a58844abc579592d10c784fd04413cae0b3e80421d2708f2f1048d53b1ec7",
+      "duration_s": 58.2,
+      "ms": 30,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "c86a58844abc579592d10c784fd04413cae0b3e80421d2708f2f1048d53b1ec7",
+    "duration_s": 58.2
+  },
+  "error": null
+}

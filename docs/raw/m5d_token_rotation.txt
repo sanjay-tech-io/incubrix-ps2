@@ -1,0 +1,11 @@
+# 2026-10-23T17:22:24Z API_TOKEN rotation proof (HTTP codes only; tokens never printed)
+BEFORE rotation is live: old token  -> 404  (404 = passed auth, job does not exist)
+BEFORE: no token -> 401
+AFTER rotation (api recreated 17:28Z): old token -> 401
+AFTER: new token -> 404  (404 = passed auth)
+AFTER: no token  -> 401
+AFTER: wrong token -> 401
+AFTER: old token, dotted host -> 401
+/ready (no token needed) -> 200
+worker still sees a valid config: healthy
+Old token value is only in a 0600 scratch file outside the repo; new one only in .env (mode 600); neither appears in this file or in git (checked below).

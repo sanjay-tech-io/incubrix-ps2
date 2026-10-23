@@ -1,4 +1,39 @@
+import { request as httpRequest } from "node:http";
+import { request as httpsRequest } from "node:https";
 import { ApiError } from "@incubrix/errors";
+
+/**
+ * POST a multipart form and wait as long as timeoutMs. Why not fetch: Node's fetch (undici) gives up on any request whose response
+ * headers take longer than 5 minutes (UND_ERR_HEADERS_TIMEOUT) whatever the abort signal says, and the ASR service only answers
+ * when the whole transcription is done. Measured: docs/raw/m5d_fetch_headers_timeout.txt (a 310 s answer failed after 301 s).
+ * It cost a real 2 GB ingest on the public demo its transcription when the VM was busy.
+ */
+async function postForm(url: string, form: FormData, timeoutMs: number): Promise<{ status: number; text: string }> {
+  const encoded = new Response(form); // serialises the multipart body and picks the boundary
+  const body = Buffer.from(await encoded.arrayBuffer());
+  const contentType = encoded.headers.get("content-type") ?? "multipart/form-data";
+  const u = new URL(url);
+  return new Promise((resolve, reject) => {
+    const req = (u.protocol === "https:" ? httpsRequest : httpRequest)(u, { method: "POST", headers: { "content-type": contentType, "content-length": body.length } }, (res) => {
+      const chunks: Buffer[] = [];
+      res.on("data", (c: Buffer) => chunks.push(c));
+      res.on("end", () => {
+        clearTimeout(timer);
+        resolve({ status: res.statusCode ?? 0, text: Buffer.concat(chunks).toString("utf8") });
+      });
+      res.on("error", (e) => {
+        clearTimeout(timer);
+        reject(e);
+      });
+    });
+    const timer = setTimeout(() => req.destroy(new Error(`timed out after ${Math.round(timeoutMs / 1000)} s (ASR_TIMEOUT_S)`)), timeoutMs);
+    req.on("error", (e) => {
+      clearTimeout(timer);
+      reject(e);
+    });
+    req.end(body);
+  });
+}
 
 /** One word as the ASR service returns it (integer microseconds and permille; see services/asr/asr/schema.py). */
 export interface AsrWord {
@@ -51,14 +86,14 @@ export class HttpAsrClient implements AsrClient {
     form.append("file", new Blob([wav as Uint8Array<ArrayBuffer>], { type: "audio/wav" }), "audio.wav");
     const q = new URLSearchParams({ diarize: this.diarizationProvider === "none" ? "false" : "true" });
     if (opts.numSpeakers !== null) q.set("num_speakers", String(opts.numSpeakers));
-    let res: Response;
+    let res: { status: number; text: string };
     try {
-      res = await fetch(`${this.url}/transcribe?${q}`, { method: "POST", body: form, signal: AbortSignal.timeout(this.timeoutMs) });
+      res = await postForm(`${this.url}/transcribe?${q}`, form, this.timeoutMs);
     } catch (e) {
       throw new ApiError("ASR_UNAVAILABLE", `The speech-to-text service did not answer: ${(e as Error).message}`);
     }
-    if (!res.ok) throw new ApiError("ASR_UNAVAILABLE", `The speech-to-text service answered HTTP ${res.status}`, { body: (await res.text()).slice(0, 500) });
-    const t = (await res.json()) as { adapter: string; model: string; words: AsrWord[]; settings?: { diarization?: { speakers_found?: number } }; timings?: Record<string, unknown> };
+    if (res.status < 200 || res.status >= 300) throw new ApiError("ASR_UNAVAILABLE", `The speech-to-text service answered HTTP ${res.status}`, { body: res.text.slice(0, 500) });
+    const t = JSON.parse(res.text) as { adapter: string; model: string; words: AsrWord[]; settings?: { diarization?: { speakers_found?: number } }; timings?: Record<string, unknown> };
     const timings = (t.timings ?? {}) as Record<string, unknown> & { diarization?: Record<string, unknown> };
     const num = (v: unknown): number => (typeof v === "number" ? v : 0);
     return {

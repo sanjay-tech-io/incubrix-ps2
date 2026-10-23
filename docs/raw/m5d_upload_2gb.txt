@@ -1,0 +1,7 @@
+# 2026-10-23T17:30:02Z 2,000,000,000-byte upload (test_single.mp4 + padding) through the PUBLIC URL, throttled to 6 MB/s so it runs longer than 300 s (Node's default http request timeout)
+local sha256: 1ccf33ae82d47959842ef17223d2ed839d3ebcc1c4384b6dd811e95a36592d9f
+http=202 time=352.471202s sent_bytes=2000000306
+{"video_id":"vid_8fbdc253cd5c4af7afb4","job_id":"job_06d9ec2c70b14e9ca4ea","status_url":"/api/v1/jobs/job_06d9ec2c70b14e9ca4ea"}
+UPLOAD-DONE 2026-10-23T17:36:05Z
+--- video record after ingest
+{"status":"failed","sha256":"1ccf33ae82d47959842ef17223d2ed839d3ebcc1c4384b6dd811e95a36592d9f","size_bytes":2000000000,"filename":"pad2g.mp4","duration":null,"warnings":["The speech-to-text service did not answer: fetch failed"]}

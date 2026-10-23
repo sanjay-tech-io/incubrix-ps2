@@ -1,4 +1,39 @@
-# Test media and deviations (M5c)
+# Test media and deviations (M5c) - with the M5d update below
+
+## M5d update (2026-10-23): diarization default, the speaker hint, re-runs
+**What was asked:** pick a diarization default from a sweep over ALL clips, not one; make the answer suggest `num_speakers` when one speaker is found for a guest/host request; re-run 13b and the NASA session.
+
+**The sweep** (`docs/raw/m5d_diarization_sweep.jsonl`, 66 runs of the real diarizer: sherpa-onnx pyannote-3.0 + WeSpeaker, 11 thresholds x 6 clips; `scripts/sweep_table.mjs` makes the table; `docs/raw/m5d_diarization_sweep_table.md`). Each cell is `labels found / labels holding at least 5% of the speech`; **bold = right** (the second number equals the expected speaker count). Expected counts: 3 synthetic clips 2, the real single speaker `test_single` 1 (control), two NASA windows 2 (host + guest).
+
+| clip (expected) | 0.15 | 0.2 | 0.25 | 0.3 | 0.35 | 0.4 | 0.45 | 0.5 | 0.55 | 0.6 | 0.7 |
+|---|---|---|---|---|---|---|---|---|---|---|---|
+| two_voice.wav (2) | **2/2** | **2/2** | **2/2** | **2/2** | 1/1 | 1/1 | 1/1 | 1/1 | 1/1 | 1/1 | 1/1 |
+| two_speaker16k.wav (2) | **2/2** | **2/2** | **2/2** | **2/2** | **2/2** | **2/2** | 1/1 | 1/1 | 1/1 | 1/1 | 1/1 |
+| dlg16k.wav (2) | **2/2** | **2/2** | **2/2** | **2/2** | **2/2** | 1/1 | 1/1 | 1/1 | 1/1 | 1/1 | 1/1 |
+| single16k.wav (1) | 4/3 | 2/2 | **1/1** | **1/1** | **1/1** | **1/1** | **1/1** | **1/1** | **1/1** | **1/1** | **1/1** |
+| nasa_1200_120.wav (2) | 9/3 | 8/3 | 7/3 | 6/3 | 5/3 | **4/2** | **3/2** | **3/2** | 3/1 | 3/1 | 2/1 |
+| nasa_0_240.wav (2) | 9/3 | **6/2** | **6/2** | **4/2** | **4/2** | **4/2** | **3/2** | 2/1 | 2/1 | 2/1 | 2/1 |
+
+- **No threshold is right on all 6 clips.** 0.25-0.30 are right on 5 of 6 (all except the 20:00 NASA window, which shows 3 substantial labels from 0.15 up to 0.35); 0.4 on 4; 0.5 (the old default) on 2 (the control and the 20:00 NASA window; all three synthetic clips and NASA 0-240 fail); 0.2 and below split the single real speaker. **Chosen default: 0.3** (`DIARIZATION_CLUSTER_THRESHOLD`, was 0.5). Why 0.3 and not 0.25, the other 5-of-6 value: both sit one step from a failure (0.35 loses `two_voice`, 0.2 splits the control), and real speech over-splits more at lower values.
+- **How robust: not very.** The working range is two grid points wide (0.25-0.30, grid step 0.05); one step up loses a clip, one step down splits the control. Why it cannot be better with thresholds: the turn embeddings show it (`docs/raw/m5d_turn_embeddings.json`): the two espeak voices are **0.72** alike across speakers and 0.95 within one, while the real single speaker's own turns go down to **0.58** alike. A real person's turns can sound less alike than two different synthetic voices, so any cut-off that separates the synthetic pair also splits the real speaker. The threshold is also a cosine DISTANCE (1 - similarity), which is why 0.5 merges everything that is more than 0.5 similar.
+- **Counting rule:** the pipeline counts every label that gets words; the sweep counts labels with at least 5% of the speech, because slivers (a 0.9 s label on NASA) are not speakers. The sweep cannot say whether the labels sit on the right people, only how many there are.
+- Tuned on 6 clips, 3 of them synthetic and 2 from one podcast: this is a compromise, not a validated setting.
+
+**The hint (`num_speakers`) did not work on the dialogue clip, and now does.** sherpa ignored `num_clusters=2` on `two_voice_dialogue` (1 label back, although the turn embeddings separate the speakers perfectly). New `services/asr/asr/cluster.py` (tests: `services/asr/tests/test_cluster.py`, 8): when a hint of 2+ speakers comes back with fewer than that many *substantial* speakers (at least 5% of the speech each), the turns are clustered again from their embeddings into exactly that many groups (average-linkage on cosine distance, deterministic; only labels change). The service reports `hint_fallback: true` when it did this. Scored against the by-construction truth (`test-pack/real/two_voice/asr_after_*.json`): **no hint 142 of 142 words right (2 speakers), hint 2 142 of 142 (fallback used)**; before: 93 of 142 with 1 speaker. The hint is accepted per video on upload and on URL intake (`num_speakers`, `openapi.yaml`, API and worker tests). The transcript cache key is now `v: 5` so transcripts made with the old behaviour are not reused.
+**The answer when one speaker is found** and the request names a guest/host/speaker: "Only one speaker was found ... the diarization may have merged their voices: upload it again with the num_speakers hint (for example num_speakers=2 ...). Or say what to remove by time, topic or phrase." (`packages/nlu/test/advanced.test.ts`). It does not know whether a hint was already given, so on NASA with the hint it repeats advice that was already followed.
+
+**Re-runs through the PUBLIC URL** (`test-pack/real/m5d/`), real ASR, defaults (threshold 0.3):
+| Session | Hint | Result |
+|---|---|---|
+| `13b_two_voice_dialogue_guest_old_job` | 2 | **PASS**: needs_clarification: "Assuming Speaker A ... host and Speaker B is the guest. Speaker B talks about "old job" in 4 lines ... Should I remove the lead-in too?" (2 options) |
+| `13d_two_voice_dialogue_no_hint` (new) | none | **PASS**, same answer; the intake says "2 speakers were detected; if that is wrong, upload again with the num_speakers hint." |
+| `nasa_speaker_scoped_edit` | 2 | **FAIL, kept**: "Only one speaker was found". With the hint, sherpa's second label is a 10 s stretch (118-129 s) and the embedding fallback isolates the same stretch, not host versus guest; no word gets it. |
+| `nasa_speaker_scoped_edit_no_hint` (new) | none | needs_clarification: "3 speakers were detected ... Which speaker is the guest: Speaker A, Speaker B or Speaker C?" with a sample line each: A "Houston, we have a podcast.", B "and more.", C "Thank you, it's my pleasure.". **Found 3, expected 2** (the host's voice is split in two); the guest is Speaker C, and the answer asks instead of guessing. It passes because a question is the expected status; 18 words carry a possible-label-swap warning. |
+So: speakers found vs expected after the change: dialogue **2 of 2** (with and without the hint), NASA **3 of 2 without a hint (guest identifiable), 1 effective of 2 with the hint**, `test_single` 1 of 1 (sweep, diarizer only; not re-ingested through the pipeline). The dialogue's removal still cuts the "new job" line and misses line 4 (ASR heard "old John"): that is topic matching, unchanged.
+**Not re-run:** sessions 13 (old clip) and the other batch sessions after the threshold change; the full batch (it ran before the change). The sessions that use `test_single.mp4` only exercise one-speaker behaviour and were not re-ingested.
+
+---
+
 
 Written 2026-10-23, after the decision that there will be **no new recordings**. Everything here was run on the live stack (api, worker, postgres, SeaweedFS, asr containers on the VM), real ASR and real diarization, no mocks. Raw output: `test-pack/real/`. Rights for every clip: `SOURCES.md`.
 

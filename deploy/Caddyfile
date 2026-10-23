@@ -29,9 +29,21 @@
 
 	handle {
 		# Upload cap at the door, so an oversized body is not streamed to the API. The API enforces the same MAX_UPLOAD_MB.
-		request_body {
-			max_size {$MAX_UPLOAD_MB:200}MB
+		# 1) A request that DECLARES a size above the cap is answered at once, before any body is read, with the JSON
+		#    FILE_TOO_LARGE error. (Why: if the body is cut off mid-upload, a client that is still writing can see a connection
+		#    reset instead of the 413; reproduced with Node's fetch, docs/raw/m5d_upload_before.txt, 1 run in 6.)
+		#    `size(h) > 0 &&` first: a request without Content-Length (chunked) must not reach int("").
+		@declared_too_large expression `size({http.request.header.Content-Length}) > 0 && int({http.request.header.Content-Length}) > {$MAX_UPLOAD_MB:2048} * 1048576`
+		handle @declared_too_large {
+			header Content-Type application/json
+			respond `{"error":{"code":"FILE_TOO_LARGE","message":"The request is larger than the upload limit of this deployment.","retryable":false,"details":{}}}` 413
 		}
+		# 2) For bodies that lie or are chunked: cut at the cap. MiB (not MB): Caddy's "MB" is 1,000,000 bytes, the API's cap is
+		#    MAX_UPLOAD_MB * 1024 * 1024; with "MB" the two disagreed (200 MB cap vs a 200,422,585-byte file).
+		request_body {
+			max_size {$MAX_UPLOAD_MB:2048}MiB
+		}
+		# No read/write timeout is set on the server: a 2 GB upload on a slow line must not be cut. (Caddy has none by default.)
 		reverse_proxy api:8080
 	}
 

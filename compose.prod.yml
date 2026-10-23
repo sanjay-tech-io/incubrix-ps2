@@ -6,7 +6,7 @@
 
 x-limits: &limits
   NODE_ENV: production
-  MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-200}
+  MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-2048}
   MAX_VIDEO_DURATION_S: ${MAX_VIDEO_DURATION_S:-300}
   RATE_LIMIT_PER_MIN: ${RATE_LIMIT_PER_MIN:-120}
   MAX_INGEST_JOBS: ${MAX_INGEST_JOBS:-1}
@@ -24,7 +24,7 @@ services:
     environment:
       PUBLIC_HOST: ${PUBLIC_HOST:?set PUBLIC_HOST in .env}
       PUBLIC_HOST_ALT: ${PUBLIC_HOST_ALT:?set PUBLIC_HOST_ALT in .env, e.g. 34.93.140.79.sslip.io (the same IP with dots)}
-      MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-200}
+      MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-2048}
       S3_BUCKET: ${S3_BUCKET:-incubrix}
     volumes:
       - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro

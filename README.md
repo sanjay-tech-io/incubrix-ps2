@@ -14,7 +14,7 @@ What is verified and what is not: [`docs/STATUS.md`](docs/STATUS.md) (claims led
 
 * API and Swagger UI: **https://34.93.140.79.sslip.io** (docs at [`/docs`](https://34.93.140.79.sslip.io/docs), spec at `/openapi.yaml`, `/health` and `/ready` are open). The same site also answers on `https://34-93-140-79.sslip.io`.
 * Everything except health and docs needs the access token: `Authorization: Bearer <token>`. **The token is given on request**; in Swagger UI press *Authorize* and paste it.
-* One small VM with limits (200 MB upload, 300 s video, one render and one transcription at a time, rate limit per IP). What was checked, what was not, how to restart it and what it costs: [`docs/DEPLOY.md`](docs/DEPLOY.md).
+* One small VM with limits (2 GB upload, 300 s video, one render and one transcription at a time, rate limit per IP). What was checked, what was not, how to restart it and what it costs: [`docs/DEPLOY.md`](docs/DEPLOY.md).
 
 ## Architecture
 
@@ -141,6 +141,7 @@ Every setting is an environment variable, validated at startup (a bad value stop
 | `MAX_INGEST_JOBS` | `1` | At most this many ingest+transcribe jobs / render jobs run at the same time (the rest wait in the queue) |
 | `MAX_RENDER_JOBS` | `1` | At most this many ingest+transcribe jobs / render jobs run at the same time (the rest wait in the queue) |
 | `TRUST_PROXY` | `false` | true only behind a reverse proxy that overwrites X-Forwarded-For (Caddy in compose.prod.yml): the rate limit then sees the client IP |
+| `DOWNLOAD_TIMEOUT_S` | `3600` | Total time (seconds) a video URL download may take before it is cut (large files on slow links need a long one) |
 | `URL_ALLOW_PRIVATE` | `false` | Tests only: allow video URLs that point to private/loopback addresses |
 | `JOB_STALE_S` | `300` | Tests only: allow video URLs that point to private/loopback addresses |
 | `WORKER_POLL_MS` | `500` | Tests only: allow video URLs that point to private/loopback addresses |
@@ -171,7 +172,7 @@ Every setting is an environment variable, validated at startup (a bad value stop
 | `WHISPER_INITIAL_PROMPT` | (empty) | services/asr (read by the Python service, not by the Node config loader) The ASR provider itself is ASR_PROVIDER above (mock = fixture transcript, faster-whisper = real model). Models are downloaded into /models (base.en is baked into the image at build time; any other ASR_MODEL downloads on first use and is kept if /models is a volume). small.en vs base.en is NOT proven on real speech yet (docs/SPIKE_ASR.md). |
 | `DIARIZATION_MODEL_DIR` | `/models/diarization` | Diarization (services/asr). DIARIZATION_PROVIDER above is shared with the Node config: sherpa = real (sherpa-onnx + pyannote-3.0 segmentation + WeSpeaker), mock = fixed turns, none = off. |
 | `DIARIZATION_NUM_SPEAKERS` | `-1` | -1 = clustering decides. sherpa-onnx has no min/max speaker setting, only a fixed count or a threshold. |
-| `DIARIZATION_CLUSTER_THRESHOLD` | `0.5` | -1 = clustering decides. sherpa-onnx has no min/max speaker setting, only a fixed count or a threshold. |
+| `DIARIZATION_CLUSTER_THRESHOLD` | `0.3` | Cosine-distance threshold of the clustering when no count is given. 0.3 is the best value of an 11-value sweep over 6 clips (5 of 6 right at 0.25-0.30, none right on all 6: docs/TEST_MEDIA.md). Lower splits one real speaker, higher merges two voices. |
 | `DIARIZATION_UNCERTAIN_BELOW` | `0.6` | Word flagged speaker_uncertain when its best speaker covers less than this fraction of it |
 | `DIARIZATION_OVERLAP_MIN_FRACTION` | `0.2` | Word flagged overlaps_speech when a second speaker covers at least this fraction of it |
 | `DIARIZATION_SWAP_DETECTION` | `true` | Possible speaker-label swap: each speaker turn is embedded and compared with the speaker centroids; a turn is flagged when another speaker is closer than its own label by more than the margin (cosine). Turns shorter than the minimum are not judged. Flag only, never relabels. |

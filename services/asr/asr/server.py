@@ -102,7 +102,7 @@ def create_app(adapter: Optional[Adapter] = None, diarizer: Optional[Diarizer] =
                     swap = summarize(turns, checks, swap_settings)
             t.settings["diarization"] = {
                 **dia.describe(), "uncertain_below": dia_settings.uncertain_below, "overlap_min_fraction": dia_settings.overlap_min,
-                "speakers_found": len({x.speaker for x in turns}), "turns": len(turns), "num_speakers_hint": num_speakers, "label_swap": swap,
+                "speakers_found": len({x.speaker for x in turns}), "turns": len(turns), "num_speakers_hint": num_speakers, "hint_fallback": bool(getattr(dia, "last_hint_fallback", False)), "label_swap": swap,
             }
             t.timings["diarization"] = getattr(dia, "last_timings", {})
         return t

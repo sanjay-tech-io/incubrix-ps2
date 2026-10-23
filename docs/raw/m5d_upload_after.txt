@@ -1,0 +1,11 @@
+# 2026-10-23T17:28:36Z AFTER the fix: media/test_single.mp4 (200,422,585 bytes) through the PUBLIC URL from this VM; Caddy cap 2048 MiB; API cap MAX_UPLOAD_MB=2048
+--- curl
+http=202 time=4.160813s sent_bytes=200422897
+{"video_id":"vid_6290bd8d25e04eaaa884","job_id":"job_c81ad7eb989b444fbe3b","status_url":"/api/v1/jobs/job_c81ad7eb989b444fbe3b"}
+--- node fetch x6 (the client that failed 1 in 6 before)
+status 202 {"video_id":"vid_e4dafda314f64b5aa54f","job_id":"job_9ea9e83624b84a809760","status_url":"/api/v1/jobs/job_9ea9e83624b84a809760"} 5.064s
+status 202 {"video_id":"vid_761aaf5669274da1bb97","job_id":"job_06b3ae135c5e49d7bd69","status_url":"/api/v1/jobs/job_06b3ae135c5e49d7bd69"} 4.606s
+status 202 {"video_id":"vid_ecfba4f075fb44cd9fa6","job_id":"job_0c14411bd18c49a1b6eb","status_url":"/api/v1/jobs/job_0c14411bd18c49a1b6eb"} 3.946s
+status 202 {"video_id":"vid_5c976bfd5da3429c9185","job_id":"job_687ccb1fa9fc4eb0a1e4","status_url":"/api/v1/jobs/job_687ccb1fa9fc4eb0a1e4"} 3.529s
+status 202 {"video_id":"vid_a96757dfb9bf4039b3a6","job_id":"job_78598107ff804b6698bb","status_url":"/api/v1/jobs/job_78598107ff804b6698bb"} 3.688s
+status 202 {"video_id":"vid_20941fddc522422ba0c1","job_id":"job_6ac641c399f940519a96","status_url":"/api/v1/jobs/job_6ac641c399f940519a96"} 3.438s

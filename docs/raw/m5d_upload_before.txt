@@ -1,0 +1,10 @@
+# 2026-10-23T17:18:09Z BEFORE the fix: upload of media/test_single.mp4 (200,422,585 bytes) through the public URL, curl, Caddy default cap 200MB
+http=413 time=2.042975s sent=200422912
+{"error":{"code":"FILE_TOO_LARGE","message":"The request is larger than the upload limit of this deployment.","retryable":false,"details":{}}}
+status 413 {"error":{"code":"FILE_TOO_LARGE","message":"The request is larger than the upload limit of this deployment.","retryable":false,"details":{}}} 2.313s
+ERR fetch failed cause: ECONNRESET write ECONNRESET 2.006s
+status 413 {"error":{"code":"FILE_TOO_LARGE","message":"The request is larger than the upload limit of this deployment.","retryable":false,"details":{}}} 2.153s
+status 413 {"error":{"code":"FILE_TOO_LARGE","message":"The request is larger than the upload limit of this deployment.","retryable":false,"details":{}}} 2.206s
+status 413 {"error":{"code":"FILE_TOO_LARGE","message":"The request is larger than the upload limit of this deployment.","retryable":false,"details":{}}} 1.978s
+status 413 {"error":{"code":"FILE_TOO_LARGE","message":"The request is larger than the upload limit of this deployment.","retryable":false,"details":{}}} 1.981s
+status 413 {"error":{"code":"FILE_TOO_LARGE","message":"The request is larger than the upload limit of this deployment.","retryable":false,"details":{}}} 1.975s

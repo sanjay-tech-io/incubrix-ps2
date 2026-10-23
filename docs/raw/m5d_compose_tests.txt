@@ -1,0 +1,954 @@
+ Image incubrix-ps2-asr-tests Building 
+ Image incubrix-test-app Building 
+ Image incubrix-ps2-otio-tests Building 
+ Image incubrix-ps2-otio-test Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.00kB done
+#1 DONE 0.0s
+
+#2 [otio-tests internal] load build definition from Dockerfile
+#2 transferring dockerfile: 589B done
+#2 DONE 0.1s
+
+#3 [asr-tests internal] load build definition from Dockerfile
+#3 transferring dockerfile: 1.13kB done
+#3 DONE 0.0s
+
+#4 [init-test internal] load build definition from Dockerfile
+#4 transferring dockerfile: 1.21kB 0.0s done
+#4 DONE 0.0s
+
+#5 [otio-tests internal] load metadata for docker.io/library/python:3.12-slim
+#5 ...
+
+#6 [init-test internal] load metadata for docker.io/library/node:22-bookworm-slim
+#6 DONE 1.4s
+
+#5 [otio-tests internal] load metadata for docker.io/library/python:3.12-slim
+#5 DONE 1.4s
+
+#7 [init-test internal] load .dockerignore
+#7 transferring context: 98B done
+#7 DONE 0.0s
+
+#8 [asr-tests internal] load .dockerignore
+#8 transferring context: 78B done
+#8 DONE 0.0s
+
+#9 [otio-test internal] load .dockerignore
+#9 transferring context: 2B done
+#9 DONE 0.1s
+
+#10 [init-test internal] load build context
+#10 ...
+
+#11 [asr-tests internal] load build context
+#11 transferring context: 225.23kB 0.0s done
+#11 DONE 0.1s
+
+#12 [otio-test internal] load build context
+#12 transferring context: 26.78kB 0.0s done
+#12 DONE 0.1s
+
+#13 [init-test  1/22] FROM docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d
+#13 resolve docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d 0.1s done
+#13 DONE 0.1s
+
+#14 [asr-tests base 1/7] FROM docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704
+#14 resolve docker.io/library/python:3.12-slim@sha256:a0f57064cbdcd6285fa45f51237ab0b35ea8ebaed06a1f5973e89e19dfb86704 0.1s done
+#14 DONE 0.1s
+
+#15 [otio-tests internal] load build context
+#15 transferring context: 77.82kB 0.0s done
+#15 DONE 0.1s
+
+#16 [asr-tests base 2/7] WORKDIR /app
+#16 CACHED
+
+#10 [init-test internal] load build context
+#10 ...
+
+#16 [otio-tests base 2/7] WORKDIR /app
+#16 CACHED
+
+#17 [asr-tests base 3/7] COPY requirements.txt .
+#17 CACHED
+
+#18 [asr-tests base 4/7] RUN pip install --no-cache-dir -r requirements.txt
+#18 CACHED
+
+#19 [asr-tests base 5/7] COPY fetch_models.py .
+#19 CACHED
+
+#20 [otio-tests base 3/5] COPY requirements.txt .
+#20 DONE 0.1s
+
+#10 [init-test internal] load build context
+#10 transferring context: 1.03MB 0.9s done
+#10 DONE 0.9s
+
+#21 [init-test 10/22] COPY packages/media/package.json packages/media/
+#21 CACHED
+
+#22 [init-test  2/22] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core ca-certificates && rm -rf /var/lib/apt/lists/*
+#22 CACHED
+
+#23 [init-test  4/22] COPY package.json package-lock.json .npmrc ./
+#23 CACHED
+
+#24 [init-test 19/22] COPY apps/worker/package.json apps/worker/
+#24 CACHED
+
+#25 [init-test  8/22] COPY packages/db/package.json packages/db/
+#25 CACHED
+
+#26 [init-test 12/22] COPY packages/nlu/package.json packages/nlu/
+#26 CACHED
+
+#27 [init-test 13/22] COPY packages/store/package.json packages/store/
+#27 CACHED
+
+#28 [init-test 18/22] COPY apps/api/package.json apps/api/
+#28 CACHED
+
+#29 [init-test 20/22] COPY apps/cli/package.json apps/cli/
+#29 CACHED
+
+#30 [init-test  9/22] COPY packages/storage/package.json packages/storage/
+#30 CACHED
+
+#31 [init-test 17/22] COPY packages/otio/package.json packages/otio/
+#31 CACHED
+
+#32 [init-test 16/22] COPY packages/llm/package.json packages/llm/
+#32 CACHED
+
+#33 [init-test  5/22] COPY packages/contracts/package.json packages/contracts/
+#33 CACHED
+
+#34 [init-test  3/22] WORKDIR /app
+#34 CACHED
+
+#35 [init-test 15/22] COPY packages/semantic/package.json packages/semantic/
+#35 CACHED
+
+#36 [init-test  6/22] COPY packages/engine/package.json packages/engine/
+#36 CACHED
+
+#37 [init-test  7/22] COPY packages/config/package.json packages/config/
+#37 CACHED
+
+#38 [init-test 11/22] COPY packages/errors/package.json packages/errors/
+#38 CACHED
+
+#39 [init-test 14/22] COPY packages/render/package.json packages/render/
+#39 CACHED
+
+#40 [init-test 21/22] RUN npm ci
+#40 CACHED
+
+#41 [init-test 22/22] COPY . .
+#41 ...
+
+#42 [otio-tests base 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#42 4.918 Collecting fastapi==0.151.0 (from -r requirements.txt (line 1))
+#42 5.041   Downloading fastapi-0.151.0-py3-none-any.whl.metadata (26 kB)
+#42 5.141 Collecting starlette==1.9.0 (from -r requirements.txt (line 2))
+#42 5.170   Downloading starlette-1.9.0-py3-none-any.whl.metadata (6.6 kB)
+#42 5.463 Collecting pydantic==2.14.1 (from -r requirements.txt (line 3))
+#42 5.486   Downloading pydantic-2.14.1-py3-none-any.whl.metadata (133 kB)
+#42 5.630 Collecting uvicorn==0.54.0 (from -r requirements.txt (line 4))
+#42 5.658   Downloading uvicorn-0.54.0-py3-none-any.whl.metadata (6.6 kB)
+#42 5.970 Collecting opentimelineio==0.18.1 (from -r requirements.txt (line 5))
+#42 6.001   Downloading opentimelineio-0.18.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl.metadata (2.6 kB)
+#42 6.105 Collecting typing-extensions>=4.8.0 (from fastapi==0.151.0->-r requirements.txt (line 1))
+#42 6.134   Downloading typing_extensions-4.16.0-py3-none-any.whl.metadata (3.3 kB)
+#42 6.180 Collecting typing-inspection>=0.4.2 (from fastapi==0.151.0->-r requirements.txt (line 1))
+#42 6.209   Downloading typing_inspection-0.4.4-py3-none-any.whl.metadata (2.6 kB)
+#42 6.242 Collecting annotated-doc>=0.0.2 (from fastapi==0.151.0->-r requirements.txt (line 1))
+#42 6.270   Downloading annotated_doc-0.0.5-py3-none-any.whl.metadata (6.5 kB)
+#42 6.330 Collecting opentelemetry-api>=1.44.0 (from fastapi==0.151.0->-r requirements.txt (line 1))
+#42 6.358   Downloading opentelemetry_api-1.45.1-py3-none-any.whl.metadata (1.4 kB)
+#42 6.426 Collecting anyio<5,>=4.0.0 (from starlette==1.9.0->-r requirements.txt (line 2))
+#42 6.455   Downloading anyio-4.15.1-py3-none-any.whl.metadata (4.7 kB)
+#42 6.502 Collecting annotated-types>=0.6.0 (from pydantic==2.14.1->-r requirements.txt (line 3))
+#42 6.531   Downloading annotated_types-0.8.0-py3-none-any.whl.metadata (15 kB)
+#42 7.970 Collecting pydantic-core==2.50.1 (from pydantic==2.14.1->-r requirements.txt (line 3))
+#42 8.003   Downloading pydantic_core-2.50.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl.metadata (6.5 kB)
+#42 8.077 Collecting click>=7.0 (from uvicorn==0.54.0->-r requirements.txt (line 4))
+#42 8.106   Downloading click-8.5.0-py3-none-any.whl.metadata (2.6 kB)
+#42 8.141 Collecting h11>=0.8 (from uvicorn==0.54.0->-r requirements.txt (line 4))
+#42 8.169   Downloading h11-0.16.0-py3-none-any.whl.metadata (8.3 kB)
+#42 8.225 Collecting idna>=2.8 (from anyio<5,>=4.0.0->starlette==1.9.0->-r requirements.txt (line 2))
+#42 8.255   Downloading idna-3.20-py3-none-any.whl.metadata (7.2 kB)
+#42 8.315 Downloading fastapi-0.151.0-py3-none-any.whl (145 kB)
+#42 8.351 Downloading starlette-1.9.0-py3-none-any.whl (80 kB)
+#42 8.378 Downloading pydantic-2.14.1-py3-none-any.whl (488 kB)
+#42 8.430 Downloading uvicorn-0.54.0-py3-none-any.whl (87 kB)
+#42 8.457 Downloading opentimelineio-0.18.1-cp312-cp312-manylinux2014_x86_64.manylinux_2_17_x86_64.whl (842 kB)
+#42 8.483    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 842.8/842.8 kB 30.0 MB/s eta 0:00:00
+#42 8.509 Downloading pydantic_core-2.50.1-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl (2.2 MB)
+#42 8.538    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 2.2/2.2 MB 82.9 MB/s eta 0:00:00
+#42 8.567 Downloading annotated_doc-0.0.5-py3-none-any.whl (5.3 kB)
+#42 8.594 Downloading annotated_types-0.8.0-py3-none-any.whl (13 kB)
+#42 8.621 Downloading anyio-4.15.1-py3-none-any.whl (132 kB)
+#42 8.651 Downloading click-8.5.0-py3-none-any.whl (125 kB)
+#42 8.679 Downloading h11-0.16.0-py3-none-any.whl (37 kB)
+#42 8.708 Downloading opentelemetry_api-1.45.1-py3-none-any.whl (60 kB)
+#42 8.739 Downloading typing_extensions-4.16.0-py3-none-any.whl (45 kB)
+#42 8.770 Downloading typing_inspection-0.4.4-py3-none-any.whl (14 kB)
+#42 8.799 Downloading idna-3.20-py3-none-any.whl (69 kB)
+#42 8.932 Installing collected packages: typing-extensions, opentimelineio, idna, h11, click, annotated-types, annotated-doc, uvicorn, typing-inspection, pydantic-core, opentelemetry-api, anyio, starlette, pydantic, fastapi
+#42 ...
+
+#43 [asr-tests base 6/7] RUN ASR_MODEL=base.en python fetch_models.py
+#43 5.456 Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+#43 ...
+
+#42 [otio-tests base 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#42 11.68 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#42 11.68 Successfully installed annotated-doc-0.0.5 annotated-types-0.8.0 anyio-4.15.1 click-8.5.0 fastapi-0.151.0 h11-0.16.0 idna-3.20 opentelemetry-api-1.45.1 opentimelineio-0.18.1 pydantic-2.14.1 pydantic-core-2.50.1 starlette-1.9.0 typing-extensions-4.16.0 typing-inspection-0.4.4 uvicorn-0.54.0
+#42 11.88 
+#42 11.88 [notice] A new release of pip is available: 25.0.1 -> 26.2.2
+#42 11.88 [notice] To update, run: pip install --upgrade pip
+#42 ...
+
+#43 [asr-tests base 6/7] RUN ASR_MODEL=base.en python fetch_models.py
+#43 18.51 embedding model downloaded to /opt/embed revision 1110a243fdf4706b3f48f1d95db1a4f5529b4d41
+#43 18.51 whisper model downloaded to /models/hf/hub/models--Systran--faster-whisper-base.en/snapshots/3d3d5dee26484f91867d81cb899cfcf72b96be6c
+#43 ...
+
+#42 [otio-test base 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#42 DONE 19.8s
+
+#44 [otio-tests base 5/5] COPY otio_service ./otio_service
+#44 ...
+
+#43 [asr-tests base 6/7] RUN ASR_MODEL=base.en python fetch_models.py
+#43 DONE 26.3s
+
+#44 [otio-test base 5/5] COPY otio_service ./otio_service
+#44 DONE 6.3s
+
+#41 [init-test 22/22] COPY . .
+#41 DONE 25.5s
+
+#45 [otio-tests base 5/5] COPY otio_service ./otio_service
+#45 CACHED
+
+#46 [otio-tests base 3/5] COPY requirements.txt .
+#46 CACHED
+
+#47 [otio-tests base 4/5] RUN pip install --no-cache-dir -r requirements.txt
+#47 CACHED
+
+#48 [init-test] exporting to image
+#48 exporting layers
+#48 ...
+
+#49 [asr-tests base 7/7] COPY asr ./asr
+#49 DONE 0.2s
+
+#50 [otio-tests test 1/3] COPY requirements-dev.txt pytest.ini ./
+#50 DONE 0.2s
+
+#51 [asr-tests test 1/3] COPY requirements-dev.txt pytest.ini ./
+#51 DONE 0.1s
+
+#52 [otio-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#52 1.433 Requirement already satisfied: fastapi==0.151.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 1)) (0.151.0)
+#52 1.435 Requirement already satisfied: starlette==1.9.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 2)) (1.9.0)
+#52 1.436 Requirement already satisfied: pydantic==2.14.1 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 3)) (2.14.1)
+#52 1.437 Requirement already satisfied: uvicorn==0.54.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 4)) (0.54.0)
+#52 1.438 Requirement already satisfied: opentimelineio==0.18.1 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 5)) (0.18.1)
+#52 1.662 Collecting pytest==9.1.1 (from -r requirements-dev.txt (line 2))
+#52 1.773   Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+#52 1.865 Collecting httpx==0.28.1 (from -r requirements-dev.txt (line 3))
+#52 1.893   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#52 1.917 Requirement already satisfied: typing-extensions>=4.8.0 in /usr/local/lib/python3.12/site-packages (from fastapi==0.151.0->-r /app/requirements.txt (line 1)) (4.16.0)
+#52 1.917 Requirement already satisfied: typing-inspection>=0.4.2 in /usr/local/lib/python3.12/site-packages (from fastapi==0.151.0->-r /app/requirements.txt (line 1)) (0.4.4)
+#52 1.917 Requirement already satisfied: annotated-doc>=0.0.2 in /usr/local/lib/python3.12/site-packages (from fastapi==0.151.0->-r /app/requirements.txt (line 1)) (0.0.5)
+#52 1.918 Requirement already satisfied: opentelemetry-api>=1.44.0 in /usr/local/lib/python3.12/site-packages (from fastapi==0.151.0->-r /app/requirements.txt (line 1)) (1.45.1)
+#52 1.923 Requirement already satisfied: anyio<5,>=4.0.0 in /usr/local/lib/python3.12/site-packages (from starlette==1.9.0->-r /app/requirements.txt (line 2)) (4.15.1)
+#52 1.931 Requirement already satisfied: annotated-types>=0.6.0 in /usr/local/lib/python3.12/site-packages (from pydantic==2.14.1->-r /app/requirements.txt (line 3)) (0.8.0)
+#52 1.932 Requirement already satisfied: pydantic-core==2.50.1 in /usr/local/lib/python3.12/site-packages (from pydantic==2.14.1->-r /app/requirements.txt (line 3)) (2.50.1)
+#52 1.940 Requirement already satisfied: click>=7.0 in /usr/local/lib/python3.12/site-packages (from uvicorn==0.54.0->-r /app/requirements.txt (line 4)) (8.5.0)
+#52 1.942 Requirement already satisfied: h11>=0.8 in /usr/local/lib/python3.12/site-packages (from uvicorn==0.54.0->-r /app/requirements.txt (line 4)) (0.16.0)
+#52 1.985 Collecting iniconfig>=1.0.1 (from pytest==9.1.1->-r requirements-dev.txt (line 2))
+#52 2.015   Downloading iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+#52 2.084 Collecting packaging>=22 (from pytest==9.1.1->-r requirements-dev.txt (line 2))
+#52 2.125   Downloading packaging-26.3-py3-none-any.whl.metadata (3.5 kB)
+#52 2.160 Collecting pluggy<2,>=1.5 (from pytest==9.1.1->-r requirements-dev.txt (line 2))
+#52 2.199   Downloading pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+#52 2.257 Collecting pygments>=2.7.2 (from pytest==9.1.1->-r requirements-dev.txt (line 2))
+#52 2.295   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+#52 2.364 Collecting certifi (from httpx==0.28.1->-r requirements-dev.txt (line 3))
+#52 2.403   Downloading certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+#52 2.463 Collecting httpcore==1.* (from httpx==0.28.1->-r requirements-dev.txt (line 3))
+#52 2.494   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#52 2.537 Requirement already satisfied: idna in /usr/local/lib/python3.12/site-packages (from httpx==0.28.1->-r requirements-dev.txt (line 3)) (3.20)
+#52 2.604 Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+#52 2.716 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#52 2.746 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#52 2.779 Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+#52 2.813 Downloading packaging-26.3-py3-none-any.whl (129 kB)
+#52 2.843 Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
+#52 2.876 Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+#52 2.929    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 25.8 MB/s eta 0:00:00
+#52 2.963 Downloading certifi-2026.10.23-py3-none-any.whl (135 kB)
+#52 3.073 Installing collected packages: pygments, pluggy, packaging, iniconfig, certifi, pytest, httpcore, httpx
+#52 ...
+
+#53 [otio-test] exporting to image
+#53 exporting layers 3.1s done
+#53 exporting manifest sha256:5e6733a240595ef0694f36b2586403e50c86eeae0a9b0f91d185eec06558e653 0.0s done
+#53 exporting config sha256:54d7725a023be36cfe96a272eb6105de6aa71a529a1234e7480e0b1088e75366 0.0s done
+#53 exporting attestation manifest sha256:3715bb332380c191435b641681fc6f0cb174b263a3def018c3856f046f39c57e 0.0s done
+#53 exporting manifest list sha256:bba48339134ede92c80ecb0873e129cfbe879d78d88fe4a51173dd643761cd96 0.0s done
+#53 naming to docker.io/library/incubrix-ps2-otio-test:latest done
+#53 unpacking to docker.io/library/incubrix-ps2-otio-test:latest 1.3s done
+#53 DONE 4.6s
+
+#54 [otio-test] resolving provenance for metadata file
+#54 DONE 0.0s
+
+#55 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#55 1.757 Requirement already satisfied: faster-whisper==1.2.1 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 1)) (1.2.1)
+#55 1.759 Requirement already satisfied: ctranslate2==4.8.3 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 2)) (4.8.3)
+#55 1.760 Requirement already satisfied: av==16.1.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 3)) (16.1.0)
+#55 1.761 Requirement already satisfied: onnxruntime==1.31.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 4)) (1.31.0)
+#55 1.762 Requirement already satisfied: numpy==2.5.4 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 5)) (2.5.4)
+#55 1.764 Requirement already satisfied: huggingface_hub==2.2.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 6)) (2.2.0)
+#55 1.764 Requirement already satisfied: tokenizers==0.23.3 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 7)) (0.23.3)
+#55 1.764 Requirement already satisfied: sherpa-onnx==1.13.8 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 8)) (1.13.8)
+#55 1.765 Requirement already satisfied: fastapi==0.151.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 9)) (0.151.0)
+#55 1.766 Requirement already satisfied: starlette==1.9.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 10)) (1.9.0)
+#55 1.767 Requirement already satisfied: pydantic==2.14.1 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 11)) (2.14.1)
+#55 1.768 Requirement already satisfied: uvicorn==0.54.0 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 12)) (0.54.0)
+#55 1.770 Requirement already satisfied: python-multipart==0.0.32 in /usr/local/lib/python3.12/site-packages (from -r /app/requirements.txt (line 13)) (0.0.32)
+#55 2.019 Collecting pytest==9.1.1 (from -r requirements-dev.txt (line 2))
+#55 2.133   Downloading pytest-9.1.1-py3-none-any.whl.metadata (7.6 kB)
+#55 2.205 Collecting httpx==0.28.1 (from -r requirements-dev.txt (line 3))
+#55 2.237   Downloading httpx-0.28.1-py3-none-any.whl.metadata (7.1 kB)
+#55 2.265 Requirement already satisfied: tqdm in /usr/local/lib/python3.12/site-packages (from faster-whisper==1.2.1->-r /app/requirements.txt (line 1)) (4.70.1)
+#55 2.275 Requirement already satisfied: pyyaml<7,>=5.3 in /usr/local/lib/python3.12/site-packages (from ctranslate2==4.8.3->-r /app/requirements.txt (line 2)) (6.0.3)
+#55 2.286 Requirement already satisfied: flatbuffers in /usr/local/lib/python3.12/site-packages (from onnxruntime==1.31.0->-r /app/requirements.txt (line 4)) (25.12.19)
+#55 2.289 Requirement already satisfied: packaging in /usr/local/lib/python3.12/site-packages (from onnxruntime==1.31.0->-r /app/requirements.txt (line 4)) (26.3)
+#55 2.289 Requirement already satisfied: protobuf>=4.25.8 in /usr/local/lib/python3.12/site-packages (from onnxruntime==1.31.0->-r /app/requirements.txt (line 4)) (7.36.2)
+#55 2.318 Requirement already satisfied: click<9.0.0,>=8.4.2 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (8.5.0)
+#55 2.319 Requirement already satisfied: filelock>=3.10.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (4.2.4)
+#55 2.320 Requirement already satisfied: fsspec>=2023.5.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (2026.9.0)
+#55 2.322 Requirement already satisfied: hf-xet<2.0.0,>=1.6.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (1.7.0)
+#55 2.323 Requirement already satisfied: httpx2<3,>=2.0.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (2.16.0)
+#55 2.326 Requirement already satisfied: typing-extensions>=4.1.0 in /usr/local/lib/python3.12/site-packages (from huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (4.16.0)
+#55 2.338 Requirement already satisfied: sherpa-onnx-core==1.13.8 in /usr/local/lib/python3.12/site-packages (from sherpa-onnx==1.13.8->-r /app/requirements.txt (line 8)) (1.13.8)
+#55 2.354 Requirement already satisfied: typing-inspection>=0.4.2 in /usr/local/lib/python3.12/site-packages (from fastapi==0.151.0->-r /app/requirements.txt (line 9)) (0.4.4)
+#55 2.354 Requirement already satisfied: annotated-doc>=0.0.2 in /usr/local/lib/python3.12/site-packages (from fastapi==0.151.0->-r /app/requirements.txt (line 9)) (0.0.5)
+#55 2.355 Requirement already satisfied: opentelemetry-api>=1.44.0 in /usr/local/lib/python3.12/site-packages (from fastapi==0.151.0->-r /app/requirements.txt (line 9)) (1.45.1)
+#55 2.361 Requirement already satisfied: anyio<5,>=4.0.0 in /usr/local/lib/python3.12/site-packages (from starlette==1.9.0->-r /app/requirements.txt (line 10)) (4.15.1)
+#55 2.371 Requirement already satisfied: annotated-types>=0.6.0 in /usr/local/lib/python3.12/site-packages (from pydantic==2.14.1->-r /app/requirements.txt (line 11)) (0.8.0)
+#55 2.372 Requirement already satisfied: pydantic-core==2.50.1 in /usr/local/lib/python3.12/site-packages (from pydantic==2.14.1->-r /app/requirements.txt (line 11)) (2.50.1)
+#55 2.380 Requirement already satisfied: h11>=0.8 in /usr/local/lib/python3.12/site-packages (from uvicorn==0.54.0->-r /app/requirements.txt (line 12)) (0.16.0)
+#55 2.422 Collecting iniconfig>=1.0.1 (from pytest==9.1.1->-r requirements-dev.txt (line 2))
+#55 2.455   Downloading iniconfig-2.3.1-py3-none-any.whl.metadata (2.8 kB)
+#55 2.499 Collecting pluggy<2,>=1.5 (from pytest==9.1.1->-r requirements-dev.txt (line 2))
+#55 2.529   Downloading pluggy-1.7.0-py3-none-any.whl.metadata (5.0 kB)
+#55 2.597 Collecting pygments>=2.7.2 (from pytest==9.1.1->-r requirements-dev.txt (line 2))
+#55 2.630   Downloading pygments-2.21.0-py3-none-any.whl.metadata (2.5 kB)
+#55 2.734 Collecting certifi (from httpx==0.28.1->-r requirements-dev.txt (line 3))
+#55 2.769   Downloading certifi-2026.10.23-py3-none-any.whl.metadata (2.5 kB)
+#55 2.838 Collecting httpcore==1.* (from httpx==0.28.1->-r requirements-dev.txt (line 3))
+#55 2.866   Downloading httpcore-1.0.9-py3-none-any.whl.metadata (21 kB)
+#55 2.886 Requirement already satisfied: idna in /usr/local/lib/python3.12/site-packages (from httpx==0.28.1->-r requirements-dev.txt (line 3)) (3.20)
+#55 2.960 Requirement already satisfied: httpcore2==2.16.0 in /usr/local/lib/python3.12/site-packages (from httpx2<3,>=2.0.0->huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (2.16.0)
+#55 2.963 Requirement already satisfied: truststore>=0.10 in /usr/local/lib/python3.12/site-packages (from httpx2<3,>=2.0.0->huggingface_hub==2.2.0->-r /app/requirements.txt (line 6)) (0.10.5)
+#55 3.057 Downloading pytest-9.1.1-py3-none-any.whl (386 kB)
+#55 3.161 Downloading httpx-0.28.1-py3-none-any.whl (73 kB)
+#55 3.187 Downloading httpcore-1.0.9-py3-none-any.whl (78 kB)
+#55 3.216 Downloading iniconfig-2.3.1-py3-none-any.whl (7.6 kB)
+#55 3.245 Downloading pluggy-1.7.0-py3-none-any.whl (27 kB)
+#55 3.278 Downloading pygments-2.21.0-py3-none-any.whl (1.3 MB)
+#55 3.315    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ 1.3/1.3 MB 32.3 MB/s eta 0:00:00
+#55 3.347 Downloading certifi-2026.10.23-py3-none-any.whl (135 kB)
+#55 3.494 Installing collected packages: pygments, pluggy, iniconfig, certifi, pytest, httpcore, httpx
+#55 ...
+
+#52 [otio-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#52 6.237 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#52 6.237 Successfully installed certifi-2026.10.23 httpcore-1.0.9 httpx-0.28.1 iniconfig-2.3.1 packaging-26.3 pluggy-1.7.0 pygments-2.21.0 pytest-9.1.1
+#52 6.461 
+#52 6.461 [notice] A new release of pip is available: 25.0.1 -> 26.2.2
+#52 6.461 [notice] To update, run: pip install --upgrade pip
+#52 DONE 7.0s
+
+#55 [asr-tests test 2/3] RUN pip install --no-cache-dir -r requirements-dev.txt
+#55 6.407 Successfully installed certifi-2026.10.23 httpcore-1.0.9 httpx-0.28.1 iniconfig-2.3.1 pluggy-1.7.0 pygments-2.21.0 pytest-9.1.1
+#55 6.408 WARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager, possibly rendering your system unusable. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv. Use the --root-user-action option if you know what you are doing and want to suppress this warning.
+#55 6.618 
+#55 6.618 [notice] A new release of pip is available: 25.0.1 -> 26.2.2
+#55 6.618 [notice] To update, run: pip install --upgrade pip
+#55 DONE 6.9s
+
+#56 [asr-tests test 3/3] COPY tests ./tests
+#56 DONE 0.1s
+
+#57 [otio-tests test 3/3] COPY tests ./tests
+#57 DONE 0.1s
+
+#58 [otio-tests] exporting to image
+#58 exporting layers 1.5s done
+#58 exporting manifest sha256:ef5bb4b7a35f803d7ce792c57f3c294d236064b9037826842ec26e695f953a64 0.0s done
+#58 exporting config sha256:df608850afc054239d5f2ea90856fb43d82031f971951ed5d4cde83aeddb014d 0.0s done
+#58 exporting attestation manifest sha256:cc2ce238a3c08d2bf306fa3c4b607c1cec3c74b92380a4b1e225825e148810ba 0.0s done
+#58 exporting manifest list sha256:e974c3fc071a71eb3f74b8727f4ba79b5c73ebcd7404a631a7218de56694ebfe 0.0s done
+#58 naming to docker.io/library/incubrix-ps2-otio-tests:latest
+#58 naming to docker.io/library/incubrix-ps2-otio-tests:latest done
+#58 unpacking to docker.io/library/incubrix-ps2-otio-tests:latest
+#58 unpacking to docker.io/library/incubrix-ps2-otio-tests:latest 0.7s done
+#58 DONE 2.4s
+
+#59 [asr-tests] exporting to image
+#59 ...
+
+#60 [otio-tests] resolving provenance for metadata file
+#60 DONE 0.0s
+
+#59 [asr-tests] exporting to image
+#59 exporting layers 28.5s done
+#59 exporting manifest sha256:3819dd17142b666ae5ef8f3846e533785528a8cba12b23eab908e988d3d4cde2 0.0s done
+#59 exporting config sha256:6c2aa91323c4b0131d57495ca078db2bb3cba9fa9500526a73b4daa80904fd69 0.0s done
+#59 exporting attestation manifest sha256:fb8cdefc603acefde17ffc2f52abfad016780ec5a8424bf0050cf2cf568b216d 0.0s done
+#59 exporting manifest list sha256:6e088f87d27ad87c64388757407003b9de71d743b18c0be521a23d5c623c2952 0.0s done
+#59 naming to docker.io/library/incubrix-ps2-asr-tests:latest done
+#59 unpacking to docker.io/library/incubrix-ps2-asr-tests:latest
+#59 unpacking to docker.io/library/incubrix-ps2-asr-tests:latest 4.6s done
+#59 DONE 33.2s
+
+#61 [asr-tests] resolving provenance for metadata file
+#61 DONE 0.0s
+
+#48 [init-test] exporting to image
+#48 exporting layers 119.9s done
+#48 exporting manifest sha256:3e6e4b503881ce209e0da9d665252f4b466de8c5c482068af114cca70bcf6600 0.0s done
+#48 exporting config sha256:1924338060d7971c772b6bbdc704669553b426db3df828de8f19ab08f9684e14 0.0s done
+#48 exporting attestation manifest sha256:14e165f08dba5804781d194c251f305c1f6b7d4a32882b466e506646a052b96b 0.0s done
+#48 exporting manifest list sha256:53722f48beee82f9c5621a5e066e9fac00324486556026702f2d5a6ca57fbc58 0.0s done
+#48 naming to docker.io/library/incubrix-test-app:latest done
+#48 unpacking to docker.io/library/incubrix-test-app:latest
+#48 unpacking to docker.io/library/incubrix-test-app:latest 18.9s done
+#48 DONE 139.0s
+
+#62 [init-test] resolving provenance for metadata file
+#62 DONE 0.1s
+ Image incubrix-ps2-asr-tests Built 
+ Image incubrix-test-app Built 
+ Image incubrix-ps2-otio-test Built 
+ Image incubrix-ps2-otio-tests Built 
+ Container incubrix-ps2-asr-tests-1 Recreate 
+ Container incubrix-ps2-s3-test-1 Creating 
+ Container incubrix-ps2-otio-tests-1 Recreate 
+ Container incubrix-ps2-postgres-test-1 Creating 
+ Container incubrix-ps2-otio-test-1 Creating 
+ Container incubrix-ps2-postgres-test-1 Created 
+ Container incubrix-ps2-otio-test-1 Created 
+ Container incubrix-ps2-s3-test-1 Created 
+ Container incubrix-ps2-init-test-1 Creating 
+ Container incubrix-ps2-init-test-1 Created 
+ Container incubrix-ps2-otio-tests-1 Recreated 
+ Container incubrix-ps2-asr-tests-1 Recreated 
+ Container incubrix-ps2-otio-tests-1 Starting 
+ Container incubrix-ps2-otio-test-1 Starting 
+ Container incubrix-ps2-asr-tests-1 Starting 
+ Container incubrix-ps2-s3-test-1 Starting 
+ Container incubrix-ps2-postgres-test-1 Starting 
+ Container incubrix-ps2-otio-tests-1 Started 
+ Container incubrix-ps2-otio-test-1 Started 
+ Container incubrix-ps2-asr-tests-1 Started 
+ Container incubrix-ps2-s3-test-1 Started 
+ Container incubrix-ps2-postgres-test-1 Started 
+ Container incubrix-ps2-postgres-test-1 Waiting 
+ Container incubrix-ps2-s3-test-1 Waiting 
+ Container incubrix-ps2-postgres-test-1 Healthy 
+ Container incubrix-ps2-s3-test-1 Healthy 
+ Container incubrix-ps2-init-test-1 Starting 
+ Container incubrix-ps2-init-test-1 Started 
+ Image incubrix-test-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 2.34kB done
+#1 DONE 0.0s
+
+#2 [internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.21kB done
+#2 DONE 0.0s
+
+#3 [internal] load metadata for docker.io/library/node:22-bookworm-slim
+#3 DONE 0.9s
+
+#4 [internal] load .dockerignore
+#4 transferring context: 98B done
+#4 DONE 0.0s
+
+#5 [ 1/22] FROM docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d
+#5 resolve docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d 0.0s done
+#5 DONE 0.0s
+
+#6 [internal] load build context
+#6 transferring context: 912.06kB 0.5s done
+#6 DONE 0.5s
+
+#7 [20/22] COPY apps/cli/package.json apps/cli/
+#7 CACHED
+
+#8 [12/22] COPY packages/nlu/package.json packages/nlu/
+#8 CACHED
+
+#9 [15/22] COPY packages/semantic/package.json packages/semantic/
+#9 CACHED
+
+#10 [17/22] COPY packages/otio/package.json packages/otio/
+#10 CACHED
+
+#11 [14/22] COPY packages/render/package.json packages/render/
+#11 CACHED
+
+#12 [ 8/22] COPY packages/db/package.json packages/db/
+#12 CACHED
+
+#13 [18/22] COPY apps/api/package.json apps/api/
+#13 CACHED
+
+#14 [ 9/22] COPY packages/storage/package.json packages/storage/
+#14 CACHED
+
+#15 [ 3/22] WORKDIR /app
+#15 CACHED
+
+#16 [ 4/22] COPY package.json package-lock.json .npmrc ./
+#16 CACHED
+
+#17 [13/22] COPY packages/store/package.json packages/store/
+#17 CACHED
+
+#18 [16/22] COPY packages/llm/package.json packages/llm/
+#18 CACHED
+
+#19 [11/22] COPY packages/errors/package.json packages/errors/
+#19 CACHED
+
+#20 [ 5/22] COPY packages/contracts/package.json packages/contracts/
+#20 CACHED
+
+#21 [ 6/22] COPY packages/engine/package.json packages/engine/
+#21 CACHED
+
+#22 [10/22] COPY packages/media/package.json packages/media/
+#22 CACHED
+
+#23 [19/22] COPY apps/worker/package.json apps/worker/
+#23 CACHED
+
+#24 [ 7/22] COPY packages/config/package.json packages/config/
+#24 CACHED
+
+#25 [ 2/22] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core ca-certificates && rm -rf /var/lib/apt/lists/*
+#25 CACHED
+
+#26 [21/22] RUN npm ci
+#26 CACHED
+
+#27 [22/22] COPY . .
+#27 DONE 18.2s
+
+#28 exporting to image
+#28 exporting layers
+#28 exporting layers 112.2s done
+#28 exporting manifest sha256:901567ea1f6f266ff1143b6e08c0e2ab422e762a522969625e175952b8f974c0 0.0s done
+#28 exporting config sha256:a35323be9545f56d3865f17c7bbec849220ab623fa5f1451b967d89ee9e8306c 0.0s done
+#28 exporting attestation manifest sha256:b3edfeb1cca4f0ccf995d510b058c58c730b7431a2f5ae5b4c2ec0109273335c 0.0s done
+#28 exporting manifest list sha256:da23e4fbe23f346db40d07cce315e63bac52071912784f4e0aea19c89ff1f58a 0.0s done
+#28 naming to docker.io/library/incubrix-test-app:latest done
+#28 unpacking to docker.io/library/incubrix-test-app:latest
+#28 unpacking to docker.io/library/incubrix-test-app:latest 19.1s done
+#28 DONE 131.4s
+
+#29 resolving provenance for metadata file
+#29 DONE 0.1s
+ Image incubrix-test-app Built 
+ Container incubrix-ps2-init-test-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Waiting 
+ Container incubrix-ps2-otio-tests-1 Waiting 
+ Container incubrix-ps2-otio-test-1 Waiting 
+ Container incubrix-ps2-asr-tests-1 Exited 
+ Container incubrix-ps2-otio-tests-1 Exited 
+ Container incubrix-ps2-init-test-1 Exited 
+ Container incubrix-ps2-otio-test-1 Healthy 
+ Container incubrix-ps2-tests-run-3ede7bd865d3 Creating 
+ Container incubrix-ps2-tests-run-3ede7bd865d3 Created 
+
+> incubrix@0.0.0 test
+> npm test --workspaces --if-present
+
+
+> @incubrix/config@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/config
+
+ ✓ test/envdoc.test.ts (5 tests) 15ms
+ ✓ test/config.test.ts (12 tests) 63ms
+
+ Test Files  2 passed (2)
+      Tests  17 passed (17)
+   Start at  19:05:56
+   Duration  1.01s (transform 179ms, setup 0ms, collect 494ms, tests 78ms, environment 1ms, prepare 300ms)
+
+
+> @incubrix/contracts@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/contracts
+
+ ✓ test/schema.test.ts (4 tests) 367ms
+
+ Test Files  1 passed (1)
+      Tests  4 passed (4)
+   Start at  19:05:58
+   Duration  1.11s (transform 102ms, setup 0ms, collect 317ms, tests 367ms, environment 0ms, prepare 100ms)
+
+
+> @incubrix/db@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/db
+
+ ✓ test/files.test.ts (5 tests) 16ms
+ ✓ test/postgres.test.ts (8 tests) 354ms
+
+ Test Files  2 passed (2)
+      Tests  13 passed (13)
+   Start at  19:05:59
+   Duration  995ms (transform 139ms, setup 0ms, collect 303ms, tests 370ms, environment 1ms, prepare 225ms)
+
+
+> @incubrix/engine@0.0.0 test
+> eslint . && vitest run
+
+
+ RUN  v2.1.9 /app/packages/engine
+
+ ✓ test/new_ops.test.ts (39 tests) 145ms
+ ✓ test/session.test.ts (32 tests) 158ms
+ ✓ test/reorder.test.ts (26 tests) 246ms
+ ✓ test/replay.test.ts (23 tests) 45ms
+ ✓ test/frame_rounding.test.ts (14 tests) 172ms
+ ✓ test/worked_example.test.ts (11 tests | 1 skipped) 68ms
+ ✓ test/atoms.test.ts (21 tests) 30ms
+ ✓ test/search_resolve.test.ts (21 tests) 38ms
+ ✓ test/mutants.test.ts (14 tests) 32ms
+ ✓ test/grid_warnings.test.ts (11 tests) 71ms
+ ✓ test/canonical.test.ts (18 tests) 32ms
+ ✓ test/hard_cases.test.ts (6 tests) 2660ms
+   ✓ property: incremental application equals a full replay > after every command of a random edit/undo/redo sequence, snapshots agree with replaying the log 414ms
+   ✓ property: the session path (caches, incremental priming) equals a fresh full replay > after every turn of a random session (edits, undo, redo, restore, rejected turns), the cached timeline equals a replay on a brand-new engine 2188ms
+ ✓ test/schema.test.ts (4 tests) 370ms
+ ✓ test/lint_guard.test.ts (12 tests) 986ms
+   ✓ engine purity lint rules > forbids Date in packages/engine/src 915ms
+
+ Test Files  14 passed (14)
+      Tests  251 passed | 1 skipped (252)
+   Start at  19:06:05
+   Duration  6.58s (transform 1.41s, setup 0ms, collect 5.25s, tests 5.05s, environment 6ms, prepare 2.37s)
+
+
+> @incubrix/errors@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/errors
+
+ ✓ test/errors.test.ts (3 tests) 8ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  19:06:12
+   Duration  648ms (transform 91ms, setup 0ms, collect 90ms, tests 8ms, environment 0ms, prepare 146ms)
+
+
+> @incubrix/llm@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/llm
+
+ ✓ test/gemini.test.ts (3 tests) 79ms
+ ✓ test/llm.test.ts (9 tests) 377ms
+
+ Test Files  2 passed (2)
+      Tests  12 passed (12)
+   Start at  19:06:13
+   Duration  1.66s (transform 689ms, setup 0ms, collect 1.21s, tests 455ms, environment 2ms, prepare 360ms)
+
+
+> @incubrix/media@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/media
+
+ ✓ test/pure.test.ts (17 tests) 17ms
+ ✓ test/voiced.test.ts (4 tests) 206ms
+ ✓ test/music.test.ts (1 test) 248ms
+ ✓ test/ffmpeg.test.ts (8 tests) 2990ms
+
+ Test Files  4 passed (4)
+      Tests  30 passed (30)
+   Start at  19:06:15
+   Duration  3.74s (transform 347ms, setup 0ms, collect 594ms, tests 3.46s, environment 1ms, prepare 701ms)
+
+
+> @incubrix/nlu@0.0.0 test
+> eslint . && vitest run
+
+
+ RUN  v2.1.9 /app/packages/nlu
+
+ ✓ test/fillers.test.ts (5 tests) 90ms
+ ✓ test/advanced.test.ts (9 tests) 179ms
+ ✓ test/rules.test.ts (24 tests) 535ms
+ ✓ test/time.test.ts (19 tests) 19ms
+ ✓ test/semantic.test.ts (5 tests) 93ms
+ ✓ test/lint_guard.test.ts (9 tests) 934ms
+   ✓ nlu purity lint rules > forbids Date in packages/nlu/src 876ms
+
+ Test Files  6 passed (6)
+      Tests  71 passed (71)
+   Start at  19:06:22
+   Duration  3.45s (transform 852ms, setup 0ms, collect 2.35s, tests 1.85s, environment 2ms, prepare 1.18s)
+
+
+> @incubrix/otio@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/otio
+
+ ✓ test/payload.test.ts (6 tests) 26ms
+
+ Test Files  1 passed (1)
+      Tests  6 passed (6)
+   Start at  19:06:26
+   Duration  1.12s (transform 495ms, setup 0ms, collect 704ms, tests 26ms, environment 0ms, prepare 134ms)
+
+
+> @incubrix/render@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/render
+
+ ✓ test/musicexpr.test.ts (4 tests) 845ms
+stdout | test/render.test.ts > render smoke > an unedited timeline renders to the same frame count, with the flash and the tone together
+{"frames":150,"verification":{"ok":true,"timelineFrames":150,"renderedFrames":150,"frameDifference":0,"audioVsVideoUs":0,"audioVsVideoFrames":0,"problems":[]},"m":{"videoFrames":150,"events":6,"offsetsFrames":[0.002604166666666667,0.0020833333333358794,0.0020833333333358794,0.0020833333333358794,0.002604166666664298,0.0020833333333358794],"maxAbsOffsetFrames":0.002604166666666667,"unmatched":0}}
+
+ ✓ test/render.test.ts (1 test) 2695ms
+   ✓ render smoke > an unedited timeline renders to the same frame count, with the flash and the tone together 2691ms
+ ✓ test/features.test.ts (8 tests) 23382ms
+   ✓ every effect the timeline holds renders > speed keeps the pitch: a 1 kHz tone is still 1 kHz at 2x and at 4x (chained atempo) 5046ms
+   ✓ every effect the timeline holds renders > slow motion (0.5x) lengthens the video, keeps the pitch 1904ms
+   ✓ every effect the timeline holds renders > mute silences exactly the word; bleep replaces it with a 1 kHz tone at the documented level 2197ms
+   ✓ every effect the timeline holds renders > mute ALONE (no bleep, no music) renders: the aeval output must carry a named stereo layout for the AAC encoder 1425ms
+   ✓ every effect the timeline holds renders > captions: colour, text window and removal after a cut; auto-captions follow the surviving words 7698ms
+   ✓ every effect the timeline holds renders > long caption text is read from a file (quotes and colons cannot break the filter graph) 1159ms
+   ✓ background music follows the engine's ducking envelope > rendered music level equals the timeline envelope (base, ducked and mid-ramp) within 1 dB 3942ms
+ ✓ test/accuracy.test.ts (6 tests) 42906ms
+   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > 25 fps: length equals the timeline within 1 frame and the flash/tone offset is within 1 frame 4181ms
+   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > 30 fps: length equals the timeline within 1 frame and the flash/tone offset is within 1 frame 3210ms
+   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > 29.97 fps: length equals the timeline within 1 frame and the flash/tone offset is within 1 frame 3121ms
+   ✓ frame accuracy after a mix of edits (generated media, ffprobe + decode measurement) > a variable-frame-rate clip renders through a CFR proxy; the original is untouched 4644ms
+   ✓ a large graph: 300 pieces stay frame-exact > one instruction with 300 cuts renders in ONE ffmpeg run, frame count exact, A/V offset within 1 frame 27326ms
+   ✓ no-audio source > fails clearly with NO_AUDIO_TRACK and renders nothing 420ms
+
+ Test Files  4 passed (4)
+      Tests  19 passed (19)
+   Start at  19:06:27
+   Duration  44.29s (transform 934ms, setup 0ms, collect 2.49s, tests 69.83s, environment 2ms, prepare 714ms)
+
+
+> @incubrix/semantic@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/semantic
+
+ ✓ test/semantic.test.ts (3 tests) 43ms
+
+ Test Files  1 passed (1)
+      Tests  3 passed (3)
+   Start at  19:07:12
+   Duration  1.52s (transform 601ms, setup 0ms, collect 962ms, tests 43ms, environment 0ms, prepare 119ms)
+
+
+> @incubrix/storage@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/storage
+
+ ✓ test/retention.test.ts (2 tests) 11ms
+ ✓ test/s3.test.ts (4 tests) 164ms
+ ✓ test/retry.test.ts (5 tests) 2518ms
+   ✓ storage 5xx handling (SeaweedFS answers 500 when it has no writable volume) > a write that fails twice with 500 and then works succeeds 756ms
+   ✓ storage 5xx handling (SeaweedFS answers 500 when it has no writable volume) > gives up after the attempt limit and throws the last error (a full store does not heal) 1756ms
+
+ Test Files  3 passed (3)
+      Tests  11 passed (11)
+   Start at  19:07:14
+   Duration  3.55s (transform 379ms, setup 0ms, collect 1.77s, tests 2.69s, environment 1ms, prepare 477ms)
+
+
+> @incubrix/store@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/packages/store
+
+ ✓ test/log.test.ts (2 tests) 17ms
+ ✓ test/urlguard.test.ts (18 tests) 37ms
+ ✓ test/store.test.ts (20 tests) 680ms
+
+ Test Files  3 passed (3)
+      Tests  40 passed (40)
+   Start at  19:07:18
+   Duration  2.64s (transform 1.15s, setup 0ms, collect 3.54s, tests 734ms, environment 4ms, prepare 870ms)
+
+
+> @incubrix/api@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/api
+
+ ✓ test/api.test.ts (35 tests) 31748ms
+   ✓ API behaviour > openapi.yaml matches the running service > real responses validate against their schemas 3462ms
+   ✓ API behaviour > possible fillers reach the parser > markers stored in the transcript manifest turn 'remove the ums' into a question; nothing is cut before the answer 316ms
+   ✓ API behaviour > errors > a video without audio fails its job with NO_AUDIO_TRACK and cannot start a session 577ms
+   ✓ API behaviour > idempotency (every POST) > the same bytes uploaded twice (different keys) are stored ONCE: both videos point at the same object 565ms
+   ✓ API behaviour > idempotency (every POST) > videos: same key + same file -> same ids, one video, one job, one stored object 874ms
+   ✓ API behaviour > idempotency (every POST) > sessions: same key + same body -> same session; different body -> 409 317ms
+   ✓ API behaviour > idempotency (every POST) > instructions: a repeated key replays the answer and does NOT apply the edit twice 330ms
+   ✓ API behaviour > jobs, cache, hints, warnings > the same file again is a transcript cache HIT (ASR not called); a different ASR model is a MISS 2832ms
+   ✓ API behaviour > jobs, cache, hints, warnings > num_speakers reaches the ASR/diarization call and changes the cache key 2395ms
+   ✓ API behaviour > jobs, cache, hints, warnings > variable frame rate is accepted with a warning in the job manifest and on the video 1170ms
+   ✓ retention (real storage) > an expired render is deleted with its manifest, the job says expired and has no links, the original stays 2469ms
+   ✓ meaning search through the API (mock embeddings) > a meaning match is listed with its time before anything is cut; a repeated query uses the cached vector 1810ms
+   ✓ language-model fallback through the API (mock model) > is used only for text the rules cannot read; the engine applies the result; the manifest has tokens and cost; a repeat is a cache hit with no model call 2046ms
+   ✓ language-model fallback through the API (mock model) > a model reply that is not valid commands is a rejection and the timeline does not change 1090ms
+   ✓ language-model fallback through the API (mock model) > LLM_PROVIDER=gemini with an empty key: the fallback is off and the answer says so 1008ms
+   ✓ public deployment guards (M6a) > a video longer than MAX_VIDEO_DURATION_S fails its job with VIDEO_TOO_LONG before ASR runs 1698ms
+   ✓ OpenTimelineIO export > OTIO_PROVIDER=mock: returns the .otio file and an S3 link; the file has the clips in output order, speed, the caption marker, and the timeline length (±1 frame) 3581ms
+   ✓ OpenTimelineIO export > OTIO_PROVIDER=http: returns the .otio file and an S3 link; the file has the clips in output order, speed, the caption marker, and the timeline length (±1 frame) 1316ms
+   ✓ possible speaker-label swap through the API (mock ASR flags a turn on purpose) > the flag reaches the atoms, the intake warns, and an edit touching the flagged words warns 1404ms
+ ✓ test/e2e.test.ts (5 tests) 5940ms
+   ✓ worked example over HTTP (mock ASR) > uploads the clip, the job runs with progress and succeeds, the original is stored untouched 1498ms
+   ✓ worked example over HTTP (mock ASR) > step 8: render is a background job; the file matches the timeline length; the original is untouched (sha256 before and after) 3895ms
+ ✓ test/runner.test.ts (6 tests) 15480ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > determinism: the same session run 3 times through the runner gives the same timeline_hash at every step 12958ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a step that does not match its expectation fails the session, and the failure is kept in results.json 372ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > per-step expectations on the answer text: expect_warning, expect_no_warning, expect_text, expect_options (a mismatch fails the step and says what) 480ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > a video without audio stops at intake with NO_AUDIO_TRACK and the session says so 620ms
+   ✓ session runner and batch runner (HTTP clients of the API, mock ASR) > batch: runs every file in a folder, one result folder each, summary.json lists pass and fail 746ms
+ ✓ test/scenarios.test.ts (50 tests) 82846ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s01_worked_example: Worked example, 8 steps, with the numbers worked out by hand from the fixture 5048ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s02_undo_redo_new_edit_clears_redo: Undo/redo: 1 instruction = 1 undo; a new edit clears redo 414ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s03_nothing_to_undo: Rejected answers are normal answers and change nothing 411ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s04_caption_sentence_cut_then_restored: Hard case: caption added, its sentence cut, cut restored (caption returns) 429ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s05_partial_cut_of_captioned_phrase: Advanced: documented rule for a partial cut of a captioned phrase 430ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s06_reorder_then_mute_a_word: Hard case: section reordered, then a word muted 6946ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s07_filler_removal_into_a_bleeped_word: Hard case: filler removal cutting into a bleeped word 370ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s08_remove_range_sent_twice: Hard case: 'remove 0:30-0:40' sent twice 368ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s09_caption_beyond_the_end: Hard case: 'add a caption at 5:00' on a shorter video 338ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s10_time_phrases: Hard case: '80 seconds', 'a minute twenty', 'the last 10 seconds' 359ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s11_undo_second_to_last_cut_keep_music: Hard case: 'undo the second-to-last cut but keep the music' 16187ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s12_make_it_bigger_without_a_caption: Hard case: 'make it bigger' with no caption 342ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s13_everything_after_thanks_said_four_times: Hard case: 'remove everything after I say thanks' (said four times) 386ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s14_everything_after_thanks_first_one: Hard case: the answer picks the first of four 'thanks' 461ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s15_speed_up_10x: Hard case: 'speed up 10x' is outside the documented range 377ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s16_cut_everything: Hard case: 'cut everything' 351ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s17_three_parts_one_impossible: Hard case: a three-part instruction with one impossible part 348ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s18_guest_old_job_assumes_host_asks_lead_in: Advanced: 'remove everything the guest says about their old job' removes only the guest lines and asks about the lead-in 1687ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s19_guest_old_job_with_the_lead_in: Advanced: second option also removes the host's lead-in 445ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s20_possible_label_swap_warns: Outstanding: possible speaker-label swaps warn 362ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s21_overlapping_speech_warns: Outstanding: overlapping speech warns 314ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s23_one_speaker_video_has_no_guest: Rejected, not guessed: 'the guest' in a one-speaker video 365ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s24_variable_frame_rate_phone_video: Hard case: a phone video with variable frame rate 3413ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s26_sped_up_caption_keeps_a_minimum: Advanced: sped-up captions keep a readable minimum (about 0.7 s) 358ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s27_overlapping_speed_changes: Advanced: documented rule for overlapping speed changes (the later one replaces the earlier) 404ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s28_repeated_instructions_are_safe: Advanced: repeated instructions are safe 464ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s29_pricing_asks_which_of_three: Advanced: ambiguity asks, with specific options 402ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s30_meaning_search_cost_finds_pricing: Advanced: meaning-based search ('cost' finds 'pricing') shows matches before cutting 380ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s31_nothing_matches_is_rejected: Rejected, not guessed: a topic that is not in the video 350ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s32_make_it_shorter_asks_with_options: Advanced: 'make it shorter' asks with measurable options 345ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s33_the_boring_part_states_its_assumption: Advanced: 'the boring part' says what it can and cannot judge 364ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s34_put_back_what_i_removed_lists_the_cuts: Advanced: 'put back what I removed' with two cuts asks which 384ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s35_that_caption_with_two_captions_asks: Advanced: 'that caption' with two captions asks which 372ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s36_remove_fillers_then_undo: Must-have: remove fillers (um, uh, 'like' only as a filler) 376ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s37_silences_and_a_protected_pause: Advanced: deliberate pauses survive silence removal 500ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s38_keep_only_and_restore_edit_n: Must-have: keep only a range; restore a specific earlier edit 381ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s39_music_ducks_and_renders: Must-have: background music that ducks under speech, rendered 16600ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s40_low_confidence_word_warns_before_bleeping: Outstanding: low-confidence words are flagged, not bleeped blindly 1259ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s41_auto_captions_follow_cut_and_speed: Must-have: auto-captions from the words that survive 5372ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s42_original_time_policy_is_stated: Must-have: one stated time policy, mentioned in answers 382ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s43_caption_styling_edits: Must-have: caption text, colour, size, bold, position 424ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s44_unreadable_instruction_is_rejected: Three-way answers: an instruction nobody can read is rejected, not guessed 386ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s45_cut_beyond_the_end: Out of range is rejected 393ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s46_slow_motion: Must-have: speed up / slow down 5152ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s47_move_into_itself_is_rejected: Reorder: a target inside the moved span is rejected 376ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > s48_cut_then_caption_follows_the_words: Must-have: captions stick to their words after a cut 416ms
+   ✓ scenarios (mock ASR, rules parser, real API + worker + database + storage + ffmpeg) > determinism: six scenarios run again twice give the same timeline_hash at every step 5377ms
+ ✓ test/ratelimit.test.ts (5 tests) 10ms
+
+ Test Files  5 passed (5)
+      Tests  101 passed (101)
+   Start at  19:07:21
+   Duration  142.03s (transform 1.22s, setup 0ms, collect 4.49s, tests 136.02s, environment 1ms, prepare 478ms)
+
+
+> @incubrix/cli@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/cli
+
+ ✓ test/format.test.ts (2 tests) 94ms
+
+ Test Files  1 passed (1)
+      Tests  2 passed (2)
+   Start at  19:09:44
+   Duration  698ms (transform 77ms, setup 0ms, collect 192ms, tests 94ms, environment 0ms, prepare 95ms)
+
+
+> @incubrix/worker@0.0.0 test
+> vitest run
+
+
+ RUN  v2.1.9 /app/apps/worker
+
+ ✓ test/atoms.test.ts (6 tests) 19ms
+ ✓ test/callback.test.ts (3 tests) 58ms
+ ✓ test/download.test.ts (4 tests) 1906ms
+   ✓ downloadUrl > the total time allowed is the timeoutMs option (a slow body is cut, DOWNLOAD_FAILED or an abort, never a hang) 1818ms
+ ✓ test/asr.test.ts (4 tests) 3586ms
+   ✓ HttpAsrClient > only ASR_TIMEOUT_S limits the wait: a 2.5 s answer is cut by a 1 s timeout and accepted by a 30 s one 3513ms
+
+ Test Files  4 passed (4)
+      Tests  17 passed (17)
+   Start at  19:09:45
+   Duration  4.26s (transform 768ms, setup 0ms, collect 1.35s, tests 5.57s, environment 1ms, prepare 680ms)
+
+
+real	9m40.194s
+user	0m2.678s
+sys	0m1.349s

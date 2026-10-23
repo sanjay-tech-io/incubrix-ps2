@@ -97,7 +97,7 @@ export async function runIntake(d: WorkerDeps, job: JobRow): Promise<void> {
       sha256 = await sha256File(original);
       if (video.sha256 && video.sha256 !== sha256) throw new Error("the stored original does not match its recorded sha256");
     } else {
-      const got = await downloadUrl(video.source_url!, original, { maxBytes: d.cfg.MAX_UPLOAD_MB * 1024 * 1024, allowPrivate: d.cfg.URL_ALLOW_PRIVATE });
+      const got = await downloadUrl(video.source_url!, original, { maxBytes: d.cfg.MAX_UPLOAD_MB * 1024 * 1024, allowPrivate: d.cfg.URL_ALLOW_PRIVATE, timeoutMs: d.cfg.DOWNLOAD_TIMEOUT_S * 1000 });
       if (!looksLikeMp4OrMov(await readHead(original))) throw new ApiError("UNSUPPORTED_MEDIA_TYPE", "The downloaded file is not an MP4 or MOV video.");
       sha256 = got.sha256;
       const ext = /\.mov(\?|$)/i.test(video.source_url!) ? ".mov" : ".mp4";

@@ -1,0 +1,12 @@
+# 2026-10-23T17:29:14Z over-cap upload (2,362,232,012 bytes = 2.2 GiB > 2048 MiB) through the public URL
+--- curl
+http=413 time=0.055606s sent_bytes=196303
+{"error":{"code":"FILE_TOO_LARGE","message":"The request is larger than the upload limit of this deployment.","retryable":false,"details":{}}}
+--- node fetch x6
+status 413 {"error":{"code":"FILE_TOO_LARGE","message":"The request is larger than the upload limit of this deployment.","retryable":false,"details":{}}} 0.09s
+status 413 {"error":{"code":"FILE_TOO_LARGE","message":"The request is larger than the upload limit of this deployment.","retryable":false,"details":{}}} 0.102s
+status 413 {"error":{"code":"FILE_TOO_LARGE","message":"The request is larger than the upload limit of this deployment.","retryable":false,"details":{}}} 0.118s
+status 413 {"error":{"code":"FILE_TOO_LARGE","message":"The request is larger than the upload limit of this deployment.","retryable":false,"details":{}}} 0.094s
+status 413 {"error":{"code":"FILE_TOO_LARGE","message":"The request is larger than the upload limit of this deployment.","retryable":false,"details":{}}} 0.102s
+status 413 {"error":{"code":"FILE_TOO_LARGE","message":"The request is larger than the upload limit of this deployment.","retryable":false,"details":{}}} 0.093s
+--- URL intake of a file whose DECLARED size is above the cap is rejected in the worker with FILE_TOO_LARGE (apps/worker/test/download.test.ts, local server)

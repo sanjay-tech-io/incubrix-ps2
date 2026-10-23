@@ -31,7 +31,7 @@ class DiarizationSettings:
     # A word overlapsSpeech when a second speaker covers at least this fraction of it.
     overlap_min: float = 0.2
     num_speakers: int = -1  # -1 = let the clustering decide
-    cluster_threshold: float = 0.5  # sherpa FastClustering distance threshold, used when num_speakers == -1
+    cluster_threshold: float = 0.3  # sherpa FastClustering cosine-distance threshold, used when no count is given. Chosen by a sweep over 6 clips: docs/TEST_MEDIA.md, docs/raw/m5d_diarization_sweep.jsonl
 
     @staticmethod
     def from_env(env: Mapping[str, str]) -> "DiarizationSettings":
@@ -43,7 +43,7 @@ class DiarizationSettings:
             uncertain_below=num("DIARIZATION_UNCERTAIN_BELOW", 0.6),
             overlap_min=num("DIARIZATION_OVERLAP_MIN_FRACTION", 0.2),
             num_speakers=int(num("DIARIZATION_NUM_SPEAKERS", -1)),
-            cluster_threshold=num("DIARIZATION_CLUSTER_THRESHOLD", 0.5),
+            cluster_threshold=num("DIARIZATION_CLUSTER_THRESHOLD", 0.3),
         )
         if not 0 < s.uncertain_below <= 1:
             raise ValueError("DIARIZATION_UNCERTAIN_BELOW must be in (0, 1]")
