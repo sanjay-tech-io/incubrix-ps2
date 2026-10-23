@@ -1,0 +1,12 @@
+A|Welcome to the show. Today my guest is here to talk about careers and how people change them.
+A|So tell me about your old job.
+B|My old job was in a factory and I worked there for ten years. I started on the night shift and I stayed.
+B|The old job was hard, but the people were kind and I learned a lot from them.
+A|That sounds like a long time. What made you leave?
+B|The factory closed, so I had to find something new. I took a course in the evenings.
+A|And what do you do now?
+B|Now I build software for a small company and I love it. The work is quiet and I can think.
+A|Do you ever miss the factory?
+B|Sometimes I miss my old job, mostly the early mornings and the noise of the machines.
+A|Thank you for being here today.
+B|Thank you for having me.

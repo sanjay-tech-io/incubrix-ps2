@@ -1,0 +1,143 @@
+{
+  "name": "03_reorder_then_mute",
+  "video": "media/test_single.mp4",
+  "passed": true,
+  "video_id": "vid_50395304a71e4aa28c3a",
+  "session_id": "ses_72ad42ef1496471cabce",
+  "intake": {
+    "job_id": "job_df928435911d4a6389ba",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped.",
+      "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 4954
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "move 0:30-0:40 to the end",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "move",
+          "span": {
+            "start": {
+              "atom": "a_97d15879e51b",
+              "offsetUs": 2600000
+            },
+            "end": {
+              "atom": "a_00a50a65284e",
+              "offsetUs": 5640000
+            }
+          },
+          "before": null
+        }
+      ],
+      "summary": "Length 3:00.300 -> 3:00.300 (unchanged). Moved the section starting \"So\" from 0:31.901 to 2:52.701. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "0:40.000 is inside the word \"welcome\", so the cut point moved to 0:39.501, the nearest silence.",
+        "This edit touches words the transcript is unsure about: \"So\" (speaker uncertain), \"So\" (low confidence), \"thanks,\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "fdc62978456bff1322f19153bca8991237b7bad386126761819b5dcb29842a6b",
+      "duration_s": 180.3,
+      "ms": 22,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "mute \"welcome\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "add_effect",
+          "effectId": "fx_1_0",
+          "range": {
+            "from": "a_2137b52ae255",
+            "to": "a_2137b52ae255"
+          },
+          "params": {
+            "kind": "mute"
+          }
+        }
+      ],
+      "summary": "Length 3:00.300 -> 3:00.300 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "This edit touches words the transcript is unsure about: \"welcome\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "3a03f79051bfb0e1083a40625582af7667cdcf87725970dabf607c47eeed1c8d",
+      "duration_s": 180.3,
+      "ms": 17,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": null,
+      "answer_sent": null,
+      "expected": "succeeded",
+      "passed": true,
+      "http_status": 202,
+      "status": "succeeded",
+      "operations": null,
+      "summary": null,
+      "question": null,
+      "options": null,
+      "reason": null,
+      "llm": null,
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": null,
+      "warnings": null,
+      "timeline_hash": "3a03f79051bfb0e1083a40625582af7667cdcf87725970dabf607c47eeed1c8d",
+      "duration_s": 180.3,
+      "ms": 144391,
+      "note": null,
+      "failure": null,
+      "kind": "render",
+      "render": {
+        "job_id": "job_e4ea31f5b0a14747b76e",
+        "job_status": "succeeded",
+        "error": null,
+        "file": "render_1.mp4",
+        "frames": 5409,
+        "duration_s": 180.3,
+        "timeline_hash": "3a03f79051bfb0e1083a40625582af7667cdcf87725970dabf607c47eeed1c8d",
+        "render_seconds_per_output_minute": 38.9,
+        "source_unchanged": true,
+        "manifest_file": "render_1_manifest.json"
+      }
+    }
+  ],
+  "final": {
+    "timeline_hash": "3a03f79051bfb0e1083a40625582af7667cdcf87725970dabf607c47eeed1c8d",
+    "duration_s": 180.3
+  },
+  "error": null
+}

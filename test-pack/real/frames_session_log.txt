@@ -1,0 +1,13 @@
+[worked_example_real_frames] video vid_9c7044217ea047758718, job job_f3e3aac58ec948c09dd2
+[worked_example_real_frames] step 1: applied ok
+[worked_example_real_frames] step 2: applied ok
+[worked_example_real_frames] step 3: render ok 
+[worked_example_real_frames] step 4: applied ok
+[worked_example_real_frames] step 5: render ok 
+[worked_example_real_frames] step 6: needs_clarification ok
+[worked_example_real_frames] step 7: applied ok
+[worked_example_real_frames] step 8: applied ok
+[worked_example_real_frames] step 9: applied ok
+[worked_example_real_frames] step 10: render ok 
+PASS worked_example_real_frames  -> /home/g23m143/incubrix-ps2/test-pack/real/worked_example_real_frames
+frames exit 0

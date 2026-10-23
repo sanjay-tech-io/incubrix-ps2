@@ -1,0 +1,108 @@
+{
+  "seed": null,
+  "render": {
+    "proxy": {
+      "fps": "30/1",
+      "colour": "none",
+      "sha256": "d77fb21ed7e0012b2e6cd94ab1e43ec1408b62d05aa81f8b6b23366b75fae6a7",
+      "reasons": [
+        "hevc source (decoded once into an H.264 proxy)"
+      ],
+      "warnings": [],
+      "created_by": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers",
+      "storage_key": "videos/vid_360ec584ae7a4219b0e2/proxy_cfr_30-1_v1.mp4",
+      "source_sha256": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd"
+    },
+    "job_id": "job_e4ea31f5b0a14747b76e",
+    "output": {
+      "fps": "30/1",
+      "width": 1280,
+      "height": 720,
+      "pixFmt": "yuv420p",
+      "seconds": 180.3,
+      "audioCodec": "aac",
+      "size_bytes": 33549911,
+      "videoCodec": "h264",
+      "videoFrames": 5409,
+      "audioDurationUs": 180300000,
+      "videoDurationUs": 180300000,
+      "formatDurationUs": 180300000
+    },
+    "pieces": 3,
+    "source": {
+      "video_id": "vid_50395304a71e4aa28c3a",
+      "unchanged": true,
+      "sha256_before": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd",
+      "sha256_after_local": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd",
+      "sha256_after_stored": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd"
+    },
+    "session_id": "ses_72ad42ef1496471cabce",
+    "timeline_hash": "3a03f79051bfb0e1083a40625582af7667cdcf87725970dabf607c47eeed1c8d",
+    "rendered_frames": 5409,
+    "timeline_frames": 5409,
+    "frame_difference": 0,
+    "ffmpeg_peak_rss_mb": 417,
+    "filter_script_sha256": "53520c2a862d4623fa601c97a77b425761522b8d14e54ab66d4703545291f3d6",
+    "audio_minus_video_frames": 0,
+    "render_seconds_per_output_minute": 38.9
+  },
+  "rights": {
+    "software": {
+      "engine": "own code",
+      "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+      "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked"
+    },
+    "reference": "SOURCES.md",
+    "source_media": "not stated by the uploader"
+  },
+  "timings": {
+    "proxy_s": 3.773,
+    "total_s": 142.957,
+    "render_s": 134.307,
+    "upload_s": 0.326,
+    "verify_s": 2.375,
+    "fetch_original_s": 2.165
+  },
+  "settings": {
+    "crf": 20,
+    "fps": "30/1",
+    "audio": "aac 192k 48 kHz stereo",
+    "bleep": "1 kHz sine, level 0.25",
+    "preset": "veryfast",
+    "pix_fmt": "yuv420p",
+    "movflags": "+faststart",
+    "max_height": 720,
+    "caption_size": "sizePt relative to a 720-line frame"
+  },
+  "warnings": [
+    "4 word(s) had no length after cleaning and were dropped.",
+    "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them.",
+    "video starts 18 ms after the audio in the original; the render keeps that offset."
+  ],
+  "providers": {
+    "font": "DejaVu Sans / DejaVu Sans Bold (Bitstream Vera + public-domain changes licence; commercial use allowed), see SOURCES.md",
+    "media": {
+      "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers"
+    },
+    "music": null,
+    "audio_codec": {
+      "name": "aac (ffmpeg native encoder)"
+    },
+    "video_codec": {
+      "name": "libx264",
+      "note": "H.264 (GPL libx264 inside the ffmpeg build; used as an external program, not linked)"
+    }
+  },
+  "ai_generated": {
+    "music": false,
+    "transcript_words": true,
+    "captions_text_is_user_text": false,
+    "input_media_marked_ai_generated": false
+  },
+  "cost_estimate": {
+    "usd": null,
+    "note": "No price per CPU second is configured, so no money figure is given.",
+    "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+    "cpu_seconds": 420.746
+  }
+}

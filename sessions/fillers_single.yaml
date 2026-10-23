@@ -1,0 +1,9 @@
+# "remove the ums" on the real single-speaker recording. Reports what the ASR transcribed as fillers and what the voiced-gap
+# detector marked as POSSIBLE fillers; nothing is cut unless the answer says so.
+name: fillers_single
+video: media/test_single.mp4
+num_speakers: 1
+rights: own recording, consent self
+steps:
+  - say: remove the ums
+    expect: needs_clarification

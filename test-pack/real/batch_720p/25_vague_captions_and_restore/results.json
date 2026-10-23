@@ -1,0 +1,354 @@
+{
+  "name": "25_vague_captions_and_restore",
+  "video": "media/test_single.mp4",
+  "passed": true,
+  "video_id": "vid_7db75e5004144c3b9ef4",
+  "session_id": "ses_cf660c0d9bdf42e6adaa",
+  "intake": {
+    "job_id": "job_68381e32ab4e4bbd9a25",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped.",
+      "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 4940
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "make it bigger",
+      "answer_sent": null,
+      "expected": "rejected",
+      "passed": true,
+      "http_status": 200,
+      "status": "rejected",
+      "operations": [],
+      "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": "There is no caption to change (bigger). Add one first, for example: add a caption \"Hello\" on \"welcome\".",
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 19,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "add a caption \"One\" on \"welcome to our channel\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "add_effect",
+          "effectId": "fx_0_0",
+          "range": {
+            "from": "a_2137b52ae255",
+            "to": "a_02df35e8374d"
+          },
+          "params": {
+            "kind": "caption",
+            "text": "One",
+            "style": {
+              "color": "#ffffff",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 3:00.300 -> 3:00.300 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "This edit touches words the transcript is unsure about: \"welcome\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "c764568a57964645cada58a87645503ed2bd6dcf26143f8756bff551b6c75aab",
+      "duration_s": 180.3,
+      "ms": 19,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "add a caption \"Two\" on \"pricing plans in Cloud Code\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "add_effect",
+          "effectId": "fx_1_0",
+          "range": {
+            "from": "a_aeccbb7c5d7e",
+            "to": "a_1a54ba1415e4"
+          },
+          "params": {
+            "kind": "caption",
+            "text": "Two",
+            "style": {
+              "color": "#ffffff",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 3:00.300 -> 3:00.300 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "This edit touches words the transcript is unsure about: \"pricing\" (low confidence), \"plans\" (low confidence), \"Cloud\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "a41649ffb5da062a782b387aaa53be542d60819b65769ec8b2624fd5a18362ad",
+      "duration_s": 180.3,
+      "ms": 16,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 4,
+      "say": "make that caption red",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "There are 2 captions. Which one?",
+      "options": [
+        "caption \"One\" (fx_0_0)",
+        "caption \"Two\" (fx_1_0)"
+      ],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "a41649ffb5da062a782b387aaa53be542d60819b65769ec8b2624fd5a18362ad",
+      "duration_s": 180.3,
+      "ms": 17,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 5,
+      "say": "the second one",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "update_effect",
+          "effectId": "fx_1_0",
+          "params": {
+            "kind": "caption",
+            "text": "Two",
+            "style": {
+              "color": "#ff0000",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 3:00.300 -> 3:00.300 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "e8073afb9150f6a8a0b44525fa96dbf9e508f97a1eea1d249579da40e7a09771",
+      "duration_s": 180.3,
+      "ms": 17,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 6,
+      "say": "cut 0:50-0:55",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_e97ac8331de1",
+              "offsetUs": 26667
+            },
+            "end": {
+              "atom": "a_b92e5d5bd5a3",
+              "offsetUs": 0
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:00.300 -> 2:55.667 (-0:04.633). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "0:50.000 is inside the word \"plan.\", so the cut point moved to 0:50.240, the nearest silence.",
+        "0:55.000 is inside the word \"accordingly\", so the cut point moved to 0:54.900, the nearest word edge (no silence nearby)."
+      ],
+      "timeline_hash": "833bfa49eb075da6dca8f88e7477437192ae6fa0805e3a86cff9da32005b9a84",
+      "duration_s": 175.666667,
+      "ms": 26,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 7,
+      "say": "cut 1:00-1:05",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_62df0365d41d",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_daf97c7cfbcf",
+              "offsetUs": 0
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 2:55.667 -> 2:50.533 (-0:05.133). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "1:04.633 is inside the word \"having\", so the cut point moved to 1:04.560, the nearest word edge (no silence nearby). The cut point at 1:04.560 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+        "1:09.633 is inside the word \"like\", so the cut point moved to 1:09.720, the nearest word edge (no silence nearby). The cut point at 1:09.720 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+        "This edit touches words the transcript is unsure about: \"of\" (low confidence), \"its\" (low confidence), \"slot\" (low confidence), \"and\" (low confidence), \"it's\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "8c4e4bc0268d401607bdf2b0280b0a7f2812b3514ac50ec97e7fbfab70b5ee39",
+      "duration_s": 170.533333,
+      "ms": 23,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 8,
+      "say": "put back what I removed",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "Several cuts are in effect. Which one should I put back?",
+      "options": [
+        "edit 4: removed original 0:50.267-0:54.900",
+        "edit 5: removed original 1:04.560-1:09.720"
+      ],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "8c4e4bc0268d401607bdf2b0280b0a7f2812b3514ac50ec97e7fbfab70b5ee39",
+      "duration_s": 170.533333,
+      "ms": 14,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 9,
+      "say": "the first one",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "restore",
+          "targetGroup": 4
+        }
+      ],
+      "summary": "Length 2:50.533 -> 2:55.167 (+0:04.633). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f8c01fbff879f71fb222a800d5d678e9779f3a8dca47556e0f041b81d24229c8",
+      "duration_s": 175.166667,
+      "ms": 18,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "f8c01fbff879f71fb222a800d5d678e9779f3a8dca47556e0f041b81d24229c8",
+    "duration_s": 175.166667
+  },
+  "error": null
+}

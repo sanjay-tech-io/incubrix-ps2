@@ -1,0 +1,9 @@
+[
+{"file":"test-pack/real/worked_example_real/render_1.mp4","frames":3911,"fps":"30/1","colour":[255,0,0],"runs":[{"first_frame":286,"last_frame":346,"start_s":9.533,"end_s":11.567}]}
+,
+{"file":"test-pack/real/worked_example_real_frames/render_1.mp4","frames":5409,"fps":"30/1","colour":[255,0,0],"runs":[{"first_frame":1186,"last_frame":1246,"start_s":39.533,"end_s":41.567}]}
+,
+{"file":"test-pack/real/worked_example_real_frames/render_2.mp4","frames":4509,"fps":"30/1","colour":[255,0,0],"runs":[{"first_frame":286,"last_frame":346,"start_s":9.533,"end_s":11.567}]}
+,
+{"file":"test-pack/real/worked_example_real_frames/render_3.mp4","frames":4811,"fps":"30/1","colour":[255,0,0],"runs":[{"first_frame":1186,"last_frame":1246,"start_s":39.533,"end_s":41.567}]}
+]

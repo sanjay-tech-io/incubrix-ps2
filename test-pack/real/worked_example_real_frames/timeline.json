@@ -1,0 +1,94 @@
+{
+  "session_id": "ses_123b197f31534b089ab6",
+  "timeline": {
+    "sourceSha256": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd",
+    "segments": [
+      {
+        "id": "seg_0",
+        "span": {
+          "start": {
+            "atom": "a_da6442cd4fcc",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_97e2198b92c0",
+            "offsetUs": 593333
+          }
+        }
+      },
+      {
+        "id": "seg_1",
+        "span": {
+          "start": {
+            "atom": "a_e97ac8331de1",
+            "offsetUs": 693333
+          },
+          "end": {
+            "atom": "a_716d559960c7",
+            "offsetUs": 1693800
+          }
+        }
+      }
+    ],
+    "speedRegions": [
+      {
+        "span": {
+          "start": {
+            "atom": "a_2c14e7322110",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_f29f2d9f8077",
+            "offsetUs": 1640000
+          }
+        },
+        "rate": {
+          "num": 2,
+          "den": 1
+        }
+      }
+    ],
+    "effects": [
+      {
+        "id": "fx_0_0",
+        "range": {
+          "from": "a_2137b52ae255",
+          "to": "a_02df35e8374d"
+        },
+        "params": {
+          "kind": "caption",
+          "text": "Welcome!",
+          "style": {
+            "color": "#ff0000",
+            "sizePt": 32,
+            "bold": true
+          },
+          "position": "bottom"
+        },
+        "state": "active",
+        "partial": false,
+        "fragmented": false,
+        "createdInGroup": 1
+      }
+    ],
+    "protectedPauses": [],
+    "music": null,
+    "autoCaption": null,
+    "durationUs": 160366667
+  },
+  "timeline_hash": "28940db052b1024275002974398d645d54385be31e01a2858a912fae783c24ef",
+  "duration_s": 160.366667,
+  "effects": [
+    {
+      "id": "fx_0_0",
+      "kind": "caption",
+      "text": "Welcome!",
+      "state": "active",
+      "partial": false,
+      "fragmented": false,
+      "start_s": 39.5013,
+      "end_s": 41.54,
+      "start": "0:39.501"
+    }
+  ]
+}

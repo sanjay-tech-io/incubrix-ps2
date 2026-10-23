@@ -1,6 +1,6 @@
 # Project status (project memory)
 
-Updated at the end of every milestone. Last update: M5 (2026-10-22), M6a deploy (2026-10-22), M4 (2026-10-21), on top of M3, M2, the infra workstream and M1c. Everything below was run, not assumed; "not verified" means exactly that.
+Updated at the end of every milestone. Last update: M5c real-footage run (2026-10-23), M5 (2026-10-22), M6a deploy (2026-10-22), M4 (2026-10-21), on top of M3, M2, the infra workstream and M1c. Everything below was run, not assumed; "not verified" means exactly that.
 
 ## Done and verified
 | Item | Proof (command) |
@@ -108,6 +108,18 @@ Secrets rotated after approval (S3 keys, DB password): old-key link 200 before, 
 
 M5 NOT done or not verified: see REVIEW_M5.md section 7. **Live demo redeployed with M5 on 2026-10-22** (docs/DEPLOY.md, last section); tests now run on their own stack and no longer touch the live services (REVIEW_M5 section 8).
 
+### M5c: real footage without new recordings (details and raw output: docs/WORKED_EXAMPLE_REAL.md, docs/TEST_MEDIA.md, `test-pack/real/`)
+| Item | Result | Proof |
+|---|---|---|
+| Worked example on `media/test_single.mp4` with real ASR (phrase "welcome to our channel", 7 pricing options, "the second one"; other steps as the brief) | all 9 steps as the brief expects, undo hash == hash before the restore, second run: 9 of 9 hashes identical (cached transcript) | `sessions/worked_example_real.yaml`, `docs/WORKED_EXAMPLE_REAL.md` |
+| Full-resolution render | 1920x1080, 3911 frames = timeline (difference 0), caption on frames 286-346 = timeline 9.5013-11.540 s, audio onset 9.517 s vs caption 9.533 s | `test-pack/real/worked_example_real/`, `caption_frame_scans.json` (`scripts/caption_frames.mjs`) |
+| Caption before cut / after cut / after restore (720p renders) | 1186-1246, 286-346, 1186-1246; frames equal timeline in all three | `test-pack/real/worked_example_real_frames/` |
+| Fillers on the real recording | 0 transcribed, 29 possible markers listed with times; no ground truth | `test-pack/real/fillers_single/`, TEST_MEDIA.md section 2 |
+| Two speakers | **FAILED at default settings**: dialogue clip 1 speaker of 2 (hint did not help), NASA clip no separation; 0.3 threshold diagnostic works on synthetic clips only and made one wrong cut, one miss | TEST_MEDIA.md section 3, `test-pack/real/` |
+| Batch, 720p veryfast | **30 of 36 pass, 6 fail** (01, 02: brief phrase not in the recording; 04: no "um"; 13b and nasa: 1 speaker; 22: "money") | `test-pack/real/batch_720p/summary.json`, `batch_720p_log.txt` |
+
+M5c NOT verified: any real two-person edit (none exists); filler ground truth; diarization on real speech (fails); audio sync by ear; the worked-example run through the public URL (the 200 MB upload hit `fetch failed`, cause not confirmed; run over the Docker network instead); full-resolution frame checks before/after the cut (720p only). Side effect to know: an `.env` change plus `docker compose up -d worker` recreated api, postgres, s3 and asr (about a minute of downtime of the live demo at ~16:35 UTC); `RENDER_MAX_HEIGHT` and the diarization threshold are back to their defaults (0 / 0.5).
+
 ## Not verified (not built or not run)
 M3 leftovers: see REVIEW_M3.md section 9. The M2 list below is partly outdated: render, batch runner and the worker are built now.
 M2 leftovers: render (501 stub), the real LLM provider (interface only), reorder/mute/bleep/captions by voice-of-speaker ("what the guest says"), music by text, batch runner CLI, deploy, a worker crash mid-job end to end (stale re-queue is tested at store level only), in-memory rate limit (one process only), API_TOKEN is unset in the default compose (open API), DNS-rebinding hardening, ASR service has no auth (internal network only). Older list follows.
@@ -119,7 +131,8 @@ Docker / docker compose (Docker is not installed on the dev machine); rendering 
 Full list: `CLAUDE.md` section "Decisions" and `docs/DESIGN.md`. Headlines: Node 22; real ASR/diarization in the demo and mocks for tests only; cursor = (atom, offset) with offset only inside silences and on the frame grid; partial-cut rule and inactive effects; 0.7 s minimum caption time; speed range 0.25x-4x (`MAX_SPEED`); later speed change replaces the earlier rate; restore is a new op that points at a group; effect ids count edit ops only; sha256 from @noble/hashes; no React UI (M7 = Swagger UI/Redoc from openapi.yaml).
 
 ## Open items
-- Record the single-speaker test video from `docs/TEST_VIDEO_SCRIPT.md`, add it to `SOURCES.md`.
+- ~~Record the single-speaker test video~~ superseded: no new recordings; `test_single.mp4` is used and the differences are in docs/TEST_MEDIA.md.
+- Diarization default (threshold 0.5) finds 1 speaker on every two-speaker clip tried; the hint is unreliable (docs/TEST_MEDIA.md section 3). Decide what to do before any two-speaker claim.
 - Decide how to resolve "the intro"/"that caption" style references (parser/history lookup, M2/M4).
 - Boundaries between two touching words cannot be frame-snapped; check the drift once M3 can render (REVIEW_M1B doubt 2).
 - Install/verify Docker on the GCP VM before M2.

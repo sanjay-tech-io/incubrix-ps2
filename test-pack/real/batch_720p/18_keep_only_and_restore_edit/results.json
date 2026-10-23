@@ -1,0 +1,142 @@
+{
+  "name": "18_keep_only_and_restore_edit",
+  "video": "media/test_single.mp4",
+  "passed": true,
+  "video_id": "vid_a03d5824399f4fc8825e",
+  "session_id": "ses_2d28fba760454758a405",
+  "intake": {
+    "job_id": "job_d41321150a674280858a",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped.",
+      "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 4864
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "cut 0:05-0:10",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_9967e7b79ed6",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_c05359cbaee8",
+              "offsetUs": 1833
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:00.300 -> 2:54.667 (-0:05.633). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "0:05.000 is inside the word \"and\", so the cut point moved to 0:04.880, the nearest word edge (no silence nearby). The cut point at 0:04.880 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+        "0:10.000 is inside the word \"What\", so the cut point moved to 0:10.532, the nearest silence.",
+        "This edit touches words the transcript is unsure about: \"So\" (speaker uncertain), \"What\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "4d79a8a23cecd8a6daa4b62363564d6a9ced6025f9056090cbdb6af33888238d",
+      "duration_s": 174.666667,
+      "ms": 24,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "keep only 0:30-1:30",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "keep_only",
+          "span": {
+            "start": {
+              "atom": "a_00a50a65284e",
+              "offsetUs": 1806667
+            },
+            "end": {
+              "atom": "a_7f16fca0c3c5",
+              "offsetUs": 0
+            }
+          }
+        }
+      ],
+      "summary": "Length 2:54.667 -> 0:59.633 (-1:55.033). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "1:35.667 is inside the word \"for\", so the cut point moved to 1:35.300, the nearest word edge (no silence nearby).",
+        "This edit touches words the transcript is unsure about: \"welcome\" (low confidence), \"pricing\" (low confidence), \"plans\" (low confidence), \"Cloud\" (low confidence), \"and\" (speaker uncertain, low confidence) and 20 more. Check the result."
+      ],
+      "timeline_hash": "a07cf9cc75b30f8c57f0a5e7f3499f30cde10d422a9484265e0d248c03c531e8",
+      "duration_s": 59.633333,
+      "ms": 18,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "restore edit 1",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "restore",
+          "targetGroup": 1
+        }
+      ],
+      "summary": "Length 0:59.633 -> 0:59.633 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "Nothing changed: the timeline is identical to before (this edit was already in effect)."
+      ],
+      "timeline_hash": "a07cf9cc75b30f8c57f0a5e7f3499f30cde10d422a9484265e0d248c03c531e8",
+      "duration_s": 59.633333,
+      "ms": 14,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "a07cf9cc75b30f8c57f0a5e7f3499f30cde10d422a9484265e0d248c03c531e8",
+    "duration_s": 59.633333
+  },
+  "error": null
+}

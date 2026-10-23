@@ -1,0 +1,197 @@
+{
+  "name": "17_silences_and_protected_pause",
+  "video": "media/test_single.mp4",
+  "passed": true,
+  "video_id": "vid_bf14343d8b1848a3925e",
+  "session_id": "ses_a735b26450a842e1b8fe",
+  "intake": {
+    "job_id": "job_8066c3f6110e4fba9523",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped.",
+      "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 5810
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "keep the pause at 2:00",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "protect_pause",
+          "range": {
+            "from": "a_6e465ba3a9b5",
+            "to": "a_6e465ba3a9b5"
+          }
+        }
+      ],
+      "summary": "Length 3:00.300 -> 3:00.300 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "d5dd5eab82783c26de91bf9f041510db615deb0b8ed7b5fa5ae77e2477006214",
+      "duration_s": 180.3,
+      "ms": 20,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "remove silences longer than 1 second",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_3d9247aec6fd",
+              "offsetUs": 160000
+            },
+            "end": {
+              "atom": "a_3d9247aec6fd",
+              "offsetUs": 2860000
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_97d15879e51b",
+              "offsetUs": 166667
+            },
+            "end": {
+              "atom": "a_97d15879e51b",
+              "offsetUs": 4333333
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_00a50a65284e",
+              "offsetUs": 173333
+            },
+            "end": {
+              "atom": "a_00a50a65284e",
+              "offsetUs": 5473333
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_c48d9294b8b1",
+              "offsetUs": 166667
+            },
+            "end": {
+              "atom": "a_c48d9294b8b1",
+              "offsetUs": 1366667
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_f29f2d9f8077",
+              "offsetUs": 173333
+            },
+            "end": {
+              "atom": "a_f29f2d9f8077",
+              "offsetUs": 1973333
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_8ba3c887a3b4",
+              "offsetUs": 166667
+            },
+            "end": {
+              "atom": "a_8ba3c887a3b4",
+              "offsetUs": 1466667
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_42190a0e9615",
+              "offsetUs": 177667
+            },
+            "end": {
+              "atom": "a_42190a0e9615",
+              "offsetUs": 977667
+            }
+          }
+        },
+        {
+          "type": "cut",
+          "reason": "silence",
+          "span": {
+            "start": {
+              "atom": "a_716d559960c7",
+              "offsetUs": 180000
+            },
+            "end": {
+              "atom": "a_716d559960c7",
+              "offsetUs": 1693800
+            }
+          }
+        }
+      ],
+      "summary": "Length 3:00.300 -> 2:41.533 (-0:18.767). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "Kept 1 long pause because it is pinned."
+      ],
+      "timeline_hash": "6d91cb7defba0da8d2623d249b6cf4f8431c418067c1b26c6cc5c6095909cb3e",
+      "duration_s": 161.533333,
+      "ms": 23,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "6d91cb7defba0da8d2623d249b6cf4f8431c418067c1b26c6cc5c6095909cb3e",
+    "duration_s": 161.533333
+  },
+  "error": null
+}

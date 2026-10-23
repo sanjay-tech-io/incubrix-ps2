@@ -1,0 +1,94 @@
+{
+  "session_id": "ses_1cc2fccaf5fb4ee3aa3f",
+  "timeline": {
+    "sourceSha256": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd",
+    "segments": [
+      {
+        "id": "seg_0",
+        "span": {
+          "start": {
+            "atom": "a_97d15879e51b",
+            "offsetUs": 2600000
+          },
+          "end": {
+            "atom": "a_97e2198b92c0",
+            "offsetUs": 593333
+          }
+        }
+      },
+      {
+        "id": "seg_1",
+        "span": {
+          "start": {
+            "atom": "a_e97ac8331de1",
+            "offsetUs": 693333
+          },
+          "end": {
+            "atom": "a_716d559960c7",
+            "offsetUs": 1693800
+          }
+        }
+      }
+    ],
+    "speedRegions": [
+      {
+        "span": {
+          "start": {
+            "atom": "a_2c14e7322110",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_f29f2d9f8077",
+            "offsetUs": 1640000
+          }
+        },
+        "rate": {
+          "num": 2,
+          "den": 1
+        }
+      }
+    ],
+    "effects": [
+      {
+        "id": "fx_0_0",
+        "range": {
+          "from": "a_2137b52ae255",
+          "to": "a_02df35e8374d"
+        },
+        "params": {
+          "kind": "caption",
+          "text": "Welcome!",
+          "style": {
+            "color": "#ff0000",
+            "sizePt": 32,
+            "bold": true
+          },
+          "position": "bottom"
+        },
+        "state": "active",
+        "partial": false,
+        "fragmented": false,
+        "createdInGroup": 1
+      }
+    ],
+    "protectedPauses": [],
+    "music": null,
+    "autoCaption": null,
+    "durationUs": 130366667
+  },
+  "timeline_hash": "5c590d67df2eed8de7c879ae8a9dbae6a3c4ccd13a1e7a24cfaac72687f6a16c",
+  "duration_s": 130.366667,
+  "effects": [
+    {
+      "id": "fx_0_0",
+      "kind": "caption",
+      "text": "Welcome!",
+      "state": "active",
+      "partial": false,
+      "fragmented": false,
+      "start_s": 9.5013,
+      "end_s": 11.54,
+      "start": "0:09.501"
+    }
+  ]
+}

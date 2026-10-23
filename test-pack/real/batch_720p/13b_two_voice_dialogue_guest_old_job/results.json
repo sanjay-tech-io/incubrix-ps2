@@ -1,0 +1,49 @@
+{
+  "name": "13b_two_voice_dialogue_guest_old_job",
+  "video": "media/two_voice_dialogue.mp4",
+  "passed": false,
+  "video_id": "vid_9d1ba1e054fe4497a8b0",
+  "session_id": "ses_87f10b6fdafd4186af40",
+  "intake": {
+    "job_id": "job_09be8c8e7bcc4874ac13",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "1 word(s) had no length after cleaning and were dropped.",
+      "20 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 1045
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "remove everything the guest says about their old job",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": false,
+      "http_status": 200,
+      "status": "rejected",
+      "operations": [],
+      "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": "Only one speaker was found in this video, so I cannot tell a guest from a host. Say what to remove by time, topic or phrase.",
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": 5,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "c86a58844abc579592d10c784fd04413cae0b3e80421d2708f2f1048d53b1ec7",
+      "duration_s": 58.2,
+      "ms": 19,
+      "note": null,
+      "failure": "expected needs_clarification, got rejected: Only one speaker was found in this video, so I cannot tell a guest from a host. Say what to remove by time, topic or phrase.",
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "c86a58844abc579592d10c784fd04413cae0b3e80421d2708f2f1048d53b1ec7",
+    "duration_s": 58.2
+  },
+  "error": null
+}

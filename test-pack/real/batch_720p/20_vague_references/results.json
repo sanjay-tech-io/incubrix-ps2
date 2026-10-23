@@ -1,0 +1,80 @@
+{
+  "name": "20_vague_references",
+  "video": "media/test_single.mp4",
+  "passed": true,
+  "video_id": "vid_17ceafd2dca7495ea426",
+  "session_id": "ses_2179ff918cba468daa63",
+  "intake": {
+    "job_id": "job_7fd0159cf4a5438789a1",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped.",
+      "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 4777
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "make it shorter",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "Shorter by removing what? These can go without changing what is said (nothing is cut until you choose; 180.3 s now):",
+      "options": [
+        "remove the 9 silences longer than 1 s (saves about 27.2 s)"
+      ],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 18,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "remove the boring part",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "I cannot judge what is boring. Assumption: you mean a stretch that stands out by one of these measurable signals. Which one should I remove? (Nothing is cut until you choose.)",
+      "options": [
+        "#1 the longest pause, 1:52.820-2:01.572 (8.8 s of silence)",
+        "#2 the slowest stretch of speech, 1:50.000-2:05.000 (7 words in 15 s, 0.5 words/s)",
+        "#3 the stretch with the most filler or low-confidence words, 1:00.000-1:15.000 (11 such words)"
+      ],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 17,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+    "duration_s": 180.3
+  },
+  "error": null
+}

@@ -1,0 +1,108 @@
+{
+  "seed": null,
+  "render": {
+    "proxy": {
+      "fps": "30/1",
+      "colour": "none",
+      "sha256": "d77fb21ed7e0012b2e6cd94ab1e43ec1408b62d05aa81f8b6b23366b75fae6a7",
+      "reasons": [
+        "hevc source (decoded once into an H.264 proxy)"
+      ],
+      "warnings": [],
+      "created_by": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers",
+      "storage_key": "videos/vid_360ec584ae7a4219b0e2/proxy_cfr_30-1_v1.mp4",
+      "source_sha256": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd"
+    },
+    "job_id": "job_608b41cb9cf748daad05",
+    "output": {
+      "fps": "30/1",
+      "width": 1280,
+      "height": 720,
+      "pixFmt": "yuv420p",
+      "seconds": 156.666667,
+      "audioCodec": "aac",
+      "size_bytes": 29567323,
+      "videoCodec": "h264",
+      "videoFrames": 4700,
+      "audioDurationUs": 156666000,
+      "videoDurationUs": 156666667,
+      "formatDurationUs": 156667000
+    },
+    "pieces": 4,
+    "source": {
+      "video_id": "vid_7ee88b534e5c43cda198",
+      "unchanged": true,
+      "sha256_before": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd",
+      "sha256_after_local": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd",
+      "sha256_after_stored": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd"
+    },
+    "session_id": "ses_45fc616eeaf34b86ade6",
+    "timeline_hash": "1a2b134ec7ed4fd3f8d58b2b3d65282bdf911e52b761fc9670bc258790bed2a2",
+    "rendered_frames": 4700,
+    "timeline_frames": 4700,
+    "frame_difference": 0,
+    "ffmpeg_peak_rss_mb": 510,
+    "filter_script_sha256": "708e6bdb2a8278745d7c3bd373f55f400575b53bd11239e1a0125f3bad39b66a",
+    "audio_minus_video_frames": -0.02,
+    "render_seconds_per_output_minute": 50.3
+  },
+  "rights": {
+    "software": {
+      "engine": "own code",
+      "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+      "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked"
+    },
+    "reference": "SOURCES.md",
+    "source_media": "not stated by the uploader"
+  },
+  "timings": {
+    "proxy_s": 5.401,
+    "total_s": 156.581,
+    "render_s": 146.48,
+    "upload_s": 0.363,
+    "verify_s": 2.323,
+    "fetch_original_s": 2.005
+  },
+  "settings": {
+    "crf": 20,
+    "fps": "30/1",
+    "audio": "aac 192k 48 kHz stereo",
+    "bleep": "1 kHz sine, level 0.25",
+    "preset": "veryfast",
+    "pix_fmt": "yuv420p",
+    "movflags": "+faststart",
+    "max_height": 720,
+    "caption_size": "sizePt relative to a 720-line frame"
+  },
+  "warnings": [
+    "4 word(s) had no length after cleaning and were dropped.",
+    "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them.",
+    "video starts 18 ms after the audio in the original; the render keeps that offset."
+  ],
+  "providers": {
+    "font": "DejaVu Sans / DejaVu Sans Bold (Bitstream Vera + public-domain changes licence; commercial use allowed), see SOURCES.md",
+    "media": {
+      "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers"
+    },
+    "music": null,
+    "audio_codec": {
+      "name": "aac (ffmpeg native encoder)"
+    },
+    "video_codec": {
+      "name": "libx264",
+      "note": "H.264 (GPL libx264 inside the ffmpeg build; used as an external program, not linked)"
+    }
+  },
+  "ai_generated": {
+    "music": false,
+    "transcript_words": true,
+    "captions_text_is_user_text": false,
+    "input_media_marked_ai_generated": false
+  },
+  "cost_estimate": {
+    "usd": null,
+    "note": "No price per CPU second is configured, so no money figure is given.",
+    "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+    "cpu_seconds": 433.74
+  }
+}

@@ -1,5 +1,8 @@
 # M4 review: Advanced level and fixes from M3
 
+## Test media and deviations (added 2026-10-23, M5c)
+Item 7 was later done **without new recordings**, with what exists; every deviation from the brief is in `docs/TEST_MEDIA.md` and `docs/WORKED_EXAMPLE_REAL.md`. In short: `media/test_single.mp4` (the recording below called "old") is now the Core single-speaker video, with the brief's step 1 phrase changed to "welcome to our channel" and step 3 asking about 7 pricing mentions instead of 3; the worked example passes on it end to end (hashes per step, render 3911 frames = timeline, caption frames measured). There is **no real two-person recording**: the multi-speaker evidence is a synthetic espeak-ng dialogue and a NASA podcast clip, and **diarization at the default settings found 1 speaker on both** (sessions 13b and `nasa_speaker_scoped_edit` fail and are kept; a threshold-0.3 diagnostic run on the synthetic clip works but cut one wrong line and missed one). Fillers on `test_single.mp4`: 0 transcribed, 29 possible markers, no ground truth. Full batch re-run at 720p: 30 of 36 sessions pass, 6 fail (list in TEST_MEDIA.md section 5). The statements in section 7 below about item 7 and the batch are therefore superseded by those two files.
+
 Branch `main`, nothing pushed. Raw outputs: `docs/raw/m4_*`. **Item 7 (real footage and the full batch) was NOT run: `media/test_single.mp4` is still the OLD recording (modified 14:06, the one you said not to use) and `media/test_two.mp4` does not exist. I stopped after item 6 as you asked.**
 
 ## 1. What was done

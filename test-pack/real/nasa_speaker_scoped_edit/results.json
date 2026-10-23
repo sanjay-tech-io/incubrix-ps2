@@ -1,0 +1,50 @@
+{
+  "name": "nasa_speaker_scoped_edit",
+  "video": "media/nasa_ep407_0_240.mp4",
+  "passed": false,
+  "video_id": "vid_452944ddd57c4a2398b3",
+  "session_id": "ses_d28eb4bc8f5b4a7f8fb1",
+  "intake": {
+    "job_id": "job_a60359492eaf4fcda81a",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "5 word(s) had no length after cleaning and were dropped.",
+      "Some words overlap another speaker; edits touching them will warn.",
+      "49 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 154017
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "remove everything the guest says about the astronaut program",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": false,
+      "http_status": 200,
+      "status": "rejected",
+      "operations": [],
+      "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": "Only one speaker was found in this video, so I cannot tell a guest from a host. Say what to remove by time, topic or phrase.",
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": 54,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "31587e26fd9c524765554a415700fa3e870b70bad780a00849e62cdb790fee5e",
+      "duration_s": 240,
+      "ms": 70,
+      "note": null,
+      "failure": "expected needs_clarification, got rejected: Only one speaker was found in this video, so I cannot tell a guest from a host. Say what to remove by time, topic or phrase.",
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "31587e26fd9c524765554a415700fa3e870b70bad780a00849e62cdb790fee5e",
+    "duration_s": 240
+  },
+  "error": null
+}

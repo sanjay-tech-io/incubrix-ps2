@@ -9,3 +9,6 @@ test-pack/**/*.mp4
 test-pack/**/*.mov
 test-pack/**/*.png
 docs/raw/_*
+
+# Real-footage runs (M5c): test-pack/real keeps results, manifests and logs, not the videos or the NASA transcripts.
+test-pack/real/nasa/

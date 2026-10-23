@@ -1,0 +1,216 @@
+{
+  "name": "23_llm_fallback",
+  "video": "media/test_single.mp4",
+  "passed": true,
+  "video_id": "vid_61f9fc9ec249444e87b9",
+  "session_id": "ses_52de9f5681514f4aa69f",
+  "intake": {
+    "job_id": "job_66547a3cdd824e7e8d19",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped.",
+      "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 5973
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "get rid of the stretch between half a minute and forty seconds",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_97d15879e51b",
+              "offsetUs": 2600000
+            },
+            "end": {
+              "atom": "a_00a50a65284e",
+              "offsetUs": 5640000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:00.300 -> 2:50.800 (-0:09.500). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": {
+        "provider": "gemini",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "1",
+        "cache": "hit",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "latency_ms": 21
+      },
+      "cost_usd": 0,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "Interpreted by the language model (gemini gemini-3.5-flash-lite) as: cut 0:30.000-0:40.000",
+        "0:40.000 is inside the word \"welcome\", so the cut point moved to 0:39.501, the nearest silence.",
+        "This edit touches words the transcript is unsure about: \"So\" (speaker uncertain), \"So\" (low confidence), \"thanks,\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "ec88145b8398a86388dfcf89b004d73749fd4197faec9d6e17aa5e532a65a7c9",
+      "duration_s": 170.8,
+      "ms": 50,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "make the clip from a minute twenty to a minute thirty run twice as fast",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "set_speed",
+          "span": {
+            "start": {
+              "atom": "a_a1e7c8398ac1",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_c48d9294b8b1",
+              "offsetUs": 1300000
+            }
+          },
+          "rate": {
+            "num": 2,
+            "den": 1
+          }
+        }
+      ],
+      "summary": "Length 2:50.800 -> 2:45.800 (-0:05.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": {
+        "provider": "gemini",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "1",
+        "cache": "hit",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "latency_ms": 1
+      },
+      "cost_usd": 0,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "Interpreted by the language model (gemini gemini-3.5-flash-lite) as: speed up 1:20.000-1:30.000 by 2x",
+        "1:29.500 is inside the word \"I\", so the cut point moved to 1:29.440, the nearest word edge (no silence nearby). The cut point at 1:29.440 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+        "This edit touches words the transcript is unsure about: \"I\" (speaker uncertain), \"I\" (low confidence), \"chose\" (speaker uncertain), \"cloud\" (low confidence), \"for\" (speaker uncertain). Check the result."
+      ],
+      "timeline_hash": "a4f1301fef87e6d03262e021ee2d72b5f96bf60fc74e05031b24bca77b70ee5c",
+      "duration_s": 165.8,
+      "ms": 15,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "put a spinning logo in the corner for the whole video",
+      "answer_sent": null,
+      "expected": "rejected",
+      "passed": true,
+      "http_status": 200,
+      "status": "rejected",
+      "operations": [],
+      "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": "I did not understand that. Adding a spinning logo is not supported by the available commands.",
+      "llm": {
+        "provider": "gemini",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "1",
+        "cache": "hit",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "latency_ms": 1
+      },
+      "cost_usd": 0,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "a4f1301fef87e6d03262e021ee2d72b5f96bf60fc74e05031b24bca77b70ee5c",
+      "duration_s": 165.8,
+      "ms": 15,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 4,
+      "say": "get rid of the stretch between half a minute and forty seconds",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_00a50a65284e",
+              "offsetUs": 5640000
+            },
+            "end": {
+              "atom": "a_8ba83dbe7d8b",
+              "offsetUs": 0
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 2:45.800 -> 2:35.600 (-0:10.200). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": {
+        "provider": "gemini",
+        "model": "gemini-3.5-flash-lite",
+        "prompt_version": "1",
+        "cache": "hit",
+        "input_tokens": 0,
+        "output_tokens": 0,
+        "latency_ms": 1
+      },
+      "cost_usd": 0,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "Interpreted by the language model (gemini gemini-3.5-flash-lite) as: cut 0:30.000-0:40.000",
+        "0:49.500 is inside the word \"from\", so the cut point moved to 0:49.680, the nearest word edge (no silence nearby). The cut point at 0:49.680 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+        "This edit touches words the transcript is unsure about: \"welcome\" (low confidence), \"pricing\" (low confidence), \"plans\" (low confidence), \"Cloud\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "856388c9f2c095184cbdf214b0de5dc7d0be8e536b4b38b0c99894ad600ade8c",
+      "duration_s": 155.6,
+      "ms": 17,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "856388c9f2c095184cbdf214b0de5dc7d0be8e536b4b38b0c99894ad600ade8c",
+    "duration_s": 155.6
+  },
+  "error": null
+}

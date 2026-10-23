@@ -1,0 +1,200 @@
+[01_worked_example] video vid_79f9d0836c764cf9b37a, job job_fde2f79a623942c78592
+[01_worked_example] step 1: rejected FAILED expected applied, got rejected: I could not find the words "welcome to the channel" in the video, so there is nothing to put the caption on.
+[01_worked_example] step 2: applied ok
+[01_worked_example] step 3: needs_clarification ok
+[01_worked_example] step 4: applied ok
+[01_worked_example] step 5: applied ok
+[01_worked_example] step 6: applied ok
+[01_worked_example] step 7: applied ok
+[01_worked_example] step 8: rejected FAILED expected applied, got rejected: There is no caption to change (red). Add one first, for example: add a caption "Hello" on "welcome".
+[01_worked_example] step 9: render ok 
+FAIL 01_worked_example
+[01b_worked_example_as_recorded] video vid_971a34df7c284a9ca9cb, job job_8d5179baa3e04124af84
+[01b_worked_example_as_recorded] step 1: applied ok
+[01b_worked_example_as_recorded] step 2: applied ok
+[01b_worked_example_as_recorded] step 3: needs_clarification ok
+[01b_worked_example_as_recorded] step 4: applied ok
+[01b_worked_example_as_recorded] step 5: applied ok
+[01b_worked_example_as_recorded] step 6: applied ok
+[01b_worked_example_as_recorded] step 7: applied ok
+[01b_worked_example_as_recorded] step 8: applied ok
+[01b_worked_example_as_recorded] step 9: render ok 
+PASS 01b_worked_example_as_recorded
+[02_caption_cut_restore] video vid_de62b98aaf27460fb429, job job_420933f66f0d472e9e73
+[02_caption_cut_restore] step 1: rejected FAILED expected applied, got rejected: I could not find the words "welcome to the channel" in the video, so there is nothing to put the caption on.
+[02_caption_cut_restore] step 2: applied ok
+[02_caption_cut_restore] step 3: applied ok
+[02_caption_cut_restore] step 4: rejected FAILED expected applied, got rejected: There is no caption to change (red). Add one first, for example: add a caption "Hello" on "welcome".
+FAIL 02_caption_cut_restore
+[02b_caption_cut_restore_as_recorded] video vid_e4f47ca67e54443b887c, job job_e1256fcd87b14834b63f
+[02b_caption_cut_restore_as_recorded] step 1: applied ok
+[02b_caption_cut_restore_as_recorded] step 2: applied ok
+[02b_caption_cut_restore_as_recorded] step 3: applied ok
+[02b_caption_cut_restore_as_recorded] step 4: applied ok
+PASS 02b_caption_cut_restore_as_recorded
+[03_reorder_then_mute] video vid_50395304a71e4aa28c3a, job job_df928435911d4a6389ba
+[03_reorder_then_mute] step 1: applied ok
+[03_reorder_then_mute] step 2: applied ok
+[03_reorder_then_mute] step 3: render ok 
+PASS 03_reorder_then_mute
+[04_filler_removal_into_bleep] video vid_b748bf8fb66a4f9fb4ce, job job_e45ee94c1067414bb687
+[04_filler_removal_into_bleep] step 1: rejected FAILED expected applied, got rejected: I could not find "um" in the video.
+[04_filler_removal_into_bleep] step 2: needs_clarification FAILED expected applied, got needs_clarification
+FAIL 04_filler_removal_into_bleep
+[05_remove_range_twice] video vid_a5ca8864b0a640528abf, job job_5f420fea17e047058271
+[05_remove_range_twice] step 1: applied ok
+[05_remove_range_twice] step 2: applied ok
+[05_remove_range_twice] step 3: applied ok
+[05_remove_range_twice] step 4: applied ok
+PASS 05_remove_range_twice
+[06_caption_beyond_the_end] video vid_ea577ef6abe744928b77, job job_7de36e1a3f8241b4acc3
+[06_caption_beyond_the_end] step 1: rejected ok
+PASS 06_caption_beyond_the_end
+[07_time_phrases] video vid_b8350c8d673144d9bd57, job job_72cfa573280f4c4b8ed0
+[07_time_phrases] step 1: applied ok
+[07_time_phrases] step 2: applied ok
+[07_time_phrases] step 3: applied ok
+[07_time_phrases] step 4: rejected ok
+PASS 07_time_phrases
+[08_undo_second_to_last_keep_music] video vid_2993b1c8eba0483d8d1a, job job_41d4354620a24f728ab0
+[08_undo_second_to_last_keep_music] step 1: applied ok
+[08_undo_second_to_last_keep_music] step 2: applied ok
+[08_undo_second_to_last_keep_music] step 3: applied ok
+[08_undo_second_to_last_keep_music] step 4: applied ok
+[08_undo_second_to_last_keep_music] step 5: applied ok
+[08_undo_second_to_last_keep_music] step 6: render ok 
+PASS 08_undo_second_to_last_keep_music
+[09_make_it_bigger_without_caption] video vid_8360ca5ced9941e09f85, job job_dd05aca6618a4d0aa60d
+[09_make_it_bigger_without_caption] step 1: rejected ok
+PASS 09_make_it_bigger_without_caption
+[10_everything_after_thanks] video vid_1032e0a63808472bb621, job job_96ee85f6a97748988411
+[10_everything_after_thanks] step 1: needs_clarification ok
+[10_everything_after_thanks] step 2: applied ok
+PASS 10_everything_after_thanks
+[11_impossible_speed_and_cut_everything] video vid_61c12bfc589448f3a867, job job_0da23f5a35fa47bc93f8
+[11_impossible_speed_and_cut_everything] step 1: rejected ok
+[11_impossible_speed_and_cut_everything] step 2: rejected ok
+[11_impossible_speed_and_cut_everything] step 3: rejected ok
+PASS 11_impossible_speed_and_cut_everything
+[12_three_parts_one_impossible] video vid_29358b51234d4598af1a, job job_fb9dd24a71ed42f098b2
+[12_three_parts_one_impossible] step 1: applied ok
+[12_three_parts_one_impossible] step 2: applied ok
+PASS 12_three_parts_one_impossible
+[13_two_speakers_guest_old_job] video vid_0f9b0505a6334d6aa46c, job job_b9936c62063a49bbb5f2
+[13_two_speakers_guest_old_job] step 1: needs_clarification ok
+PASS 13_two_speakers_guest_old_job
+[13b_two_voice_dialogue_guest_old_job] video vid_9d1ba1e054fe4497a8b0, job job_09be8c8e7bcc4874ac13
+[13b_two_voice_dialogue_guest_old_job] step 1: rejected FAILED expected needs_clarification, got rejected: Only one speaker was found in this video, so I cannot tell a guest from a host. Say what to remove by time, topic or phrase.
+FAIL 13b_two_voice_dialogue_guest_old_job
+[14_variable_frame_rate_phone] video vid_55304662689548969377, job job_1732c49fe84c427dbb57
+[14_variable_frame_rate_phone] step 1: applied ok
+[14_variable_frame_rate_phone] step 2: applied ok
+[14_variable_frame_rate_phone] step 3: applied ok
+[14_variable_frame_rate_phone] step 4: render ok 
+PASS 14_variable_frame_rate_phone
+[15_no_audio_track] video vid_9585a050c46f4833b61f, job job_7fc4deb96b974646a4f3
+[15_no_audio_track] intake failed with the expected NO_AUDIO_TRACK
+PASS 15_no_audio_track
+[16_auto_captions_and_speed] video vid_7ee88b534e5c43cda198, job job_005a96fcfd7442d1bcdf
+[16_auto_captions_and_speed] step 1: applied ok
+[16_auto_captions_and_speed] step 2: applied ok
+[16_auto_captions_and_speed] step 3: applied ok
+[16_auto_captions_and_speed] step 4: render ok 
+PASS 16_auto_captions_and_speed
+[17_silences_and_protected_pause] video vid_bf14343d8b1848a3925e, job job_8066c3f6110e4fba9523
+[17_silences_and_protected_pause] step 1: applied ok
+[17_silences_and_protected_pause] step 2: applied ok
+PASS 17_silences_and_protected_pause
+[18_keep_only_and_restore_edit] video vid_a03d5824399f4fc8825e, job job_d41321150a674280858a
+[18_keep_only_and_restore_edit] step 1: applied ok
+[18_keep_only_and_restore_edit] step 2: applied ok
+[18_keep_only_and_restore_edit] step 3: applied ok
+PASS 18_keep_only_and_restore_edit
+[19_meaning_search_cost] video vid_fc5579b773ae4dd8ba8f, job job_13a43e5528c64b7288e3
+[19_meaning_search_cost] step 1: needs_clarification ok
+PASS 19_meaning_search_cost
+[20_vague_references] video vid_17ceafd2dca7495ea426, job job_7fd0159cf4a5438789a1
+[20_vague_references] step 1: needs_clarification ok
+[20_vague_references] step 2: needs_clarification ok
+PASS 20_vague_references
+[21_meaning_search_pricing] video vid_d13a7043757b4750bbf5, job job_3e86e769fe154299b64c
+[21_meaning_search_pricing] step 1: needs_clarification ok
+[21_meaning_search_pricing] step 2: needs_clarification ok
+[21_meaning_search_pricing] step 3: needs_clarification ok
+[21_meaning_search_pricing] step 4: applied ok
+PASS 21_meaning_search_pricing
+[22_meaning_search_beyond_the_words] video vid_5c53a1ded7474c149a7f, job job_e8bdd964f33e4797b509
+[22_meaning_search_beyond_the_words] step 1: rejected FAILED expected needs_clarification, got rejected: No part of the current video mentions "money" or is about it by meaning.
+[22_meaning_search_beyond_the_words] step 2: needs_clarification ok
+[22_meaning_search_beyond_the_words] step 3: rejected ok
+FAIL 22_meaning_search_beyond_the_words
+[23_llm_fallback] video vid_61f9fc9ec249444e87b9, job job_66547a3cdd824e7e8d19
+[23_llm_fallback] step 1: applied ok
+[23_llm_fallback] step 2: applied ok
+[23_llm_fallback] step 3: rejected ok
+[23_llm_fallback] step 4: applied ok
+PASS 23_llm_fallback
+[24_repeat_is_safe] video vid_a3bcbab21635409c92b1, job job_5c6f60eb8e454f15879d
+[24_repeat_is_safe] step 1: applied ok
+[24_repeat_is_safe] step 2: applied ok
+[24_repeat_is_safe] step 3: applied ok
+[24_repeat_is_safe] step 4: applied ok
+[24_repeat_is_safe] step 5: applied ok
+[24_repeat_is_safe] step 6: applied ok
+[24_repeat_is_safe] step 7: applied ok
+PASS 24_repeat_is_safe
+[25_vague_captions_and_restore] video vid_7db75e5004144c3b9ef4, job job_68381e32ab4e4bbd9a25
+[25_vague_captions_and_restore] step 1: rejected ok
+[25_vague_captions_and_restore] step 2: applied ok
+[25_vague_captions_and_restore] step 3: applied ok
+[25_vague_captions_and_restore] step 4: needs_clarification ok
+[25_vague_captions_and_restore] step 5: applied ok
+[25_vague_captions_and_restore] step 6: applied ok
+[25_vague_captions_and_restore] step 7: applied ok
+[25_vague_captions_and_restore] step 8: needs_clarification ok
+[25_vague_captions_and_restore] step 9: applied ok
+PASS 25_vague_captions_and_restore
+[diag_13c_two_voice_dialogue_threshold_0_3] video vid_382c8ec3845c400a80eb, job job_d210304f0e1a48258d6b
+[diag_13c_two_voice_dialogue_threshold_0_3] step 1: needs_clarification ok
+[diag_13c_two_voice_dialogue_threshold_0_3] step 2: applied ok
+PASS diag_13c_two_voice_dialogue_threshold_0_3
+[fillers_single] video vid_0ad76764c379432fa34c, job job_7b2c663272824597a81a
+[fillers_single] step 1: needs_clarification ok
+PASS fillers_single
+[m5b_smoke_redeploy] video vid_82fca5f1de664b6d99fc, job job_6a32ecf4e01647688ff3
+[m5b_smoke_redeploy] step 1: applied ok
+[m5b_smoke_redeploy] step 2: applied ok
+[m5b_smoke_redeploy] step 3: render ok 
+PASS m5b_smoke_redeploy
+[m6a_smoke] video vid_185d76d935b94c22900b, job job_4f2aa42a951442c680c1
+[m6a_smoke] step 1: applied ok
+[m6a_smoke] step 2: applied ok
+[m6a_smoke] step 3: render ok 
+PASS m6a_smoke
+[m6a_smoke_after_rotation] video vid_35bbdd8087c4477c8eb2, job job_04611c04c632484d937e
+[m6a_smoke_after_rotation] step 1: applied ok
+[m6a_smoke_after_rotation] step 2: applied ok
+[m6a_smoke_after_rotation] step 3: render ok 
+PASS m6a_smoke_after_rotation
+[m6a_smoke_dotted_links] video vid_4d34ec5d4b094ee296aa, job job_7c4a1eb6919742cdb87c
+[m6a_smoke_dotted_links] step 1: applied ok
+[m6a_smoke_dotted_links] step 2: applied ok
+[m6a_smoke_dotted_links] step 3: render ok 
+PASS m6a_smoke_dotted_links
+[nasa_speaker_scoped_edit] video vid_d95b5486af8a4c2e906d, job job_3d806e93913a450a9116
+[nasa_speaker_scoped_edit] step 1: rejected FAILED expected needs_clarification, got rejected: Only one speaker was found in this video, so I cannot tell a guest from a host. Say what to remove by time, topic or phrase.
+FAIL nasa_speaker_scoped_edit
+[worked_example_real] video vid_8a5c3f6fb3734e6298de, job job_e624ea954b2c46659404
+[worked_example_real] step 1: applied ok
+[worked_example_real] step 2: applied ok
+[worked_example_real] step 3: needs_clarification ok
+[worked_example_real] step 4: applied ok
+[worked_example_real] step 5: applied ok
+[worked_example_real] step 6: applied ok
+[worked_example_real] step 7: applied ok
+[worked_example_real] step 8: applied ok
+[worked_example_real] step 9: render ok 
+PASS worked_example_real
+
+30/36 sessions passed, 6 failed -> /home/g23m143/incubrix-ps2/test-pack/real/batch_720p/summary.json
+batch exit 1

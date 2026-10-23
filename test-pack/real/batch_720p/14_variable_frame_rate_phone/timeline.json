@@ -1,0 +1,94 @@
+{
+  "session_id": "ses_4196856687b64dd5a893",
+  "timeline": {
+    "sourceSha256": "39510bf973fdb7b29c9ec66b82703a9781072172f999db4f572cbcfbd61577b6",
+    "segments": [
+      {
+        "id": "seg_0",
+        "span": {
+          "start": {
+            "atom": "a_bf44192688b2",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_67991652b8ff",
+            "offsetUs": 0
+          }
+        }
+      },
+      {
+        "id": "seg_1",
+        "span": {
+          "start": {
+            "atom": "a_9526957637ad",
+            "offsetUs": 260000
+          },
+          "end": {
+            "atom": "a_06ead6264d7c",
+            "offsetUs": 1214000
+          }
+        }
+      }
+    ],
+    "speedRegions": [
+      {
+        "span": {
+          "start": {
+            "atom": "a_bdd52f52be85",
+            "offsetUs": 946667
+          },
+          "end": {
+            "atom": "a_7e33f2e0468e",
+            "offsetUs": 906667
+          }
+        },
+        "rate": {
+          "num": 2,
+          "den": 1
+        }
+      }
+    ],
+    "effects": [
+      {
+        "id": "fx_0_0",
+        "range": {
+          "from": "a_fe126e5e7a36",
+          "to": "a_f3d5a29872bf"
+        },
+        "params": {
+          "kind": "caption",
+          "text": "Welcome!",
+          "style": {
+            "color": "#ffffff",
+            "sizePt": 32,
+            "bold": true
+          },
+          "position": "bottom"
+        },
+        "state": "active",
+        "partial": false,
+        "fragmented": false,
+        "createdInGroup": 1
+      }
+    ],
+    "protectedPauses": [],
+    "music": null,
+    "autoCaption": null,
+    "durationUs": 17766667
+  },
+  "timeline_hash": "de251255dc26290a1ca71a433ce6a42d76bf5217f6e5344a55194e07fb86b356",
+  "duration_s": 17.766667,
+  "effects": [
+    {
+      "id": "fx_0_0",
+      "kind": "caption",
+      "text": "Welcome!",
+      "state": "active",
+      "partial": false,
+      "fragmented": false,
+      "start_s": 6.008963,
+      "end_s": 7.053333,
+      "start": "0:06.009"
+    }
+  ]
+}

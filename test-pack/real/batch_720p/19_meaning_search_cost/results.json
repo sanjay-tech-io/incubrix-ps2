@@ -1,0 +1,57 @@
+{
+  "name": "19_meaning_search_cost",
+  "video": "media/test_single.mp4",
+  "passed": true,
+  "video_id": "vid_fc5579b773ae4dd8ba8f",
+  "session_id": "ses_880e484a06cc4c26a0ad",
+  "intake": {
+    "job_id": "job_13a43e5528c64b7288e3",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped.",
+      "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 4981
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "remove the part about cost",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "\"cost\" is mentioned 7 times. Which part should I remove?",
+      "options": [
+        "#1 at 0:39.501 [exact word]: \"welcome to our channel, let's say, pricing plans in Cloud Code.\"",
+        "#2 at 0:46.051 [exact word]: \"So the pricing plans in Cloud will be differing from each plan.\"",
+        "#3 at 0:50.958 [exact word]: \"So we have to choose each plan accordingly to our use and each plan will be having more of its slot features and it's not like chargey bd go plus or premium it just has only three plants free pro and max plan and after that you know the pricing in all the three plants will be extraordinarily clear and you know I chose I chose cloud pro plan pricing for my for building my project.\"",
+        "#4 at 1:39.720 [exact word]: \"So what I am trying to tell is like the cost or subscription fee of each plan will be meaning based the search.\"",
+        "#5 at 2:05.410 [exact word]: \"everything will be mentioned in the cloud cloud subscriptions and their pricing page.\"",
+        "#6 at 2:15.220 [exact word]: \"us say, let us see what are the plans that are mentioned in the pro pricing plan.\"",
+        "#7 at 2:26.080 [exact word]: \"and it's not like chargey video, so chargey video will be having different types of pricing and those things, those start -off stuffs and I\""
+      ],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": 37,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 58,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+    "duration_s": 180.3
+  },
+  "error": null
+}

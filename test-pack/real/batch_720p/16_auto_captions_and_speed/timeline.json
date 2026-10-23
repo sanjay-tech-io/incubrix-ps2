@@ -1,0 +1,64 @@
+{
+  "session_id": "ses_45fc616eeaf34b86ade6",
+  "timeline": {
+    "sourceSha256": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd",
+    "segments": [
+      {
+        "id": "seg_0",
+        "span": {
+          "start": {
+            "atom": "a_da6442cd4fcc",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_c05359cbaee8",
+            "offsetUs": 1833
+          }
+        }
+      },
+      {
+        "id": "seg_1",
+        "span": {
+          "start": {
+            "atom": "a_4ad8c62eb6a1",
+            "offsetUs": 712200
+          },
+          "end": {
+            "atom": "a_716d559960c7",
+            "offsetUs": 1693800
+          }
+        }
+      }
+    ],
+    "speedRegions": [
+      {
+        "span": {
+          "start": {
+            "atom": "a_00a50a65284e",
+            "offsetUs": 4906667
+          },
+          "end": {
+            "atom": "a_c9019ef862e7",
+            "offsetUs": 0
+          }
+        },
+        "rate": {
+          "num": 4,
+          "den": 1
+        }
+      }
+    ],
+    "effects": [],
+    "protectedPauses": [],
+    "music": null,
+    "autoCaption": {
+      "color": "#ffffff",
+      "sizePt": 32,
+      "bold": true
+    },
+    "durationUs": 156666667
+  },
+  "timeline_hash": "1a2b134ec7ed4fd3f8d58b2b3d65282bdf911e52b761fc9670bc258790bed2a2",
+  "duration_s": 156.666667,
+  "effects": []
+}

@@ -1,0 +1,21 @@
+{
+ "fetched": "2026-10-23",
+ "api": "commons.wikimedia.org/w/api.php?action=query&prop=imageinfo|revisions&iiprop=url|sha1|size|extmetadata",
+ "title": "File:HWHAP Ep407 A Place in Space to Call Home- Part 1 (Ep407 A Place in Space to Call Home Part 1).mp3",
+ "url": "https://upload.wikimedia.org/wikipedia/commons/6/67/HWHAP_Ep407_A_Place_in_Space_to_Call_Home-_Part_1_%28Ep407_A_Place_in_Space_to_Call_Home_Part_1%29.mp3",
+ "commons_sha1": "6fbbdc919e42c20a8275a8274da4e34248bc2d8c",
+ "size_bytes": 43552097,
+ "extmetadata": {
+  "LicenseShortName": "Public domain",
+  "License": "pd",
+  "UsageTerms": "Public domain",
+  "Copyrighted": "False",
+  "AttributionRequired": "false",
+  "Credit": "This image or video was catalogued by Lyndon B. Johnson Space Center of the United States <a href=\"https://en.wikipedia.org/wiki/NASA\" class=\"extiw\" title=\"w:NASA\">National Aeronautics and Space Administration</a> (NASA) under <b>Photo ID:</b> <a rel=\"nofollow\" class=\"external text\" href=\"https://images.nasa.gov/search?q=Ep407_A_Place_in_Space_to_Call_Home_Part_1&amp;page=1&amp;media=image,video,audio&amp;yearStart=1920&amp;yearEnd=2026\">Ep407_A_Place_in_Space_to_Call_Home_Part_1</a>.",
+  "Artist": "<a rel=\"nofollow\" class=\"external text\" href=\"https://www.nasa.gov/johnson/\">NASA Johnson Space Center</a>",
+  "Restrictions": "",
+  "DateTime": "2026-08-04 22:11:36"
+ },
+ "description_first_900_chars": "Nilufar Ramji Houston We Have a Podcast. Welcome to the official podcast of the NASA Johnson Space Center, Episode 407: A Place in Space to Call Home, Part 1. I'm Nilufar Ramji, and I'll be your host today. On this podcast, we bring in the experts, scientists, engineers, and astronauts, all to let you know what's going on in the world of human spaceflight and more. For the last 25 years, humans have lived and worked aboard the International Space Station… turning what was once a dream into a permanent home in space. What started as a bold idea has grown into a symbol of international cooperation, a cutting-edge orbiting laboratory and a launch pad for humanity's future exploration of the Moon, Mars, and beyond. For the astronauts who have lived aboard the space station for these 25 years, the experience of calling the space station home has looked a little different for each one. As part",
+ "local_file_sha256_matches_SOURCES_md": "a6b65f84a64161ca52ab5d6146db69c55a4add90bc0b914abfa84de0e61f60bb (sha256sum of the re-used download, 43552097 bytes = Commons size)"
+}

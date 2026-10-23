@@ -1,0 +1,10 @@
+# Real two-person speech: first 240 s of NASA JSC "Houston We Have a Podcast" Ep. 407 (public domain per Wikimedia Commons,
+# see SOURCES.md). Host Nilufar Ramji introduces the show until about 2:10; guest Tracy Dyson answers from about 2:20.
+# One speaker-scoped edit. Expectation is the brief's behaviour (applied or a clarification); the real result is recorded as is.
+name: nasa_speaker_scoped_edit
+video: media/nasa_ep407_0_240.mp4
+num_speakers: 2
+rights: public domain per Wikimedia Commons (NASA work); not committed to git
+steps:
+  - say: remove everything the guest says about the astronaut program
+    expect: needs_clarification
