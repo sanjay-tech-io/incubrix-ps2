@@ -40,6 +40,7 @@ Only Caddy publishes ports: **80 and 443** (`ss -ltn` shows nothing else; compos
 
 ## Cost of keeping the VM running
 - Machine: `e2-standard-4` (4 vCPU, 16 GB), zone `asia-south1-c` (Mumbai), from the metadata server.
+- Disk (final check, 2026-10-24, `docs/raw/final_disk.txt`): `df` shows a 99 GB root disk, 40 GB used, **56 GB free** (the "49 GB disk, 8 GB free" in the M5d section below was true on 2026-10-23 and is out of date). Docker: images 12.9 GB, volumes 11.9 GB, 7.3 GB of reclaimable build cache.
 - Price: a third-party listing (gcloud-compute.com, asia-south1 page, fetched 2026-10-22; currency not labelled) gives **0.161 per hour, 117.51 per month** for on-demand e2-standard-4. **Not checked against Google's own calculator.** This is compute only: the 49 GB boot disk, the external IP, network egress (every video download) and any sustained-use discount are not included. A stopped VM does not pay for compute but still pays for disk and, if static, the IP.
 - I could not read the billing account, so this is a list-price estimate, not a bill.
 
