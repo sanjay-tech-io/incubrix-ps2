@@ -1,0 +1,113 @@
+# Submission evidence
+
+One row per item, ready to copy into the Excel Submission Form. Columns: item | Yes / Partial / No | evidence | what is not covered.
+
+How to read it
+- **Item wording** comes from `docs/REQUIREMENTS.md`, my checklist of the brief. It is a paraphrase, not the brief itself. Compare the wording with the original brief before pasting it into the form.
+- **Yes** means I ran it and the evidence file shows it, within the limit written in the last column. **Partial** means part of it ran, or it ran only on synthetic or mocked data. **No** means it was not built or not run.
+- Evidence paths are relative to the repository root. `S01`..`S48` are `scenarios/sNN_*.yaml` (mock transcript, generated video, run by `docker compose run --rm tests`; result: `docs/raw/m5b_scenarios_run.txt`, 50 of 50). `Session NN` is `sessions/NN_*.yaml` on the real recording `media/test_single.mp4` (real ASR; result: `test-pack/real/batch_720p_m5e/summary.json`, 33 of 38 pass).
+- The scenarios test editing, not speech recognition. I list them as evidence for behaviour, never for recognition quality.
+- Media is not in git (`SOURCES.md`). Rendered videos are on this VM under `test-pack/` and git-ignored (`test-pack/INDEX.md`).
+- Nothing was run in GitHub Actions. The repo is pushed (`origin/main` equals `HEAD` when this file was written), but I have no record of a CI run.
+
+## 1. Must-haves
+
+| Item | Y/P/N | Evidence | Not covered |
+|---|---|---|---|
+| M1 Never damage the original: edits are history steps over the untouched source; verify via source hash and history | Yes | `apps/api/test/e2e.test.ts` (`source.unchanged`); every render manifest has `source.sha256_before/after_local/after_stored`, e.g. `test-pack/real/batch_720p_m5e/worked_example_real/render_1_manifest.json`; append-only log enforced in Postgres, `packages/db/test/postgres.test.ts`; `docs/DESIGN.md` | Checked by hash on renders and uploads. No test tries to overwrite the stored object from outside the API |
+| M2 Edits stick to content: captions, mutes and bleeps stay on their words after cuts, speed changes, reorders, restores | Yes | `packages/engine/test/hard_cases.test.ts`, `reorder.test.ts`, `worked_example.test.ts`; S04, S06, S48; caption position measured frame by frame before the cut, after the cut and after the restore: `docs/WORKED_EXAMPLE_REAL.md` section 3, `test-pack/real/caption_frame_scans.json` | Frame scan checks the caption on one recording. Mute and bleep audio checked on generated tones (`packages/render/test/features.test.ts`), not on real speech. Nobody listened to a render |
+| M3 Three-way answers on every instruction: applied, needs_clarification, rejected | Yes | `packages/engine/test/session.test.ts`; `apps/api/test/api.test.ts` (answers validated against `openapi.yaml`); S03, S44; `openapi.yaml` | Parser coverage is what the brief's cases needed. Anything it does not read is `rejected` with examples, or goes to the LLM fallback (see Advanced) |
+| M4 Predictable: same session gives the same timeline_hash on 3 runs; LLM only translates text to operations; all timeline logic is our own code | Yes | Engine replayed 3x: `session.test.ts`; through the HTTP runner 3x: `apps/api/test/runner.test.ts`; six scenarios run twice more with every step hash compared: `apps/api/test/scenarios.test.ts`; real footage, 2 runs, 9 of 9 hashes equal: `docs/WORKED_EXAMPLE_REAL.md` section 1; LLM limited to a closed command list: `packages/llm/test`; purity lint: `packages/engine/test/lint_guard.test.ts` | I did not compute "share of all sessions with identical hash over 3 runs". Evidence is the sessions named here. The second real run reused the cached transcript, so it shows deterministic editing, not deterministic ASR |
+| M5 Render matches the timeline: A/V sync within 1 frame, length within 1 frame, after any mix of edits | Yes | Generated clips at 25, 30, 29.97 fps, VFR and a 301-piece cut: length difference 0, worst A/V offset 0.44 frame: `docs/REVIEW_M3.md` section 3, `docs/raw/m3_accuracy_*.json`, `packages/render/test/accuracy.test.ts`; 11 real renders in the latest batch, frame difference 0 on all, audio minus video length at most 0.02 frame: `test-pack/real/batch_720p_m5e/*/render_1_manifest.json` | A/V offset measured with flash and beep on generated media only. On real footage I measured frame count and length plus one speech onset. HDR and 10-bit paths are untested. Nobody listened. Audio edit points were not listened to |
+| M6 All operations work: cut range, keep only, reorder, speed, mute/bleep words, caption/text overlay, auto-caption, remove fillers, remove silences > N, ducking music, undo/redo, restore | Yes | Engine: `packages/engine/test/new_ops.test.ts`, `reorder.test.ts`, `replay.test.ts`; parser: `packages/nlu/test/rules.test.ts`; scenarios S36 to S48; renders with real ffmpeg: `packages/render/test/features.test.ts`, `m5b_scenarios_run.txt` (7 scenarios render) | Fillers: the "like" rule is a fixed heuristic, not measured on real speech; on the real recording Whisper transcribed 0 fillers (`docs/TEST_MEDIA.md` section 2). Mute and bleep take words, not time ranges (S22, `docs/REVIEW_M5.md` 8.1). Music is only the built-in generated track |
+| M7 One stated time policy, mentioned in answers | Yes | Every summary contains "Time policy: ..." (`apps/api/test/e2e.test.ts`, `ratelimit.test.ts`); S42; `test-pack/real/batch_720p_m5e/worked_example_real/results.json` | Policy words are parsed by rules ("of the original"). The LLM fallback is told the same policy; no test of an "original" phrasing through Gemini |
+| M8 Integration Standard followed, session runner works, live demo works for the whole review period | Partial | Integration Standard: section 5 below. Session runner: `apps/cli`, `runner.test.ts`, `test-pack/real/batch_720p_m5e/`. Demo: https://34.93.140.79.sslip.io, smoke tests `docs/raw/m6a_smoke_after_rotation.txt`, `docs/raw/m5b_smoke_redeploy.txt` | "Whole review period" cannot be shown today. The URL contains the VM's external IP and I could not check if it is static (`docs/DEPLOY.md`). Reboot survival untested. All outside checks ran from the VM itself or via a fetch service |
+
+## 2. Core level
+
+| Item | Y/P/N | Evidence | Not covered |
+|---|---|---|---|
+| C1 All must-haves | Partial | Section 1: 7 Yes, 1 Partial | M8 is Partial |
+| C2 Worked example runs (8 steps) | Partial | Exact brief numbers on the engine fixture: S01, `packages/engine/test/worked_example.test.ts`. Same 9 steps on a real video with real ASR: `docs/WORKED_EXAMPLE_REAL.md`, `sessions/worked_example_real.yaml`, `test-pack/real/worked_example_real/` | My real recording says "welcome to **our** channel" at 0:39.5 and has 7 pricing mentions, not "the channel" at 0:42 and 3. The brief's unchanged script FAILS on it (Sessions 01, 02 in `batch_720p_m5e/summary.json`, kept). I showed the same behaviour on different numbers, not the brief's numbers |
+| C3 One single-speaker video | Yes | `media/test_single.mp4` (own recording, consent self, `SOURCES.md`); `test-pack/real/worked_example_real/`; 38-session batch | Not recorded from the brief's script. Not in git |
+| C4 One multi-speaker video | Partial | Synthetic two-voice dialogue (`media/two_voice_dialogue.mp4`, espeak-ng): 2 of 2 speakers found at the default threshold 0.3 with and without hint, 142 of 142 words labelled right, `docs/TEST_MEDIA.md` "M5d update". NASA podcast (public domain, real speech): 3 found for 2 without a hint, 1 effective with a hint | **No real two-person recording of ours.** The one real clip fails at default settings (`test-pack/real/m5d/`). The threshold 0.3 was picked from a 6-clip sweep that no value passes completely |
+
+## 3. Advanced level
+
+| Item | Y/P/N | Evidence | Not covered |
+|---|---|---|---|
+| A1 Captions follow words | Yes | S48, `hard_cases.test.ts`; frame scans `test-pack/real/caption_frame_scans.json` | One recording |
+| A2 Caption whose words are cut is removed and the user told | Yes | S04, `hard_cases.test.ts`, `session.test.ts`; session 02b (real) | The effect becomes inactive and stays in the log; it is not deleted (by design, `docs/DESIGN.md`) |
+| A3 Defined rule for partial cuts of a captioned phrase | Yes | S05, `docs/DESIGN.md` "Effects when their words are cut", `new_ops.test.ts` | Rule is ours: literal text stays on surviving words and the answer lists the cut words |
+| A4 Sped-up captions keep a readable minimum (~0.7 s) | Yes | S26, `replay.test.ts` | No render check of a stretched caption is recorded |
+| A5 Ambiguity and references ("that caption", "the boring part", "make it shorter", "put back what I removed") ask or state assumption with options | Yes | S32 to S35, `packages/nlu/test/advanced.test.ts`; real: sessions 20 and 25 (`docs/raw/m4_sessions_20_vague_references.txt`) | "Boring" is not judged: the answer says so and offers three measurable candidates. Only these four phrasings are handled by rules; others go to the LLM fallback or are rejected |
+| A6 Meaning-based search ("pricing" finds "cost") shows matches before cutting | Partial | S30, S29, `packages/semantic/test`, `docs/REVIEW_M4.md` section 4; real session 19, 21 | On the real recording all 7 matches were found by a built-in synonym table, the MiniLM model added nothing. "money" is rejected (24.8% < 25% threshold; session 22 fails and is kept). Threshold tuned on one recording |
+| A7 Repeated instructions are safe | Yes | S28, S08, session 24, Idempotency-Key tests `packages/store/test/store.test.ts` | Repeats shown for three instruction kinds (caption colour, auto-captions, a cut of the original), not for every operation |
+| A8 Deliberate pauses survive silence removal | Yes | S37, session 17, `new_ops.test.ts` | Pinning is explicit ("protect this pause"); I do not detect deliberate pauses automatically |
+| A9 Impossible or whole-video cuts rejected | Yes | S15, S16, S45, S47, session 11 | Wording of the reject reason is ours |
+| A10 Documented rule for overlapping speed changes | Yes | `docs/DESIGN.md` "Speed", S27, `replay.test.ts` (3 cases) | The "later wins, rates never multiply" rule is our choice |
+| A11 Multi-part instructions apply all or report exactly which parts applied | Yes | S17, session 12, `docs/REVIEW_M2.md` section 6 | One impossible part is named in warnings and the rest applies as one undo group; there is no "apply nothing unless all parts work" mode |
+| A12 Two speakers: "remove everything the guest says about their old job" removes only the guest's lines and asks about the host's lead-in | Partial | S18, S19 (mock transcript); real run on the synthetic dialogue: sessions 13b and 13d pass (`test-pack/real/m5d/`, `batch_720p_m5e/summary.json`) | Synthetic voices only. The same request on the real NASA clip FAILS (`nasa_speaker_scoped_edit`, kept; no-hint variant asks "Speaker A, B or C"). On the dialogue the cut missed one old-job line (ASR heard "old John") and the earlier threshold-0.3 diagnostic cut one wrong line (`docs/TEST_MEDIA.md` 3a) |
+
+## 4. Outstanding level
+
+| Item | Y/P/N | Evidence | Not covered |
+|---|---|---|---|
+| O1 Cuts snap to nearby silence (no clipped words) | Partial | Cut rule `packages/engine/test/search_resolve.test.ts`, `frame_rounding.test.ts`; S02 (lengths 194.8 s from snapping, warning checked); real step 4 of the worked example snapped to a word edge and warned | The "20-cut listening check" metric was **not done** (nobody listened). Boundaries between two touching words cannot sit on the frame grid and are warned about |
+| O2 Low-confidence words flagged, not bleeped blindly | Yes | S40, `session.test.ts`; real step 1 of the worked example warns about "welcome" (44%) | Threshold for low confidence is a setting chosen by me, not validated |
+| O3 Variable frame rate and no-audio videos work or fail clearly | Partial | VFR: render accuracy through a CFR proxy `docs/REVIEW_M3.md` section 3, S24, session 14 (renders, frame difference 0). No audio: S25, session 15 fails at intake with `NO_AUDIO_TRACK` | VFR clip is generated (frames dropped at random). **No real phone recording was ever tested** and the detector misses regular-gap VFR (`docs/REVIEW_M2.md` section 7) |
+| O4 Overlapping speech and possible speaker-label swaps warn | Partial | S20, S21, S22; swap detector `services/asr/tests/test_swap.py` (13); real models on a synthetic clip: 6 of 6 deliberate swaps found, 0 false flags, `docs/raw/m5_swap_real_run.txt` | Synthetic voices only. No real-speech result. Nothing flagged if the diarizer finds one cluster. The overlap flag from the real diarizer on real speech is not verified |
+| O5 60-minute video responds under 3 s per instruction (excluding transcription and render) | Partial | Engine on a synthetic 60-minute source with 24,001 atoms: worst single 155.9 ms, 4,000-op instruction about 58 ms (`docs/PERF_ENGINE.md`, `npm run bench -w @incubrix/engine`). Real API: median 15 ms, max 88 ms over 115 instructions on videos up to 3:00 (`test-pack/real/batch_720p_m5e/*/results.json`) | **No 60-minute video through the API.** Engine numbers are from another machine (a laptop), not the VM. Gemini fallback can take 18 to 36 s (probe) and is cut off at 2.5 s |
+| O6 OpenTimelineIO export | Yes | `GET /api/v1/sessions/{id}/export/otio`; `services/otio/tests` (9), `packages/otio/test` (6), API test with the real service, `docs/raw/m5_otio_api_tests.txt`; outside call `docs/raw/m5b_smoke_redeploy.txt` | **Never opened in a video editor.** Music is not exported; captions and effects are markers; `LinearTimeWarp` reading differs between editors |
+| O7 Automated suite of at least 40 scripted scenarios with expected results in CI | Partial | 48 scenarios, 130 steps, `scenarios/`, `apps/api/test/scenarios.test.ts`, 50 of 50 pass `docs/raw/m5b_scenarios_run.txt`; `.github/workflows/ci.yml`; fresh-clone run of the CI command exit 0 `docs/raw/m5_ci_simulation.txt` | **No GitHub Actions run is recorded.** The first fresh clone failed (a `.gitignore` bug, `docs/raw/m5_ci_simulation_run1_failed.txt`) and was fixed. Scenarios use a hand-written transcript |
+
+## 5. Integration Standard (10 points)
+
+| Item | Y/P/N | Evidence | Not covered |
+|---|---|---|---|
+| I1 `docker compose up` starts everything (db, storage, local servers); one command runs all tests with no keys; `.env.example` | Yes | `docker-compose.yml`, `.env.example`; `docker compose run --rm tests` exit 0 in a fresh clone, 4 min 17 s with cached layers: `docs/raw/m5_ci_simulation.txt`; README setup replayed: `docs/raw/m5_readme_setup_replay.txt`; cold start 64.3 s from empty volumes `docs/raw/m2_cold_start.txt` | Storage is SeaweedFS, not MinIO (MinIO would not pull, `docs/REVIEW_INFRA.md`). First image build time with cold caches not measured. Python tests of the services run as a dependency of the `tests` service |
+| I2 `openapi.yaml` (3.1) matches the running service; routes under `/api/v1` | Yes | `openapi.yaml`; `apps/api/test/api.test.ts` compares served routes with documented routes both ways and validates real responses against the schemas; Swagger UI `/docs` | Swagger UI was fetched (200) but never opened in a browser (`docs/DEPLOY.md`). `/health` and `/ready` are at the root, outside `/api/v1`, as `openapi.yaml` lists them |
+| I3 Jobs: 202 + job_id; `GET /api/v1/jobs/{job_id}` with status, progress, result links; optional HMAC callback | Yes | `packages/store/test/store.test.ts`, `apps/worker/test/callback.test.ts`, `api.test.ts`; real jobs in `test-pack/real/*/results.json` | Callback tested against a local receiver, never against an internet endpoint. Worker crash mid-job end to end not run (stale re-queue tested at store level) |
+| I4 Idempotency-Key on every POST | Yes | `store.test.ts`, `api.test.ts` (replay, 409 `IDEMPOTENCY_KEY_REUSED`, concurrent duplicates run once); `docs/raw/m2_real_curl.txt` | Covers `POST /videos` (upload and URL), `/sessions`, `/instructions`, `/render` (`apps/api/src/app.ts`). An upload's body hash is its sha256, size, file name and options. The replay test uses small generated files |
+| I5 Clear JSON errors with UPPER_SNAKE codes listed in README | Yes | `packages/errors/test/errors.test.ts` (README table generated, stale table fails); README section "Error codes" | Codes seen in real runs are a subset |
+| I6 All config via env / config file | Yes | `packages/config/test/config.test.ts`, `envdoc.test.ts` (README settings table must match `.env.example`) | Compose files also carry some defaults for production (`compose.prod.yml`) |
+| I7 Inputs by upload or URL; outputs in S3-compatible storage with download links | Yes | Upload: `docs/raw/m5d_upload_after.txt`, 2,000,000,000-byte upload `docs/raw/m5d_upload_2gb.txt`. URL intake: `apps/worker/test/download.test.ts`, `api.test.ts`. Links: `docs/raw/m6a_dotted_links.txt` | URL intake of a large file through the public URL was **not run**. The 2 GB ingest failed before a fix and was not re-run (`docs/STATUS.md` M5d). A link works only on the host name it was signed for. Retention deletes renders after 14 days, so download links expire |
+| I8 JSON logs (timestamp, level, job_id, correlation id); `/health` and `/ready` | Yes | `packages/store/test/log.test.ts` (fields, redaction); correlation id echo in `api.test.ts`; `/health`, `/ready` outside `docs/raw/m6a_head_outside.txt` | I did not collect a sample of production logs as a file |
+| I9 Manifest on every result | Yes | Instruction answers and job results carry it (`e2e.test.ts`); example `test-pack/real/batch_720p_m5e/worked_example_real/render_1_manifest.json` (providers, versions, settings, timings, warnings, rights, AI flags, CPU seconds) | USD is `null` in manifests (no price configured); cost is computed in REPORT.md instead. Seed is `null` (no randomness) |
+| I10 Batch runner CLI writing all results to one folder | Yes | `npm run batch -- sessions --out <dir>`; `apps/cli`; `test-pack/real/batch_720p_m5e/` (38 sessions, `summary.json`, `batch_720p_m5e_log.txt`) | 5 of 38 fail on this footage (listed in `test-pack/INDEX.md`) |
+
+## 6. Hard cases
+
+| Item | Y/P/N | Evidence | Not covered |
+|---|---|---|---|
+| H1 Caption added, its sentence cut, cut restored (caption returns) | Yes | S04; session 02b (real); 720p render before / after cut / after restore with frame scans: `docs/WORKED_EXAMPLE_REAL.md` section 3 | Session 02 (brief wording) fails on this recording because the phrase is different, kept |
+| H2 Section reordered, then a word muted | Yes | S06; session 03 (real, rendered 180.3 s, 5409 frames = timeline) | Mute audio checked by RMS on generated clips; not listened to on the real render |
+| H3 Filler removal cutting into a bleeped word | Partial | S07 (the filler inside a bleep is kept with a warning), `new_ops.test.ts` | Real session 04 FAILS: the recording has no transcribed "um". 29 untranscribed sounds were listed, none confirmed as fillers |
+| H4 "Remove 0:30-0:40" sent twice | Yes | S08, session 05 | |
+| H5 "add a caption at 5:00" on a shorter video | Yes | S09, session 06 (rejected, reason names the length) | |
+| H6 "80 seconds", "a minute twenty", "the last 10 seconds" | Yes | S10, `packages/nlu/test/time.test.ts`, session 07 | English phrases only |
+| H7 "Undo the second-to-last cut but keep the music" | Yes | S11, session 08 (rendered with music, difference 0 frames) | Music is the built-in track |
+| H8 "make it bigger" with no caption | Yes | S12, session 09 (rejected with the reason) | |
+| H9 "Remove everything after I say thanks" (said four times) | Yes | S13 (asks which of four), S14 (picks the first); session 10 (real recording: asks) | Real recording has a different number of "thanks" than the brief |
+| H10 "Speed up 10x" | Yes | S15, session 11 (rejected with allowed range 0.25x to 4x) | Range is our setting (`MAX_SPEED`) |
+| H11 "cut everything" | Yes | S16, session 11 | |
+| H12 Three-part instruction with one impossible part | Yes | S17, session 12 | |
+| H13 Two-speaker video with label swap | Partial | S20 (mock); swap detector on synthetic voices `docs/raw/m5_swap_real_run.txt` | No real two-person recording. Real NASA clip: swap flags on 18 words in the no-hint run, not scored (`docs/TEST_MEDIA.md` 3b) |
+| H14 Overlapping speech | Partial | S21 (flag in a hand-written transcript), `session.test.ts` | Real diarizer overlap flag on real speech not verified |
+| H15 Background music | Yes | S39 (ducks and renders, 200 s), `packages/render/test/musicexpr.test.ts`, `features.test.ts` (level equals envelope within 1 dB), session 08 | 60-minute render with music not run. Built-in sine-chord track only |
+| H16 Phone video with variable frame rate | Partial | S24, session 14 (generated VFR clip, rendered, 0 frames difference, via CFR proxy) | No real phone video |
+
+## Summary
+
+| Section | Yes | Partial | No | Rows |
+|---|---|---|---|---|
+| 1. Must-haves | 7 | 1 | 0 | 8 |
+| 2. Core level | 1 | 3 | 0 | 4 |
+| 3. Advanced level | 10 | 2 | 0 | 12 |
+| 4. Outstanding level | 2 | 5 | 0 | 7 |
+| 5. Integration Standard (10 points) | 10 | 0 | 0 | 10 |
+| 6. Hard cases | 12 | 4 | 0 | 16 |
+| **Total** | 42 | 15 | 0 | 57 |
+
+
+**Reading the totals.** The brief says a level counts only if every item in it is verified and the previous level is verified. By that rule no level is fully verified: Core has 3 Partial rows (worked example on different numbers, no real two-person video, must-have 8), Advanced has 2, Outstanding has 5. I do not claim any level as passed. The Partial rows are the honest answer; no row is "No" because every item has something built and run, but several have only synthetic or mocked evidence, and the last column says which.
