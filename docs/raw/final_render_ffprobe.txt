@@ -1,0 +1,59 @@
+== run 1
+stream|codec_type=video|r_frame_rate=30/1|avg_frame_rate=30/1|start_time=0.000000|duration=130.366667|nb_frames=3911
+stream|codec_type=audio|r_frame_rate=0/0|avg_frame_rate=0/0|start_time=0.000000|duration=130.366000|nb_frames=6112
+== run 2
+stream|codec_type=video|r_frame_rate=30/1|avg_frame_rate=30/1|start_time=0.000000|duration=130.366667|nb_frames=3911
+stream|codec_type=audio|r_frame_rate=0/0|avg_frame_rate=0/0|start_time=0.000000|duration=130.366000|nb_frames=6112
+== run 3
+stream|codec_type=video|r_frame_rate=30/1|avg_frame_rate=30/1|start_time=0.000000|duration=130.366667|nb_frames=3911
+stream|codec_type=audio|r_frame_rate=0/0|avg_frame_rate=0/0|start_time=0.000000|duration=130.366000|nb_frames=6112
+
+null ["seed","render","rights","timings","settings","warnings","providers","ai_generated","cost_estimate"]
+c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd  media/test_single.mp4
+[ 'session_id', 'timeline', 'timeline_hash', 'duration_s', 'effects' ] 130.366667 undefined
+{
+ "proxy": {
+  "fps": "30/1",
+  "colour": "none",
+  "sha256": "d77fb21ed7e0012b2e6cd94ab1e43ec1408b62d05aa81f8b6b23366b75fae6a7",
+  "reasons": [
+   "hevc source (decoded once into an H.264 proxy)"
+  ],
+  "warnings": [],
+  "created_by": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers",
+  "storage_key": "videos/vid_360ec584ae7a4219b0e2/proxy_cfr_30-1_v1.mp4",
+  "source_sha256": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd"
+ },
+ "job_id": "job_718a9bbf302c4c95a668",
+ "output": {
+  "fps": "30/1",
+  "width": 1920,
+  "height": 1080,
+  "pixFmt": "yuv420p",
+  "seconds": 130.366667,
+  "audioCodec": "aac",
+  "size_bytes": 63874735,
+  "videoCodec": "h264",
+  "videoFrames": 3911,
+  "audioDurationUs": 130366000,
+  "videoDurationUs": 130366667,
+  "formatDurationUs": 130367000
+ },
+ "pieces": 4,
+ "source": {
+  "video_id": "vid_200fa666ad224d00afd8",
+  "unchanged": true,
+  "sha256_before": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd",
+  "sha256_after_local": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd",
+  "sha256_after_stored": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd"
+ },
+ "session_id": "ses_0172cc04f19e4ffaa396",
+ "timeline_hash": "5c590d67df2eed8de7c879ae8a9dbae6a3c4ccd13a1e7a24cfaac72687f6a16c",
+ "rendered_frames": 3911,
+ "timeline_frames": 3911,
+ "frame_difference": 0,
+ "ffmpeg_peak_rss_mb": 624,
+ "filter_script_sha256": "fd15fe9866ffe6de36ed5d9407dfe872145670dd8cbbd70b4bb32eca29410f88",
+ "audio_minus_video_frames": -0.02,
+ "render_seconds_per_output_minute": 67.5
+}

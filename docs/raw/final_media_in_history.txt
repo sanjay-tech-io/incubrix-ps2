@@ -1,0 +1,11 @@
+docs/raw/m5b_smoke_out/render_1.mp4
+docs/raw/m6a_smoke_after_rotation_out/render_1.mp4
+docs/raw/m6a_smoke_dotted_links_out/render_1.mp4
+docs/raw/m6a_smoke_out/render_1.mp4
+test-pack/real/worked_example_real/frames/final_t10.5.png
+test-pack/real/worked_example_real/frames/final_t11.50.png
+test-pack/real/worked_example_real/frames/final_t11.60.png
+test-pack/real/worked_example_real/frames/final_t12.5.png
+test-pack/real/worked_example_real/frames/final_t9.30.png
+test-pack/real/worked_example_real/frames/final_t9.50.png
+test-pack/real/worked_example_real/frames/final_t9.60.png

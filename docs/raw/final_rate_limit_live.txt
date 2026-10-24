@@ -1,0 +1,12 @@
+## 135 requests in a burst with a WRONG token (token not printed)
+    120 401
+     15 429
+## 429 body + Retry-After
+HTTP/2 429 
+retry-after: 55
+{"error":{"code":"RATE_LIMITED","message":"Too many requests. Try again in 55 s.","retryable":true,"details":{"retry_after_s":55}}}
+## health during limit
+health 200
+## after 65 s
+wrong token -> 401
+real token -> 404

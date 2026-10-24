@@ -1,0 +1,1 @@
+{"file":"/tmp/claude-1000/-home-g23m143-incubrix-ps2/04e9ecf1-46a1-4f5b-8e59-3cf471645621/scratchpad/mv_A.mp4","frames":5409,"fps":"30/1","colour":[255,0,0],"runs":[{"first_frame":5087,"last_frame":5147,"start_s":169.567,"end_s":171.6}]}

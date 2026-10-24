@@ -1,0 +1,18 @@
+## manifest of a live render (det1), top-level + providers
+keys: seed,render,rights,timings,settings,warnings,providers,ai_generated,cost_estimate
+providers: {"font":"DejaVu Sans / DejaVu Sans Bold (Bitstream Vera + public-domain changes licence; commercial use allowed), see SOURCES.md","media":{"ffmpeg":"ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers"},"music":null,"audio_codec":{"name":"aac (ffmpeg native encoder)"},"video_codec":{"name":"libx264","note":"H.264 (GPL libx264 inside the ffmpeg build; used as an external program, not linked)"}}
+settings: {"crf":20,"fps":"30/1","audio":"aac 192k 48 kHz stereo","bleep":"1 kHz sine, level 0.25","preset":"veryfast","pix_fmt":"yuv420p","movflags":"+faststart","max_height":0,"caption_size":"sizePt relative to a 720-line frame"}
+seed: null | timings: {"proxy_s":5.938,"total_s":212.438,"render_s":199.043,"upload_s":0.665,"verify_s":4.378,"fetch_original_s":2.392} | cost: {"usd":null,"note":"No price per CPU second is configured, so no money figure is given.","basis":"CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)","cpu_seconds":532.
+warnings: 3 | rights keys: software,reference,source_media | ai_generated: {"music":false,"transcript_words":true,"captions_text_is_user_text":false,"input_media_marked_ai_generated":false}
+
+## hard-coded paths / hosts / keys in source (excluding tests, node_modules)
+deploy/Caddyfile:10:# Two names for the same site: people type the IP with dots or with dashes (sslip.io resolves both), and a name Caddy has no
+compose.prod.yml:3:# Needs in .env: API_TOKEN (16+ chars, the API refuses to start without it), PUBLIC_HOST (<ip-with-dashes>.sslip.io)
+compose.prod.yml:4:# and PUBLIC_HOST_ALT (<ip.with.dots>.sslip.io): both spellings must work or one of them ends in ERR_SSL_PROTOCOL_ERROR.
+compose.prod.yml:17:  S3_PUBLIC_ENDPOINT: https://${PUBLIC_HOST_ALT:?set PUBLIC_HOST_ALT in .env, e.g. 34.93.140.79.sslip.io}
+compose.prod.yml:26:      PUBLIC_HOST_ALT: ${PUBLIC_HOST_ALT:?set PUBLIC_HOST_ALT in .env, e.g. 34.93.140.79.sslip.io (the same IP with dots)}
+(end of hard-coded scan)
+## localhost literals outside tests
+apps/cli/src/batch.ts:62:    api: flags.api ?? process.env.API_URL ?? "http://localhost:8080", token: flags.token ?? process.env.API_TOKEN, 
+apps/cli/src/session.ts:30:    api: flags.api ?? process.env.API_URL ?? "http://localhost:8080", token: flags.token ?? process.env.API_TOKEN
+apps/cli/src/runner.ts:6:  /** API base, e.g. http://localhost:8080 */

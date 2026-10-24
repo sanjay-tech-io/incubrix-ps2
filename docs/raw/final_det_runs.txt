@@ -1,0 +1,48 @@
+=== RUN 1
+
+> incubrix@0.0.0 session
+> node --import tsx apps/cli/src/session.ts sessions/worked_example_real.yaml --out /tmp/claude-1000/-home-g23m143-incubrix-ps2/04e9ecf1-46a1-4f5b-8e59-3cf471645621/scratchpad/det1
+
+[worked_example_real] video vid_200fa666ad224d00afd8, job job_912d0627cdcb404bb2c4
+[worked_example_real] step 1: applied ok
+[worked_example_real] step 2: applied ok
+[worked_example_real] step 3: needs_clarification ok
+[worked_example_real] step 4: applied ok
+[worked_example_real] step 5: applied ok
+[worked_example_real] step 6: applied ok
+[worked_example_real] step 7: applied ok
+[worked_example_real] step 8: applied ok
+[worked_example_real] step 9: render ok 
+PASS worked_example_real  -> /tmp/claude-1000/-home-g23m143-incubrix-ps2/04e9ecf1-46a1-4f5b-8e59-3cf471645621/scratchpad/det1
+=== RUN 2
+
+> incubrix@0.0.0 session
+> node --import tsx apps/cli/src/session.ts sessions/worked_example_real.yaml --out /tmp/claude-1000/-home-g23m143-incubrix-ps2/04e9ecf1-46a1-4f5b-8e59-3cf471645621/scratchpad/det2
+
+[worked_example_real] video vid_b64d137b79a444bf93e7, job job_4e7f28c2697946ca9756
+[worked_example_real] step 1: applied ok
+[worked_example_real] step 2: applied ok
+[worked_example_real] step 3: needs_clarification ok
+[worked_example_real] step 4: applied ok
+[worked_example_real] step 5: applied ok
+[worked_example_real] step 6: applied ok
+[worked_example_real] step 7: applied ok
+[worked_example_real] step 8: applied ok
+[worked_example_real] step 9: render ok 
+PASS worked_example_real  -> /tmp/claude-1000/-home-g23m143-incubrix-ps2/04e9ecf1-46a1-4f5b-8e59-3cf471645621/scratchpad/det2
+=== RUN 3
+
+> incubrix@0.0.0 session
+> node --import tsx apps/cli/src/session.ts sessions/worked_example_real.yaml --out /tmp/claude-1000/-home-g23m143-incubrix-ps2/04e9ecf1-46a1-4f5b-8e59-3cf471645621/scratchpad/det3
+
+[worked_example_real] video vid_ff2e6f15f96e4bc196eb, job job_66b1f24aa2e2442c8c25
+[worked_example_real] step 1: applied ok
+[worked_example_real] step 2: applied ok
+[worked_example_real] step 3: needs_clarification ok
+[worked_example_real] step 4: applied ok
+[worked_example_real] step 5: applied ok
+[worked_example_real] step 6: applied ok
+[worked_example_real] step 7: applied ok
+[worked_example_real] step 8: applied ok
+[worked_example_real] step 9: render ok 
+PASS worked_example_real  -> /tmp/claude-1000/-home-g23m143-incubrix-ps2/04e9ecf1-46a1-4f5b-8e59-3cf471645621/scratchpad/det3

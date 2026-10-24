@@ -1,0 +1,2 @@
+1. "Remove everything after I say thanks" -> HTTP 200 needs_clarification 
+2. "cut 0:10-0:15" -> HTTP 200 applied 

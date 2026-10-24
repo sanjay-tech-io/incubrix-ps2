@@ -1,0 +1,17 @@
+1. "cut 0:10-0:15" -> HTTP 200 applied 
+2. "keep only 0:20-2:30" -> HTTP 200 applied 
+3. "move 0:30-0:40 to the end" -> HTTP 200 applied 
+4. "speed up 0:50-1:00 by 2x" -> HTTP 200 applied 
+5. "mute \"welcome\"" -> HTTP 200 applied 
+6. "bleep \"channel\"" -> HTTP 200 applied 
+7. "add a caption \"Hello\" when I say \"welcome to our channel\"" -> HTTP 200 applied 
+8. "add captions" -> HTTP 200 applied 
+9. "remove filler words" -> HTTP 200 needs_clarification 
+10. "remove silences longer than 1 second" -> HTTP 200 applied 
+11. "add background music" -> HTTP 200 applied 
+12. "undo" -> HTTP 200 applied 
+13. "redo" -> HTTP 200 applied 
+14. "restore edit 1" -> HTTP 200 applied 
+15. GET timeline -> 200
+16. GET history -> 200
+17. GET conversation -> 200

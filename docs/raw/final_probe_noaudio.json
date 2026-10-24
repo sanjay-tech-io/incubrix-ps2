@@ -1,0 +1,25 @@
+{
+ "video": "media/no_audio.mp4",
+ "base": "https://34.93.140.79.sslip.io",
+ "steps": [],
+ "upload": {
+  "http": 202,
+  "body": {
+   "video_id": "vid_1f0f4c852a234d0bae43",
+   "job_id": "job_aa30f3dfbb494211a7a4",
+   "status_url": "/api/v1/jobs/job_aa30f3dfbb494211a7a4"
+  }
+ },
+ "ingest": {
+  "status": "failed",
+  "error": {
+   "error": {
+    "code": "NO_AUDIO_TRACK",
+    "details": {},
+    "message": "This video has no audio track, so there is nothing to transcribe.",
+    "retryable": false
+   }
+  },
+  "result": null
+ }
+}

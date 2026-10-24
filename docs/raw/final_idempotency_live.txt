@@ -1,0 +1,21 @@
+## upload twice, same key, same file
+{"video_id":"vid_45ed56950c7c42eb875a","job_id":"job_e5e7f4f6b5a84684bbde","status_url":"/api/v1/jobs/job_e5e7f4f6b5a84684bbde"}
+{"job_id":"job_e5e7f4f6b5a84684bbde","video_id":"vid_45ed56950c7c42eb875a","status_url":"/api/v1/jobs/job_e5e7f4f6b5a84684bbde"}
+DIFFERENT
+## same key, different body (other file)
+{"error":{"code":"IDEMPOTENCY_KEY_REUSED","message":"This Idempotency-Key was already used with a different request body.","retryable":false,"details":{"scope":"POST /api/v1/videos"}}} HTTP 409
+ingest succeeded
+session create: DIFFERENT
+## instruction twice, same key
+answer1 hash f9877664a6b6 | answers byte-identical: NO
+## same key, different instruction
+{"error":{"code":"IDEMPOTENCY_KEY_REUSED","message":"This Idempotency-Key was already used with a different request body.","retryable":false,"details":{"scope":"POST /api/v1/sessions/ses_21e5f38183f64
+history entries after the repeated key (must be 1 cut, not 2):
+1
+## render twice, same key
+{"job_id":"job_7393175f75a24c158143","session_id":"ses_21e5f38183f64be78bf9","timeline_hash":"f9877664a6b62adcce2f8d079bb42ac68c9a22c4a39ba5
+{"job_id":"job_7393175f75a24c158143","duration_s":13.76,"session_id":"ses_21e5f38183f64be78bf9","status_url":"/api/v1/jobs/job_7393175f75a24
+DIFFERENT
+session create twice: 201 201 same body (key order ignored): true session ses_8159bcc6be50460b8bd7
+instruction twice: 200 200 same answer: true status applied hash f9877664a6b6
+history entries (1 expected, the cut applied once): 1

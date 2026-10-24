@@ -1,0 +1,188 @@
+{
+ "video": "media/two_voice_dialogue.mp4",
+ "base": "https://34.93.140.79.sslip.io",
+ "steps": [
+  {
+   "n": 1,
+   "sent": "remove filler words",
+   "http": 200,
+   "ms": 16,
+   "missing_fields": [],
+   "answer": {
+    "status": "needs_clarification",
+    "operations": [],
+    "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+    "question": "No transcribed filler words were found. 20 possible untranscribed filler(s) found (voiced sounds that no word covers; they may also be breaths, laughs or coughs). Cut them?",
+    "options": [
+     "cut all 20: 0:01.000-0:01.220 (0.22 s, 2.7 dB vs speech, confidence 35%); 0:01.640-0:01.900 (0.26 s, -1.2 dB vs speech, confidence 20%); 0:06.140-0:06.300 (0.16 s, -2.8 dB vs speech, confidence 35%); 0:09.040-0:09.320 (0.28 s, -1.5 dB vs speech, confidence 35%); 0:13.760-0:13.980 (0.22 s, -8.8 dB vs speech, confidence 5%); 0:16.640-0:16.880 (0.24 s, -4.7 dB vs speech, confidence 20%); 0:18.960-0:19.280 (0.32 s, 0 dB vs speech, confidence 35%); 0:25.380-0:25.580 (0.20 s, -3.8 dB vs speech, confidence 35%); 0:26.800-0:27.060 (0.26 s, -8.7 dB vs speech, confidence 35%); 0:28.960-0:29.360 (0.40 s, -3.4 dB vs speech, confidence 20%); 0:31.440-0:31.740 (0.30 s, -8.6 dB vs speech, confidence 35%); 0:33.400-0:33.740 (0.34 s, -6.1 dB vs speech, confidence 20%); 0:35.960-0:36.140 (0.18 s, 2.8 dB vs speech, confidence 35%); 0:39.380-0:39.700 (0.32 s, -6.4 dB vs speech, confidence 20%); 0:42.860-0:43.120 (0.26 s, -7.7 dB vs speech, confidence 35%); 0:45.500-0:45.800 (0.30 s, -3.2 dB vs speech, confidence 20%); 0:48.340-0:48.620 (0.28 s, -3.4 dB vs speech, confidence 35%); 0:49.840-0:50.140 (0.30 s, -4.1 dB vs speech, confidence 20%); 0:51.440-0:51.860 (0.42 s, -2.1 dB vs speech, confidence 20%); 0:57.100-0:57.320 (0.22 s, -10.7 dB vs speech, confidence 20%)",
+     "cut only the 10 likelier ones (confidence 35% or more): 0:01.000-0:01.220 (0.22 s, 2.7 dB vs speech, confidence 35%); 0:06.140-0:06.300 (0.16 s, -2.8 dB vs speech, confidence 35%); 0:09.040-0:09.320 (0.28 s, -1.5 dB vs speech, confidence 35%); 0:18.960-0:19.280 (0.32 s, 0 dB vs speech, confidence 35%); 0:25.380-0:25.580 (0.20 s, -3.8 dB vs speech, confidence 35%); 0:26.800-0:27.060 (0.26 s, -8.7 dB vs speech, confidence 35%); 0:31.440-0:31.740 (0.30 s, -8.6 dB vs speech, confidence 35%); 0:35.960-0:36.140 (0.18 s, 2.8 dB vs speech, confidence 35%); 0:42.860-0:43.120 (0.26 s, -7.7 dB vs speech, confidence 35%); 0:48.340-0:48.620 (0.28 s, -3.4 dB vs speech, confidence 35%)"
+    ],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [],
+    "timeline_hash": "c86a58844abc579592d10c784fd04413cae0b3e80421d2708f2f1048d53b1ec7",
+    "duration_s": 58.2,
+    "duration_us": 58200000,
+    "turn": 1,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 4.16
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.003,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  }
+ ],
+ "upload": {
+  "http": 202,
+  "body": {
+   "video_id": "vid_5ab51ecb9501404bbbda",
+   "job_id": "job_99e093957ea9457fb115",
+   "status_url": "/api/v1/jobs/job_99e093957ea9457fb115"
+  }
+ },
+ "ingest": {
+  "status": "succeeded",
+  "error": null,
+  "result": {
+   "atoms": 171,
+   "links": {
+    "video": "/api/v1/videos/vid_5ab51ecb9501404bbbda",
+    "create_session": "/api/v1/sessions"
+   },
+   "words": 149,
+   "manifest": {
+    "seed": null,
+    "rights": {
+     "software": {
+      "engine": "own code",
+      "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+      "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked"
+     },
+     "reference": "SOURCES.md",
+     "source_media": "not stated by the uploader"
+    },
+    "timings": {
+     "embed_s": 0.015,
+     "probe_s": 0.258,
+     "total_s": 0.342,
+     "fetch_original_s": 0.065
+    },
+    "settings": {
+     "asrModel": "base.en",
+     "asrProvider": "faster-whisper",
+     "asr_details": {
+      "model": "base.en",
+      "stats": {
+       "words_in": 150,
+       "words_kept": 149,
+       "inside_silence": 0,
+       "low_confidence": 9,
+       "clamp_adjustments": 14,
+       "dropped_after_end": 0,
+       "dropped_zero_length": 1
+      },
+      "provider": "faster-whisper",
+      "silences_found": 17,
+      "speakers_found": 2,
+      "service_timings": {
+       "asr_load_s": 1.9704878060147166,
+       "asr_transcribe_s": 10.023,
+       "diarization_process_s": 19.131
+      }
+     },
+     "numSpeakers": null,
+     "silenceMinUs": 300000,
+     "clampMinWordUs": 20000,
+     "silenceNoiseDb": -35,
+     "voicedGapMaxUs": 1200000,
+     "voicedGapMinUs": 150000,
+     "diarizationProvider": "sherpa",
+     "transcript_cache_key": "3cdb8c3ed284fd0ac0dc06f75f416f1f41529fe33867c25015e93bbcb8148ba1",
+     "lowConfidencePermille": 600
+    },
+    "warnings": [
+     "1 word(s) had no length after cleaning and were dropped.",
+     "2 speakers were detected; if that is wrong, upload again with the num_speakers hint.",
+     "20 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "providers": {
+     "asr": {
+      "cache": "hit",
+      "model": "base.en",
+      "version": "faster-whisper 1.2.1 / ctranslate2 4.8.3",
+      "provider": "faster-whisper"
+     },
+     "media": {
+      "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers"
+     },
+     "diarization": {
+      "version": "sherpa-onnx 1.13.8 + pyannote-segmentation-3.0 + wespeaker_en_voxceleb_resnet34",
+      "provider": "sherpa"
+     }
+    },
+    "ai_generated": {
+     "speaker_labels": true,
+     "transcript_words": true,
+     "input_media_marked_ai_generated": false
+    },
+    "cost_estimate": {
+     "usd": null,
+     "note": "No price per CPU second is configured, so no money figure is given.",
+     "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+     "cpu_seconds": 0.151
+    }
+   },
+   "video_id": "vid_5ab51ecb9501404bbbda",
+   "warnings": [
+    "1 word(s) had no length after cleaning and were dropped.",
+    "2 speakers were detected; if that is wrong, upload again with the num_speakers hint.",
+    "20 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+   ],
+   "duration_s": 58.2,
+   "speakers_found": 2,
+   "transcript_cache": "hit"
+  }
+ },
+ "session_id": "ses_dd9c8aafb7e543d9b071"
+}

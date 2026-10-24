@@ -1,0 +1,11 @@
+history keys [ 'session_id', 'entries' ]
+{"seq":1,"kind":"add_effect","group":1,"op":{"type":"add_effect","range":{"to":"a_02df35e8374d","from":"a_2137b52ae255"},"params":{"kind":"caption","text":"Welcome!","style":{"bold":true,"color":"#ffffff","sizePt":32},"p
+{"seq":2,"kind":"update_effect","group":2,"op":{"type":"update_effect","params":{"kind":"caption","text":"Welcome!","style":{"bold":true,"color":"#ff0000","sizePt":32},"position":"bottom"},"effectId":"fx_0_0"}}
+{"seq":3,"kind":"cut","group":3,"op":{"span":{"end":{"atom":"a_97d15879e51b","offsetUs":2600000},"start":{"atom":"a_da6442cd4fcc","offsetUs":0}},"type":"cut","reason":"user"}}
+{"seq":4,"kind":"set_speed","group":4,"op":{"rate":{"den":1,"num":2},"span":{"end":{"atom":"a_97e2198b92c0","offsetUs":26667},"start":{"atom":"a_00a50a65284e","offsetUs":1140000}},"type":"set_speed"}}
+{"seq":5,"kind":"move","group":5,"op":{"span":{"end":{"atom":"a_263025ffaf26","offsetUs":0},"start":{"atom":"a_79027c27b437","offsetUs":0}},"type":"move","before":null}}
+{"seq":6,"kind":"restore","group":6,"op":{"type":"restore","targetGroup":3}}
+video_id vid_f7fa91d5c60a49649521
+API sha256: c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd
+c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd  -
+c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd  media/test_single.mp4

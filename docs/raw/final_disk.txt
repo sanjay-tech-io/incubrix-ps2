@@ -1,0 +1,11 @@
+2026-10-24T13:22:47Z
+Filesystem      Size  Used Avail Use% Mounted on
+/dev/sda1        99G   40G   56G  42% /
+/dev/sda1        99G   40G   56G  42% /
+TYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE
+Images          10        9         12.9GB    11.46kB (0%)
+Containers      11        7         14.24MB   3.949MB (27%)
+Local Volumes   5         5         11.93GB   0B (0%)
+Build Cache     42        0         7.538GB   7.32GB
+1.6G	test-pack
+464K	pack

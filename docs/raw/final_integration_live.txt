@@ -1,0 +1,34 @@
+## served spec equals repo file?
+IDENTICAL (byte for byte)
+openapi: 3.1.0
+info:
+  title: IncuBrix prompt-based video editing API
+## documented paths: live status (token, dummy ids)
+GET 200 /health
+GET 200 /ready
+GET 404 /api/v1/videos
+GET 404 /api/v1/videos/x
+GET 404 /api/v1/sessions
+GET 404 /api/v1/sessions/x
+GET 404 /api/v1/sessions/x/instructions
+GET 404 /api/v1/sessions/x/timeline
+GET 404 /api/v1/sessions/x/export/otio
+GET 404 /api/v1/sessions/x/history
+GET 404 /api/v1/sessions/x/conversation
+GET 404 /api/v1/sessions/x/render
+GET 404 /api/v1/jobs/x
+## undocumented route
+HTTP/2 404 
+{"error":{"code":"NOT_FOUND","message":"No route GET /api/v1/nope.","retryable":false,"details":{}}}
+## error envelope, no token
+{"error":{"code":"UNAUTHORIZED","message":"Missing or wrong access token. Send `Authorization: Bearer <token>`.","retryable":false,"details":{}}}
+## error envelope, bad body
+{"error":{"code":"VALIDATION_FAILED","message":"The request body is invalid.","retryable":false,"details":{"issues":[{"path":"video_id","message":"Invalid input: expected string, received undefined"},{"path":"","message":"Unrecognized key: \"x\""}]}}}
+## unknown job
+{"error":{"code":"JOB_NOT_FOUND","message":"job job_nope does not exist","retryable":false,"details":{}}}
+## correlation id echo + generated
+x-correlation-id: final-check-123
+x-correlation-id: 075cd1bb-6373-4c83-8052-7cabd06ef1d4
+## health/ready
+{"status":"ok","service":"api"}
+{"status":"ready","service":"api"}

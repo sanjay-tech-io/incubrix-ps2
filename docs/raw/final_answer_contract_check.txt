@@ -1,0 +1,2 @@
+answers checked: 60 {"applied":46,"needs_clarification":5,"rejected":9} | missing fields: 0 | missing time policy: 0 
+consistency problems: none

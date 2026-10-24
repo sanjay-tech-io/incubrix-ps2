@@ -1,0 +1,3 @@
+{"video_id":"vid_2defbd11fb0a413a88de","job_id":"job_442326e5ad92414a84ce","status_url":"/api/v1/jobs/job_442326e5ad92414a84ce"}
+HTTP 202
+job succeeded

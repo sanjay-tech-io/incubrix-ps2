@@ -1,0 +1,190 @@
+{
+ "video": "media/two_speaker.mp4",
+ "base": "https://34.93.140.79.sslip.io",
+ "steps": [
+  {
+   "n": 1,
+   "sent": "remove filler words",
+   "http": 200,
+   "ms": 11,
+   "missing_fields": [],
+   "answer": {
+    "status": "needs_clarification",
+    "operations": [],
+    "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+    "question": "No transcribed filler words were found. 8 possible untranscribed filler(s) found (voiced sounds that no word covers; they may also be breaths, laughs or coughs). Cut them?",
+    "options": [
+     "cut all 8: 0:01.000-0:01.220 (0.22 s, 2 dB vs speech, confidence 35%); 0:01.640-0:01.880 (0.24 s, -2.8 dB vs speech, confidence 20%); 0:04.120-0:04.500 (0.38 s, -4.5 dB vs speech, confidence 20%); 0:07.240-0:07.520 (0.28 s, -2 dB vs speech, confidence 35%); 0:11.980-0:12.180 (0.20 s, -9.7 dB vs speech, confidence 5%); 0:17.820-0:18.000 (0.18 s, 1.9 dB vs speech, confidence 35%); 0:23.420-0:23.720 (0.30 s, 0.3 dB vs speech, confidence 35%); 0:26.040-0:26.260 (0.22 s, -11.3 dB vs speech, confidence 20%)",
+     "cut only the 4 likelier ones (confidence 35% or more): 0:01.000-0:01.220 (0.22 s, 2 dB vs speech, confidence 35%); 0:07.240-0:07.520 (0.28 s, -2 dB vs speech, confidence 35%); 0:17.820-0:18.000 (0.18 s, 1.9 dB vs speech, confidence 35%); 0:23.420-0:23.720 (0.30 s, 0.3 dB vs speech, confidence 35%)"
+    ],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [],
+    "timeline_hash": "b3ee2ae9a18df8c64dbb8e2aa60350345d2b6f17d9fa7e5b1ecbdf2e2f217f13",
+    "duration_s": 27.12,
+    "duration_us": 27120000,
+    "turn": 1,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 3.08
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.002,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  }
+ ],
+ "upload": {
+  "http": 202,
+  "body": {
+   "video_id": "vid_c6ba6aa7816d400b8dc5",
+   "job_id": "job_9a8a738b01a943088c60",
+   "status_url": "/api/v1/jobs/job_9a8a738b01a943088c60"
+  }
+ },
+ "ingest": {
+  "status": "succeeded",
+  "error": null,
+  "result": {
+   "atoms": 74,
+   "links": {
+    "video": "/api/v1/videos/vid_c6ba6aa7816d400b8dc5",
+    "create_session": "/api/v1/sessions"
+   },
+   "words": 65,
+   "manifest": {
+    "seed": null,
+    "rights": {
+     "software": {
+      "engine": "own code",
+      "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+      "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked"
+     },
+     "reference": "SOURCES.md",
+     "source_media": "not stated by the uploader"
+    },
+    "timings": {
+     "asr_s": 12.366,
+     "embed_s": 0.172,
+     "probe_s": 0.265,
+     "total_s": 13.357,
+     "silence_s": 0.392,
+     "fetch_original_s": 0.025
+    },
+    "settings": {
+     "asrModel": "base.en",
+     "asrProvider": "faster-whisper",
+     "asr_details": {
+      "model": "base.en",
+      "stats": {
+       "words_in": 66,
+       "words_kept": 65,
+       "inside_silence": 0,
+       "low_confidence": 4,
+       "clamp_adjustments": 7,
+       "dropped_after_end": 0,
+       "dropped_zero_length": 1
+      },
+      "provider": "faster-whisper",
+      "silences_found": 9,
+      "speakers_found": 2,
+      "service_timings": {
+       "asr_load_s": 1.9704878060147166,
+       "asr_transcribe_s": 4.302,
+       "diarization_process_s": 7.159
+      }
+     },
+     "numSpeakers": null,
+     "silenceMinUs": 300000,
+     "clampMinWordUs": 20000,
+     "silenceNoiseDb": -35,
+     "voicedGapMaxUs": 1200000,
+     "voicedGapMinUs": 150000,
+     "diarizationProvider": "sherpa",
+     "transcript_cache_key": "f117f67ac2e062a6fad55e37fd2ee97929495ba8e9a2dba8860f8ed55875ac75",
+     "lowConfidencePermille": 600
+    },
+    "warnings": [
+     "1 word(s) had no length after cleaning and were dropped.",
+     "2 speakers were detected; if that is wrong, upload again with the num_speakers hint.",
+     "8 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "providers": {
+     "asr": {
+      "cache": "miss",
+      "model": "base.en",
+      "version": "faster-whisper 1.2.1 / ctranslate2 4.8.3",
+      "provider": "faster-whisper"
+     },
+     "media": {
+      "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers"
+     },
+     "diarization": {
+      "version": "sherpa-onnx 1.13.8 + pyannote-segmentation-3.0 + wespeaker_en_voxceleb_resnet34",
+      "provider": "sherpa"
+     }
+    },
+    "ai_generated": {
+     "speaker_labels": true,
+     "transcript_words": true,
+     "input_media_marked_ai_generated": false
+    },
+    "cost_estimate": {
+     "usd": null,
+     "note": "No price per CPU second is configured, so no money figure is given.",
+     "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+     "cpu_seconds": 11.649
+    }
+   },
+   "video_id": "vid_c6ba6aa7816d400b8dc5",
+   "warnings": [
+    "1 word(s) had no length after cleaning and were dropped.",
+    "2 speakers were detected; if that is wrong, upload again with the num_speakers hint.",
+    "8 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+   ],
+   "duration_s": 27.137,
+   "speakers_found": 2,
+   "transcript_cache": "miss"
+  }
+ },
+ "session_id": "ses_49671d1069b5472ea77e"
+}

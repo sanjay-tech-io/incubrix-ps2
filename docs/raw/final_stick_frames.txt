@@ -1,0 +1,9 @@
+== render A
+stream|r_frame_rate=30/1|duration=180.300000|nb_frames=5409
+{"file":"/tmp/claude-1000/-home-g23m143-incubrix-ps2/04e9ecf1-46a1-4f5b-8e59-3cf471645621/scratchpad/stick_A.mp4","frames":5409,"fps":"30/1","colour":[255,0,0],"runs":[{"first_frame":1186,"last_frame":1246,"start_s":39.533,"end_s":41.567}]}
+== render B
+stream|r_frame_rate=30/1|duration=145.066667|nb_frames=4352
+{"file":"/tmp/claude-1000/-home-g23m143-incubrix-ps2/04e9ecf1-46a1-4f5b-8e59-3cf471645621/scratchpad/stick_B.mp4","frames":4352,"fps":"30/1","colour":[255,0,0],"runs":[{"first_frame":218,"last_frame":248,"start_s":7.267,"end_s":8.3}]}
+== render C
+stream|r_frame_rate=30/1|duration=175.066667|nb_frames=5252
+{"file":"/tmp/claude-1000/-home-g23m143-incubrix-ps2/04e9ecf1-46a1-4f5b-8e59-3cf471645621/scratchpad/stick_C.mp4","frames":5252,"fps":"30/1","colour":[255,0,0],"runs":[{"first_frame":1118,"last_frame":1148,"start_s":37.267,"end_s":38.3}]}

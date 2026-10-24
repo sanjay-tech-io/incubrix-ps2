@@ -1,0 +1,2 @@
+/api/v1/health -> 401 (no token) / 404 (token)
+/api/v1/ready -> 401 (no token) / 404 (token)

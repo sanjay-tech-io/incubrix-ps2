@@ -1,0 +1,7 @@
+1. "Add a caption \"Welcome!\" when I say \"welcome to our channel\"" -> HTTP 200 applied 
+2. "make that caption red" -> HTTP 200 applied 
+3. "move 0:30-0:50 to the end" -> HTTP 200 applied 
+4. GET timeline -> 200
+5. render -> 202 succeeded
+6. "mute \"welcome\"" -> HTTP 200 applied 
+7. GET timeline -> 200

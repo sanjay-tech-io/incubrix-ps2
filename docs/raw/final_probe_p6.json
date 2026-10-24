@@ -1,0 +1,228 @@
+{
+ "video": "media/test_single.mp4",
+ "base": "https://34.93.140.79.sslip.io",
+ "steps": [
+  {
+   "n": 1,
+   "sent": "cut 0:10-0:15, then speed up 0:30-0:40 by 10x, then add a caption \"Hi\" on \"welcome to our channel\"",
+   "http": 200,
+   "ms": 18,
+   "missing_fields": [],
+   "answer": {
+    "status": "applied",
+    "operations": [
+     {
+      "type": "cut",
+      "span": {
+       "start": {
+        "atom": "a_c05359cbaee8",
+        "offsetUs": 1833
+       },
+       "end": {
+        "atom": "a_46ca4338c6d9",
+        "offsetUs": 0
+       }
+      },
+      "reason": "user"
+     },
+     {
+      "type": "add_effect",
+      "effectId": "fx_1_0",
+      "range": {
+       "from": "a_2137b52ae255",
+       "to": "a_02df35e8374d"
+      },
+      "params": {
+       "kind": "caption",
+       "text": "Hi",
+       "style": {
+        "color": "#ffffff",
+        "sizePt": 32,
+        "bold": true
+       },
+       "position": "bottom"
+      }
+     }
+    ],
+    "summary": "Length 3:00.300 -> 2:55.700 (-0:04.600). Time policy: current (times refer to the edited timeline as it is now).",
+    "question": null,
+    "options": [],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [
+     "Applied 2 of 3 parts.",
+     "Part 2 (\"speed up 0:30-0:40 by 10x\") was not applied: speed 10x is outside the allowed range 0.25x to 4x",
+     "0:10.000 is inside the word \"What\", so the cut point moved to 0:10.532, the nearest silence.",
+     "0:15.000 is inside the word \"really\", so the cut point moved to 0:15.140, the nearest word edge (no silence nearby). The cut point at 0:15.140 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+     "This edit touches words the transcript is unsure about: \"welcome\" (low confidence). Check the result."
+    ],
+    "timeline_hash": "32c2cff8e88240445bcc69cc9b0547372d23694371a20d98258482048038dfd9",
+    "duration_s": 175.7,
+    "duration_us": 175700000,
+    "turn": 1,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 6.33
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.005,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [
+      "Applied 2 of 3 parts.",
+      "Part 2 (\"speed up 0:30-0:40 by 10x\") was not applied: speed 10x is outside the allowed range 0.25x to 4x",
+      "0:10.000 is inside the word \"What\", so the cut point moved to 0:10.532, the nearest silence.",
+      "0:15.000 is inside the word \"really\", so the cut point moved to 0:15.140, the nearest word edge (no silence nearby). The cut point at 0:15.140 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+      "This edit touches words the transcript is unsure about: \"welcome\" (low confidence). Check the result."
+     ],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  }
+ ],
+ "upload": {
+  "http": 202,
+  "body": {
+   "video_id": "vid_37c31b72bbad41de994f",
+   "job_id": "job_0394ac5514aa470892ae",
+   "status_url": "/api/v1/jobs/job_0394ac5514aa470892ae"
+  }
+ },
+ "ingest": {
+  "status": "succeeded",
+  "error": null,
+  "result": {
+   "atoms": 319,
+   "links": {
+    "video": "/api/v1/videos/vid_37c31b72bbad41de994f",
+    "create_session": "/api/v1/sessions"
+   },
+   "words": 287,
+   "manifest": {
+    "seed": null,
+    "rights": {
+     "software": {
+      "engine": "own code",
+      "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+      "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked"
+     },
+     "reference": "SOURCES.md",
+     "source_media": "not stated by the uploader"
+    },
+    "timings": {
+     "embed_s": 0.011,
+     "probe_s": 0.323,
+     "total_s": 2.293,
+     "fetch_original_s": 1.956
+    },
+    "settings": {
+     "asrModel": "base.en",
+     "asrProvider": "faster-whisper",
+     "asr_details": {
+      "model": "base.en",
+      "stats": {
+       "words_in": 291,
+       "words_kept": 287,
+       "inside_silence": 0,
+       "low_confidence": 47,
+       "clamp_adjustments": 18,
+       "dropped_after_end": 0,
+       "dropped_zero_length": 4
+      },
+      "provider": "faster-whisper",
+      "silences_found": 45,
+      "speakers_found": 1,
+      "service_timings": {
+       "asr_load_s": 1.9704878060147166,
+       "asr_transcribe_s": 26.793,
+       "diarization_process_s": 88.815
+      }
+     },
+     "numSpeakers": 1,
+     "silenceMinUs": 300000,
+     "clampMinWordUs": 20000,
+     "silenceNoiseDb": -35,
+     "voicedGapMaxUs": 1200000,
+     "voicedGapMinUs": 150000,
+     "diarizationProvider": "sherpa",
+     "transcript_cache_key": "04a3fdb8d9a9d525da9383c31fc132c16d60edeb623464ff29d689ef05f46887",
+     "lowConfidencePermille": 600
+    },
+    "warnings": [
+     "4 word(s) had no length after cleaning and were dropped.",
+     "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "providers": {
+     "asr": {
+      "cache": "hit",
+      "model": "base.en",
+      "version": "faster-whisper 1.2.1 / ctranslate2 4.8.3",
+      "provider": "faster-whisper"
+     },
+     "media": {
+      "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers"
+     },
+     "diarization": {
+      "version": "sherpa-onnx 1.13.8 + pyannote-segmentation-3.0 + wespeaker_en_voxceleb_resnet34",
+      "provider": "sherpa"
+     }
+    },
+    "ai_generated": {
+     "speaker_labels": true,
+     "transcript_words": true,
+     "input_media_marked_ai_generated": false
+    },
+    "cost_estimate": {
+     "usd": null,
+     "note": "No price per CPU second is configured, so no money figure is given.",
+     "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+     "cpu_seconds": 3.364
+    }
+   },
+   "video_id": "vid_37c31b72bbad41de994f",
+   "warnings": [
+    "4 word(s) had no length after cleaning and were dropped.",
+    "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+   ],
+   "duration_s": 180.3138,
+   "speakers_found": 1,
+   "transcript_cache": "hit"
+  }
+ },
+ "session_id": "ses_4f31dcd239a64fb9becd"
+}

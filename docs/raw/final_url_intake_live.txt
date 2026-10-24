@@ -1,0 +1,7 @@
+source video vid_45ed56950c7c42eb875a download_url: https://34.93.140.79.sslip.io/incubrix/videos/vid_e23c4c8e65494ddc9e7e/original.mp4?<signature hidden>
+POST /videos {url} -> 202 {"video_id":"vid_1b1fc230de41404198a3","job_id":"job_a070d5e5e380417e8327","status_url":"/api/v1/jobs/job_a070d5e5e380417e8327"}
+job: succeeded progress 100 
+sha256 (URL intake): f8a0bd39217b23fcc6c80239b99c261d1d184d710b4e88e9315fd39e6bbaae4c 
+sha256 (upload)    : f8a0bd39217b23fcc6c80239b99c261d1d184d710b4e88e9315fd39e6bbaae4c 
+equal: true | download link of the stored original: https://34.93.140.79.sslip.io/incubrix/videos/vid_e23c4c8e65494ddc9e7e/original.mp4?<signature hidden>
+download via link: 200 1516444 bytes sha256 == original

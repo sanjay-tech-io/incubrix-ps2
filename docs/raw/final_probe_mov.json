@@ -1,0 +1,499 @@
+{
+ "video": "/tmp/claude-1000/-home-g23m143-incubrix-ps2/04e9ecf1-46a1-4f5b-8e59-3cf471645621/scratchpad/smoke.mov",
+ "base": "https://34.93.140.79.sslip.io",
+ "steps": [
+  {
+   "n": 1,
+   "sent": "add captions",
+   "http": 200,
+   "ms": 11,
+   "missing_fields": [],
+   "answer": {
+    "status": "applied",
+    "operations": [
+     {
+      "type": "auto_caption",
+      "style": {
+       "color": "#ffffff",
+       "sizePt": 32,
+       "bold": true
+      }
+     }
+    ],
+    "summary": "Length 0:15.880 -> 0:15.880 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+    "question": null,
+    "options": [],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [],
+    "timeline_hash": "1663df13a4a9483c7315a60eb89f203f17f99be36f0a455b7684ae6932ab8e57",
+    "duration_s": 15.88,
+    "duration_us": 15880000,
+    "turn": 1,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 2.3
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.001,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  },
+  {
+   "n": 2,
+   "sent": "cut 0:05-0:07",
+   "http": 200,
+   "ms": 10,
+   "missing_fields": [],
+   "answer": {
+    "status": "applied",
+    "operations": [
+     {
+      "type": "cut",
+      "span": {
+       "start": {
+        "atom": "a_4b24f8ffa1b4",
+        "offsetUs": 0
+       },
+       "end": {
+        "atom": "a_c3cca61c8da3",
+        "offsetUs": 560000
+       }
+      },
+      "reason": "user"
+     }
+    ],
+    "summary": "Length 0:15.880 -> 0:13.760 (-0:02.120). Time policy: current (times refer to the edited timeline as it is now).",
+    "question": null,
+    "options": [],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [
+     "0:05.000 is inside the word \"video\", so the cut point moved to 0:04.860, the nearest word edge (no silence nearby). The cut point at 0:04.860 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there)."
+    ],
+    "timeline_hash": "9a04c1bffe7b98d156a5225e073fa37c41e44f613ed4bc7e755497700a4ab1b9",
+    "duration_s": 13.76,
+    "duration_us": 13760000,
+    "turn": 2,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 2.04
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.001,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [
+      "0:05.000 is inside the word \"video\", so the cut point moved to 0:04.860, the nearest word edge (no silence nearby). The cut point at 0:04.860 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there)."
+     ],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  },
+  {
+   "n": 3,
+   "sent": "add background music",
+   "http": 200,
+   "ms": 11,
+   "missing_fields": [],
+   "answer": {
+    "status": "applied",
+    "operations": [
+     {
+      "type": "set_music",
+      "music": {
+       "assetSha256": "19c234fef199c51cd59f5a1365f7c09ff83d8a2a8352751a5fc6668e7e739cbb",
+       "gainCentiDb": -1800,
+       "duckCentiDb": 1200,
+       "attackUs": 200000,
+       "releaseUs": 600000
+      }
+     }
+    ],
+    "summary": "Length 0:13.760 -> 0:13.760 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+    "question": null,
+    "options": [],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [
+     "Background music: the built-in generated track at -18 dB, lowered by 12 dB while someone speaks."
+    ],
+    "timeline_hash": "b734604dce864da02f56f721a34c4600b882092c13cda2e61f2e277196b77e00",
+    "duration_s": 13.76,
+    "duration_us": 13760000,
+    "turn": 3,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 2.5
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.001,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [
+      "Background music: the built-in generated track at -18 dB, lowered by 12 dB while someone speaks."
+     ],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  },
+  {
+   "n": 4,
+   "sent": {
+    "render": true,
+    "save": "/tmp/claude-1000/-home-g23m143-incubrix-ps2/04e9ecf1-46a1-4f5b-8e59-3cf471645621/scratchpad/mov.mp4"
+   },
+   "http": 202,
+   "ms": 4046,
+   "job": {
+    "job_id": "job_b51c7147e8e34066a6aa",
+    "type": "render",
+    "status": "succeeded",
+    "progress": 100,
+    "result": {
+     "links": {
+      "video": "https://34.93.140.79.sslip.io/incubrix/renders/job_b51c7147e8e34066a6aa/output.mp4?<presigned query removed>",
+      "manifest": "https://34.93.140.79.sslip.io/incubrix/renders/job_b51c7147e8e34066a6aa/render_manifest.json?<presigned query removed>"
+     },
+     "frames": 344,
+     "outputs": {
+      "video": "renders/job_b51c7147e8e34066a6aa/output.mp4",
+      "manifest": "renders/job_b51c7147e8e34066a6aa/render_manifest.json"
+     },
+     "manifest": {
+      "seed": null,
+      "render": {
+       "proxy": null,
+       "job_id": "job_b51c7147e8e34066a6aa",
+       "output": {
+        "fps": "25/1",
+        "width": 640,
+        "height": 360,
+        "pixFmt": "yuv420p",
+        "seconds": 13.76,
+        "audioCodec": "aac",
+        "size_bytes": 1745632,
+        "videoCodec": "h264",
+        "videoFrames": 344,
+        "audioDurationUs": 13760000,
+        "videoDurationUs": 13760000,
+        "formatDurationUs": 13760000
+       },
+       "pieces": 2,
+       "source": {
+        "video_id": "vid_a48fd4240c914392b76e",
+        "unchanged": true,
+        "sha256_before": "bfd0bd5b2ea187a0053e79d50e6d9bb4d302457ea4c0c469cab10dc58b540d35",
+        "sha256_after_local": "bfd0bd5b2ea187a0053e79d50e6d9bb4d302457ea4c0c469cab10dc58b540d35",
+        "sha256_after_stored": "bfd0bd5b2ea187a0053e79d50e6d9bb4d302457ea4c0c469cab10dc58b540d35"
+       },
+       "session_id": "ses_eea598277737484fb773",
+       "timeline_hash": "b734604dce864da02f56f721a34c4600b882092c13cda2e61f2e277196b77e00",
+       "rendered_frames": 344,
+       "timeline_frames": 344,
+       "frame_difference": 0,
+       "ffmpeg_peak_rss_mb": 111,
+       "filter_script_sha256": "a64f9eeb981d0323d8a57f4039aed7569726b27932fbfbac301ef9e5013e290b",
+       "audio_minus_video_frames": 0,
+       "render_seconds_per_output_minute": 9.8
+      },
+      "rights": {
+       "software": {
+        "engine": "own code",
+        "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+        "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked"
+       },
+       "reference": "SOURCES.md",
+       "source_media": "not stated by the uploader"
+      },
+      "timings": {
+       "total_s": 3.39,
+       "render_s": 3.285,
+       "upload_s": 0.036,
+       "verify_s": 0.04,
+       "fetch_original_s": 0.022
+      },
+      "settings": {
+       "crf": 20,
+       "fps": "25/1",
+       "audio": "aac 192k 48 kHz stereo",
+       "bleep": "1 kHz sine, level 0.25",
+       "preset": "veryfast",
+       "pix_fmt": "yuv420p",
+       "movflags": "+faststart",
+       "max_height": 0,
+       "caption_size": "sizePt relative to a 720-line frame"
+      },
+      "warnings": [
+       "3 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+      ],
+      "providers": {
+       "font": "DejaVu Sans / DejaVu Sans Bold (Bitstream Vera + public-domain changes licence; commercial use allowed), see SOURCES.md",
+       "media": {
+        "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers"
+       },
+       "music": {
+        "note": "programmatic sine-wave pad, not an AI model",
+        "builtin": true,
+        "asset_sha256": "19c234fef199c51cd59f5a1365f7c09ff83d8a2a8352751a5fc6668e7e739cbb"
+       },
+       "audio_codec": {
+        "name": "aac (ffmpeg native encoder)"
+       },
+       "video_codec": {
+        "name": "libx264",
+        "note": "H.264 (GPL libx264 inside the ffmpeg build; used as an external program, not linked)"
+       }
+      },
+      "ai_generated": {
+       "music": false,
+       "transcript_words": true,
+       "captions_text_is_user_text": false,
+       "input_media_marked_ai_generated": false
+      },
+      "cost_estimate": {
+       "usd": null,
+       "note": "No price per CPU second is configured, so no money figure is given.",
+       "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+       "cpu_seconds": 5.901
+      }
+     },
+     "warnings": [
+      "3 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+     ],
+     "duration_s": 13.76,
+     "session_id": "ses_eea598277737484fb773",
+     "size_bytes": 1745632,
+     "timeline_hash": "b734604dce864da02f56f721a34c4600b882092c13cda2e61f2e277196b77e00"
+    },
+    "links": {
+     "video": "https://34.93.140.79.sslip.io/incubrix/renders/job_b51c7147e8e34066a6aa/output.mp4?<presigned query removed>",
+     "manifest": "https://34.93.140.79.sslip.io/incubrix/renders/job_b51c7147e8e34066a6aa/render_manifest.json?<presigned query removed>"
+    },
+    "error": null,
+    "created_at": "2026-10-24T13:13:33.320Z",
+    "updated_at": "2026-10-24T13:13:36.865Z"
+   },
+   "saved": "/tmp/claude-1000/-home-g23m143-incubrix-ps2/04e9ecf1-46a1-4f5b-8e59-3cf471645621/scratchpad/mov.mp4"
+  }
+ ],
+ "upload": {
+  "http": 202,
+  "body": {
+   "video_id": "vid_a48fd4240c914392b76e",
+   "job_id": "job_7570c3ab50c84da8b282",
+   "status_url": "/api/v1/jobs/job_7570c3ab50c84da8b282"
+  }
+ },
+ "ingest": {
+  "status": "succeeded",
+  "error": null,
+  "result": {
+   "atoms": 37,
+   "links": {
+    "video": "/api/v1/videos/vid_a48fd4240c914392b76e",
+    "create_session": "/api/v1/sessions"
+   },
+   "words": 33,
+   "manifest": {
+    "seed": null,
+    "rights": {
+     "software": {
+      "engine": "own code",
+      "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+      "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked"
+     },
+     "reference": "SOURCES.md",
+     "source_media": "not stated by the uploader"
+    },
+    "timings": {
+     "asr_s": 7.651,
+     "embed_s": 0.125,
+     "probe_s": 0.245,
+     "total_s": 8.596,
+     "silence_s": 0.408,
+     "fetch_original_s": 0.033
+    },
+    "settings": {
+     "asrModel": "base.en",
+     "asrProvider": "faster-whisper",
+     "asr_details": {
+      "model": "base.en",
+      "stats": {
+       "words_in": 33,
+       "words_kept": 33,
+       "inside_silence": 0,
+       "low_confidence": 2,
+       "clamp_adjustments": 3,
+       "dropped_after_end": 0,
+       "dropped_zero_length": 0
+      },
+      "provider": "faster-whisper",
+      "silences_found": 4,
+      "speakers_found": 1,
+      "service_timings": {
+       "asr_load_s": 1.9704878060147166,
+       "asr_transcribe_s": 3.514,
+       "diarization_process_s": 3.38
+      }
+     },
+     "numSpeakers": 1,
+     "silenceMinUs": 300000,
+     "clampMinWordUs": 20000,
+     "silenceNoiseDb": -35,
+     "voicedGapMaxUs": 1200000,
+     "voicedGapMinUs": 150000,
+     "diarizationProvider": "sherpa",
+     "transcript_cache_key": "77e4787babd9ef752084ac0abca037c218242acb428187428b35a90ab1d1ffcb",
+     "lowConfidencePermille": 600
+    },
+    "warnings": [
+     "3 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "providers": {
+     "asr": {
+      "cache": "miss",
+      "model": "base.en",
+      "version": "faster-whisper 1.2.1 / ctranslate2 4.8.3",
+      "provider": "faster-whisper"
+     },
+     "media": {
+      "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers"
+     },
+     "diarization": {
+      "version": "sherpa-onnx 1.13.8 + pyannote-segmentation-3.0 + wespeaker_en_voxceleb_resnet34",
+      "provider": "sherpa"
+     }
+    },
+    "ai_generated": {
+     "speaker_labels": true,
+     "transcript_words": true,
+     "input_media_marked_ai_generated": false
+    },
+    "cost_estimate": {
+     "usd": null,
+     "note": "No price per CPU second is configured, so no money figure is given.",
+     "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+     "cpu_seconds": 7.08
+    }
+   },
+   "video_id": "vid_a48fd4240c914392b76e",
+   "warnings": [
+    "3 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+   ],
+   "duration_s": 15.88,
+   "speakers_found": 1,
+   "transcript_cache": "miss"
+  }
+ },
+ "session_id": "ses_eea598277737484fb773"
+}

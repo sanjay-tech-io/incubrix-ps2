@@ -1,0 +1,23 @@
+##### p1
+1. "Remove 0:30-0:40" -> HTTP 200 applied 
+2. "Remove 0:30-0:40" -> HTTP 200 applied 
+##### p3
+1. "cut 80 seconds" -> HTTP 200 rejected 
+2. "cut a minute twenty" -> HTTP 200 rejected 
+3. "cut the last 10 seconds" -> HTTP 200 applied 
+4. "cut 1:20" -> HTTP 200 rejected 
+5. "remove the last 10 seconds" -> HTTP 200 applied 
+##### p4
+1. "add background music" -> HTTP 200 applied 
+2. "cut 0:10-0:15" -> HTTP 200 applied 
+3. "cut 0:20-0:25" -> HTTP 200 applied 
+4. "cut 0:30-0:35" -> HTTP 200 applied 
+5. "Undo the second-to-last cut but keep the music" -> HTTP 200 applied 
+6. GET timeline -> 200
+##### p5
+1. "make it bigger" -> HTTP 200 rejected 
+2. "Remove everything after I say thanks" -> HTTP 200 needs_clarification 
+3. "Speed up 10x" -> HTTP 200 rejected 
+4. "cut everything" -> HTTP 200 rejected 
+5. "remove the part about pricing" -> HTTP 200 needs_clarification 
+6. "cut 0:10-0:15, then speed up 0:30-0:40 by 10x, then add a caption \"Hi\" on \"welcome to our channel\"" -> HTTP 200 applied 

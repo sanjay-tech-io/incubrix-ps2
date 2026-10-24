@@ -1,0 +1,16 @@
+GET  /health                                    -> 200 route exists {"status":"ok","service":"api"}
+HEAD /health                                    -> 200 route exists 
+GET  /ready                                     -> 200 route exists {"status":"ready","service":"api"}
+HEAD /ready                                     -> 200 route exists 
+POST /api/v1/videos                             -> 400 route exists {"error":{"code":"VALIDATION_FAILED","message":"The request 
+GET  /api/v1/videos/{video_id}                  -> 404 route exists {"error":{"code":"VIDEO_NOT_FOUND","message":"video x does n
+POST /api/v1/sessions                           -> 400 route exists {"error":{"code":"VALIDATION_FAILED","message":"The request 
+GET  /api/v1/sessions/{session_id}              -> 404 route exists {"error":{"code":"SESSION_NOT_FOUND","message":"session x do
+POST /api/v1/sessions/{session_id}/instructions -> 400 route exists {"error":{"code":"VALIDATION_FAILED","message":"The request 
+GET  /api/v1/sessions/{session_id}/timeline     -> 404 route exists {"error":{"code":"SESSION_NOT_FOUND","message":"session x do
+GET  /api/v1/sessions/{session_id}/export/otio  -> 404 route exists {"error":{"code":"SESSION_NOT_FOUND","message":"session x do
+GET  /api/v1/sessions/{session_id}/history      -> 404 route exists {"error":{"code":"SESSION_NOT_FOUND","message":"session x do
+GET  /api/v1/sessions/{session_id}/conversation -> 404 route exists {"error":{"code":"SESSION_NOT_FOUND","message":"session x do
+POST /api/v1/sessions/{session_id}/render       -> 404 route exists {"error":{"code":"SESSION_NOT_FOUND","message":"session x do
+GET  /api/v1/jobs/{job_id}                      -> 404 route exists {"error":{"code":"JOB_NOT_FOUND","message":"job x does not e
+15 documented operations probed, 0 not served

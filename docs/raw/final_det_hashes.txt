@@ -1,0 +1,17 @@
+keys [
+  'name',       'video',
+  'passed',     'video_id',
+  'session_id', 'intake',
+  'steps',      'final',
+  'error'
+]
+step 1 cd0c6e17d0043a46 ALL 3 EQUAL
+step 2 b578640252a7d53b ALL 3 EQUAL
+step 3 b578640252a7d53b ALL 3 EQUAL
+step 4 b6eccc27847a59b1 ALL 3 EQUAL
+step 5 ccf60b546a5e6c9c ALL 3 EQUAL
+step 6 8575c60328343693 ALL 3 EQUAL
+step 7 ccf60b546a5e6c9c ALL 3 EQUAL
+step 8 5c590d67df2eed8d ALL 3 EQUAL
+step 9 5c590d67df2eed8d ALL 3 EQUAL
+["applied","applied","needs_clarification","applied","applied","applied","applied","applied","succeeded"]

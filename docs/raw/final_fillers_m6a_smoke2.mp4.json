@@ -1,0 +1,186 @@
+{
+ "video": "media/m6a_smoke2.mp4",
+ "base": "https://34.93.140.79.sslip.io",
+ "steps": [
+  {
+   "n": 1,
+   "sent": "remove filler words",
+   "http": 200,
+   "ms": 10,
+   "missing_fields": [],
+   "answer": {
+    "status": "needs_clarification",
+    "operations": [],
+    "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+    "question": "No transcribed filler words were found. 3 possible untranscribed filler(s) found (voiced sounds that no word covers; they may also be breaths, laughs or coughs). Cut them?",
+    "options": [
+     "cut all 3: 0:04.040-0:04.200 (0.16 s, 0.6 dB vs speech, confidence 35%); 0:07.940-0:08.280 (0.34 s, -3.8 dB vs speech, confidence 5%); 0:15.980-0:16.200 (0.22 s, -2.2 dB vs speech, confidence 35%)",
+     "cut only the 2 likelier ones (confidence 35% or more): 0:04.040-0:04.200 (0.16 s, 0.6 dB vs speech, confidence 35%); 0:15.980-0:16.200 (0.22 s, -2.2 dB vs speech, confidence 35%)"
+    ],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [],
+    "timeline_hash": "c3bbd1cbeabb0365807c28c59e78082114a0b739a6c74aefc5a711c3e7c3670f",
+    "duration_s": 17.36,
+    "duration_us": 17360000,
+    "turn": 1,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 1.45
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.001,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  }
+ ],
+ "upload": {
+  "http": 202,
+  "body": {
+   "video_id": "vid_26df364af8b946fead09",
+   "job_id": "job_1a5401d3517842bdbb73",
+   "status_url": "/api/v1/jobs/job_1a5401d3517842bdbb73"
+  }
+ },
+ "ingest": {
+  "status": "succeeded",
+  "error": null,
+  "result": {
+   "atoms": 41,
+   "links": {
+    "video": "/api/v1/videos/vid_26df364af8b946fead09",
+    "create_session": "/api/v1/sessions"
+   },
+   "words": 37,
+   "manifest": {
+    "seed": null,
+    "rights": {
+     "software": {
+      "engine": "own code",
+      "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+      "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked"
+     },
+     "reference": "SOURCES.md",
+     "source_media": "not stated by the uploader"
+    },
+    "timings": {
+     "asr_s": 7.511,
+     "embed_s": 0.057,
+     "probe_s": 0.251,
+     "total_s": 8.437,
+     "silence_s": 0.424,
+     "fetch_original_s": 0.025
+    },
+    "settings": {
+     "asrModel": "base.en",
+     "asrProvider": "faster-whisper",
+     "asr_details": {
+      "model": "base.en",
+      "stats": {
+       "words_in": 37,
+       "words_kept": 37,
+       "inside_silence": 0,
+       "low_confidence": 2,
+       "clamp_adjustments": 3,
+       "dropped_after_end": 0,
+       "dropped_zero_length": 0
+      },
+      "provider": "faster-whisper",
+      "silences_found": 4,
+      "speakers_found": 1,
+      "service_timings": {
+       "asr_load_s": 1.9704878060147166,
+       "asr_transcribe_s": 2.761,
+       "diarization_process_s": 4.013
+      }
+     },
+     "numSpeakers": null,
+     "silenceMinUs": 300000,
+     "clampMinWordUs": 20000,
+     "silenceNoiseDb": -35,
+     "voicedGapMaxUs": 1200000,
+     "voicedGapMinUs": 150000,
+     "diarizationProvider": "sherpa",
+     "transcript_cache_key": "b6cdcc9017f34cd0d401e085559db3e2a38e5e1a3771379363b28418c2d5ab13",
+     "lowConfidencePermille": 600
+    },
+    "warnings": [
+     "3 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "providers": {
+     "asr": {
+      "cache": "miss",
+      "model": "base.en",
+      "version": "faster-whisper 1.2.1 / ctranslate2 4.8.3",
+      "provider": "faster-whisper"
+     },
+     "media": {
+      "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers"
+     },
+     "diarization": {
+      "version": "sherpa-onnx 1.13.8 + pyannote-segmentation-3.0 + wespeaker_en_voxceleb_resnet34",
+      "provider": "sherpa"
+     }
+    },
+    "ai_generated": {
+     "speaker_labels": true,
+     "transcript_words": true,
+     "input_media_marked_ai_generated": false
+    },
+    "cost_estimate": {
+     "usd": null,
+     "note": "No price per CPU second is configured, so no money figure is given.",
+     "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+     "cpu_seconds": 6.971
+    }
+   },
+   "video_id": "vid_26df364af8b946fead09",
+   "warnings": [
+    "3 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+   ],
+   "duration_s": 17.36,
+   "speakers_found": 1,
+   "transcript_cache": "miss"
+  }
+ },
+ "session_id": "ses_a31b9264ec80454ebf3b"
+}
