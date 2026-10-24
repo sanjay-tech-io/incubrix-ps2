@@ -122,7 +122,7 @@ export async function runIntake(d: WorkerDeps, job: JobRow): Promise<void> {
     const fps = p.video ? { num: p.video.fps.num, den: p.video.fps.den } : null;
     if (p.video?.isVfr) {
       warnings.push(
-        `Variable frame rate detected. Times are exact for the original's timestamps, but frame-accurate cuts need a constant-frame-rate proxy at ${fps!.num}/${fps!.den} fps, which the renderer builds from the original (M3, not built yet).`,
+        `Variable frame rate detected. Times are exact for the original's timestamps, but frame-accurate cuts need a constant-frame-rate proxy at ${fps!.num}/${fps!.den} fps, which the renderer builds from the original.`,
       );
     }
     const source: Source = { sha256, durationUs: p.durationUs, fps, hasAudio: true, hasVideo: p.hasVideo, variableFrameRate: p.video?.isVfr ?? false };
