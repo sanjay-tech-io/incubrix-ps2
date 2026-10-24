@@ -1,59 +1,87 @@
-# AI use
+# AI_USE.md — How I used AI in this assessment
 
-Every AI tool used on this project. Facts below come from the repository, its git history and the files named. Where only the candidate knows the answer, the text says **TO BE COMPLETED BY THE CANDIDATE**. All such places are listed together at the end of the file.
+The brief allows any AI tool as long as it is disclosed, so this file says plainly which tools I used, what each one did, and what I did myself. I am a college student, and this is the biggest system I have built. I used AI heavily, and I want to be honest about where.
 
-## 1. AI tools used to build the project
+## 1. Tools I used
 
-| Tool | Used for | Where it shows |
+| Tool | Where it ran | What I used it for |
 |---|---|---|
-| **Claude Code** (Anthropic's CLI coding agent), running in a terminal session on the project's GCP VM | Writing and editing code, tests, SQL migrations, Dockerfiles, compose files, scripts and documentation in this repository. Running the commands whose output is saved under `docs/raw/`, `test-pack/` and quoted in `docs/REVIEW_*.md`: tests, docker compose, ffmpeg renders, real ASR and diarization runs, batch runs, deployment (Caddy, secret rotation), and measurements. Also wrote the submission documents of M6b: `docs/SUBMISSION_EVIDENCE.md`, `REPORT.md`, `docs/TIMELINE_SCHEMA.md`, `test-pack/INDEX.md`, this file and `docs/DEMO_VIDEO_SCRIPT.md` | `git log`: 112 of the first 118 commits (those before the M6b documents) carry the trailer `Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>`. The trailer is the only model name recorded in git. `docs/REVIEW_*.md`, `docs/STATUS.md`, `docs/SPIKE_ASR.md` and `docs/raw/*` were written by it |
-| **Claude chat** (Anthropic), used outside the repository | Reviewer and planner: reviewing the design and review documents, planning milestones, and writing the task prompts that were given to Claude Code. The review documents refer to its feedback ("the reviewer's list", the rules and approvals the candidate passed on) | Not recorded in the repository. Which model, how many conversations, exports: **TO BE COMPLETED BY THE CANDIDATE** |
-| **Gemini API** (`gemini-3.5-flash-lite`), called by Claude Code during development | The development runs of the runtime fallback below: latency probe, 3 session runs, about 14 requests in M4 (`docs/REVIEW_M4.md` section 5). The key was set by the candidate in `.env`, which is not committed | `docs/raw/m4_llm_*`; tokens and the cost estimate are in the manifests |
+| **Claude Code** (Anthropic) | First on my laptop (VS Code), then on my GCP VM (Debian, e2-standard-4) inside tmux | Wrote most of the code, tests, Docker setup, scripts and documentation in this repository. It also ran the commands whose output is saved under `docs/raw/`, `test-pack/` and quoted in `docs/REVIEW_*.md` (tests, docker compose, ffmpeg renders, real ASR and diarization runs, batch runs, deployment, measurements), and wrote the M6b submission documents (`docs/SUBMISSION_EVIDENCE.md`, `REPORT.md`, `docs/TIMELINE_SCHEMA.md`, `test-pack/INDEX.md`, this file's first draft, `docs/DEMO_VIDEO_SCRIPT.md`). In git, 112 of the first 118 commits (those before the M6b documents) carry the trailer `Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>`; that trailer is the only model name recorded in git. Six of the 118 have no trailer: four merge commits (`14c6bca`, `8a58ef3`, `693dcde`, `d756d8d`) and two commits titled `gitignore` (`701d574`) and `docs` (`72c6c69`, the first commit). Author names in git: `Sanjay J` and `sanjay-tech-io` |
+| **Claude chat** (claude.ai) | Browser | Planner and reviewer (the model and number of conversations are not recorded in the repository): split the work into milestones, wrote the prompts I gave to Claude Code, and reviewed its results from my screenshots |
+| **Gemini 3.5 Flash Lite** (Google, API; model id `gemini-3.5-flash-lite`) | Inside the running service, and called by Claude Code in development (latency probe, 3 session runs, about 14 requests in M4: `docs/REVIEW_M4.md` section 5, `docs/raw/m4_llm_*`) | Runtime fallback only: turns an instruction into structured operations when the rules parser cannot understand it (details in section 4) |
+| **Speech synthesis (TTS)** | Test media only | Synthetic speech clips used in tests, marked AI-generated in `SOURCES.md`. The synthesiser is espeak-ng (rule-based formant, not a neural model). Clips: `synthetic.wav`, `two_voice.wav`, `demo.mp4`, the dialogue clip, `two_speaker.mp4`, `vfr_speech.mp4`, the smoke clips and the API test clips. The built-in background music is computed from four sine waves, not made by an AI model |
 
-### What the repository does and does not show about who wrote what
-- 118 commits before the M6b documents, from 20 to 24 October 2026; every later commit carries the trailer too. Author names in git: `Sanjay J` and `sanjay-tech-io`.
-- 6 of those 118 commits have **no** AI trailer: four merge commits (`14c6bca`, `8a58ef3`, `693dcde`, `d756d8d`) and two commits titled `gitignore` (`701d574`) and `docs` (`72c6c69`, the first commit). How those two were produced: **TO BE COMPLETED BY THE CANDIDATE**.
-- Claude Code wrote most of the code and all review documents. The review documents record where it did not work test-first (nlu, worker, API, embedding service, render code were written together with their tests and then run and fixed: `docs/REVIEW_M2.md` section 6, `docs/REVIEW_M3.md` section 9, `docs/REVIEW_M4.md` section 7).
-- The recording `media/test_single.mp4` is the candidate's own (`SOURCES.md`).
-- What the candidate wrote by hand versus accepted from AI, and how much of the code the candidate has read and can explain: **TO BE COMPLETED BY THE CANDIDATE**.
+No AI tool was used to generate the real test video. I recorded `media/test_single.mp4` myself (`SOURCES.md`).
 
-### Mistakes made by the AI agent in this project (all recorded where they were found)
-- Ran `docker compose up` without the production file: ports 8080 and 8333 were published for about 10 minutes (`docs/DEPLOY.md`).
-- `docker compose run tests` and an `.env` change restarted the live demo's services (`docs/REVIEW_M5.md` section 8.3, `docs/TEST_MEDIA.md` section 5).
-- Printed the old API token and a database URL into its own terminal output once; both secrets were later rotated (`docs/DEPLOY.md`, `docs/raw/m5d_token_rotation.txt`).
-- Hid `packages/media/` from git with an over-broad `.gitignore` line, so a fresh clone could not run for a few milestones (`docs/raw/m5_ci_simulation_run1_failed.txt`).
-- Ran `docker compose config | grep` to check a compose file and the output printed the current database password into its own terminal session (2026-10-24, `docs/DEPLOY.md`, "Session pack download"). Not in any file or commit; not rotated yet at the time of writing.
-- Wrote five wrong test expectations (`docs/REVIEW_M5.md` section 4) and killed its own shell twice with `pkill -f` (`docs/REVIEW_M3.md` section 8).
+## 2. How the work actually went
 
-## 2. AI inside the product (runtime)
+I worked in milestones (M1 engine, M2 API, M3 rendering, M4 advanced features, M5 outstanding items, M6 deploy and documents, plus two infra passes). Each milestone went like this:
 
-| Component | Purpose | AI-generated output? | Default? |
-|---|---|---|---|
-| faster-whisper (Whisper `base.en` weights, MIT) | Speech to text with word timestamps | Transcript words are model output; flagged `transcript_words: true` in manifests | yes |
-| sherpa-onnx with pyannote segmentation-3.0 and WeSpeaker ResNet34 | Speaker diarization | Speaker labels are model output | yes |
-| Gemini fallback (`LLM_PROVIDER=gemini`, model `gemini-3.5-flash-lite`) | Translates an instruction the rules parser cannot read into a closed list of commands that our own code validates and applies. Only the instruction text and a small timeline summary are sent (no transcript, no media). Temperature 0, cached in `llm_cache` | Operations that came from it are labelled in the answer and the manifest. It never edits the timeline itself | **No.** The default is `rules`; it is on only when `LLM_PROVIDER=gemini` and a key are set. Whether the live demo has a key now: **TO BE COMPLETED BY THE CANDIDATE** |
-| all-MiniLM-L6-v2 (ONNX, Apache-2.0 per its card) | Sentence embeddings for meaning-based search | Scores are model output. The edit is applied only after the user chooses | yes |
-| WeSpeaker voice embeddings (same model as diarization) | Possible speaker-label swap check | The `possibleLabelSwap` flag is model-derived and only produces warnings | yes |
-| Groq | Named in the brief's adapter list | **Not built.** `LLM_PROVIDER=groq` fails at startup with a message | no |
+1. I asked Claude chat what to do next. It wrote a prompt with clear rules: tests first, small commits, never claim anything that was not run, and stop for my approval before big design decisions.
+2. I pasted the prompt into Claude Code on the VM.
+3. Claude Code wrote a short design first (for example `docs/API_DESIGN.md` and `docs/RENDER_DESIGN.md`) and stopped. I read it, sent it to Claude chat for a second opinion, and then approved it or asked for changes.
+4. Claude Code built it, ran the tests and wrote a review file (`docs/REVIEW_*.md`) with raw outputs.
+5. I read the summary, sent screenshots to Claude chat, and decided what to fix next. Then I pushed to GitHub.
 
-Licence and training-data status of each model is in `SOURCES.md` (training-data licences were not checked for any model).
+So the code is mostly AI-written, but the order of work, the approvals and the "is this good enough" decisions went through me.
 
-**Gemini terms and tier.** On the free tier Google may use submitted content to improve its products and humans may read it; on the paid tier it does not (`SOURCES.md`, `docs/licence-evidence/gemini-api-terms-excerpts.txt`). The agent does not know which tier the candidate's key belongs to, so it cannot say whether the instruction texts sent during development were used by Google. Tier: **TO BE COMPLETED BY THE CANDIDATE**.
+## 3. What I did myself
 
-## 3. AI-generated media and outputs
-- Speech in the generated test clips is synthesised by espeak-ng (a rule-based formant synthesiser, not a neural model). The clips are flagged "AI-generated: YES" in `SOURCES.md`: `synthetic.wav`, `two_voice.wav`, `demo.mp4`, the dialogue clip, `two_speaker.mp4`, `vfr_speech.mp4`, the smoke clips and the API test clips.
-- The built-in background music is computed by arithmetic (four sine waves); it is not made by an AI model (`ai_generated.music=false` in manifests).
-- Captions typed by the user are user text. Auto-captions are built from transcript words, which are model output.
-- Every render and instruction manifest has an `ai_generated` block (`transcript_words`, `llm_used`, `music`, `input_media_marked_ai_generated`); example: `test-pack/real/batch_720p_m5e/worked_example_real/render_1_manifest.json`.
+- **Infrastructure:** created the GCP VM, grew the disk, reserved the static IP, added the firewall rule for ports 80/443, set up SSH keys and GitHub access, installed Node, Docker and tmux.
+- **Git:** pushed every milestone, merged branches, and fixed a merge conflict in `.gitignore`.
+- **Secrets:** created `.env` on the VM myself (Gemini key, model name) and kept it out of git. I asked for secrets to be rotated when they leaked: the S3 keys, the database password and the API token. One token leaked because I pasted it into a chat by mistake, and I rotated it.
+- **Test media:** recorded my own single-speaker test video. It does not follow the brief's script word for word ("welcome to our channel", "pricing" said 7 times). I decided not to re-record it because of time, and I asked for every deviation to be documented instead of hidden (`docs/TEST_MEDIA.md`, `docs/WORKED_EXAMPLE_REAL.md`).
+- **Design decisions I approved or changed** (with Claude chat's review), for example:
+  - Keep the transcript cache key tied to the model and settings, not only the file hash.
+  - Check HDR/10-bit phone video and convert it in a separate proxy, never touching the original.
+  - Run the tests in a separate Docker stack so they never restart the live demo.
+  - When the AI changed a test's expected result, ask it to justify each change with a sentence from the brief, or revert it.
+  - Allow uploads up to 2 GB on the public URL, since reviewers may upload their own phone videos.
+- **Manual checks:** opened the live demo in my browser, tested `/health`, `/ready` and a job lookup in Swagger, and tested the `/pack/` download with its password.
 
-## 4. Prompts and conversations
-- Claude Code session transcripts and the Claude chat conversations are not stored in this repository. If the submission needs them: **TO BE COMPLETED BY THE CANDIDATE** (export and attach, or state why not).
-- The task prompts that shaped the work are quoted in part in `docs/REVIEW_*.md` and in the project instructions `CLAUDE.md`, which the agent reads at the start of each session.
+## 4. Where AI runs inside the product
 
-## 5. Places the candidate must complete
-1. Claude chat: model(s) used, number of conversations, export or screenshot, and what it was asked to review (section 1).
-2. How the two commits without an AI trailer (`701d574` `gitignore`, `72c6c69` `docs`) were produced (section 1).
-3. Which Claude Code model versions were used across the whole history. Git records `Claude Sonnet 5.5` on 112 of the 118 commits and nothing else; confirm that no other model was used before the trailer was added (section 1).
-4. What was written by hand and what was accepted from AI, and the candidate's own statement that they can explain and change the code live (section 1).
-5. Whether the live demo has a Gemini key set, and which Gemini tier (free or paid) the key belongs to (section 2).
-6. Export or location of the prompts and conversations (section 4).
+Only one place: **Gemini as a fallback parser.**
+
+- The deterministic **rules parser** (code, no AI) runs first for every instruction.
+- Only if it cannot understand the instruction is Gemini asked to translate the words into the structured-operation JSON.
+- Gemini never edits the timeline. Its output is checked with a schema (zod), and anything invalid is rejected with a reason. All timeline logic is ordinary code.
+- Only the instruction text and a small timeline summary are sent (no transcript, no media). Gemini is off by default: the default `LLM_PROVIDER` is `rules`, and it is used only when `LLM_PROVIDER=gemini` and a key are set. `LLM_PROVIDER=groq` is named in the brief's adapter list but was not built; it fails at startup with a message.
+- Calls use temperature 0 and are cached (table `llm_cache`), and operations that came from Gemini are labelled in the answer and the manifest, so replaying a session gives the same `timeline_hash` without calling Gemini again.
+- Tests use a mock instead of Gemini, so they need no API key.
+
+Other models in the product, none of them chat AI:
+
+| Component | Purpose | Model output in the result |
+|---|---|---|
+| faster-whisper (Whisper `base.en` weights, MIT) | Speech to text with word timestamps | The transcript words (`transcript_words: true` in manifests) |
+| sherpa-onnx with pyannote segmentation-3.0 and WeSpeaker ResNet34 | Speaker diarization | The speaker labels |
+| all-MiniLM-L6-v2 (ONNX) | Sentence embeddings for meaning-based search | Scores; an edit is applied only after the user chooses |
+| WeSpeaker voice embeddings | Possible speaker-label swap check | The `possibleLabelSwap` flag; it only produces warnings |
+
+They are listed with their licences in `SOURCES.md` (training-data licences were not checked for any model). Every render and instruction manifest has an `ai_generated` block (`transcript_words`, `llm_used`, `music`, `input_media_marked_ai_generated`); example: `test-pack/real/batch_720p_m5e/worked_example_real/render_1_manifest.json`.
+
+**Gemini terms.** On the free tier Google may use submitted content to improve its products and humans may read it; on the paid tier it does not (`SOURCES.md`, `docs/licence-evidence/gemini-api-terms-excerpts.txt`). Which tier my key belongs to is not recorded in the repository.
+
+## 5. Mistakes AI made that we caught
+
+Being honest about this matters to me, so here are real examples from the review files:
+
+- Claude Code once had "delete the remote infra branch" typed in its input line. I did not run it.
+- It exposed the database and storage ports to the internet for about 10 minutes during the first deploy, then found and closed it.
+- It printed secrets into the terminal a few times. Each time I asked for them to be rotated. Recorded cases: the old API token and a database URL (`docs/DEPLOY.md`, `docs/raw/m5d_token_rotation.txt`), and on 2026-10-24 the current database password, from `docker compose config | grep` (`docs/DEPLOY.md`, "Session pack download"; not in any file or commit, not rotated at the time of writing).
+- It wrote some tests in the same step as the code instead of strictly tests-first, and said so in its reports.
+- Its first scenario expectations were partly wrong. Every change is listed with a reason in `docs/REVIEW_M5.md`, section 8 (five wrong expectations are also in section 4).
+- Running the tests and changing `.env` restarted the live demo's services (`docs/REVIEW_M5.md` section 8.3, `docs/TEST_MEDIA.md` section 5).
+- An over-broad `.gitignore` line hid `packages/media/` from git, so a fresh clone could not run for a few milestones (`docs/raw/m5_ci_simulation_run1_failed.txt`).
+- It killed its own shell twice with `pkill -f` (`docs/REVIEW_M3.md` section 8).
+
+## 6. What I learned
+
+I learned that the hard part of this problem is not cutting video but keeping edits attached to the right words when edits pile up. That is why the timeline uses word and silence "atoms" instead of seconds. I also learned that AI-generated code needs someone checking it all the time: reading the designs, asking for proof, and not trusting a summary that says "done".
+
+If I did it again, I would record the test video exactly to the script on day one, and I would run Claude Code inside tmux from the start. I lost time to SSH disconnects.
+
+## 7. Prompts and conversation records
+
+The milestone prompts I gave Claude Code are in my Claude chat history and in the Claude Code sessions on the VM. I can show them in the live session if asked. They are not stored in this repository; parts of them are quoted in `docs/REVIEW_*.md`, and the project rules the agent reads at the start of each session are in `CLAUDE.md`.
