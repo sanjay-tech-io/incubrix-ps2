@@ -1,0 +1,139 @@
+{
+  "name": "diag_13c_two_voice_dialogue_threshold_0_3",
+  "video": "media/two_voice_dialogue_thr03.mp4",
+  "passed": true,
+  "video_id": "vid_5f88906249544a78b853",
+  "session_id": "ses_e455aeceb3e4483fa083",
+  "intake": {
+    "job_id": "job_cd093cab21a944878690",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "1 word(s) had no length after cleaning and were dropped.",
+      "2 speakers were detected; if that is wrong, upload again with the num_speakers hint.",
+      "20 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 33200
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "remove everything the guest says about their old job",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "Assuming Speaker A (the first speaker I heard) is the host and Speaker B is the guest. Speaker B talks about \"old job\" in 4 lines. The question just before it (the lead-in) is \"So tell me about your old job.\" at 0:07.293. Should I remove the lead-in too? (Nothing is cut until you choose.)",
+      "options": [
+        "only the guest's (Speaker B) 4 lines about \"old job\" (0:10.308, 0:28.051, 0:37.127, 0:46.780); keep the lead-in",
+        "also the lead-in question \"So tell me about your old job.\" at 0:07.293"
+      ],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": 4,
+      "time_policy": "current",
+      "warnings": [
+        "3 word(s) in these lines have an uncertain speaker label (the diarization may have swapped the speakers there); check Speaker B's lines before relying on this."
+      ],
+      "timeline_hash": "7ec5850dde04e90e1ec2389579093c19ad2e12a20e296ea8f1caff4d646268f5",
+      "duration_s": 58.2,
+      "ms": 16,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "the first one",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_9774f74accb2",
+              "offsetUs": 1240000
+            },
+            "end": {
+              "atom": "a_d595f96a00db",
+              "offsetUs": 560000
+            }
+          },
+          "reason": "user"
+        },
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_e459a3c783af",
+              "offsetUs": 1240000
+            },
+            "end": {
+              "atom": "a_92efd5ce7d1e",
+              "offsetUs": 560000
+            }
+          },
+          "reason": "user"
+        },
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_26e42c179f73",
+              "offsetUs": 1160000
+            },
+            "end": {
+              "atom": "a_67e271553785",
+              "offsetUs": 0
+            }
+          },
+          "reason": "user"
+        },
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_59ee5f6ce837",
+              "offsetUs": 1280000
+            },
+            "end": {
+              "atom": "a_2b50b40e3f5a",
+              "offsetUs": 1400000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 0:58.200 -> 0:40.320 (-0:17.880). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "This edit touches words the transcript is unsure about: \"One\" (low confidence), \"a\" (low confidence), \"ten\" (low confidence), \"The\" (speaker uncertain, low confidence), \"Now\" (speaker uncertain) and 1 more. Check the result."
+      ],
+      "timeline_hash": "396b50da0d79d0a79b7e98840ecf7248b86578d377701276ca984ab8d8be6c85",
+      "duration_s": 40.32,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "396b50da0d79d0a79b7e98840ecf7248b86578d377701276ca984ab8d8be6c85",
+    "duration_s": 40.32
+  },
+  "error": null
+}

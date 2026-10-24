@@ -1,0 +1,191 @@
+{
+  "name": "14_variable_frame_rate_phone",
+  "video": "media/vfr_speech.mp4",
+  "passed": true,
+  "video_id": "vid_69f7a94598ad42edbb14",
+  "session_id": "ses_3c4820c391584d499caa",
+  "intake": {
+    "job_id": "job_7387beda8eae47fea514",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "Variable frame rate detected. Times are exact for the original's timestamps, but frame-accurate cuts need a constant-frame-rate proxy at 30/1 fps, which the renderer builds from the original (M3, not built yet).",
+      "10 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 14110
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "add a caption \"Welcome!\" on \"welcome to the channel\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "add_effect",
+          "effectId": "fx_0_0",
+          "range": {
+            "from": "a_fe126e5e7a36",
+            "to": "a_f3d5a29872bf"
+          },
+          "params": {
+            "kind": "caption",
+            "text": "Welcome!",
+            "style": {
+              "color": "#ffffff",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 0:22.833 -> 0:22.833 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "5df8264eb54b98c49e2c1d5f867c4d951816d93c4423f4e3e60242084da3ac63",
+      "duration_s": 22.833333,
+      "ms": 14,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "cut 0:05-0:08",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_67991652b8ff",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_9526957637ad",
+              "offsetUs": 260000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 0:22.833 -> 0:19.767 (-0:03.067). caption \"Welcome!\" moved from 0:09.076 to 0:06.009. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "0:05.000 is inside the word \"a\", so the cut point moved to 0:04.940, the nearest word edge (no silence nearby). The cut point at 0:04.940 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+        "This edit touches words the transcript is unsure about: \"frame\" (low confidence), \"rate\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "563cc406820777a66294cec77eb60134e2f47ff8384228dcdfe4a3ef3e602845",
+      "duration_s": 19.766667,
+      "ms": 14,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "speed up 0:08-0:12 by 2x",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "set_speed",
+          "span": {
+            "start": {
+              "atom": "a_bdd52f52be85",
+              "offsetUs": 946667
+            },
+            "end": {
+              "atom": "a_7e33f2e0468e",
+              "offsetUs": 906667
+            }
+          },
+          "rate": {
+            "num": 2,
+            "den": 1
+          }
+        }
+      ],
+      "summary": "Length 0:19.767 -> 0:17.767 (-0:02.000). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "de251255dc26290a1ca71a433ce6a42d76bf5217f6e5344a55194e07fb86b356",
+      "duration_s": 17.766667,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 4,
+      "say": null,
+      "answer_sent": null,
+      "expected": "succeeded",
+      "passed": true,
+      "http_status": 202,
+      "status": "succeeded",
+      "operations": null,
+      "summary": null,
+      "question": null,
+      "options": null,
+      "reason": null,
+      "llm": null,
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": null,
+      "warnings": null,
+      "timeline_hash": "de251255dc26290a1ca71a433ce6a42d76bf5217f6e5344a55194e07fb86b356",
+      "duration_s": 17.766667,
+      "ms": 5157,
+      "note": null,
+      "failure": null,
+      "kind": "render",
+      "render": {
+        "job_id": "job_b34523571c3c4c5db1e8",
+        "job_status": "succeeded",
+        "error": null,
+        "file": "render_1.mp4",
+        "frames": 533,
+        "duration_s": 17.766667,
+        "timeline_hash": "de251255dc26290a1ca71a433ce6a42d76bf5217f6e5344a55194e07fb86b356",
+        "render_seconds_per_output_minute": 9.5,
+        "source_unchanged": true,
+        "manifest_file": "render_1_manifest.json"
+      }
+    }
+  ],
+  "final": {
+    "timeline_hash": "de251255dc26290a1ca71a433ce6a42d76bf5217f6e5344a55194e07fb86b356",
+    "duration_s": 17.766667
+  },
+  "error": null
+}

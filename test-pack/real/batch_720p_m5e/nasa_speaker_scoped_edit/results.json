@@ -1,0 +1,49 @@
+{
+  "name": "nasa_speaker_scoped_edit",
+  "video": "media/nasa_ep407_0_240.mp4",
+  "passed": false,
+  "video_id": "vid_da22ca35be7e4022b53d",
+  "session_id": "ses_241ce8bfb66c4b5d9386",
+  "intake": {
+    "job_id": "job_d2e96c7e7b7c48a3a1d8",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "5 word(s) had no length after cleaning and were dropped.",
+      "49 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 1035
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "remove everything the guest says about the astronaut program",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": false,
+      "http_status": 200,
+      "status": "rejected",
+      "operations": [],
+      "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": "Only one speaker was found in this video, so I cannot tell a guest from a host. If the video really has two or more people, the diarization may have merged their voices: upload it again with the num_speakers hint (for example num_speakers=2 in the upload form or in the JSON for a URL). Or say what to remove by time, topic or phrase.",
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": 9,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "31587e26fd9c524765554a415700fa3e870b70bad780a00849e62cdb790fee5e",
+      "duration_s": 240,
+      "ms": 22,
+      "note": null,
+      "failure": "expected needs_clarification, got rejected: Only one speaker was found in this video, so I cannot tell a guest from a host. If the video really has two or more people, the diarization may have merged their voices: upload it again with the num_speakers hint (for example num_speakers=2 in the upload form or in the JSON for a URL). Or say what to remove by time, topic or phrase.",
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "31587e26fd9c524765554a415700fa3e870b70bad780a00849e62cdb790fee5e",
+    "duration_s": 240
+  },
+  "error": null
+}

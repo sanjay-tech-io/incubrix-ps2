@@ -1,0 +1,186 @@
+{
+  "name": "02b_caption_cut_restore_as_recorded",
+  "video": "media/test_single.mp4",
+  "passed": true,
+  "video_id": "vid_cea9d402649c4c5280c3",
+  "session_id": "ses_7ac9320337434adca204",
+  "intake": {
+    "job_id": "job_4bdef2478ea8487ca4fd",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped.",
+      "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 4720
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "add a caption \"Welcome!\" on \"welcome to our channel\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "add_effect",
+          "effectId": "fx_0_0",
+          "range": {
+            "from": "a_2137b52ae255",
+            "to": "a_02df35e8374d"
+          },
+          "params": {
+            "kind": "caption",
+            "text": "Welcome!",
+            "style": {
+              "color": "#ffffff",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 3:00.300 -> 3:00.300 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "This edit touches words the transcript is unsure about: \"welcome\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "cd0c6e17d0043a46b2b4ac832ca3bd5400ccca560da29f6fc56ee6840fb749b3",
+      "duration_s": 180.3,
+      "ms": 20,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "cut the first 50 seconds",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_da6442cd4fcc",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_e97ac8331de1",
+              "offsetUs": 26667
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:00.300 -> 2:10.033 (-0:50.267). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "0:50.000 is inside the word \"plan.\", so the cut point moved to 0:50.240, the nearest silence.",
+        "caption \"Welcome!\" is hidden because all of its words were cut. It stays in the history; restoring those words brings it back.",
+        "This edit touches words the transcript is unsure about: \"Hello\" (speaker uncertain, low confidence), \"cloud\" (low confidence), \"So\" (speaker uncertain), \"What\" (low confidence), \"for\" (low confidence) and 7 more. Check the result."
+      ],
+      "timeline_hash": "cffc75f3cbd5388b6542e101041feaa0f729f68801950bf70fda3cb9da90003d",
+      "duration_s": 130.033333,
+      "ms": 18,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "put the intro back",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "restore",
+          "targetGroup": 2
+        }
+      ],
+      "summary": "Length 2:10.033 -> 3:00.300 (+0:50.267). caption \"Welcome!\" is visible again at 0:39.501. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "Restoring edit 2: removed original 0:00.000-0:50.267."
+      ],
+      "timeline_hash": "cd0c6e17d0043a46b2b4ac832ca3bd5400ccca560da29f6fc56ee6840fb749b3",
+      "duration_s": 180.3,
+      "ms": 12,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 4,
+      "say": "make that caption red",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "update_effect",
+          "effectId": "fx_0_0",
+          "params": {
+            "kind": "caption",
+            "text": "Welcome!",
+            "style": {
+              "color": "#ff0000",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 3:00.300 -> 3:00.300 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "5f90e9d165265deebb6a757d3b2ca60fd8304e91c68bb311b3fd95f58e46a5e1",
+      "duration_s": 180.3,
+      "ms": 14,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "5f90e9d165265deebb6a757d3b2ca60fd8304e91c68bb311b3fd95f58e46a5e1",
+    "duration_s": 180.3
+  },
+  "error": null
+}

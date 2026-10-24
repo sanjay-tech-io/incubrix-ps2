@@ -1,0 +1,137 @@
+{
+  "name": "m5b_smoke_redeploy",
+  "video": "media/m5b_smoke.mp4",
+  "passed": true,
+  "video_id": "vid_640bb6e56945438f9466",
+  "session_id": "ses_cc810b18c306443dae55",
+  "intake": {
+    "job_id": "job_eaf758b1e0404a54bdc4",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "3 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 8066
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "add captions",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "auto_caption",
+          "style": {
+            "color": "#ffffff",
+            "sizePt": 32,
+            "bold": true
+          }
+        }
+      ],
+      "summary": "Length 0:16.720 -> 0:16.720 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "ba24ddf3c1af7007bb8658c3152b555cf70668ad33bdff7b1d00974ddecf86d0",
+      "duration_s": 16.72,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "cut 0:05-0:07",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_e264823dc930",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_5a61ba740bb9",
+              "offsetUs": 0
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 0:16.720 -> 0:14.520 (-0:02.200). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "0:05.000 is inside the word \"tool\", so the cut point moved to 0:05.060, the nearest word edge (no silence nearby). The cut point at 0:05.060 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+        "0:07.000 is inside the word \"sentences\", so the cut point moved to 0:07.240, the nearest silence."
+      ],
+      "timeline_hash": "bf4af062fe910b526564622b0fe4a5214c54a963e38315a708f06f6152c8db9e",
+      "duration_s": 14.52,
+      "ms": 15,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": null,
+      "answer_sent": null,
+      "expected": "succeeded",
+      "passed": true,
+      "http_status": 202,
+      "status": "succeeded",
+      "operations": null,
+      "summary": null,
+      "question": null,
+      "options": null,
+      "reason": null,
+      "llm": null,
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": null,
+      "warnings": null,
+      "timeline_hash": "bf4af062fe910b526564622b0fe4a5214c54a963e38315a708f06f6152c8db9e",
+      "duration_s": 14.52,
+      "ms": 4148,
+      "note": null,
+      "failure": null,
+      "kind": "render",
+      "render": {
+        "job_id": "job_c6e6ce479d39488a9763",
+        "job_status": "succeeded",
+        "error": null,
+        "file": "render_1.mp4",
+        "frames": 363,
+        "duration_s": 14.52,
+        "timeline_hash": "bf4af062fe910b526564622b0fe4a5214c54a963e38315a708f06f6152c8db9e",
+        "render_seconds_per_output_minute": 9.2,
+        "source_unchanged": true,
+        "manifest_file": "render_1_manifest.json"
+      }
+    }
+  ],
+  "final": {
+    "timeline_hash": "bf4af062fe910b526564622b0fe4a5214c54a963e38315a708f06f6152c8db9e",
+    "duration_s": 14.52
+  },
+  "error": null
+}

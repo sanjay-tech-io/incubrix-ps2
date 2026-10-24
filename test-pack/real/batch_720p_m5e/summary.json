@@ -1,0 +1,425 @@
+{
+  "api": "http://172.18.0.8:8080",
+  "total": 38,
+  "passed": 33,
+  "failed": 5,
+  "sessions": [
+    {
+      "name": "01_worked_example",
+      "file": "01_worked_example.yaml",
+      "passed": false,
+      "steps": 9,
+      "failed_steps": [
+        {
+          "step": 1,
+          "failure": "expected applied, got rejected: I could not find the words \"welcome to the channel\" in the video, so there is nothing to put the caption on."
+        },
+        {
+          "step": 8,
+          "failure": "expected applied, got rejected: There is no caption to change (red). Add one first, for example: add a caption \"Hello\" on \"welcome\"."
+        }
+      ],
+      "error": null,
+      "final_timeline_hash": "7374f06e09e3205679ad3dbfb81802f12c0b474cac1919bd08a5f0c3c7c79260",
+      "folder": "01_worked_example"
+    },
+    {
+      "name": "01b_worked_example_as_recorded",
+      "file": "01b_worked_example_as_recorded.yaml",
+      "passed": true,
+      "steps": 9,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "5c590d67df2eed8de7c879ae8a9dbae6a3c4ccd13a1e7a24cfaac72687f6a16c",
+      "folder": "01b_worked_example_as_recorded"
+    },
+    {
+      "name": "02_caption_cut_restore",
+      "file": "02_caption_cut_restore.yaml",
+      "passed": false,
+      "steps": 4,
+      "failed_steps": [
+        {
+          "step": 1,
+          "failure": "expected applied, got rejected: I could not find the words \"welcome to the channel\" in the video, so there is nothing to put the caption on."
+        },
+        {
+          "step": 4,
+          "failure": "expected applied, got rejected: There is no caption to change (red). Add one first, for example: add a caption \"Hello\" on \"welcome\"."
+        }
+      ],
+      "error": null,
+      "final_timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "folder": "02_caption_cut_restore"
+    },
+    {
+      "name": "02b_caption_cut_restore_as_recorded",
+      "file": "02b_caption_cut_restore_as_recorded.yaml",
+      "passed": true,
+      "steps": 4,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "5f90e9d165265deebb6a757d3b2ca60fd8304e91c68bb311b3fd95f58e46a5e1",
+      "folder": "02b_caption_cut_restore_as_recorded"
+    },
+    {
+      "name": "03_reorder_then_mute",
+      "file": "03_reorder_then_mute.yaml",
+      "passed": true,
+      "steps": 3,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "3a03f79051bfb0e1083a40625582af7667cdcf87725970dabf607c47eeed1c8d",
+      "folder": "03_reorder_then_mute"
+    },
+    {
+      "name": "04_filler_removal_into_bleep",
+      "file": "04_filler_removal_into_bleep.yaml",
+      "passed": false,
+      "steps": 2,
+      "failed_steps": [
+        {
+          "step": 1,
+          "failure": "expected applied, got rejected: I could not find \"um\" in the video."
+        },
+        {
+          "step": 2,
+          "failure": "expected applied, got needs_clarification"
+        }
+      ],
+      "error": null,
+      "final_timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "folder": "04_filler_removal_into_bleep"
+    },
+    {
+      "name": "05_remove_range_twice",
+      "file": "05_remove_range_twice.yaml",
+      "passed": true,
+      "steps": 4,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "c1d798dae4c0ef015667f3c64efd9e2787dc5a44ff11453dd3bdf0704c372d1a",
+      "folder": "05_remove_range_twice"
+    },
+    {
+      "name": "06_caption_beyond_the_end",
+      "file": "06_caption_beyond_the_end.yaml",
+      "passed": true,
+      "steps": 1,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "folder": "06_caption_beyond_the_end"
+    },
+    {
+      "name": "07_time_phrases",
+      "file": "07_time_phrases.yaml",
+      "passed": true,
+      "steps": 4,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "cd5169b5e7bec7711b50385a8cb97db9e1a908e5e69de475b82eebdbee451a94",
+      "folder": "07_time_phrases"
+    },
+    {
+      "name": "08_undo_second_to_last_keep_music",
+      "file": "08_undo_second_to_last_keep_music.yaml",
+      "passed": true,
+      "steps": 6,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "9cafa2b16f0e6bb510dda1c6af71022ce7f878a2dc3e07894c594b8e79b33dca",
+      "folder": "08_undo_second_to_last_keep_music"
+    },
+    {
+      "name": "09_make_it_bigger_without_caption",
+      "file": "09_make_it_bigger_without_caption.yaml",
+      "passed": true,
+      "steps": 1,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "folder": "09_make_it_bigger_without_caption"
+    },
+    {
+      "name": "10_everything_after_thanks",
+      "file": "10_everything_after_thanks.yaml",
+      "passed": true,
+      "steps": 2,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "620103a4765ca6f8c78001b9483a15cfe240e321ad934371fb2fb975237d7e7b",
+      "folder": "10_everything_after_thanks"
+    },
+    {
+      "name": "11_impossible_speed_and_cut_everything",
+      "file": "11_impossible_speed_and_cut_everything.yaml",
+      "passed": true,
+      "steps": 3,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "folder": "11_impossible_speed_and_cut_everything"
+    },
+    {
+      "name": "12_three_parts_one_impossible",
+      "file": "12_three_parts_one_impossible.yaml",
+      "passed": true,
+      "steps": 2,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "folder": "12_three_parts_one_impossible"
+    },
+    {
+      "name": "13_two_speakers_guest_old_job",
+      "file": "13_two_speakers_guest_old_job.yaml",
+      "passed": true,
+      "steps": 1,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "b3ee2ae9a18df8c64dbb8e2aa60350345d2b6f17d9fa7e5b1ecbdf2e2f217f13",
+      "folder": "13_two_speakers_guest_old_job"
+    },
+    {
+      "name": "13b_two_voice_dialogue_guest_old_job",
+      "file": "13b_two_voice_dialogue_guest_old_job.yaml",
+      "passed": true,
+      "steps": 1,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "c86a58844abc579592d10c784fd04413cae0b3e80421d2708f2f1048d53b1ec7",
+      "folder": "13b_two_voice_dialogue_guest_old_job"
+    },
+    {
+      "name": "13d_two_voice_dialogue_no_hint",
+      "file": "13d_two_voice_dialogue_no_hint.yaml",
+      "passed": true,
+      "steps": 1,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "c86a58844abc579592d10c784fd04413cae0b3e80421d2708f2f1048d53b1ec7",
+      "folder": "13d_two_voice_dialogue_no_hint"
+    },
+    {
+      "name": "14_variable_frame_rate_phone",
+      "file": "14_variable_frame_rate_phone.yaml",
+      "passed": true,
+      "steps": 4,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "de251255dc26290a1ca71a433ce6a42d76bf5217f6e5344a55194e07fb86b356",
+      "folder": "14_variable_frame_rate_phone"
+    },
+    {
+      "name": "15_no_audio_track",
+      "file": "15_no_audio_track.yaml",
+      "passed": true,
+      "steps": 0,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": null,
+      "folder": "15_no_audio_track"
+    },
+    {
+      "name": "16_auto_captions_and_speed",
+      "file": "16_auto_captions_and_speed.yaml",
+      "passed": true,
+      "steps": 4,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "1a2b134ec7ed4fd3f8d58b2b3d65282bdf911e52b761fc9670bc258790bed2a2",
+      "folder": "16_auto_captions_and_speed"
+    },
+    {
+      "name": "17_silences_and_protected_pause",
+      "file": "17_silences_and_protected_pause.yaml",
+      "passed": true,
+      "steps": 2,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "6d91cb7defba0da8d2623d249b6cf4f8431c418067c1b26c6cc5c6095909cb3e",
+      "folder": "17_silences_and_protected_pause"
+    },
+    {
+      "name": "18_keep_only_and_restore_edit",
+      "file": "18_keep_only_and_restore_edit.yaml",
+      "passed": true,
+      "steps": 3,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "a07cf9cc75b30f8c57f0a5e7f3499f30cde10d422a9484265e0d248c03c531e8",
+      "folder": "18_keep_only_and_restore_edit"
+    },
+    {
+      "name": "19_meaning_search_cost",
+      "file": "19_meaning_search_cost.yaml",
+      "passed": true,
+      "steps": 1,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "folder": "19_meaning_search_cost"
+    },
+    {
+      "name": "20_vague_references",
+      "file": "20_vague_references.yaml",
+      "passed": true,
+      "steps": 2,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "folder": "20_vague_references"
+    },
+    {
+      "name": "21_meaning_search_pricing",
+      "file": "21_meaning_search_pricing.yaml",
+      "passed": true,
+      "steps": 4,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "d52573f9cd886e1e6054d0845564532dbbc3ec68d2a1a94f766a04582dbb94e1",
+      "folder": "21_meaning_search_pricing"
+    },
+    {
+      "name": "22_meaning_search_beyond_the_words",
+      "file": "22_meaning_search_beyond_the_words.yaml",
+      "passed": false,
+      "steps": 3,
+      "failed_steps": [
+        {
+          "step": 1,
+          "failure": "expected needs_clarification, got rejected: No part of the current video mentions \"money\" or is about it by meaning."
+        }
+      ],
+      "error": null,
+      "final_timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "folder": "22_meaning_search_beyond_the_words"
+    },
+    {
+      "name": "23_llm_fallback",
+      "file": "23_llm_fallback.yaml",
+      "passed": true,
+      "steps": 4,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "856388c9f2c095184cbdf214b0de5dc7d0be8e536b4b38b0c99894ad600ade8c",
+      "folder": "23_llm_fallback"
+    },
+    {
+      "name": "24_repeat_is_safe",
+      "file": "24_repeat_is_safe.yaml",
+      "passed": true,
+      "steps": 7,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "c2d0bbb3384002d33bb1f5e2021e0386938cad9106a28db37dea0db141630d4c",
+      "folder": "24_repeat_is_safe"
+    },
+    {
+      "name": "25_vague_captions_and_restore",
+      "file": "25_vague_captions_and_restore.yaml",
+      "passed": true,
+      "steps": 9,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "f8c01fbff879f71fb222a800d5d678e9779f3a8dca47556e0f041b81d24229c8",
+      "folder": "25_vague_captions_and_restore"
+    },
+    {
+      "name": "diag_13c_two_voice_dialogue_threshold_0_3",
+      "file": "diag_13c_two_voice_dialogue_threshold_0_3.yaml",
+      "passed": true,
+      "steps": 2,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "396b50da0d79d0a79b7e98840ecf7248b86578d377701276ca984ab8d8be6c85",
+      "folder": "diag_13c_two_voice_dialogue_threshold_0_3"
+    },
+    {
+      "name": "fillers_single",
+      "file": "fillers_single.yaml",
+      "passed": true,
+      "steps": 1,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "folder": "fillers_single"
+    },
+    {
+      "name": "m5b_smoke_redeploy",
+      "file": "m5b_smoke_redeploy.yaml",
+      "passed": true,
+      "steps": 3,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "bf4af062fe910b526564622b0fe4a5214c54a963e38315a708f06f6152c8db9e",
+      "folder": "m5b_smoke_redeploy"
+    },
+    {
+      "name": "m6a_smoke",
+      "file": "m6a_smoke.yaml",
+      "passed": true,
+      "steps": 3,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "0445270499bfebab6b6fa85131045150c512d36308405ecc1679f135422a2fd0",
+      "folder": "m6a_smoke"
+    },
+    {
+      "name": "m6a_smoke_after_rotation",
+      "file": "m6a_smoke_after_rotation.yaml",
+      "passed": true,
+      "steps": 3,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "3ba052d8617babc0dd10137148367d8804407f469aa29449908ce0c838b13e28",
+      "folder": "m6a_smoke_after_rotation"
+    },
+    {
+      "name": "m6a_smoke_dotted_links",
+      "file": "m6a_smoke_dotted_links.yaml",
+      "passed": true,
+      "steps": 3,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "9406acd165d740579bafcdc5ae6d60986adb83211b10f278abede648860f257c",
+      "folder": "m6a_smoke_dotted_links"
+    },
+    {
+      "name": "nasa_speaker_scoped_edit",
+      "file": "nasa_speaker_scoped_edit.yaml",
+      "passed": false,
+      "steps": 1,
+      "failed_steps": [
+        {
+          "step": 1,
+          "failure": "expected needs_clarification, got rejected: Only one speaker was found in this video, so I cannot tell a guest from a host. If the video really has two or more people, the diarization may have merged their voices: upload it again with the num_speakers hint (for example num_speakers=2 in the upload form or in the JSON for a URL). Or say what to remove by time, topic or phrase."
+        }
+      ],
+      "error": null,
+      "final_timeline_hash": "31587e26fd9c524765554a415700fa3e870b70bad780a00849e62cdb790fee5e",
+      "folder": "nasa_speaker_scoped_edit"
+    },
+    {
+      "name": "nasa_speaker_scoped_edit_no_hint",
+      "file": "nasa_speaker_scoped_edit_no_hint.yaml",
+      "passed": true,
+      "steps": 1,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "31587e26fd9c524765554a415700fa3e870b70bad780a00849e62cdb790fee5e",
+      "folder": "nasa_speaker_scoped_edit_no_hint"
+    },
+    {
+      "name": "worked_example_real",
+      "file": "worked_example_real.yaml",
+      "passed": true,
+      "steps": 9,
+      "failed_steps": [],
+      "error": null,
+      "final_timeline_hash": "5c590d67df2eed8de7c879ae8a9dbae6a3c4ccd13a1e7a24cfaac72687f6a16c",
+      "folder": "worked_example_real"
+    }
+  ]
+}

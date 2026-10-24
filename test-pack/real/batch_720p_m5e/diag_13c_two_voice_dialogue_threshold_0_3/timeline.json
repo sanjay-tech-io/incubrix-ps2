@@ -1,0 +1,82 @@
+{
+  "session_id": "ses_e455aeceb3e4483fa083",
+  "timeline": {
+    "sourceSha256": "46c39db468dda7d520f801084233fd4c05d7f3f3510df30ce65396fff75b7c09",
+    "segments": [
+      {
+        "id": "seg_0",
+        "span": {
+          "start": {
+            "atom": "a_39db76ba28fe",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_9774f74accb2",
+            "offsetUs": 1240000
+          }
+        }
+      },
+      {
+        "id": "seg_1",
+        "span": {
+          "start": {
+            "atom": "a_d595f96a00db",
+            "offsetUs": 560000
+          },
+          "end": {
+            "atom": "a_e459a3c783af",
+            "offsetUs": 1240000
+          }
+        }
+      },
+      {
+        "id": "seg_2",
+        "span": {
+          "start": {
+            "atom": "a_92efd5ce7d1e",
+            "offsetUs": 560000
+          },
+          "end": {
+            "atom": "a_26e42c179f73",
+            "offsetUs": 1160000
+          }
+        }
+      },
+      {
+        "id": "seg_3",
+        "span": {
+          "start": {
+            "atom": "a_67e271553785",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_59ee5f6ce837",
+            "offsetUs": 1280000
+          }
+        }
+      },
+      {
+        "id": "seg_4",
+        "span": {
+          "start": {
+            "atom": "a_2b50b40e3f5a",
+            "offsetUs": 1400000
+          },
+          "end": {
+            "atom": "a_7b64a7162634",
+            "offsetUs": 1100000
+          }
+        }
+      }
+    ],
+    "speedRegions": [],
+    "effects": [],
+    "protectedPauses": [],
+    "music": null,
+    "autoCaption": null,
+    "durationUs": 40320000
+  },
+  "timeline_hash": "396b50da0d79d0a79b7e98840ecf7248b86578d377701276ca984ab8d8be6c85",
+  "duration_s": 40.32,
+  "effects": []
+}

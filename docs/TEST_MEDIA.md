@@ -127,3 +127,13 @@ Expected speakers: 2 (host Nilufar Ramji, guest Tracy Dyson), from the Commons d
 | PASS (30) | 01b, 02b, 03, 05-12, 13 (two_speaker.mp4 with hint), 14 (VFR), 15 (no audio: fails clearly at intake, which the session expects), 16-21, 23-25, `diag_13c` (cache hit, see 3a), `fillers_single`, `m5b_smoke_redeploy`, `m6a_smoke`, `m6a_smoke_after_rotation`, `m6a_smoke_dotted_links`, `worked_example_real` |
 
 The M3 batch (17/22) is not comparable: the file set is different (36 now, 14 new or changed since). Sessions 13, 20 and others that failed in M3 pass now with their expectations unchanged (M4). `worked_example_real` in the batch is a repeat of section 1 of `WORKED_EXAMPLE_REAL.md` at 720p: 3911 frames, 1280x720, 42.1 s of rendering per output minute (the full-resolution run took 65.4).
+
+## 6. Full batch re-run after the threshold change (M5e, 2026-10-24)
+`npm run batch -- sessions` with `RENDER_MAX_HEIGHT=720`, preset `veryfast`, diarization threshold 0.3 (the new default), 38 session files, live stack over the Docker network. Raw: `test-pack/real/batch_720p_m5e/summary.json`, `batch_720p_m5e_log.txt`. **33 passed, 5 failed.** (A first launch against `localhost:8080` failed 38/38 with `ECONNREFUSED` because the prod stack does not publish port 8080; it was discarded and the files deleted.)
+
+| Result | Sessions |
+|---|---|
+| **FAIL (5)** | `01_worked_example`, `02_caption_cut_restore` (brief phrase "the channel" not in the recording), `04_filler_removal_into_bleep` (no transcribed "um"), `22_meaning_search_beyond_the_words` ("money" below the 25% threshold), `nasa_speaker_scoped_edit` (hint 2 still gives "only one speaker") |
+| PASS (33) | all others, including `13b_two_voice_dialogue_guest_old_job` (failed before), and the new `13d_two_voice_dialogue_no_hint` and `nasa_speaker_scoped_edit_no_hint` |
+
+Compared with section 5 (30/36): 13b changed fail to pass; two sessions were added and pass; no session that passed before fails. `worked_example_real`: all 9 statuses and timeline hashes identical to the earlier run; render 103.1 s for 130.4 s of output (47.4 s per output minute at 720p, one run; section 5 said 42.1). I did not check which sessions hit the transcript cache (the cache key changed in M5d, so older entries are not reused, but entries made during the M5d runs may be), so I do not claim which sessions exercised the new threshold freshly. One run, no repeats.

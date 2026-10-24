@@ -1,0 +1,24 @@
+{
+  "name": "15_no_audio_track",
+  "video": "media/no_audio.mp4",
+  "passed": true,
+  "video_id": "vid_8dcf52ccdb094db088bb",
+  "session_id": null,
+  "intake": {
+    "job_id": "job_f830970f5c08431299a4",
+    "status": "failed",
+    "error": {
+      "error": {
+        "code": "NO_AUDIO_TRACK",
+        "details": {},
+        "message": "This video has no audio track, so there is nothing to transcribe.",
+        "retryable": false
+      }
+    },
+    "warnings": [],
+    "ms": 1045
+  },
+  "steps": [],
+  "final": null,
+  "error": null
+}

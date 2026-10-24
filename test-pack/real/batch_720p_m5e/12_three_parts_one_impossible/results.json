@@ -1,0 +1,95 @@
+{
+  "name": "12_three_parts_one_impossible",
+  "video": "media/test_single.mp4",
+  "passed": true,
+  "video_id": "vid_11ff5f72393d4bcdbbd8",
+  "session_id": "ses_44bd0ea84313431f8fef",
+  "intake": {
+    "job_id": "job_2486e21232df4a25b352",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped.",
+      "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 10746
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "cut 0:10-0:15, then speed up 0:30-0:40 by 10x, then add a caption \"Hi\" on \"welcome to the channel\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_c05359cbaee8",
+              "offsetUs": 1833
+            },
+            "end": {
+              "atom": "a_46ca4338c6d9",
+              "offsetUs": 0
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:00.300 -> 2:55.700 (-0:04.600). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "Applied 1 of 3 parts.",
+        "Part 2 (\"speed up 0:30-0:40 by 10x\") was not applied: speed 10x is outside the allowed range 0.25x to 4x",
+        "Part 3 (\"add a caption \"Hi\" on \"welcome to the channel\"\") was not applied: I could not find the words \"welcome to the channel\" in the video, so there is nothing to put the caption on.",
+        "0:10.000 is inside the word \"What\", so the cut point moved to 0:10.532, the nearest silence.",
+        "0:15.000 is inside the word \"really\", so the cut point moved to 0:15.140, the nearest word edge (no silence nearby). The cut point at 0:15.140 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there)."
+      ],
+      "timeline_hash": "8d30d91d4b796cb8c9d256f9fefb83f4d0128c6339e6b2e26d0808c236ec0346",
+      "duration_s": 175.7,
+      "ms": 88,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "undo",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [],
+      "summary": "Undid edit 1. Length 2:55.700 -> 3:00.300 (+0:04.600). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 43,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+    "duration_s": 180.3
+  },
+  "error": null
+}

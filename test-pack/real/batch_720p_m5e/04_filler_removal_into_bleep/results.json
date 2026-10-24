@@ -1,0 +1,77 @@
+{
+  "name": "04_filler_removal_into_bleep",
+  "video": "media/test_single.mp4",
+  "passed": false,
+  "video_id": "vid_9ec7a791a11d460194e9",
+  "session_id": "ses_76a4d50f0d7c434993d7",
+  "intake": {
+    "job_id": "job_59ca41ea7d024ef0b3b1",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped.",
+      "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 5032
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "bleep \"um\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": false,
+      "http_status": 200,
+      "status": "rejected",
+      "operations": [],
+      "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": "I could not find \"um\" in the video.",
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 18,
+      "note": null,
+      "failure": "expected applied, got rejected: I could not find \"um\" in the video.",
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "remove filler words",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": false,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "No transcribed filler words were found. 29 possible untranscribed filler(s) found (voiced sounds that no word covers; they may also be breaths, laughs or coughs). Cut them?",
+      "options": [
+        "cut all 29: 0:01.340-0:01.720 (0.38 s, -8.9 dB vs speech, confidence 20%); 0:02.360-0:02.720 (0.36 s, -1.8 dB vs speech, confidence 35%); 0:02.900-0:03.180 (0.28 s, -1.6 dB vs speech, confidence 35%); 0:06.240-0:06.600 (0.36 s, -2.9 dB vs speech, confidence 20%); 0:07.340-0:08.380 (1.04 s, -7.5 dB vs speech, confidence 45%); 0:11.920-0:12.180 (0.26 s, -1.1 dB vs speech, confidence 35%); 0:19.040-0:19.320 (0.28 s, -2.9 dB vs speech, confidence 20%); 0:25.760-0:26.080 (0.32 s, -5.5 dB vs speech, confidence 35%); 0:27.400-0:27.900 (0.50 s, -4.2 dB vs speech, confidence 35%); 0:33.860-0:34.440 (0.58 s, -11.3 dB vs speech, confidence 20%); 0:41.540-0:41.900 (0.36 s, 0.3 dB vs speech, confidence 35%); 0:43.380-0:43.580 (0.20 s, -1.5 dB vs speech, confidence 35%); 0:45.440-0:45.740 (0.30 s, -0.5 dB vs speech, confidence 35%); 0:50.240-0:50.660 (0.42 s, -2.5 dB vs speech, confidence 35%); 1:38.200-1:38.520 (0.32 s, -10.7 dB vs speech, confidence 35%); 1:51.940-1:52.100 (0.16 s, -11.6 dB vs speech, confidence 20%); 1:52.820-1:53.180 (0.36 s, 2.1 dB vs speech, confidence 35%); 1:54.200-1:54.980 (0.78 s, 5.2 dB vs speech, confidence 45%); 2:03.260-2:03.640 (0.38 s, 2 dB vs speech, confidence 35%); 2:10.740-2:11.100 (0.36 s, -5.5 dB vs speech, confidence 35%); 2:12.600-2:12.960 (0.36 s, -1.3 dB vs speech, confidence 35%); 2:13.600-2:14.180 (0.58 s, 3.1 dB vs speech, confidence 35%); 2:15.560-2:15.980 (0.42 s, 6.2 dB vs speech, confidence 35%); 2:22.100-2:22.480 (0.38 s, -3.8 dB vs speech, confidence 35%); 2:22.780-2:22.980 (0.20 s, 11.1 dB vs speech, confidence 35%); 2:29.300-2:29.720 (0.42 s, 0 dB vs speech, confidence 35%); 2:35.340-2:35.760 (0.42 s, -8.8 dB vs speech, confidence 20%); 2:52.940-2:53.320 (0.38 s, -4.1 dB vs speech, confidence 35%); 2:56.560-2:56.980 (0.42 s, -4.3 dB vs speech, confidence 35%)",
+        "cut only the 23 likelier ones (confidence 35% or more): 0:02.360-0:02.720 (0.36 s, -1.8 dB vs speech, confidence 35%); 0:02.900-0:03.180 (0.28 s, -1.6 dB vs speech, confidence 35%); 0:07.340-0:08.380 (1.04 s, -7.5 dB vs speech, confidence 45%); 0:11.920-0:12.180 (0.26 s, -1.1 dB vs speech, confidence 35%); 0:25.760-0:26.080 (0.32 s, -5.5 dB vs speech, confidence 35%); 0:27.400-0:27.900 (0.50 s, -4.2 dB vs speech, confidence 35%); 0:41.540-0:41.900 (0.36 s, 0.3 dB vs speech, confidence 35%); 0:43.380-0:43.580 (0.20 s, -1.5 dB vs speech, confidence 35%); 0:45.440-0:45.740 (0.30 s, -0.5 dB vs speech, confidence 35%); 0:50.240-0:50.660 (0.42 s, -2.5 dB vs speech, confidence 35%); 1:38.200-1:38.520 (0.32 s, -10.7 dB vs speech, confidence 35%); 1:52.820-1:53.180 (0.36 s, 2.1 dB vs speech, confidence 35%); 1:54.200-1:54.980 (0.78 s, 5.2 dB vs speech, confidence 45%); 2:03.260-2:03.640 (0.38 s, 2 dB vs speech, confidence 35%); 2:10.740-2:11.100 (0.36 s, -5.5 dB vs speech, confidence 35%); 2:12.600-2:12.960 (0.36 s, -1.3 dB vs speech, confidence 35%); 2:13.600-2:14.180 (0.58 s, 3.1 dB vs speech, confidence 35%); 2:15.560-2:15.980 (0.42 s, 6.2 dB vs speech, confidence 35%); 2:22.100-2:22.480 (0.38 s, -3.8 dB vs speech, confidence 35%); 2:22.780-2:22.980 (0.20 s, 11.1 dB vs speech, confidence 35%); 2:29.300-2:29.720 (0.42 s, 0 dB vs speech, confidence 35%); 2:52.940-2:53.320 (0.38 s, -4.1 dB vs speech, confidence 35%); 2:56.560-2:56.980 (0.42 s, -4.3 dB vs speech, confidence 35%)"
+      ],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+      "duration_s": 180.3,
+      "ms": 17,
+      "note": null,
+      "failure": "expected applied, got needs_clarification",
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+    "duration_s": 180.3
+  },
+  "error": null
+}

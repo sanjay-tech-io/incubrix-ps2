@@ -1,0 +1,109 @@
+{
+  "session_id": "ses_58fd6b3b6c3a4f5991a3",
+  "timeline": {
+    "sourceSha256": "c96050db7a187393aff18a2b5e1fad3b82a0f225ec59dfa520db33483392e2bd",
+    "segments": [
+      {
+        "id": "seg_0",
+        "span": {
+          "start": {
+            "atom": "a_da6442cd4fcc",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_62df0365d41d",
+            "offsetUs": 0
+          }
+        }
+      },
+      {
+        "id": "seg_1",
+        "span": {
+          "start": {
+            "atom": "a_daf97c7cfbcf",
+            "offsetUs": 0
+          },
+          "end": {
+            "atom": "a_716d559960c7",
+            "offsetUs": 1693800
+          }
+        }
+      }
+    ],
+    "speedRegions": [],
+    "effects": [
+      {
+        "id": "fx_0_0",
+        "range": {
+          "from": "a_2137b52ae255",
+          "to": "a_02df35e8374d"
+        },
+        "params": {
+          "kind": "caption",
+          "text": "One",
+          "style": {
+            "color": "#ffffff",
+            "sizePt": 32,
+            "bold": true
+          },
+          "position": "bottom"
+        },
+        "state": "active",
+        "partial": false,
+        "fragmented": false,
+        "createdInGroup": 1
+      },
+      {
+        "id": "fx_1_0",
+        "range": {
+          "from": "a_aeccbb7c5d7e",
+          "to": "a_1a54ba1415e4"
+        },
+        "params": {
+          "kind": "caption",
+          "text": "Two",
+          "style": {
+            "color": "#ff0000",
+            "sizePt": 32,
+            "bold": true
+          },
+          "position": "bottom"
+        },
+        "state": "active",
+        "partial": false,
+        "fragmented": false,
+        "createdInGroup": 2
+      }
+    ],
+    "protectedPauses": [],
+    "music": null,
+    "autoCaption": null,
+    "durationUs": 175166667
+  },
+  "timeline_hash": "f8c01fbff879f71fb222a800d5d678e9779f3a8dca47556e0f041b81d24229c8",
+  "duration_s": 175.166667,
+  "effects": [
+    {
+      "id": "fx_0_0",
+      "kind": "caption",
+      "text": "One",
+      "state": "active",
+      "partial": false,
+      "fragmented": false,
+      "start_s": 39.5013,
+      "end_s": 41.54,
+      "start": "0:39.501"
+    },
+    {
+      "id": "fx_1_0",
+      "kind": "caption",
+      "text": "Two",
+      "state": "active",
+      "partial": false,
+      "fragmented": false,
+      "start_s": 43.58,
+      "end_s": 45.44,
+      "start": "0:43.580"
+    }
+  ]
+}

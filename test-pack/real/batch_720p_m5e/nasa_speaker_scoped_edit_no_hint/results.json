@@ -1,0 +1,56 @@
+{
+  "name": "nasa_speaker_scoped_edit_no_hint",
+  "video": "media/nasa_ep407_0_240.mp4",
+  "passed": true,
+  "video_id": "vid_873b77d5c6614073a513",
+  "session_id": "ses_7a65d2d18e0f473d8fa1",
+  "intake": {
+    "job_id": "job_1e6e12ed4ecd447f9bfc",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "5 word(s) had no length after cleaning and were dropped.",
+      "3 speakers were detected; if that is wrong, upload again with the num_speakers hint.",
+      "Some words overlap another speaker; edits touching them will warn.",
+      "18 word(s) may have the wrong speaker label (their voice is closer to another speaker); edits touching them will warn. Labels are never changed automatically.",
+      "49 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 146735
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "remove everything the guest says about the astronaut program",
+      "answer_sent": null,
+      "expected": "needs_clarification",
+      "passed": true,
+      "http_status": 200,
+      "status": "needs_clarification",
+      "operations": [],
+      "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+      "question": "Which speaker is the guest: Speaker A, Speaker B or Speaker C? Each option removes that speaker's lines about \"astronaut program\" (nothing is cut until you choose).",
+      "options": [
+        "Speaker A, 2 lines about it, for example \"Houston, we have a podcast.\"",
+        "Speaker B, 3 lines about it, for example \"and more.\"",
+        "Speaker C, 3 lines about it, for example \"Thank you, it's my pleasure.\""
+      ],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": 7,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "31587e26fd9c524765554a415700fa3e870b70bad780a00849e62cdb790fee5e",
+      "duration_s": 240,
+      "ms": 25,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "31587e26fd9c524765554a415700fa3e870b70bad780a00849e62cdb790fee5e",
+    "duration_s": 240
+  },
+  "error": null
+}

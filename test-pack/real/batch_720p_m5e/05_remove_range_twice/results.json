@@ -1,0 +1,199 @@
+{
+  "name": "05_remove_range_twice",
+  "video": "media/test_single.mp4",
+  "passed": true,
+  "video_id": "vid_a716adef818b434d99ae",
+  "session_id": "ses_9ee2619260304785aa75",
+  "intake": {
+    "job_id": "job_e8acebfcbbc149a78a2c",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped.",
+      "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 4817
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "remove 0:30-0:40",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_97d15879e51b",
+              "offsetUs": 2600000
+            },
+            "end": {
+              "atom": "a_00a50a65284e",
+              "offsetUs": 5640000
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:00.300 -> 2:50.800 (-0:09.500). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "0:40.000 is inside the word \"welcome\", so the cut point moved to 0:39.501, the nearest silence.",
+        "This edit touches words the transcript is unsure about: \"So\" (speaker uncertain), \"So\" (low confidence), \"thanks,\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "ec88145b8398a86388dfcf89b004d73749fd4197faec9d6e17aa5e532a65a7c9",
+      "duration_s": 170.8,
+      "ms": 22,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "remove 0:30-0:40",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_00a50a65284e",
+              "offsetUs": 5640000
+            },
+            "end": {
+              "atom": "a_8ba83dbe7d8b",
+              "offsetUs": 0
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 2:50.800 -> 2:40.633 (-0:10.167). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "0:49.500 is inside the word \"from\", so the cut point moved to 0:49.680, the nearest word edge (no silence nearby). The cut point at 0:49.680 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+        "This edit touches words the transcript is unsure about: \"welcome\" (low confidence), \"pricing\" (low confidence), \"plans\" (low confidence), \"Cloud\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "819ec70978eaf87140296495de5e9b77f774f7c537143385c42466cac46c1b4f",
+      "duration_s": 160.633333,
+      "ms": 14,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "remove 1:00-1:10 of the original",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_3a5d3e184ddb",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_ac1797df91be",
+              "offsetUs": 0
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 2:40.633 -> 2:31.367 (-0:09.267). Time policy: original (times refer to the untouched source video).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "original",
+      "warnings": [
+        "1:00.000 is inside the word \"and\", so the cut point moved to 1:01.000, the nearest word edge (no silence nearby).",
+        "1:10.000 is inside the word \"chargey\", so the cut point moved to 1:10.260, the nearest word edge (no silence nearby). The cut point at 1:10.260 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+        "This edit touches words the transcript is unsure about: \"each\" (speaker uncertain), \"of\" (low confidence), \"its\" (low confidence), \"slot\" (low confidence), \"and\" (low confidence) and 2 more. Check the result."
+      ],
+      "timeline_hash": "c1d798dae4c0ef015667f3c64efd9e2787dc5a44ff11453dd3bdf0704c372d1a",
+      "duration_s": 151.366667,
+      "ms": 12,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 4,
+      "say": "remove 1:00-1:10 of the original",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_3a5d3e184ddb",
+              "offsetUs": 0
+            },
+            "end": {
+              "atom": "a_ac1797df91be",
+              "offsetUs": 0
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 2:31.367 -> 2:31.367 (unchanged). Time policy: original (times refer to the untouched source video).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "original",
+      "warnings": [
+        "1:00.000 is inside the word \"and\", so the cut point moved to 1:01.000, the nearest word edge (no silence nearby).",
+        "1:10.000 is inside the word \"chargey\", so the cut point moved to 1:10.260, the nearest word edge (no silence nearby). The cut point at 1:10.260 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+        "This edit touches words the transcript is unsure about: \"each\" (speaker uncertain), \"of\" (low confidence), \"its\" (low confidence), \"slot\" (low confidence), \"and\" (low confidence) and 2 more. Check the result.",
+        "Nothing changed: the timeline is identical to before (this edit was already in effect)."
+      ],
+      "timeline_hash": "c1d798dae4c0ef015667f3c64efd9e2787dc5a44ff11453dd3bdf0704c372d1a",
+      "duration_s": 151.366667,
+      "ms": 12,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "c1d798dae4c0ef015667f3c64efd9e2787dc5a44ff11453dd3bdf0704c372d1a",
+    "duration_s": 151.366667
+  },
+  "error": null
+}

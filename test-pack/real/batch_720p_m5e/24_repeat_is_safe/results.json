@@ -1,0 +1,309 @@
+{
+  "name": "24_repeat_is_safe",
+  "video": "media/test_single.mp4",
+  "passed": true,
+  "video_id": "vid_f29f54a497724594ac94",
+  "session_id": "ses_2de6fdfc40bc4efc9368",
+  "intake": {
+    "job_id": "job_fd2f5c3123cb4d429006",
+    "status": "succeeded",
+    "error": null,
+    "warnings": [
+      "4 word(s) had no length after cleaning and were dropped.",
+      "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "ms": 4888
+  },
+  "steps": [
+    {
+      "step": 1,
+      "say": "add a caption \"Hi\" on \"welcome to our channel\"",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "add_effect",
+          "effectId": "fx_0_0",
+          "range": {
+            "from": "a_2137b52ae255",
+            "to": "a_02df35e8374d"
+          },
+          "params": {
+            "kind": "caption",
+            "text": "Hi",
+            "style": {
+              "color": "#ffffff",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 3:00.300 -> 3:00.300 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "This edit touches words the transcript is unsure about: \"welcome\" (low confidence). Check the result."
+      ],
+      "timeline_hash": "23d363768575b41f529e71a9a7f78a7f2e101a0c3436d64f8671df0df2305304",
+      "duration_s": 180.3,
+      "ms": 18,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 2,
+      "say": "make that caption red",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "update_effect",
+          "effectId": "fx_0_0",
+          "params": {
+            "kind": "caption",
+            "text": "Hi",
+            "style": {
+              "color": "#ff0000",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 3:00.300 -> 3:00.300 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "478e3f05ac8e0e249cf3d6b13aefdf637533707e520f337edca9541cfdcf1660",
+      "duration_s": 180.3,
+      "ms": 12,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 3,
+      "say": "make that caption red",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "update_effect",
+          "effectId": "fx_0_0",
+          "params": {
+            "kind": "caption",
+            "text": "Hi",
+            "style": {
+              "color": "#ff0000",
+              "sizePt": 32,
+              "bold": true
+            },
+            "position": "bottom"
+          }
+        }
+      ],
+      "summary": "Length 3:00.300 -> 3:00.300 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "Nothing changed: the timeline is identical to before (this edit was already in effect)."
+      ],
+      "timeline_hash": "478e3f05ac8e0e249cf3d6b13aefdf637533707e520f337edca9541cfdcf1660",
+      "duration_s": 180.3,
+      "ms": 11,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 4,
+      "say": "add captions",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "auto_caption",
+          "style": {
+            "color": "#ffffff",
+            "sizePt": 32,
+            "bold": true
+          }
+        }
+      ],
+      "summary": "Length 3:00.300 -> 3:00.300 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [],
+      "timeline_hash": "38fac8d6e0f5c87efc8521adb1eb2afccffda3a053113f33f89d7562b6670e21",
+      "duration_s": 180.3,
+      "ms": 11,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 5,
+      "say": "add captions",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "auto_caption",
+          "style": {
+            "color": "#ffffff",
+            "sizePt": 32,
+            "bold": true
+          }
+        }
+      ],
+      "summary": "Length 3:00.300 -> 3:00.300 (unchanged). Time policy: current (times refer to the edited timeline as it is now).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "current",
+      "warnings": [
+        "Nothing changed: the timeline is identical to before (this edit was already in effect)."
+      ],
+      "timeline_hash": "38fac8d6e0f5c87efc8521adb1eb2afccffda3a053113f33f89d7562b6670e21",
+      "duration_s": 180.3,
+      "ms": 12,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 6,
+      "say": "cut 0:10-0:15 of the original",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_c05359cbaee8",
+              "offsetUs": 1833
+            },
+            "end": {
+              "atom": "a_46ca4338c6d9",
+              "offsetUs": 0
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 3:00.300 -> 2:55.700 (-0:04.600). caption \"Hi\" moved from 0:39.501 to 0:34.895. Time policy: original (times refer to the untouched source video).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "original",
+      "warnings": [
+        "0:10.000 is inside the word \"What\", so the cut point moved to 0:10.532, the nearest silence.",
+        "0:15.000 is inside the word \"really\", so the cut point moved to 0:15.140, the nearest word edge (no silence nearby). The cut point at 0:15.140 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there)."
+      ],
+      "timeline_hash": "c2d0bbb3384002d33bb1f5e2021e0386938cad9106a28db37dea0db141630d4c",
+      "duration_s": 175.7,
+      "ms": 13,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    },
+    {
+      "step": 7,
+      "say": "cut 0:10-0:15 of the original",
+      "answer_sent": null,
+      "expected": "applied",
+      "passed": true,
+      "http_status": 200,
+      "status": "applied",
+      "operations": [
+        {
+          "type": "cut",
+          "span": {
+            "start": {
+              "atom": "a_c05359cbaee8",
+              "offsetUs": 1833
+            },
+            "end": {
+              "atom": "a_46ca4338c6d9",
+              "offsetUs": 0
+            }
+          },
+          "reason": "user"
+        }
+      ],
+      "summary": "Length 2:55.700 -> 2:55.700 (unchanged). Time policy: original (times refer to the untouched source video).",
+      "question": null,
+      "options": [],
+      "reason": null,
+      "llm": "none (no LLM was called)",
+      "cost_usd": null,
+      "semantic_ms": null,
+      "time_policy": "original",
+      "warnings": [
+        "0:10.000 is inside the word \"What\", so the cut point moved to 0:10.532, the nearest silence.",
+        "0:15.000 is inside the word \"really\", so the cut point moved to 0:15.140, the nearest word edge (no silence nearby). The cut point at 0:15.140 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+        "Nothing changed: the timeline is identical to before (this edit was already in effect)."
+      ],
+      "timeline_hash": "c2d0bbb3384002d33bb1f5e2021e0386938cad9106a28db37dea0db141630d4c",
+      "duration_s": 175.7,
+      "ms": 11,
+      "note": null,
+      "failure": null,
+      "kind": "say"
+    }
+  ],
+  "final": {
+    "timeline_hash": "c2d0bbb3384002d33bb1f5e2021e0386938cad9106a28db37dea0db141630d4c",
+    "duration_s": 175.7
+  },
+  "error": null
+}
