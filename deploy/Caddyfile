@@ -27,6 +27,20 @@
 		}
 	}
 
+	# Session pack: read-only download of the final outputs (videos, results.json, timelines), behind basic auth.
+	# Why Caddy and not the API: these are plain files on the VM, they must not depend on the API token, and storage retention
+	# (apps/worker/src/retention.ts) only looks at S3 keys under renders/ and videos/, so these files are never swept.
+	# Why only GET/HEAD: file_server would answer other methods with the file too.
+	handle_path /pack/* {
+		@pack_write not method GET HEAD
+		respond @pack_write "Method not allowed" 405
+		basic_auth {
+			{$PACK_USER} {$PACK_PASSWORD_HASH}
+		}
+		root * /srv/pack
+		file_server browse
+	}
+
 	handle {
 		# Upload cap at the door, so an oversized body is not streamed to the API. The API enforces the same MAX_UPLOAD_MB.
 		# 1) A request that DECLARES a size above the cap is answered at once, before any body is read, with the JSON

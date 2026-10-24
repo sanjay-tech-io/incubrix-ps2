@@ -1,0 +1,35 @@
+# 2026-10-24T11:33:29Z from the VM against the public name (hairpin through the external IP), credentials never printed
+## without credentials
+GET /pack/ -> 401 www-authenticate=Basic realm="restricted"
+GET /pack/batch_720p_m5e/m6a_smoke/render_1.mp4 -> 401 www-authenticate=Basic realm="restricted"
+GET /pack/batch_720p_m5e/summary.json -> 401 www-authenticate=Basic realm="restricted"
+## wrong password
+GET /pack/batch_720p_m5e/m6a_smoke/render_1.mp4 -> 401
+## with credentials
+GET /pack/batch_720p_m5e/m6a_smoke/render_1.mp4 -> 200 bytes=1635514 type=video/mp4 time=1.307342s
+local sha256:  e550506d1f5526cd
+downloaded:    e550506d1f5526cd
+h264,344 aac,646 
+Range 0-99 -> 206 bytes=100
+GET /pack/batch_720p_m5e/ (listing) -> 200
+GET /pack/batch_720p_m5e/15_no_audio_track/results.json (failure) -> 200
+POST /pack/batch_720p_m5e/m6a_smoke/render_1.mp4 -> 405
+GET /pack/../.env (path traversal) -> 401
+## other routes unaffected
+GET /health -> 200
+GET /ready -> 200
+GET /docs -> 200
+GET /api/v1/jobs/1 no token -> 401
+
+# 2026-10-24T11:34:33Z second run, after the pack was widened to the test-pack/ layout and Caddy recreated (same method)
+no credentials, worked_example_real render -> 401
+credentials, worked_example_real render -> 200 bytes=63874735
+credentials, failed session results.json (nasa_speaker_scoped_edit) -> 200 bytes=2260
+credentials, m3_real failed session 20 -> 200 bytes=2756
+credentials, real/nasa transcripts (deliberately not published) -> 404 bytes=0
+credentials, pack rebuilt by scripts/build_pack.sh while Caddy runs -> 200 bytes=14418
+sha256 of the download, run from the public name vs local:
+49bf760e5f952335
+49bf760e5f952335
+
+Note on the last line of the first block: GET /pack/../.env with --path-as-is returned 401, which is the API's answer for a request without a token (the path was normalised away from /pack/), so it shows that .env is not served; it is not a test of the file server's own traversal handling.

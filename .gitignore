@@ -12,3 +12,6 @@ docs/raw/_*
 
 # Real-footage runs (M5c): test-pack/real keeps results, manifests and logs, not the videos or the NASA transcripts.
 test-pack/real/nasa/
+
+# Read-only session pack served at /pack/ (scripts/build_pack.sh; hard links into test-pack/)
+/pack/

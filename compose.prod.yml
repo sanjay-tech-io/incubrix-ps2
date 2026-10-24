@@ -26,8 +26,12 @@ services:
       PUBLIC_HOST_ALT: ${PUBLIC_HOST_ALT:?set PUBLIC_HOST_ALT in .env, e.g. 34.93.140.79.sslip.io (the same IP with dots)}
       MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-2048}
       S3_BUCKET: ${S3_BUCKET:-incubrix}
+      PACK_USER: ${PACK_USER:?set PACK_USER in .env (basic auth of /pack/)}
+      PACK_PASSWORD_HASH: ${PACK_PASSWORD_HASH:?set PACK_PASSWORD_HASH in .env (bcrypt, each $ doubled; see .env.example)}
     volumes:
       - ./deploy/Caddyfile:/etc/caddy/Caddyfile:ro
+      # Hard links to the session-pack outputs, read-only (scripts/build_pack.sh).
+      - ./pack:/srv/pack:ro
       # The certificate lives in this volume: `down` keeps it, so a restart never asks Let's Encrypt again (rate limits).
       - caddy_data:/data
       - caddy_config:/config
