@@ -1,6 +1,6 @@
 # REPORT: prompt-based video editing engine
 
-Every number here comes from a file in the repository; the link is next to it. Where I did not measure something, it says "not measured". Claim-to-file index: [`test-pack/INDEX.md`](test-pack/INDEX.md). Item-by-item status: [`docs/SUBMISSION_EVIDENCE.md`](docs/SUBMISSION_EVIDENCE.md) (42 Yes, 15 Partial, 0 No of 57 rows). I do not claim any of the three levels as fully passed.
+Every number here comes from a file in the repository; the link is next to it. Where I did not measure something, it says "not measured". Claim-to-file index: [`test-pack/INDEX.md`](test-pack/INDEX.md). Item-by-item status: [`docs/SUBMISSION_EVIDENCE.md`](docs/SUBMISSION_EVIDENCE.md) (39 Yes, 18 Partial, 0 No of 57 rows; re-checked against the live URL on 2026-10-24, see [`docs/FINAL_CHECK.md`](docs/FINAL_CHECK.md)). I do not claim any of the three levels as fully passed.
 
 ## 1. Approaches considered and what I chose
 
@@ -19,7 +19,7 @@ Every number here comes from a file in the repository; the link is next to it. W
 - **Worked example on a real recording, real ASR:** nine steps with the brief's behaviour, undo returns to the exact earlier hash, second run gives 9 of 9 identical hashes ([`docs/WORKED_EXAMPLE_REAL.md`](docs/WORKED_EXAMPLE_REAL.md)). The brief's exact numbers are reproduced on the engine fixture (scenario S01), not on the real video (see 3).
 - **Render accuracy.** All 11 real renders in the latest batch: frame difference 0 against the timeline, audio minus video length at most 0.02 frame ([`test-pack/real/batch_720p_m5e/`](test-pack/real/batch_720p_m5e/summary.json), `*/render_1_manifest.json`). On generated clips with a flash and a beep at the same frame, worst A/V offset 0.20 to 0.44 frame (25, 30, 29.97 fps and VFR) and 0.002 to 0.003 frame in unedited stretches; a deliberate 0.1 s shift fails the test with 2.5 frames ([`docs/REVIEW_M3.md`](docs/REVIEW_M3.md) section 3). The red caption stayed on the right frames before the cut, after it and after the restore.
 - **Tests.** `docker compose run --rm tests` passes in a fresh clone with no keys ([`docs/raw/m5_ci_simulation.txt`](docs/raw/m5_ci_simulation.txt)); 48 scripted scenarios with expected results, 50 of 50 ([`docs/raw/m5b_scenarios_run.txt`](docs/raw/m5b_scenarios_run.txt)); 40 engine mutants all killed ([`docs/REVIEW_M1C.md`](docs/REVIEW_M1C.md) section 5).
-- **Integration Standard:** 10 of 10 rows Yes in the evidence table, each with its limit.
+- **Integration Standard:** 8 of 10 rows Yes and 2 Partial in the evidence table (live callbacks are unsigned because no secret is set on the demo; no log line carries both the job id and the correlation id), each with its limit.
 
 ## 3. What does not work, and why (real failures, kept)
 
@@ -33,6 +33,7 @@ Every number here comes from a file in the repository; the link is next to it. W
 | Fresh clone could not run | `.gitignore` had `media/`, which also hid `packages/media/src/voiced.ts` from M4 on. Every earlier "tests pass" ran on my working tree. Found by a fresh-clone simulation and fixed | [`docs/raw/m5_ci_simulation_run1_failed.txt`](docs/raw/m5_ci_simulation_run1_failed.txt) |
 | Music on longer videos | ffmpeg's expression parser failed at about 100 terms; found by a 200 s scenario; fixed with a balanced expression tree | [`docs/REVIEW_M5.md`](docs/REVIEW_M5.md) section 4 |
 | Upload and ASR timeouts | A 200.4 MB file hit a 200 MB cap (reset instead of a clean 413); Node `fetch` cut ASR calls at 300 s. Both fixed and re-run | [`docs/DEPLOY.md`](docs/DEPLOY.md) last section |
+| Multi-part instruction while a question is open | Found in the final live check: with an open clarification, "cut ..., then speed up ... 10x, then add a caption ..." applied only the caption and dropped the other two parts with no warning (fresh session: "Applied 2 of 3 parts" and the failed part named). Not fixed | `docs/raw/final_probe_p7_pending_then_multipart.json`, `docs/FINAL_CHECK.md` |
 | My deployment mistakes | For about 10 minutes ports 8080 and 8333 were published again because I ran compose without the production file; the dotted URL had no certificate at first | `docs/DEPLOY.md` |
 
 Not covered at all: any real two-person edit, a real phone VFR video, a 60-minute video through the API, filler ground truth, HDR and 10-bit render paths, opening the OTIO file in an editor, a GitHub Actions run, a listening test of cut points. The full list is in the last column of the evidence table.
