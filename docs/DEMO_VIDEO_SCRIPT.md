@@ -14,7 +14,7 @@ One take, no cuts. Four required parts: one clean run, one failure and how the s
    ```
    Use the environment variable, not `--token`: the runner and `npm run` print command lines, and a token on a command line ended up on screen once (`docs/DEPLOY.md`, M5d). Never run `cat .env` or `env` on camera.
 3. Check: `curl -s $API_URL/ready` returns `{"status":"ready","service":"api"}`; `ls media/m6a_smoke.mp4 media/no_audio.mp4` exist; `jq --version` works. Raise the terminal font size so a phone can read it.
-4. Open `https://34.93.140.79.sslip.io/docs` in a browser once before recording. `docs/DEPLOY.md` says Swagger UI was fetched but **never opened in a browser**. If "Authorize" or "Try it out" misbehaves, drop minute 0:30-1:00 below and say nothing about it.
+4. Open `https://34.93.140.79.sslip.io/docs` in a browser once before recording. The candidate opened it on 2026-10-24 and reported `/health` and `/ready` 200 and `GET /api/v1/jobs/1` with the token 404 `JOB_NOT_FOUND` (`docs/DEPLOY.md`, "Browser check"); "Try it out" on other routes was not reported. If "Authorize" or "Try it out" misbehaves on camera, drop minute 0:30-1:00 below and say nothing about it.
 5. Keep the dotted host name: `34.93.140.79.sslip.io` (the dashed name also works for the API, but download links only work on the name they were signed for).
 
 ## Part 1: introduction (0:00-0:30)

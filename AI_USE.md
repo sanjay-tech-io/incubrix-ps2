@@ -22,6 +22,7 @@ Every AI tool used on this project. Facts below come from the repository, its gi
 - `docker compose run tests` and an `.env` change restarted the live demo's services (`docs/REVIEW_M5.md` section 8.3, `docs/TEST_MEDIA.md` section 5).
 - Printed the old API token and a database URL into its own terminal output once; both secrets were later rotated (`docs/DEPLOY.md`, `docs/raw/m5d_token_rotation.txt`).
 - Hid `packages/media/` from git with an over-broad `.gitignore` line, so a fresh clone could not run for a few milestones (`docs/raw/m5_ci_simulation_run1_failed.txt`).
+- Ran `docker compose config | grep` to check a compose file and the output printed the current database password into its own terminal session (2026-10-24, `docs/DEPLOY.md`, "Session pack download"). Not in any file or commit; not rotated yet at the time of writing.
 - Wrote five wrong test expectations (`docs/REVIEW_M5.md` section 4) and killed its own shell twice with `pkill -f` (`docs/REVIEW_M3.md` section 8).
 
 ## 2. AI inside the product (runtime)
