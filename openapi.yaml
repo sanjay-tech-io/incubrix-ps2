@@ -50,6 +50,38 @@ paths:
       responses:
         "200": { description: Ready }
         "503": { description: Database or storage is not reachable }
+  /api/v1/health:
+    get:
+      tags: [ops]
+      operationId: healthV1
+      summary: Liveness (same as /health)
+      security: []
+      responses:
+        "200": { description: Process is up, content: { application/json: { schema: { $ref: "#/components/schemas/Health" } } } }
+    head:
+      tags: [ops]
+      operationId: healthHeadV1
+      summary: Liveness, headers only (same status as GET, no body)
+      security: []
+      responses:
+        "200": { description: Process is up }
+  /api/v1/ready:
+    get:
+      tags: [ops]
+      operationId: readyV1
+      summary: Readiness, database reachable (same as /ready)
+      security: []
+      responses:
+        "200": { description: Ready, content: { application/json: { schema: { $ref: "#/components/schemas/Health" } } } }
+        "503": { $ref: "#/components/responses/Error" }
+    head:
+      tags: [ops]
+      operationId: readyHeadV1
+      summary: Readiness, headers only (same status as GET, no body)
+      security: []
+      responses:
+        "200": { description: Ready }
+        "503": { description: Database or storage is not reachable }
   /api/v1/videos:
     post:
       tags: [videos]

@@ -4,7 +4,7 @@ import {
   timelinePieces, usToCursor, currentTimeline, sourceToEditedEnd, snapBoundaryUs, gridWarnings,
   type Atom, type AtomRange, type CaptionPatch, type Effect, type EngineContext, type Operation, type PendingQuestion, type Span, type TimePolicy, type Timeline,
 } from "@incubrix/engine";
-import { findRange, findTimeAfter, parseTimeAt, tokenize, wordsToDigits } from "./time.ts";
+import { findBareDuration, findRange, findTimeAfter, parseTimeAt, tokenize, wordsToDigits } from "./time.ts";
 import { buildPassages } from "./passages.ts";
 import type { InstructionParser, ParseInput, Parsed, PossibleFiller, SemanticHit } from "./types.ts";
 
@@ -571,12 +571,40 @@ function handleSilences(env: Env, tokens: string[]): Parsed {
   return clarify(env, "Remove silences longer than how many seconds?", options);
 }
 
+/**
+ * "cut 80 seconds": a length with no position. With a start in the same sentence ("from 1:00") it is a range; otherwise it is
+ * ambiguous and never guessed (rule 9 of CLAUDE.md): the first N, the last N, or a start the user gives.
+ */
+function handleBareDuration(env: Env, tokens: string[], d: { us: number; next: number }): Parsed {
+  const total = durationOf(env);
+  const len = formatTime(d.us);
+  if (d.us >= total) return reject(env, `${len} is not shorter than the video (${formatTime(total)}); cutting it would remove the whole video, nothing would be left. Give a shorter length.`);
+  const start = findTimeAfter(tokens.slice(d.next), ["from", "at"]);
+  if (start) {
+    if (start.us + d.us > total) return reject(env, `${len} from ${formatTime(start.us)} runs past the end of the video (${formatTime(total)}).`);
+    const res = spansFor(env, start.us, start.us + d.us);
+    return plan(env, res.spans.map((span) => ({ type: "cut", span, reason: "user" })), [...start.warnings, ...res.warnings]);
+  }
+  const first = spansFor(env, 0, d.us);
+  const last = spansFor(env, total - d.us, total);
+  const cuts = (r: { spans: Span[] }): Operation[] => r.spans.map((span) => ({ type: "cut", span, reason: "user" }));
+  return clarify(env, `Cut ${len} from where? (Nothing is cut until you choose.)`, [
+    { label: `the first ${len} (${formatTime(0)}-${len})`, operations: cuts(first), warnings: first.warnings },
+    { label: `the last ${len} (${formatTime(total - d.us)}-${formatTime(total)})`, operations: cuts(last), warnings: last.warnings },
+    { label: `from a time you give`, operations: [], warnings: [`Nothing changed. Tell me where it starts, for example: cut ${len} from 1:00.`] },
+  ]);
+}
+
 function handleCutRange(env: Env, tokens: string[]): Parsed {
   if (/\beverything\b|\bwhole video\b|\bentire video\b|\ball of it\b/.test(env.body) && !findRange(tokens, durationOf(env))) {
     const res = spansFor(env, 0, durationOf(env));
     return plan(env, res.spans.map((span) => ({ type: "cut", span, reason: "user" })), res.warnings);
   }
   const range = findRange(tokens, durationOf(env));
+  if (!range) {
+    const bare = findBareDuration(tokens);
+    if (bare) return handleBareDuration(env, tokens, bare);
+  }
   if (!range) return { kind: "reject", reason: "I did not understand what to remove. Give a time range (remove 0:30-0:40, cut the first 30 seconds), a topic (remove the part about pricing) or a phrase (remove everything after \"thanks\").", timePolicy: env.policy, warnings: [], unparsed: true };
   const res = spansFor(env, range.startUs, range.endUs);
   return plan(env, res.spans.map((span) => ({ type: "cut", span, reason: "user" })), [...range.warnings, ...res.warnings]);
@@ -750,12 +778,16 @@ export class RulesParser implements InstructionParser {
   readonly version = RULES_VERSION;
 
   parse(input: ParseInput): Parsed {
+    // Only a plain reply to an open question ("the second one", "2") stays whole. Anything else is a NEW instruction: it is split
+    // like any other, and the open question is simply dropped (a single new instruction already does that). Before the final check
+    // this was `hasPending ||`, which parsed a three-part sentence as one and silently dropped two of its parts.
     const hasPending = (input.state.conversation.at(-1)?.pending ?? null) !== null;
-    const parts = hasPending || input.answer !== undefined ? [input.text] : splitParts(input.text);
+    const isReply = input.answer !== undefined || (hasPending && chooseIndex(input.text) !== null);
+    const parts = isReply ? [input.text] : splitParts(input.text);
     if (parts.length <= 1) return this.one(input, 0);
 
     // Multi-part: every part is resolved against the SAME starting timeline and all that can be applied becomes ONE edit
-    // (one undo group). Parts that cannot be applied are named in the warnings; nothing is silently dropped.
+    // (one undo group). Every part is reported with its fate (applied / rejected with the reason / needs a choice): nothing is dropped.
     const ops: Operation[] = [];
     const warnings: string[] = [];
     const notes: string[] = [];
@@ -763,15 +795,17 @@ export class RulesParser implements InstructionParser {
     let applied = 0;
     parts.forEach((part, i) => {
       const r = this.one({ ...input, text: part }, ops.length);
+      const who = `Part ${i + 1} ("${part}")`;
       if (r.kind === "plan" && r.operations.length > 0) {
         applied++;
         ops.push(...r.operations);
         warnings.push(...r.warnings);
         policy ??= r.timePolicy;
-      } else if (r.kind === "plan") notes.push(`Part ${i + 1} ("${part}") was not applied: ${r.nothingToDo ?? "nothing to change"}`);
-      else if (r.kind === "reject") notes.push(`Part ${i + 1} ("${part}") was not applied: ${r.reason}`);
-      else if (r.kind === "clarify") notes.push(`Part ${i + 1} ("${part}") was not applied: it needs a choice (${r.question}). Send it on its own.`);
-      else notes.push(`Part ${i + 1} ("${part}") was not applied: undo, redo and answers cannot be combined with other parts.`);
+        notes.push(`${who} applied.`);
+      } else if (r.kind === "plan") notes.push(`${who} was not applied (nothing to change): ${r.nothingToDo ?? "nothing to change"}`);
+      else if (r.kind === "reject") notes.push(`${who} was not applied (rejected): ${r.reason}`);
+      else if (r.kind === "clarify") notes.push(`${who} was not applied (needs clarification): ${r.question} Options: ${r.options.map((o, k) => `${k + 1}) ${o.label}`).join("; ")}. Send it on its own.`);
+      else notes.push(`${who} was not applied: undo, redo and answers cannot be combined with other parts.`);
     });
     const tp: TimePolicy = policy ?? "current";
     if (applied === 0) return { kind: "reject", reason: `None of the ${parts.length} parts could be applied. ${notes.join(" ")}`, timePolicy: tp, warnings: [] };

@@ -26,6 +26,10 @@ describe("time expressions", () => {
     ["cut the last minute", [140, 200]],
     ["cut the last ten seconds", [190, 200]],
     ["cut 1:02:03 to 1:03:00", [3723, 3780]],
+    // the "and" between two times must not be eaten as part of the first ("30 seconds and 40 seconds" is a range, not 70 s)
+    ["get rid of the stretch between half a minute and forty seconds", [30, 40]],
+    ["cut between 20 seconds and 40 seconds", [20, 40]],
+    ["cut between 1 minute and 2 minutes", [60, 120]],
   ])("%s", (text, want) => expect(range(text)).toEqual(want));
 
   it("a bare number is read as seconds with a warning", () => {

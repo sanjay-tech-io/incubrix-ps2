@@ -81,6 +81,14 @@ describe("loadConfig", () => {
     expect(() => loadConfig({ ...good, MAX_RENDER_JOBS: "0" })).toThrow(/MAX_RENDER_JOBS/);
   });
 
+  it("the public demo allows a 60-minute video: compose.prod.yml defaults MAX_VIDEO_DURATION_S to 3600 and the loader accepts it", async () => {
+    const { readFile } = await import("node:fs/promises");
+    const prod = await readFile(new URL("../../../compose.prod.yml", import.meta.url), "utf8");
+    expect(prod).toMatch(/MAX_VIDEO_DURATION_S: \$\{MAX_VIDEO_DURATION_S:-3600\}/);
+    expect(prod).toMatch(/ASR_TIMEOUT_S: \$\{ASR_TIMEOUT_S:-7200\}/);
+    expect(loadConfig({ ...good, MAX_VIDEO_DURATION_S: "3600", ASR_TIMEOUT_S: "7200" })).toMatchObject({ MAX_VIDEO_DURATION_S: 3600, ASR_TIMEOUT_S: 7200 });
+  });
+
   it("treats empty strings as unset (so a blank line in .env uses the default)", () => {
     expect(loadConfig({ ...good, PORT: "" }).PORT).toBe(8080);
   });

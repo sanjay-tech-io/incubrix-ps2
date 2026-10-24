@@ -66,14 +66,18 @@ export function parseTimeAt(tokens: readonly string[], i: number): TimeAt | null
   let j = i;
   let sawUnit = false;
   // hours? minutes? seconds? in that order, each "<number> <unit>"; a lone number after minutes means seconds
-  for (const [re, mult] of [[H, 3600], [M, 60], [S, 1]] as const) {
+  const order = [[H, 3600], [M, 60], [S, 1]] as const;
+  for (const [k, [re, mult]] of order.entries()) {
     const n = tokens[j];
     const unit = tokens[j + 1];
     if (n !== undefined && NUM.test(n) && unit !== undefined && re.test(unit)) {
       total += Number(n) * mult;
       j += 2;
       sawUnit = true;
-      if (tokens[j] === "and") j += 1;
+      // "1 minute and 30 seconds": the "and" belongs to this time only when a SMALLER unit follows it. In "between 30 seconds and
+      // 40 seconds" the "and" separates two times (before this was skipped and the range was never found).
+      const later = order.slice(k + 1).some(([r2]) => r2.test(tokens[j + 2] ?? ""));
+      if (tokens[j] === "and" && NUM.test(tokens[j + 1] ?? "") && later) j += 1;
     }
   }
   if (sawUnit) {
@@ -147,6 +151,20 @@ export function findTimeAfter(tokens: readonly string[], keywords: readonly stri
     if (!keywords.includes(tokens[i]!)) continue;
     const t = parseTimeAt(tokens, i + 1);
     if (t) return { us: t.us, warnings: t.bare ? ["A time had no unit; I read it as seconds."] : [] };
+  }
+  return null;
+}
+
+/**
+ * A duration with no anchor: "80 seconds", "a minute twenty", "1:20", "1 minute 20" (after wordsToDigits). It is NOT a range and
+ * NOT preceded by first/last/from/to/at, so the caller cannot tell where it sits and must ask (or use a start the user gave).
+ */
+export function findBareDuration(tokens: readonly string[]): { us: number; next: number } | null {
+  for (let i = 0; i < tokens.length; i++) {
+    const prev = tokens[i - 1];
+    if (prev === "first" || prev === "last" || prev === "from" || prev === "to" || prev === "at" || prev === "until" || prev === "after" || prev === "before") continue;
+    const t = parseTimeAt(tokens, i);
+    if (t && !t.bare && t.us > 0) return { us: t.us, next: t.next };
   }
   return null;
 }

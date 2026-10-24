@@ -1,0 +1,15 @@
+# A clarification is open when a three-part instruction arrives. It is a new instruction: the open question is dropped,
+# and each of the three parts is applied or reported (before the final check the two first parts were dropped silently).
+brief: "Multi-part: a three-part instruction while a clarification is open"
+fixture: single
+steps:
+  - say: "remove the part about pricing"
+    expect: needs_clarification
+    expect_options: 3
+  - say: "cut the first 30 seconds, then speed up 1:00-1:10 by 10x, then add a caption \"Hi\" on \"welcome to the channel\""
+    expect: applied
+    expect_duration_s: 170
+    expect_warning: "Applied 2 of 3 parts"
+  - say: "undo"
+    expect: applied
+    expect_duration_s: 200

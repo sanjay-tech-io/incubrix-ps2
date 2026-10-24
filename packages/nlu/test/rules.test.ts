@@ -288,3 +288,111 @@ describe("background music", () => {
     expect(currentTimeline(s.ctx, s.state).music).toBeNull();
   });
 });
+
+describe("multi-part instructions never drop a part silently", () => {
+  const THREE = 'cut the first 30 seconds, then speed up 1:00-1:10 by 10x, then add a caption "Hi" on "welcome to the channel"';
+
+  it("fresh session: applies the possible parts as one undo group and lists every part with its status", () => {
+    const s = session();
+    const t = s.say(THREE);
+    expect(t.answer.status).toBe("applied");
+    const w = t.answer.warnings.join("\n");
+    expect(w).toMatch(/Applied 2 of 3 parts/);
+    expect(w).toMatch(/Part 1 \(.*\) applied/);
+    expect(w).toMatch(/Part 2 \(.*10x.*\) was not applied \(rejected\): .*allowed range/);
+    expect(w).toMatch(/Part 3 \(.*\) applied/);
+    expect(s.say("undo").answer.durationUs).toBe(200 * U);
+  });
+
+  it("with an open clarification the same sentence is NOT swallowed: the open question is dropped and every part is reported", () => {
+    const s = session();
+    const q = s.say("remove the part about pricing");
+    expect(q.answer.status).toBe("needs_clarification");
+    const t = s.say(THREE);
+    expect(t.answer.status).toBe("applied");
+    const w = t.answer.warnings.join("\n");
+    expect(w).toMatch(/Applied 2 of 3 parts/);
+    expect(w).toMatch(/Part 2 .*not applied \(rejected\)/);
+    expect(t.answer.durationUs).toBe(170 * U);
+    expect(currentTimeline(s.ctx, s.state).effects).toHaveLength(1);
+    expect(s.say("undo").answer.durationUs).toBe(200 * U); // one undo group
+  });
+
+  it("a part that needs a choice is named with its question and options, not dropped", () => {
+    const s = session();
+    const t = s.say('cut the first 10 seconds, then remove the part about pricing, then add a caption "Hi" on "welcome to the channel"');
+    expect(t.answer.status).toBe("applied");
+    const w = t.answer.warnings.join("\n");
+    expect(w).toMatch(/Applied 2 of 3 parts/);
+    expect(w).toMatch(/Part 2 \(.*pricing.*\) was not applied \(needs clarification\): .*mentioned 3 times.*Send it on its own/);
+  });
+
+  it("a plain answer to an open question is still an answer, not a new instruction", () => {
+    const s = session();
+    s.say("remove the part about pricing");
+    expect(s.say("the second one").answer.status).toBe("applied");
+  });
+
+  it("when no part can be applied the answer is a rejection that lists every part", () => {
+    const s = session();
+    const t = s.say("speed up 0:10-0:20 by 10x, then cut 5:00-6:00");
+    expect(t.answer.status).toBe("rejected");
+    expect(t.answer.reason).toMatch(/None of the 2 parts/);
+    expect(t.answer.reason).toMatch(/Part 1/);
+    expect(t.answer.reason).toMatch(/Part 2/);
+  });
+});
+
+describe("bare durations", () => {
+  it("'the last 10 seconds' and 'the first 30 seconds' are unambiguous and applied", () => {
+    const s = session();
+    expect(s.say("cut the last 10 seconds").answer.durationUs).toBe(190 * U);
+    expect(s.say("cut the first 30 seconds").answer.durationUs).toBe(160 * U);
+  });
+
+  it.each(["cut 80 seconds", "remove a minute twenty", "cut 1:20", "remove 1 minute 20"])("%s asks: the first 80 s, the last 80 s, or from a time you give", (text) => {
+    const s = session();
+    const q = s.say(text);
+    expect(q.answer.status).toBe("needs_clarification");
+    expect(q.answer.options).toHaveLength(3);
+    expect(q.answer.options[0]).toMatch(/first 1:20/);
+    expect(q.answer.options[1]).toMatch(/last 1:20/);
+    expect(q.answer.options[2]).toMatch(/time you give/i);
+    expect(q.answer.durationUs).toBe(200 * U);
+    expect(q.answer.timelineHash).toBe(timelineHash(currentTimeline(s.ctx, newSession())));
+  });
+
+  it("choosing the first or the last option applies it (and the first and last give different timelines)", () => {
+    const a = session();
+    a.say("cut 80 seconds");
+    const first = a.say("the first one");
+    expect(first.answer).toMatchObject({ status: "applied", durationUs: 120 * U });
+    const b = session();
+    b.say("cut 80 seconds");
+    const last = b.say("2");
+    expect(last.answer).toMatchObject({ status: "applied", durationUs: 120 * U });
+    expect(last.answer.timelineHash).not.toBe(first.answer.timelineHash);
+  });
+
+  it("choosing 'from a time you give' changes nothing and says what to type", () => {
+    const s = session();
+    s.say("cut 80 seconds");
+    const t = s.say("the third one");
+    expect(t.answer.status).toBe("rejected");
+    expect(t.answer.reason).toMatch(/cut 1:20 from 1:00|from 1:00/);
+    expect(t.answer.durationUs).toBe(200 * U);
+  });
+
+  it("a start time given in the same sentence makes it unambiguous", () => {
+    const s = session();
+    const t = s.say("cut 80 seconds from 1:00");
+    expect(t.answer).toMatchObject({ status: "applied", durationUs: 120 * U });
+  });
+
+  it("a duration longer than the video is rejected, not asked about", () => {
+    const s = session();
+    const t = s.say("cut 300 seconds");
+    expect(t.answer.status).toBe("rejected");
+    expect(t.answer.reason).toMatch(/longer than|whole video|nothing would be left/);
+  });
+});

@@ -59,12 +59,12 @@ describe("fallback: used only when the rules cannot parse, cached, validated", (
 
   it("translates an instruction the rules do not know, applies it through the engine, reports tokens and cost, then replays from the cache with no call", async () => {
     const s = setup({ "*": { ...ok, usage: { inputTokens: 800, outputTokens: 40 } } });
-    const text = "please get rid of the stretch between half a minute and forty seconds";
+    const text = "please make the awkward bit near the beginning disappear";
     const r1 = await s.fb.parseUnparsed({ ctx: s.ctx, state: s.state, text });
     expect(r1!.parsed.kind).toBe("plan");
     expect(r1!.call).toMatchObject({ cache: "miss", inputTokens: 800, outputTokens: 40 });
     expect(r1!.call.costUsd).toBeCloseTo((800 * 0.3 + 40 * 2.5) / 1e6, 9);
-    const r2 = await s.fb.parseUnparsed({ ctx: s.ctx, state: s.state, text: "  Please get rid of the stretch between half a minute and forty seconds  " });
+    const r2 = await s.fb.parseUnparsed({ ctx: s.ctx, state: s.state, text: "  Please make the awkward bit near the beginning disappear  " });
     expect(s.provider.calls).toBe(1);
     expect(r2!.call).toMatchObject({ cache: "hit", costUsd: 0 });
     expect(r2!.parsed).toEqual(r1!.parsed);

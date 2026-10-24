@@ -1,0 +1,23 @@
+# Unambiguous forms apply at once; the third option "from a time you give" changes nothing and says what to type; a start makes it a range.
+brief: "Bare durations: the last 10 seconds, the first 30 seconds, 'from a time you give', '80 seconds from 1:00'"
+fixture: single
+steps:
+  - say: "cut the last 10 seconds"
+    expect: applied
+    expect_duration_s: 190
+  - say: "cut the first 30 seconds"
+    expect: applied
+    expect_duration_s: 160
+  - say: "cut 80 seconds"
+    expect: needs_clarification
+    expect_options: 3
+  - answer: 3
+    expect: rejected
+    expect_text: "from 1:00"
+    expect_hash_unchanged: true
+  - say: "cut 80 seconds from 1:00"
+    expect: applied
+    expect_duration_s: 80
+  - say: "cut 500 seconds"
+    expect: rejected
+    expect_text: "nothing would be left"

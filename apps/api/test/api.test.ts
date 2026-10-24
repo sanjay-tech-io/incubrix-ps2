@@ -34,7 +34,7 @@ describe.skipIf(!integration)("API behaviour", () => {
     });
 
     it("HEAD /health and /ready answer like GET (same status) with no body, and need no token", async () => {
-      for (const path of ["/health", "/ready"]) {
+      for (const path of ["/health", "/ready", "/api/v1/health", "/api/v1/ready"]) {
         const g = await fetch(`${s.base}${path}`);
         const h = await fetch(`${s.base}${path}`, { method: "HEAD" });
         expect([h.status, await h.text()]).toEqual([g.status, ""]);
@@ -44,8 +44,13 @@ describe.skipIf(!integration)("API behaviour", () => {
       expect((await fetch(`${s.base}/api/v1/jobs/x`, { method: "HEAD" })).status).toBe(404); // HEAD is not opened up elsewhere
     });
 
-    it("everything except /health and /ready lives under /api/v1", () => {
+    it("everything except the root /health and /ready lives under /api/v1, and /api/v1/health and /api/v1/ready are the same probes", async () => {
       for (const path of Object.keys(spec.paths)) expect(path === "/health" || path === "/ready" || path.startsWith("/api/v1/")).toBe(true);
+      for (const name of ["health", "ready"]) {
+        const root = await fetch(`${s.base}/${name}`);
+        const v1 = await fetch(`${s.base}/api/v1/${name}`); // no token on purpose: a probe must not need one
+        expect([v1.status, await v1.json()]).toEqual([root.status, await root.json()]);
+      }
     });
 
     // Responses are checked against the schemas in the file, so the file cannot drift from the service.

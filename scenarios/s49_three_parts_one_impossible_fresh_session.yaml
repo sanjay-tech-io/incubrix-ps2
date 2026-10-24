@@ -1,0 +1,11 @@
+# Every part is reported: the two possible parts apply as ONE undo group, the impossible one is named with its reason.
+brief: "Multi-part: a three-part instruction with one impossible part, fresh session"
+fixture: single
+steps:
+  - say: "cut the first 30 seconds, then speed up 1:00-1:10 by 10x, then add a caption \"Hi\" on \"welcome to the channel\""
+    expect: applied
+    expect_duration_s: 170
+    expect_warning: "Applied 2 of 3 parts"
+  - say: "undo"
+    expect: applied
+    expect_duration_s: 200

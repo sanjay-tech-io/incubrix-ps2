@@ -302,6 +302,9 @@ export function answerClarification(ctx: EngineContext, state: SessionState, tex
     });
     return { state: record(state, text, answer, null, pending), answer };
   }
+  // An option that carries no operations ("from a time you give") is a pointer to a new instruction, not an edit: nothing changes
+  // and the answer says what to type. It is a rejection (the question is closed), never an empty edit.
+  if (picked.operations.length === 0) return reject(ctx, state, text, picked.warnings.join(" ") || `Option ${choice + 1} needs more detail from you; nothing changed.`, policy);
   return submitOperations(ctx, state, text, picked.operations, { ...opts, warnings: [...picked.warnings, ...(opts.warnings ?? [])] });
 }
 

@@ -53,7 +53,8 @@ export interface RouteRecord {
   url: string;
 }
 
-const PUBLIC_PATHS = new Set(["/health", "/ready"]);
+// The probes answer at the root and under /api/v1 (same handlers, same answers): a reviewer may look in either place.
+const PUBLIC_PATHS = new Set(["/health", "/ready", "/api/v1/health", "/api/v1/ready"]);
 
 const CreateVideoUrl = z.strictObject({
   url: z.url(),
@@ -170,6 +171,8 @@ export async function buildApp(d: ApiDeps): Promise<FastifyInstance & { routeTab
   };
   app.route({ method: ["GET", "HEAD"], url: "/health", handler: health });
   app.route({ method: ["GET", "HEAD"], url: "/ready", handler: ready });
+  app.route({ method: ["GET", "HEAD"], url: "/api/v1/health", handler: health });
+  app.route({ method: ["GET", "HEAD"], url: "/api/v1/ready", handler: ready });
 
   // ---- videos ----------------------------------------------------------------------------------------------------
   app.post("/api/v1/videos", async (req, reply) => {
