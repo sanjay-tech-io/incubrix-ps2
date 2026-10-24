@@ -38,15 +38,15 @@ Result words: **PASS** = ran now and met the item. **PARTIAL** = part ran, or it
 |---|---|---|
 | "Remove 0:30-0:40" twice | Both `applied`: the second removes what is now at 0:30-0:40 of the shorter timeline (170.8 s, then 160.6 s); both say "current" policy and warn about cut snapping. No repeat detection (the brief's case probably wants this noticed). | **PARTIAL**, by design: a repeat is a new edit; "of the original" would be safe |
 | "add a caption at 5:00" on a 15.9 s video | `rejected`: "The edited video lasts 0:15.880, so I cannot add a caption at 5:00.000." | PASS |
-| "cut 80 seconds" | `rejected`: "I did not understand that. No time range provided for the cut". | PARTIAL: an unreadable-phrase rejection, not a crash; it does not ask "80 s to where?" |
-| "cut a minute twenty", "cut 1:20" | `rejected` (no end time). "cut from a minute twenty to a minute twenty five" and "cut from 80 seconds to 85 seconds" are applied (session 07, earlier batch). | PARTIAL, same reason |
+| "cut 80 seconds" | Superseded, see section 8: now `needs_clarification` with three options. (At the time of this check: `rejected`, "I did not understand that".) | PASS after the fix (section 8) |
+| "cut a minute twenty", "cut 1:20" | `rejected` (no end time). "cut from a minute twenty to a minute twenty five" and "cut from 80 seconds to 85 seconds" are applied (session 07, earlier batch). | PASS after the fix (section 8) |
 | "cut / remove the last 10 seconds" | `applied`, 180.3 s to 169.7 s; the cut point moved to a word edge with a warning. | PASS |
 | "Undo the second-to-last cut but keep the music" | `applied`: "Restoring edit 3: removed original 0:24.860-0:29.600 ... Music is not touched by this." The music stays in the timeline. | PASS |
 | "make it bigger" with no caption | `rejected`: "There is no caption to change (bigger). Add one first ..." | PASS |
 | "Remove everything after I say thanks" | `needs_clarification`: "thanks appears 6 times. Which one?" (this recording has 6, not 4). | PASS |
 | "Speed up 10x" | `rejected`: "outside the allowed range 0.25x to 4x". | PASS |
 | "cut everything" | `rejected`: "this would remove the whole video". | PASS |
-| Three-part instruction, one impossible | Fresh session: `applied`, "Applied 2 of 3 parts", names part 2 and why. **With a clarification question open: `applied` but only the caption was applied; the cut and the speed part were dropped silently, no warning.** | **FAIL in that state** (reproduced twice), PASS in a fresh session. Not fixed |
+| Three-part instruction, one impossible | Fresh session: `applied`, "Applied 2 of 3 parts", names part 2 and why. **With a clarification question open: `applied` but only the caption was applied; the cut and the speed part were dropped silently, no warning.** | FAIL at the time of this check; PASS after the fix (section 8) |
 | MOV upload | Ingested, captions + cut + music, render 344 frames = timeline 13.76 s, frame difference 0. (A remux of a generated clip, not a camera MOV.) | PASS, with that limit |
 | No-audio video | Job fails with `NO_AUDIO_TRACK`, `retryable: false`, a clear message. | PASS |
 | VFR video | Generated VFR clip ingested with a VFR warning, rendered through a 30 fps proxy, 623 frames = timeline, frame difference 0, audio minus video 0.02 frame. The warning text contained the stale words "(M3, not built yet)": fixed in the source, the live service still shows it. | PASS, with limits (generated, not a phone video; stale text live) |
@@ -78,7 +78,7 @@ Evidence: `final_probes_single.txt`, `final_probe_p1..p8*.json`, `final_probes_s
 ## 6. Small fixes made (commits listed at the end of this file)
 
 1. Untracked 4 smoke renders and 7 stills; `.gitignore` extended.
-2. `apps/worker/src/intake.ts`: removed the stale "(M3, not built yet)" from the user-facing VFR warning. Typecheck clean, worker tests 17 of 17. **Not deployed.**
+2. `apps/worker/src/intake.ts`: removed the stale "(M3, not built yet)" from the user-facing VFR warning. Typecheck clean, worker tests 17 of 17. Deployed in the follow-up (section 8).
 3. `SOURCES.md`: 6 missing entries and the note about media found in history.
 4. `docs/DEPLOY.md`: disk numbers. `docs/SUBMISSION_EVIDENCE.md`, `REPORT.md`: three rows moved from Yes to Partial (A11, I3, I8), totals now 39 Yes / 18 Partial; the stale `origin/main` note.
 5. `scripts/final_probe.mjs` added (the probe client).
@@ -86,19 +86,39 @@ Evidence: `final_probes_single.txt`, `final_probe_p1..p8*.json`, `final_probes_s
 ## 7. Risks to know before submitting
 
 1. **Live callbacks are unsigned** (no `CALLBACK_HMAC_SECRET`), and no live callback delivery was shown. Fix: put a secret (16+ characters) into `.env` and recreate `api` and `worker`; the reviewer then needs it to verify signatures. I did not change the live configuration.
-2. **A multi-part instruction sent while a question is open silently drops parts** (`RulesParser.parse` skips splitting when a question is pending). It contradicts the "apply all or report exactly which parts" item in that one state. A fix is about one line plus a test and a redeploy; I did not make it.
-3. **The live service runs the code from before this check.** The stale VFR warning text is still served until the next deploy.
-4. **`/health` and `/ready` are at the root, not under `/api/v1`** (`/api/v1/health` is 404 with a token, 401 without). `CLAUDE.md` lists them with the other `/api/v1` routes; a reviewer who reads "routes under /api/v1" literally may look there. An alias is small but would change `openapi.yaml`, its tests and the deployment.
+2. ~~**A multi-part instruction sent while a question is open silently drops parts** (`RulesParser.parse` skips splitting when a question is pending). It contradicts the "apply all or report exactly which parts" item in that one state. A fix is about one line plus a test and a redeploy; I did not make it.~~ **Fixed in the follow-up (section 8).**
+3. ~~**The live service runs the code from before this check.** The stale VFR warning text is still served until the next deploy.~~ **Fixed in the follow-up (section 8).**
+4. ~~**`/health` and `/ready` are at the root, not under `/api/v1`** (`/api/v1/health` is 404 with a token, 401 without). `CLAUDE.md` lists them with the other `/api/v1` routes; a reviewer who reads "routes under /api/v1" literally may look there. An alias is small but would change `openapi.yaml`, its tests and the deployment.~~ **Fixed in the follow-up (section 8).**
 5. **No log line carries both `job_id` and `correlation_id`.** The Integration Standard names both fields.
 6. **The 11 media files are still in git history** (4 small generated videos, 7 cropped stills of the real recording; the one I viewed shows no face). "No media committed" is true at HEAD only. Removing them from history means rewriting it (and a force-push), which I did not do.
-7. **Live limit `MAX_VIDEO_DURATION_S=300`.** A hidden-test video longer than 5 minutes fails at intake with `VIDEO_TOO_LONG`. One transcription and one render at a time; a 130 s output of the 3-minute recording took 212 s to render at full resolution (`timings.total_s` in its manifest).
+7. ~~**Live limit `MAX_VIDEO_DURATION_S=300`.** A hidden-test video longer than 5 minutes fails at intake with `VIDEO_TOO_LONG`. One transcription and one render at a time; a 130 s output of the 3-minute recording took 212 s to render at full resolution (`timings.total_s` in its manifest).~~ **Fixed in the follow-up (section 8).**
 8. **Fillers:** real ASR transcribed no "um", "uh" or "like" filler in any of our clips, so live filler removal only works through the "possible filler" question. A hidden video with real fillers behaves differently from anything I ran live.
-9. **Bare time phrases** ("cut 80 seconds", "cut a minute twenty", "cut 1:20") are rejected as unreadable instead of asking for the missing end. The "from ... to ..." forms work.
+9. ~~**Bare time phrases** ("cut 80 seconds", "cut a minute twenty", "cut 1:20") are rejected as unreadable instead of asking for the missing end. The "from ... to ..." forms work.~~ **Fixed in the follow-up (section 8).**
 10. **One upload got no response (curl HTTP code 000)** while the compose test run was using the CPU; an immediate retry returned 202 and I could not reproduce it. Cause unknown.
 11. **The brief's exact session-file format could not be compared** (the brief is not in the repo). Check `apps/cli/src/format.ts` against it.
 12. **`CLAUDE.md` names pg-boss for jobs;** a grep finds no use of it in the code (jobs use a Postgres table, per `docs/REVIEW_INFRA.md`). If the reviewer holds you to the stack line, say so first.
 13. **No GitHub Actions run is recorded** (evidence rows stay Partial); the demo URL contains the VM's ephemeral IP unless it was reserved; reboot survival was never tested; the callback and the large-URL-intake paths were not shown on the public service.
 14. Two author names appear in the git history ("Sanjay J", "sanjay-tech-io"); be ready to say they are the same person if that is so.
+
+## 8. Follow-up fixes (2026-10-24, after this check)
+
+Tests first, then code, then `docker compose run --rm tests`, then redeploy of `api` and `worker`. Raw output: `docs/raw/final2_*` and `final2b_*`.
+
+| # | Item | Result | Evidence |
+|---|---|---|---|
+| 1 | Multi-part instruction never drops a part, also with a question open | **PASS** live. Fresh session: "Applied 2 of 3 parts", one line per part (applied / rejected with reason / needs clarification with options), one undo group. With a question open (pricing, 7 mentions): the same sentence applies parts 1 and 3, reports part 2, and undo returns to the earlier length in one step. A plain reply ("2") is still an answer. A part that needs clarification must be sent again on its own. Scenarios S49, S50. | `final2_probe_q1..q4.json`, `final2_probes.txt`, `final2b_probe_q6.json` (step 9) |
+| 2 | Live limit 3600 s | **PASS.** Worker env shows `MAX_VIDEO_DURATION_S=3600`, `ASR_TIMEOUT_S=7200`. **The variable name stays `MAX_VIDEO_DURATION_S`** (you asked for it to be kept; `MAX_VIDEO_SECONDS` does not exist). A 3,601 s file is refused at intake: job `failed`, `VIDEO_TOO_LONG`, `retryable: false`, details `duration_s 3601`, `max_duration_s 3600`. | `final2_long_resources.txt`, `final2b_over_limit.txt`, `final2b_over_limit.json` |
+| 2a | 60-minute video, live, background job with progress | **PASS, with a limit on the test file.** A 3,590 s upload (job `job_13e7b0f8e2994c019b19`) ran as a background job, progress 0 to 100 in steps (about every minute), `succeeded` after 1,876 s; `timings.asr_s` 1,847 s, `embed_s` 14 s, total 1,875 s. Real-time factor of the whole job 0.52 (1,875 / 3,590). Earlier measured intake factor 0.69 would have predicted about 41 min; this run took 31 min 15 s. **Expect about 31 to 41 minutes for 3,600 s.** The test file is synthetic: my 3-minute recording looped 20 times over a black picture (5,666 words, 6,242 atoms), so repeated speech may be faster or slower than varied speech; the range is the honest answer. | `final2_long_run.txt`, `final2_long_session.json` |
+| 2b | Disk and memory for one 60-minute job | **PASS.** Sampled every 30 s for the whole run: asr container peak 2.65 GiB, worker peak 542 MiB, api about 102 MiB, host memory available never below 4,378 MB of 15.6 GB, disk free 51 GB throughout. One job at a time (single worker); the upload was 32 MB (a real 60-minute phone video would be larger, I did not test that size). | `final2_long_resources.txt` |
+| 2c | Instructions on the 60-minute timeline | 9 instructions took 16 to 208 ms each (median 40 ms), including silence removal over the whole hour (208 ms). No render of the 60-minute video was run. | `final2_long_session.json` |
+| 3 | Bare durations | **PASS** live. "cut the last 10 seconds" and "cut the first 30 seconds" are applied. "cut 80 seconds", "remove a minute twenty", "cut 1:20" return `needs_clarification` with three options (first 80 s, last 80 s, from a time you give); nothing changes until chosen. Answering with a time ("from 1:20", "at 1:20", "1:20", "from 0:30" through the answer field) cuts 80 s from there as one undo group; an answer with no usable time, or a start that runs past the end, is `rejected` and changes nothing. Choosing option 3 by number alone has no time, so it is rejected with what to type. "cut 80 seconds from 1:00" is applied. A length not shorter than the video is rejected. Scenarios S51, S52, S53. | `final2_probe_q5_short.json`, `final2b_probe_q6.json` |
+| 4 | `/api/v1/health` and `/api/v1/ready` | **PASS.** GET and HEAD, no token, same answer as the root ones; in `openapi.yaml` (19 operations probed live, none unserved; served spec identical to the repo file) and in the API test. | `final2_live_after_deploy.txt` |
+| 5 | Isolated test run | `docker compose run --rm tests` exit 0 (first run after the bare-duration work failed once, see below; kept as `final2_compose_tests.txt`, which is the passing run; the last run after the time-answer change: `final2b_compose_tests.txt`, exit 0, 16 vitest summaries, 630 passed, 1 skipped, scenario test file 55 tests). | `final2_compose_tests.txt`, `final2b_compose_tests.txt` |
+| 6 | Redeploy and outside smoke test | Redeployed twice (`api`, `worker` rebuilt; only ports 80 and 443 published). Smoke test through the public name from this VM: PASS (upload, ASR, captions, cut, render, download). Not run from another machine. | `final2_deploy.txt`, `final2b_deploy.txt`, `final2_live_after_deploy.txt`, `final2b_smoke.txt` |
+
+**Found on the way.** "between 30 seconds and 40 seconds" was never read as a range (the "and" was swallowed by the time reader). Fixed with tests. One language-model fallback test used that sentence as its "unknown instruction", so I changed that test's sentence. A first full test run failed for that reason; the passing runs are the ones named above.
+
+**Risks from section 7 that are now closed:** 2 (multi-part with a question open), 3 (stale deploy), 4 (`/api/v1/health`), 7 (video limit; now 3600 s), 9 (bare durations). Still open: 1, 5, 6, 8, 10 to 14. New: the 60-minute run used a synthetic looped file, and a callback could not be delivered to the VM's public address during an earlier check (the API refuses private callback URLs).
 
 ## Commits of this check (local, not pushed)
 
@@ -109,3 +129,5 @@ Evidence: `final_probes_single.txt`, `final_probe_p1..p8*.json`, `final_probes_s
 | `7e06622` | SOURCES.md gaps and media note; DEPLOY.md disk numbers |
 | `6d2a0a2` | Probe client and raw outputs `docs/raw/final_*` |
 | `6c59c9d` | This file; SUBMISSION_EVIDENCE totals (39 Yes / 18 Partial), REPORT, STATUS |
+| `b989955`, `5baebf2`, `1de2216` | Follow-up fixes (section 8): multi-part, bare durations, health aliases, 3600 s limit, time answer |
+| next commit | Section 8, evidence rows A11 and O5, totals 41 Yes / 16 Partial, raw output `final2_*`, `final2b_*` |

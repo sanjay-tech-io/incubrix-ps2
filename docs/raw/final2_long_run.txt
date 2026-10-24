@@ -1,0 +1,48 @@
+  job job_13e7b0f8e2994c019b19 queued progress 0 after 0 s
+  job job_13e7b0f8e2994c019b19 running progress 25 after 1 s
+  job job_13e7b0f8e2994c019b19 running progress 35 after 7 s
+  job job_13e7b0f8e2994c019b19 running progress 36 after 34 s
+  job job_13e7b0f8e2994c019b19 running progress 37 after 91 s
+  job job_13e7b0f8e2994c019b19 running progress 38 after 147 s
+  job job_13e7b0f8e2994c019b19 running progress 39 after 203 s
+  job job_13e7b0f8e2994c019b19 running progress 40 after 259 s
+  job job_13e7b0f8e2994c019b19 running progress 41 after 314 s
+  job job_13e7b0f8e2994c019b19 running progress 42 after 370 s
+  job job_13e7b0f8e2994c019b19 running progress 43 after 426 s
+  job job_13e7b0f8e2994c019b19 running progress 44 after 482 s
+  job job_13e7b0f8e2994c019b19 running progress 45 after 538 s
+  job job_13e7b0f8e2994c019b19 running progress 46 after 593 s
+  job job_13e7b0f8e2994c019b19 running progress 47 after 650 s
+  job job_13e7b0f8e2994c019b19 running progress 48 after 705 s
+  job job_13e7b0f8e2994c019b19 running progress 49 after 761 s
+  job job_13e7b0f8e2994c019b19 running progress 50 after 818 s
+  job job_13e7b0f8e2994c019b19 running progress 51 after 872 s
+  job job_13e7b0f8e2994c019b19 running progress 52 after 928 s
+  job job_13e7b0f8e2994c019b19 running progress 53 after 985 s
+  job job_13e7b0f8e2994c019b19 running progress 54 after 1040 s
+  job job_13e7b0f8e2994c019b19 running progress 55 after 1096 s
+  job job_13e7b0f8e2994c019b19 running progress 56 after 1152 s
+  job job_13e7b0f8e2994c019b19 running progress 57 after 1207 s
+  job job_13e7b0f8e2994c019b19 running progress 58 after 1264 s
+  job job_13e7b0f8e2994c019b19 running progress 59 after 1320 s
+  job job_13e7b0f8e2994c019b19 running progress 60 after 1375 s
+  job job_13e7b0f8e2994c019b19 running progress 61 after 1431 s
+  job job_13e7b0f8e2994c019b19 running progress 62 after 1487 s
+  job job_13e7b0f8e2994c019b19 running progress 63 after 1543 s
+  job job_13e7b0f8e2994c019b19 running progress 64 after 1599 s
+  job job_13e7b0f8e2994c019b19 running progress 65 after 1654 s
+  job job_13e7b0f8e2994c019b19 running progress 66 after 1710 s
+  job job_13e7b0f8e2994c019b19 running progress 67 after 1766 s
+  job job_13e7b0f8e2994c019b19 running progress 68 after 1822 s
+  job job_13e7b0f8e2994c019b19 running progress 80 after 1854 s
+  job job_13e7b0f8e2994c019b19 succeeded progress 100 after 1876 s
+1. "cut 10:00-10:30" -> HTTP 200 applied 
+2. "add captions" -> HTTP 200 applied 
+3. "remove silences longer than 1 second" -> HTTP 200 applied 
+4. "speed up 30:00-31:00 by 2x" -> HTTP 200 applied 
+5. "cut the last 10 seconds" -> HTTP 200 applied 
+6. "cut 80 seconds" -> HTTP 200 needs_clarification 
+7. "cut 0:05-0:10, then speed up 20:00-21:00 by 10x, then add a caption \"Hi\" at 5:00" -> HTTP 200 applied 
+8. GET timeline -> 200
+9. "undo" -> HTTP 200 applied 
+10. "remove everything after I say thanks" -> HTTP 200 needs_clarification 

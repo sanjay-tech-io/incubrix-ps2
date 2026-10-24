@@ -1,6 +1,6 @@
 # REPORT: prompt-based video editing engine
 
-Every number here comes from a file in the repository; the link is next to it. Where I did not measure something, it says "not measured". Claim-to-file index: [`test-pack/INDEX.md`](test-pack/INDEX.md). Item-by-item status: [`docs/SUBMISSION_EVIDENCE.md`](docs/SUBMISSION_EVIDENCE.md) (39 Yes, 18 Partial, 0 No of 57 rows; re-checked against the live URL on 2026-10-24, see [`docs/FINAL_CHECK.md`](docs/FINAL_CHECK.md)). I do not claim any of the three levels as fully passed.
+Every number here comes from a file in the repository; the link is next to it. Where I did not measure something, it says "not measured". Claim-to-file index: [`test-pack/INDEX.md`](test-pack/INDEX.md). Item-by-item status: [`docs/SUBMISSION_EVIDENCE.md`](docs/SUBMISSION_EVIDENCE.md) (41 Yes, 16 Partial, 0 No of 57 rows; re-checked against the live URL on 2026-10-24, see [`docs/FINAL_CHECK.md`](docs/FINAL_CHECK.md)). I do not claim any of the three levels as fully passed.
 
 ## 1. Approaches considered and what I chose
 

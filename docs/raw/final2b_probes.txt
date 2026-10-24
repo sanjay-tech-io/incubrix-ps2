@@ -1,0 +1,17 @@
+  job job_91805d066a484c5c9d54 queued progress 0 after 0 s
+  job job_91805d066a484c5c9d54 running progress 15 after 3 s
+  job job_91805d066a484c5c9d54 succeeded progress 100 after 4 s
+1. "cut 80 seconds" -> HTTP 200 needs_clarification 
+2. "from 1:20" -> HTTP 200 applied 
+3. "undo" -> HTTP 200 applied 
+4. "cut 80 seconds" -> HTTP 200 needs_clarification 
+5. "somewhere in the middle" -> HTTP 200 rejected 
+6. "cut 80 seconds from 1:00" -> HTTP 200 applied 
+7. "undo" -> HTTP 200 applied 
+8. "remove the part about pricing" -> HTTP 200 needs_clarification 
+9. "cut 0:10-0:15, then speed up 0:30-0:40 by 10x, then add a caption \"Hi\" on \"welcome to our channel\"" -> HTTP 200 applied 
+10. "undo" -> HTTP 200 applied 
+11. "cut the last 10 seconds" -> HTTP 200 applied 
+12. "undo" -> HTTP 200 applied 
+13. "cut a minute twenty" -> HTTP 200 needs_clarification 
+14. {"answer":"from 0:30"} -> HTTP 200 applied 

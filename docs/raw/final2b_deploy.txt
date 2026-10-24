@@ -1,0 +1,5 @@
+ Container incubrix-ps2-worker-1 Recreated 
+ Container incubrix-ps2-worker-1 Starting 
+ Container incubrix-ps2-api-1 Starting 
+ Container incubrix-ps2-worker-1 Started 
+ Container incubrix-ps2-api-1 Started 

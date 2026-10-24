@@ -87,3 +87,5 @@ ffmpeg/ffprobe/libx264 are started by our code as separate operating-system proc
 | PostgreSQL 16 (Docker image, not a model) | PostgreSQL licence, not re-read | n/a | n/a |
 
 Options evaluated and NOT used (pyannote speaker-diarization-3.1 / community-1, NVIDIA Sortformer, SpeechBrain ECAPA, FunASR CAM++): licences in `docs/REVIEW_INFRA.md` section 5 and `huggingface-model-metadata.json`.
+
+**Synthetic 60-minute test clip (2026-10-24, not committed).** `long_3590.mp4` (3,590 s) = my own 3-minute recording (`media/test_single.mp4` audio) looped 20 times over a black 320x180 picture, built with ffmpeg to test the live 3,600 s limit; `over_3601.mp4` = ffmpeg `color` + `sine` test sources. Neither file is stored in the repo; results are in `docs/raw/final2_long_*` and `final2b_over_limit.*`.

@@ -1,0 +1,28 @@
+{
+ "video": "/tmp/claude-1000/-home-g23m143-incubrix-ps2/04e9ecf1-46a1-4f5b-8e59-3cf471645621/scratchpad/long/over_3601.mp4",
+ "base": "https://34.93.140.79.sslip.io",
+ "steps": [],
+ "upload": {
+  "http": 202,
+  "body": {
+   "video_id": "vid_85fc40cc980a430a8005",
+   "job_id": "job_dbc03e1ff3094bbebe57",
+   "status_url": "/api/v1/jobs/job_dbc03e1ff3094bbebe57"
+  }
+ },
+ "ingest": {
+  "status": "failed",
+  "error": {
+   "error": {
+    "code": "VIDEO_TOO_LONG",
+    "details": {
+     "duration_s": 3601,
+     "max_duration_s": 3600
+    },
+    "message": "The video is 3601.0 s long; this deployment accepts at most 3600 s.",
+    "retryable": false
+   }
+  },
+  "result": null
+ }
+}

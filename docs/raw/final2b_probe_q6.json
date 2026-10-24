@@ -1,0 +1,1242 @@
+{
+ "video": "media/test_single.mp4",
+ "base": "https://34.93.140.79.sslip.io",
+ "steps": [
+  {
+   "n": 1,
+   "sent": "cut 80 seconds",
+   "http": 200,
+   "ms": 20,
+   "missing_fields": [],
+   "answer": {
+    "status": "needs_clarification",
+    "operations": [],
+    "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+    "question": "Cut 1:20.000 from where? (Nothing is cut until you choose.)",
+    "options": [
+     "the first 1:20.000 (0:00.000-1:20.000)",
+     "the last 1:20.000 (1:40.300-3:00.300)",
+     "from a time you give"
+    ],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [],
+    "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+    "duration_s": 180.3,
+    "duration_us": 180300000,
+    "turn": 1,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 8.77
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.008,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  },
+  {
+   "n": 2,
+   "sent": "from 1:20",
+   "http": 200,
+   "ms": 17,
+   "missing_fields": [],
+   "answer": {
+    "status": "applied",
+    "operations": [
+     {
+      "type": "cut",
+      "span": {
+       "start": {
+        "atom": "a_6a2c64966c98",
+        "offsetUs": 0
+       },
+       "end": {
+        "atom": "a_b30cc706b176",
+        "offsetUs": 0
+       }
+      },
+      "reason": "user"
+     }
+    ],
+    "summary": "Length 3:00.300 -> 1:41.100 (-1:19.200). Time policy: current (times refer to the edited timeline as it is now).",
+    "question": null,
+    "options": [],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [
+     "1:20.000 is inside the word \"you\", so the cut point moved to 1:20.720, the nearest word edge (no silence nearby). The cut point at 1:20.720 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+     "2:40.000 is inside the word \"like\", so the cut point moved to 2:39.940, the nearest word edge (no silence nearby). The cut point at 2:39.940 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+     "This edit touches words the transcript is unsure about: \"will\" (low confidence), \"and\" (low confidence), \"you\" (speaker uncertain, low confidence), \"I\" (speaker uncertain), \"I\" (low confidence) and 22 more. Check the result."
+    ],
+    "timeline_hash": "db7cce92c310e263cd515f7494211158570fea03b88ca5bc97d7510e83cb7949",
+    "duration_s": 101.1,
+    "duration_us": 101100000,
+    "turn": 2,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 5.82
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.005,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [
+      "1:20.000 is inside the word \"you\", so the cut point moved to 1:20.720, the nearest word edge (no silence nearby). The cut point at 1:20.720 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+      "2:40.000 is inside the word \"like\", so the cut point moved to 2:39.940, the nearest word edge (no silence nearby). The cut point at 2:39.940 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+      "This edit touches words the transcript is unsure about: \"will\" (low confidence), \"and\" (low confidence), \"you\" (speaker uncertain, low confidence), \"I\" (speaker uncertain), \"I\" (low confidence) and 22 more. Check the result."
+     ],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  },
+  {
+   "n": 3,
+   "sent": "undo",
+   "http": 200,
+   "ms": 13,
+   "missing_fields": [],
+   "answer": {
+    "status": "applied",
+    "operations": [],
+    "summary": "Undid edit 1. Length 1:41.100 -> 3:00.300 (+1:19.200). Time policy: current (times refer to the edited timeline as it is now).",
+    "question": null,
+    "options": [],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [
+     "This edit touches words the transcript is unsure about: \"will\" (low confidence), \"and\" (low confidence), \"you\" (speaker uncertain, low confidence), \"I\" (speaker uncertain), \"I\" (low confidence) and 22 more. Check the result."
+    ],
+    "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+    "duration_s": 180.3,
+    "duration_us": 180300000,
+    "turn": 3,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 3.61
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.003,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [
+      "This edit touches words the transcript is unsure about: \"will\" (low confidence), \"and\" (low confidence), \"you\" (speaker uncertain, low confidence), \"I\" (speaker uncertain), \"I\" (low confidence) and 22 more. Check the result."
+     ],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  },
+  {
+   "n": 4,
+   "sent": "cut 80 seconds",
+   "http": 200,
+   "ms": 13,
+   "missing_fields": [],
+   "answer": {
+    "status": "needs_clarification",
+    "operations": [],
+    "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+    "question": "Cut 1:20.000 from where? (Nothing is cut until you choose.)",
+    "options": [
+     "the first 1:20.000 (0:00.000-1:20.000)",
+     "the last 1:20.000 (1:40.300-3:00.300)",
+     "from a time you give"
+    ],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [],
+    "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+    "duration_s": 180.3,
+    "duration_us": 180300000,
+    "turn": 4,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 3.38
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.002,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  },
+  {
+   "n": 5,
+   "sent": "somewhere in the middle",
+   "http": 200,
+   "ms": 1991,
+   "missing_fields": [],
+   "answer": {
+    "status": "rejected",
+    "operations": [],
+    "summary": "Nothing changed. Time policy: current (times refer to the edited timeline as it is now).",
+    "question": null,
+    "options": [],
+    "reason": "I did not understand that. The instruction 'somewhere in the middle' is too vague and lacks specific times or context.",
+    "time_policy": "current",
+    "warnings": [],
+    "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+    "duration_s": 180.3,
+    "duration_us": 180300000,
+    "turn": 5,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": {
+       "provider": "gemini",
+       "model": "gemini-3.5-flash-lite",
+       "prompt_version": "1",
+       "cache": "miss",
+       "input_tokens": 548,
+       "output_tokens": 30,
+       "latency_ms": 1950
+      }
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 1979.76,
+      "llm_ms": 1950
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.112,
+      "usd": 0.00023940000000000002,
+      "note": "Estimate: 548 input + 30 output tokens at the configured per-million prices (paid-tier rates; the key's actual tier is not known); 0 for a cache hit."
+     },
+     "warnings": [],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": true,
+      "transcript_words": true
+     }
+    }
+   }
+  },
+  {
+   "n": 6,
+   "sent": "cut 80 seconds from 1:00",
+   "http": 200,
+   "ms": 14,
+   "missing_fields": [],
+   "answer": {
+    "status": "applied",
+    "operations": [
+     {
+      "type": "cut",
+      "span": {
+       "start": {
+        "atom": "a_3a5d3e184ddb",
+        "offsetUs": 0
+       },
+       "end": {
+        "atom": "a_a0026ddd7753",
+        "offsetUs": 0
+       }
+      },
+      "reason": "user"
+     }
+    ],
+    "summary": "Length 3:00.300 -> 1:41.300 (-1:19.000). Time policy: current (times refer to the edited timeline as it is now).",
+    "question": null,
+    "options": [],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [
+     "1:00.000 is inside the word \"and\", so the cut point moved to 1:01.000, the nearest word edge (no silence nearby).",
+     "This edit touches words the transcript is unsure about: \"each\" (speaker uncertain), \"of\" (low confidence), \"its\" (low confidence), \"slot\" (low confidence), \"and\" (low confidence) and 27 more. Check the result."
+    ],
+    "timeline_hash": "266cf643a5bb72798e141031023df90bc465ef3627f95d9d25bd8750d0b0fb10",
+    "duration_s": 101.3,
+    "duration_us": 101300000,
+    "turn": 6,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 4.89
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.008,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [
+      "1:00.000 is inside the word \"and\", so the cut point moved to 1:01.000, the nearest word edge (no silence nearby).",
+      "This edit touches words the transcript is unsure about: \"each\" (speaker uncertain), \"of\" (low confidence), \"its\" (low confidence), \"slot\" (low confidence), \"and\" (low confidence) and 27 more. Check the result."
+     ],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  },
+  {
+   "n": 7,
+   "sent": "undo",
+   "http": 200,
+   "ms": 13,
+   "missing_fields": [],
+   "answer": {
+    "status": "applied",
+    "operations": [],
+    "summary": "Undid edit 2. Length 1:41.300 -> 3:00.300 (+1:19.000). Time policy: current (times refer to the edited timeline as it is now).",
+    "question": null,
+    "options": [],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [
+     "This edit touches words the transcript is unsure about: \"each\" (speaker uncertain), \"of\" (low confidence), \"its\" (low confidence), \"slot\" (low confidence), \"and\" (low confidence) and 27 more. Check the result."
+    ],
+    "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+    "duration_s": 180.3,
+    "duration_us": 180300000,
+    "turn": 7,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 2.78
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.006,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [
+      "This edit touches words the transcript is unsure about: \"each\" (speaker uncertain), \"of\" (low confidence), \"its\" (low confidence), \"slot\" (low confidence), \"and\" (low confidence) and 27 more. Check the result."
+     ],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  },
+  {
+   "n": 8,
+   "sent": "remove the part about pricing",
+   "http": 200,
+   "ms": 43,
+   "missing_fields": [],
+   "answer": {
+    "status": "needs_clarification",
+    "operations": [],
+    "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+    "question": "\"pricing\" is mentioned 7 times. Which part should I remove?",
+    "options": [
+     "#1 at 0:39.501 [exact word]: \"welcome to our channel, let's say, pricing plans in Cloud Code.\"",
+     "#2 at 0:46.051 [exact word]: \"So the pricing plans in Cloud will be differing from each plan.\"",
+     "#3 at 0:50.958 [exact word]: \"So we have to choose each plan accordingly to our use and each plan will be having more of its slot features and it's not like chargey bd go plus or premium it just has only three plants free pro and max plan and after that you know the pricing in all the three plants will be extraordinarily clear and you know I chose I chose cloud pro plan pricing for my for building my project.\"",
+     "#4 at 1:39.720 [exact word]: \"So what I am trying to tell is like the cost or subscription fee of each plan will be meaning based the search.\"",
+     "#5 at 2:05.410 [exact word]: \"everything will be mentioned in the cloud cloud subscriptions and their pricing page.\"",
+     "#6 at 2:15.220 [exact word]: \"us say, let us see what are the plans that are mentioned in the pro pricing plan.\"",
+     "#7 at 2:26.080 [exact word]: \"and it's not like chargey video, so chargey video will be having different types of pricing and those things, those start -off stuffs and I\""
+    ],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [],
+    "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+    "duration_s": 180.3,
+    "duration_us": 180300000,
+    "turn": 8,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": {
+       "model": "sentence-transformers/all-MiniLM-L6-v2@1110a243fdf4+onnx-sha256:6fd5d72fe458",
+       "hits": 8,
+       "passages": "cache",
+       "query_vector": "cache"
+      },
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 5.78,
+      "semantic_ms": 25
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.008,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  },
+  {
+   "n": 9,
+   "sent": "cut 0:10-0:15, then speed up 0:30-0:40 by 10x, then add a caption \"Hi\" on \"welcome to our channel\"",
+   "http": 200,
+   "ms": 17,
+   "missing_fields": [],
+   "answer": {
+    "status": "applied",
+    "operations": [
+     {
+      "type": "cut",
+      "span": {
+       "start": {
+        "atom": "a_c05359cbaee8",
+        "offsetUs": 1833
+       },
+       "end": {
+        "atom": "a_46ca4338c6d9",
+        "offsetUs": 0
+       }
+      },
+      "reason": "user"
+     },
+     {
+      "type": "add_effect",
+      "effectId": "fx_3_0",
+      "range": {
+       "from": "a_2137b52ae255",
+       "to": "a_02df35e8374d"
+      },
+      "params": {
+       "kind": "caption",
+       "text": "Hi",
+       "style": {
+        "color": "#ffffff",
+        "sizePt": 32,
+        "bold": true
+       },
+       "position": "bottom"
+      }
+     }
+    ],
+    "summary": "Length 3:00.300 -> 2:55.700 (-0:04.600). Time policy: current (times refer to the edited timeline as it is now).",
+    "question": null,
+    "options": [],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [
+     "Applied 2 of 3 parts.",
+     "Part 1 (\"cut 0:10-0:15\") applied.",
+     "Part 2 (\"speed up 0:30-0:40 by 10x\") was not applied (rejected): speed 10x is outside the allowed range 0.25x to 4x",
+     "Part 3 (\"add a caption \"Hi\" on \"welcome to our channel\"\") applied.",
+     "0:10.000 is inside the word \"What\", so the cut point moved to 0:10.532, the nearest silence.",
+     "0:15.000 is inside the word \"really\", so the cut point moved to 0:15.140, the nearest word edge (no silence nearby). The cut point at 0:15.140 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+     "This edit touches words the transcript is unsure about: \"welcome\" (low confidence). Check the result."
+    ],
+    "timeline_hash": "4716af0b5fc0f00d02d69b6d38c7593e9fc36b4684aac2c9e7bed00535026536",
+    "duration_s": 175.7,
+    "duration_us": 175700000,
+    "turn": 9,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 6.85
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.013,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [
+      "Applied 2 of 3 parts.",
+      "Part 1 (\"cut 0:10-0:15\") applied.",
+      "Part 2 (\"speed up 0:30-0:40 by 10x\") was not applied (rejected): speed 10x is outside the allowed range 0.25x to 4x",
+      "Part 3 (\"add a caption \"Hi\" on \"welcome to our channel\"\") applied.",
+      "0:10.000 is inside the word \"What\", so the cut point moved to 0:10.532, the nearest silence.",
+      "0:15.000 is inside the word \"really\", so the cut point moved to 0:15.140, the nearest word edge (no silence nearby). The cut point at 0:15.140 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+      "This edit touches words the transcript is unsure about: \"welcome\" (low confidence). Check the result."
+     ],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  },
+  {
+   "n": 10,
+   "sent": "undo",
+   "http": 200,
+   "ms": 12,
+   "missing_fields": [],
+   "answer": {
+    "status": "applied",
+    "operations": [],
+    "summary": "Undid edit 3. Length 2:55.700 -> 3:00.300 (+0:04.600). Time policy: current (times refer to the edited timeline as it is now).",
+    "question": null,
+    "options": [],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [
+     "This edit touches words the transcript is unsure about: \"welcome\" (low confidence). Check the result."
+    ],
+    "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+    "duration_s": 180.3,
+    "duration_us": 180300000,
+    "turn": 10,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 2.34
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.002,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [
+      "This edit touches words the transcript is unsure about: \"welcome\" (low confidence). Check the result."
+     ],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  },
+  {
+   "n": 11,
+   "sent": "cut the last 10 seconds",
+   "http": 200,
+   "ms": 14,
+   "missing_fields": [],
+   "answer": {
+    "status": "applied",
+    "operations": [
+     {
+      "type": "cut",
+      "span": {
+       "start": {
+        "atom": "a_280bd0f33528",
+        "offsetUs": 0
+       },
+       "end": {
+        "atom": "a_716d559960c7",
+        "offsetUs": 1693800
+       }
+      },
+      "reason": "user"
+     }
+    ],
+    "summary": "Length 3:00.300 -> 2:49.667 (-0:10.633). Time policy: current (times refer to the edited timeline as it is now).",
+    "question": null,
+    "options": [],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [
+     "2:50.300 is inside the word \"and\", so the cut point moved to 2:49.680, the nearest word edge (no silence nearby). The cut point at 2:49.680 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+     "This edit touches words the transcript is unsure about: \"and\" (speaker uncertain), \"thanks\" (low confidence), \"thanks\" (speaker uncertain). Check the result."
+    ],
+    "timeline_hash": "12b0f0b0ebb34ba46d92d17e2361c97c4c10126f723b2cefef785335345f4a0b",
+    "duration_s": 169.666667,
+    "duration_us": 169666667,
+    "turn": 11,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 4.23
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.005,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [
+      "2:50.300 is inside the word \"and\", so the cut point moved to 2:49.680, the nearest word edge (no silence nearby). The cut point at 2:49.680 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+      "This edit touches words the transcript is unsure about: \"and\" (speaker uncertain), \"thanks\" (low confidence), \"thanks\" (speaker uncertain). Check the result."
+     ],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  },
+  {
+   "n": 12,
+   "sent": "undo",
+   "http": 200,
+   "ms": 13,
+   "missing_fields": [],
+   "answer": {
+    "status": "applied",
+    "operations": [],
+    "summary": "Undid edit 4. Length 2:49.667 -> 3:00.300 (+0:10.633). Time policy: current (times refer to the edited timeline as it is now).",
+    "question": null,
+    "options": [],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [
+     "This edit touches words the transcript is unsure about: \"and\" (speaker uncertain), \"thanks\" (low confidence), \"thanks\" (speaker uncertain). Check the result."
+    ],
+    "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+    "duration_s": 180.3,
+    "duration_us": 180300000,
+    "turn": 12,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 2.78
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.002,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [
+      "This edit touches words the transcript is unsure about: \"and\" (speaker uncertain), \"thanks\" (low confidence), \"thanks\" (speaker uncertain). Check the result."
+     ],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  },
+  {
+   "n": 13,
+   "sent": "cut a minute twenty",
+   "http": 200,
+   "ms": 13,
+   "missing_fields": [],
+   "answer": {
+    "status": "needs_clarification",
+    "operations": [],
+    "summary": "Nothing changed yet; waiting for your choice. Time policy: current (times refer to the edited timeline as it is now).",
+    "question": "Cut 1:20.000 from where? (Nothing is cut until you choose.)",
+    "options": [
+     "the first 1:20.000 (0:00.000-1:20.000)",
+     "the last 1:20.000 (1:40.300-3:00.300)",
+     "from a time you give"
+    ],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [],
+    "timeline_hash": "f45fb65474107aa8fd7515831aab2eb206aeb9e8b3c4ff28562a4edd3a5d9b3d",
+    "duration_s": 180.3,
+    "duration_us": 180300000,
+    "turn": 13,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 2.15
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.001,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  },
+  {
+   "n": 14,
+   "sent": {
+    "answer": "from 0:30"
+   },
+   "http": 200,
+   "ms": 11,
+   "missing_fields": [],
+   "answer": {
+    "status": "applied",
+    "operations": [
+     {
+      "type": "cut",
+      "span": {
+       "start": {
+        "atom": "a_97d15879e51b",
+        "offsetUs": 2600000
+       },
+       "end": {
+        "atom": "a_8cfe854c0ffc",
+        "offsetUs": 0
+       }
+      },
+      "reason": "user"
+     }
+    ],
+    "summary": "Length 3:00.300 -> 1:40.367 (-1:19.933). Time policy: current (times refer to the edited timeline as it is now).",
+    "question": null,
+    "options": [],
+    "reason": null,
+    "time_policy": "current",
+    "warnings": [
+     "1:50.000 is inside the word \"based\", so the cut point moved to 1:49.960, the nearest word edge (no silence nearby). The cut point at 1:49.960 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+     "This edit touches words the transcript is unsure about: \"So\" (speaker uncertain), \"So\" (low confidence), \"thanks,\" (low confidence), \"welcome\" (low confidence), \"pricing\" (low confidence) and 26 more. Check the result."
+    ],
+    "timeline_hash": "be815e71f4227e51de885defd2a347821ed22a9756f63df0d66529a51ca33139",
+    "duration_s": 100.366667,
+    "duration_us": 100366667,
+    "turn": 14,
+    "manifest": {
+     "providers": {
+      "parser": {
+       "name": "rules",
+       "version": "1"
+      },
+      "engine": {
+       "name": "incubrix-engine",
+       "version": "0.0.0"
+      },
+      "embedding": "none (no meaning search was needed)",
+      "llm": "none (no LLM was called)"
+     },
+     "settings": {
+      "llm_provider": "gemini",
+      "time_policy": "current",
+      "max_speed": 4,
+      "min_speed": 0.25,
+      "randomness": "none"
+     },
+     "seed": null,
+     "timings": {
+      "instruction_ms": 2.49
+     },
+     "cost_estimate": {
+      "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+      "cpu_seconds": 0.002,
+      "usd": null,
+      "note": "No price per CPU second is configured, so no money figure is given."
+     },
+     "warnings": [
+      "1:50.000 is inside the word \"based\", so the cut point moved to 1:49.960, the nearest word edge (no silence nearby). The cut point at 1:49.960 is between two words with no silence to move it into, so it is not on a frame boundary (the video may be off by up to half a frame there).",
+      "This edit touches words the transcript is unsure about: \"So\" (speaker uncertain), \"So\" (low confidence), \"thanks,\" (low confidence), \"welcome\" (low confidence), \"pricing\" (low confidence) and 26 more. Check the result."
+     ],
+     "rights": {
+      "source_media": "not stated by the uploader",
+      "software": {
+       "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked",
+       "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+       "engine": "own code"
+      },
+      "reference": "SOURCES.md"
+     },
+     "ai_generated": {
+      "input_media_marked_ai_generated": false,
+      "llm_used": false,
+      "transcript_words": true
+     }
+    }
+   }
+  }
+ ],
+ "upload": {
+  "http": 202,
+  "body": {
+   "video_id": "vid_7aa4bac6586a44e1a289",
+   "job_id": "job_91805d066a484c5c9d54",
+   "status_url": "/api/v1/jobs/job_91805d066a484c5c9d54"
+  }
+ },
+ "ingest": {
+  "status": "succeeded",
+  "error": null,
+  "result": {
+   "atoms": 319,
+   "links": {
+    "video": "/api/v1/videos/vid_7aa4bac6586a44e1a289",
+    "create_session": "/api/v1/sessions"
+   },
+   "words": 287,
+   "manifest": {
+    "seed": null,
+    "rights": {
+     "software": {
+      "engine": "own code",
+      "sherpa-onnx": "Apache-2.0 (code); pyannote segmentation-3.0 ONNX MIT; WeSpeaker ResNet34 Apache-2.0; training data unchecked",
+      "faster-whisper": "MIT (code); weights Systran/faster-whisper-* MIT; training data unchecked"
+     },
+     "reference": "SOURCES.md",
+     "source_media": "not stated by the uploader"
+    },
+    "timings": {
+     "embed_s": 0.012,
+     "probe_s": 0.348,
+     "total_s": 3.203,
+     "fetch_original_s": 2.839
+    },
+    "settings": {
+     "asrModel": "base.en",
+     "asrProvider": "faster-whisper",
+     "asr_details": {
+      "model": "base.en",
+      "stats": {
+       "words_in": 291,
+       "words_kept": 287,
+       "inside_silence": 0,
+       "low_confidence": 47,
+       "clamp_adjustments": 18,
+       "dropped_after_end": 0,
+       "dropped_zero_length": 4
+      },
+      "provider": "faster-whisper",
+      "silences_found": 45,
+      "speakers_found": 1,
+      "service_timings": {
+       "asr_load_s": 1.9704878060147166,
+       "asr_transcribe_s": 26.793,
+       "diarization_process_s": 88.815
+      }
+     },
+     "numSpeakers": 1,
+     "silenceMinUs": 300000,
+     "clampMinWordUs": 20000,
+     "silenceNoiseDb": -35,
+     "voicedGapMaxUs": 1200000,
+     "voicedGapMinUs": 150000,
+     "diarizationProvider": "sherpa",
+     "transcript_cache_key": "04a3fdb8d9a9d525da9383c31fc132c16d60edeb623464ff29d689ef05f46887",
+     "lowConfidencePermille": 600
+    },
+    "warnings": [
+     "4 word(s) had no length after cleaning and were dropped.",
+     "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+    ],
+    "providers": {
+     "asr": {
+      "cache": "hit",
+      "model": "base.en",
+      "version": "faster-whisper 1.2.1 / ctranslate2 4.8.3",
+      "provider": "faster-whisper"
+     },
+     "media": {
+      "ffmpeg": "ffmpeg version 5.1.9-0+deb12u1 Copyright (c) 2000-2026 the FFmpeg developers"
+     },
+     "diarization": {
+      "version": "sherpa-onnx 1.13.8 + pyannote-segmentation-3.0 + wespeaker_en_voxceleb_resnet34",
+      "provider": "sherpa"
+     }
+    },
+    "ai_generated": {
+     "speaker_labels": true,
+     "transcript_words": true,
+     "input_media_marked_ai_generated": false
+    },
+    "cost_estimate": {
+     "usd": null,
+     "note": "No price per CPU second is configured, so no money figure is given.",
+     "basis": "CPU seconds used on this VM (process CPU time of the service plus the CPU-bound ASR/diarization seconds reported by the ASR service)",
+     "cpu_seconds": 3.822
+    }
+   },
+   "video_id": "vid_7aa4bac6586a44e1a289",
+   "warnings": [
+    "4 word(s) had no length after cleaning and were dropped.",
+    "29 untranscribed voiced sound(s) found in gaps between words (possible fillers the speech-to-text dropped, or breaths/laughs/coughs); instructions that remove fillers ask before cutting them."
+   ],
+   "duration_s": 180.3138,
+   "speakers_found": 1,
+   "transcript_cache": "hit"
+  }
+ },
+ "session_id": "ses_df498305b51d4dffa119"
+}

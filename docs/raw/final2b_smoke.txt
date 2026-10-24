@@ -1,0 +1,5 @@
+[m6a_smoke] video vid_e590bc2f2d3a4e5cb061, job job_5db48ab5569f401cac0f
+[m6a_smoke] step 1: applied ok
+[m6a_smoke] step 2: applied ok
+[m6a_smoke] step 3: render ok 
+PASS m6a_smoke  -> /home/g23m143/incubrix-ps2/docs/raw/final2b_smoke_out

@@ -1,0 +1,3 @@
+  job job_dbc03e1ff3094bbebe57 queued progress 0 after 0 s
+  job job_dbc03e1ff3094bbebe57 failed progress 15 after 1 s
+ingest failed {"error":{"code":"VIDEO_TOO_LONG","details":{"duration_s":3601,"max_duration_s":3600},"message":"The video is 3601.0 s long; this deployment accepts at most 3600 s.","retryable":false}}

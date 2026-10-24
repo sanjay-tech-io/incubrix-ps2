@@ -19,7 +19,7 @@ What was run, with what input, what came out (failures included), and which file
 | `nasa_*.wav` windows (120 s, 300 s) of the same episode | ASR and diarization spike and sweep: `docs/SPIKE_ASR.md`, `docs/raw/m5d_diarization_sweep*` | Audio only |
 | Generated smoke clips `media/m6a_smoke.mp4`, `m6a_smoke2.mp4`, `m6a_smoke_dotted.mp4`, `m5b_smoke.mp4` (espeak-ng over `testsrc2`) | `m6a_smoke*`, `m5b_smoke_redeploy` | AI/synthetic flags in `SOURCES.md` |
 | Test-time generated media: `sync2_*` flash and beep clips, API test clips, built-in music | `packages/render/test`, `apps/api/test` | Not stored |
-| Hand-written transcripts for the 48 scenarios | `scenarios/`, `apps/api/test/scenario_fixtures.ts` | Tests editing, not recognition |
+| Hand-written transcripts for the 53 scenarios | `scenarios/`, `apps/api/test/scenario_fixtures.ts` | Tests editing, not recognition |
 
 ## 2. Test and measurement runs (not session packs)
 | Run | Result | Files |

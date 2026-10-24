@@ -1,0 +1,151 @@
+2026-10-24T14:09:48Z
+ Image incubrix-app Building 
+ Image incubrix-app Building 
+#1 [internal] load local bake definitions
+#1 reading from stdin 918B done
+#1 DONE 0.0s
+
+#2 [api internal] load build definition from Dockerfile
+#2 transferring dockerfile: 1.21kB done
+#2 DONE 0.0s
+
+#3 [api internal] load metadata for docker.io/library/node:22-bookworm-slim
+#3 DONE 1.1s
+
+#4 [worker internal] load .dockerignore
+#4 transferring context: 98B done
+#4 DONE 0.0s
+
+#5 [api internal] load build context
+#5 ...
+
+#6 [worker  1/22] FROM docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d
+#6 resolve docker.io/library/node:22-bookworm-slim@sha256:de170b39439eb0e5a3444ad7d60b015614a381e10fecae2e30ec9e735122f38d 0.1s done
+#6 DONE 0.1s
+
+#5 [api internal] load build context
+#5 transferring context: 991.56kB 0.5s done
+#5 DONE 0.5s
+
+#7 [api  7/22] COPY packages/config/package.json packages/config/
+#7 CACHED
+
+#8 [api  6/22] COPY packages/engine/package.json packages/engine/
+#8 CACHED
+
+#9 [api  8/22] COPY packages/db/package.json packages/db/
+#9 CACHED
+
+#10 [api 17/22] COPY packages/otio/package.json packages/otio/
+#10 CACHED
+
+#11 [api 11/22] COPY packages/errors/package.json packages/errors/
+#11 CACHED
+
+#12 [api 15/22] COPY packages/semantic/package.json packages/semantic/
+#12 CACHED
+
+#13 [api 20/22] COPY apps/cli/package.json apps/cli/
+#13 CACHED
+
+#14 [api  9/22] COPY packages/storage/package.json packages/storage/
+#14 CACHED
+
+#15 [api  5/22] COPY packages/contracts/package.json packages/contracts/
+#15 CACHED
+
+#16 [api 10/22] COPY packages/media/package.json packages/media/
+#16 CACHED
+
+#17 [api 12/22] COPY packages/nlu/package.json packages/nlu/
+#17 CACHED
+
+#18 [api 14/22] COPY packages/render/package.json packages/render/
+#18 CACHED
+
+#19 [api 13/22] COPY packages/store/package.json packages/store/
+#19 CACHED
+
+#20 [api  3/22] WORKDIR /app
+#20 CACHED
+
+#21 [api 19/22] COPY apps/worker/package.json apps/worker/
+#21 CACHED
+
+#22 [api  4/22] COPY package.json package-lock.json .npmrc ./
+#22 CACHED
+
+#23 [api 18/22] COPY apps/api/package.json apps/api/
+#23 CACHED
+
+#24 [api 16/22] COPY packages/llm/package.json packages/llm/
+#24 CACHED
+
+#25 [api  2/22] RUN apt-get update && apt-get install -y --no-install-recommends ffmpeg espeak-ng fonts-dejavu-core ca-certificates && rm -rf /var/lib/apt/lists/*
+#25 CACHED
+
+#26 [api 21/22] RUN npm ci
+#26 CACHED
+
+#27 [api 22/22] COPY . .
+#27 DONE 16.6s
+
+#28 [worker] exporting to image
+#28 exporting layers
+#28 ...
+
+#29 [api] exporting to image
+#29 ...
+
+#28 [worker] exporting to image
+#28 exporting layers 128.2s done
+#28 exporting manifest sha256:ed9267c1fde29203b6f06d336066de28f3989118317e93a94aba94f0bc1cb934 0.0s done
+#28 exporting config sha256:6eae61729d4dc4bf19fd390f12b746ddfbb0d60bbdd64ae81fb10fc37c086864 0.0s done
+#28 exporting attestation manifest sha256:897a72f65e47e4f4e69ba71dace78e56e9bc2e74883293d504517bcf6f89238f 0.0s done
+#28 exporting manifest list sha256:c148fc3611da68a761e13ff421f4e032ce4e94398b17b185a0ee1f8d718f8cf4 0.0s done
+#28 naming to docker.io/library/incubrix-app:latest
+#28 naming to docker.io/library/incubrix-app:latest done
+#28 unpacking to docker.io/library/incubrix-app:latest
+#28 ...
+
+#29 [api] exporting to image
+#29 exporting layers 128.2s done
+#29 exporting manifest sha256:5e3be73f799e0c2a39190f7482777c6e50ef8c0a166f3ae1649e97f85edfb58a 0.0s done
+#29 exporting config sha256:60711507ddf41086f6f4ceaeb7043bded6b6948ecba8512f378272812ec608fa 0.0s done
+#29 exporting attestation manifest sha256:def81e9be37355ce2fedc0ee441c02bc261cc36bf67e93994b2c85114d03ffe9 0.0s done
+#29 exporting manifest list sha256:28e346781fad070509d8dfc42fcc9aa19fe5a6271743445dad517917c20c60cf 0.0s done
+#29 naming to docker.io/library/incubrix-app:latest done
+#29 unpacking to docker.io/library/incubrix-app:latest 29.9s done
+#29 DONE 158.6s
+
+#28 [worker] exporting to image
+#28 unpacking to docker.io/library/incubrix-app:latest 30.4s done
+#28 DONE 159.1s
+
+#30 [api] resolving provenance for metadata file
+#30 DONE 0.0s
+
+#31 [worker] resolving provenance for metadata file
+#31 DONE 0.0s
+ Image incubrix-app Built 
+ Image incubrix-app Built 
+ Container incubrix-ps2-api-1 Recreate 
+ Container incubrix-ps2-worker-1 Recreate 
+ Container incubrix-ps2-api-1 Recreated 
+ Container incubrix-ps2-worker-1 Recreated 
+ Container incubrix-ps2-worker-1 Starting 
+ Container incubrix-ps2-api-1 Starting 
+ Container incubrix-ps2-worker-1 Started 
+ Container incubrix-ps2-api-1 Started 
+
+real	3m2.555s
+user	0m1.324s
+sys	0m0.528s
+2026-10-24T14:12:51Z
+incubrix-ps2-api-1 Up Less than a second (health: starting)
+incubrix-ps2-asr-1 Up 19 hours (healthy)
+incubrix-ps2-caddy-1 Up 3 hours
+incubrix-ps2-otio-1 Up 3 hours (healthy)
+incubrix-ps2-postgres-1 Up 3 hours (healthy)
+incubrix-ps2-s3-1 Up 3 hours (healthy)
+incubrix-ps2-worker-1 Up Less than a second (health: starting)

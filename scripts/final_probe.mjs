@@ -17,9 +17,11 @@ const call = async (method, path, body, extra = {}) => {
   return { http: res.status, json };
 };
 const jsonPost = (path, obj, key) => call("POST", path, JSON.stringify(obj), { "content-type": "application/json", ...(key ? { "idempotency-key": key } : {}) });
-const poll = async (jobId) => {
+const poll = async (jobId, log = false) => {
+  const t0 = Date.now(); let last = -1;
   for (;;) {
     const { json } = await call("GET", `/api/v1/jobs/${jobId}`);
+    if (log && json.progress !== last) { last = json.progress; console.log(`  job ${jobId} ${json.status} progress ${json.progress} after ${((Date.now() - t0) / 1000).toFixed(0)} s`); }
     if (json.status === "succeeded" || json.status === "failed") return json;
     await new Promise((r) => setTimeout(r, 1000));
   }
@@ -32,7 +34,7 @@ if (speakers) fd.set("num_speakers", speakers);
 const up = await call("POST", "/api/v1/videos", fd);
 out.upload = { http: up.http, body: up.json };
 if (up.http !== 202) { writeFileSync(outFile, JSON.stringify(out, null, 1)); console.log("upload failed", up.http, JSON.stringify(up.json)); process.exit(1); }
-const ingest = await poll(up.json.job_id);
+const ingest = await poll(up.json.job_id, true);
 out.ingest = { status: ingest.status, error: ingest.error ?? null, result: ingest.result ?? null };
 if (ingest.status !== "succeeded") { writeFileSync(outFile, JSON.stringify(out, null, 1)); console.log("ingest", ingest.status, JSON.stringify(ingest.error)); process.exit(0); }
 const sess = await jsonPost("/api/v1/sessions", { video_id: up.json.video_id });

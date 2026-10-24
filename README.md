@@ -76,7 +76,7 @@ Every POST accepts `Idempotency-Key` (same key and body returns the same result 
 ## Tests
 
 ```
-docker compose run --rm tests              # EVERYTHING, no keys, no network: unit + integration + the 48 scenarios. Runs on its OWN throwaway Postgres, S3 and OTIO service (the *-test services, own network): it never touches a running stack. `scripts/test.sh` = the same command, then removes those test containers.
+docker compose run --rm tests              # EVERYTHING, no keys, no network: unit + integration + the 53 scenarios. Runs on its OWN throwaway Postgres, S3 and OTIO service (the *-test services, own network): it never touches a running stack. `scripts/test.sh` = the same command, then removes those test containers.
 npm test -w @incubrix/engine               # engine only, no Docker (any workspace: -w @incubrix/<name>)
 npm run typecheck
 npm run mutation-check                     # breaks the engine in 40 ways, one at a time; the suite must fail each time
@@ -84,7 +84,7 @@ npm run bench -w @incubrix/engine          # engine speed on a synthetic 60-minu
 ```
 
 * `docker compose run --rm tests` runs: engine, contracts, config, db, store, storage, media, render (real ffmpeg, A/V sync and length checks), nlu, llm, semantic, otio, api, worker, cli, plus the Python tests of `services/asr` and `services/otio` (the exported files are read back with the OpenTimelineIO library). All providers are mocks.
-* **Scenario pack**: `scenarios/*.yaml` are 48 scripted sessions, each step with an expected result (`applied` / `needs_clarification` / `rejected`, and where it matters the length, a warning, the number of options or an unchanged `timeline_hash`). They cover the worked example and the hard cases of the brief and run through the same HTTP session runner against the real API, worker, database, storage and ffmpeg with a mock transcript. They run inside the command above; GitHub Actions runs that single command on every push (`.github/workflows/ci.yml`).
+* **Scenario pack**: `scenarios/*.yaml` are 53 scripted sessions, each step with an expected result (`applied` / `needs_clarification` / `rejected`, and where it matters the length, a warning, the number of options or an unchanged `timeline_hash`). They cover the worked example and the hard cases of the brief and run through the same HTTP session runner against the real API, worker, database, storage and ffmpeg with a mock transcript. They run inside the command above; GitHub Actions runs that single command on every push (`.github/workflows/ci.yml`).
 * `sessions/*.yaml` are the sessions for **real recordings** (they need `media/` files that are not in git and the real speech models).
 
 ## Session runner and batch runner

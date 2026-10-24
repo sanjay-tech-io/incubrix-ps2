@@ -1,0 +1,32 @@
+api: ASR_TIMEOUT_S=7200
+api: NODE_ENV=production
+api: MAX_VIDEO_DURATION_S=3600
+worker: NODE_ENV=production
+worker: ASR_TIMEOUT_S=7200
+worker: MAX_VIDEO_DURATION_S=3600
+## health aliases (no token) + root
+GET /health -> {"status":"ok","service":"api"} 200
+HEAD /health -> 200
+GET /ready -> {"status":"ready","service":"api"} 200
+HEAD /ready -> 200
+GET /api/v1/health -> {"status":"ok","service":"api"} 200
+HEAD /api/v1/health -> 200
+GET /api/v1/ready -> {"status":"ready","service":"api"} 200
+HEAD /api/v1/ready -> 200
+## spec equals repo
+IDENTICAL
+POST /api/v1/sessions/{session_id}/instructions -> 400 route exists {"error":{"code":"VALIDATION_FAILED","message":"The request 
+GET  /api/v1/sessions/{session_id}/timeline     -> 404 route exists {"error":{"code":"SESSION_NOT_FOUND","message":"session x do
+GET  /api/v1/sessions/{session_id}/export/otio  -> 404 route exists {"error":{"code":"SESSION_NOT_FOUND","message":"session x do
+GET  /api/v1/sessions/{session_id}/history      -> 404 route exists {"error":{"code":"SESSION_NOT_FOUND","message":"session x do
+GET  /api/v1/sessions/{session_id}/conversation -> 404 route exists {"error":{"code":"SESSION_NOT_FOUND","message":"session x do
+POST /api/v1/sessions/{session_id}/render       -> 404 route exists {"error":{"code":"SESSION_NOT_FOUND","message":"session x do
+GET  /api/v1/jobs/{job_id}                      -> 404 route exists {"error":{"code":"JOB_NOT_FOUND","message":"job x does not e
+19 documented operations probed, 0 not served
+## smoke test through the public URL
+
+[m6a_smoke] video vid_ed38b0b8513b4da3bef1, job job_3b0ce3fb30e14b0c8817
+[m6a_smoke] step 1: applied ok
+[m6a_smoke] step 2: applied ok
+[m6a_smoke] step 3: render ok 
+PASS m6a_smoke  -> /tmp/claude-1000/-home-g23m143-incubrix-ps2/04e9ecf1-46a1-4f5b-8e59-3cf471645621/scratchpad/smoke2
