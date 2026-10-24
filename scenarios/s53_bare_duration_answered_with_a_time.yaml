@@ -1,0 +1,26 @@
+# The third option of "cut 80 seconds" is "from a time you give": answering with a time cuts from there (not a rejection).
+# An answer with no usable time changes nothing.
+brief: "Bare duration answered with a start time ('from 1:20') applies the cut; no usable time is rejected"
+fixture: single
+steps:
+  - say: "cut 80 seconds"
+    expect: needs_clarification
+    expect_options: 3
+    expect_hash_unchanged: true
+  - say: "from 1:20"
+    expect: applied
+    expect_duration_s: 120
+  - say: "undo"
+    expect: applied
+    expect_duration_s: 200
+  - say: "remove a minute twenty"
+    expect: needs_clarification
+    expect_options: 3
+  - say: "somewhere in the middle"
+    expect: rejected
+    expect_hash_unchanged: true
+  - say: "cut 80 seconds"
+    expect: needs_clarification
+  - say: "from 3:00"
+    expect: rejected
+    expect_duration_s: 200

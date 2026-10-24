@@ -591,7 +591,7 @@ function handleBareDuration(env: Env, tokens: string[], d: { us: number; next: n
   return clarify(env, `Cut ${len} from where? (Nothing is cut until you choose.)`, [
     { label: `the first ${len} (${formatTime(0)}-${len})`, operations: cuts(first), warnings: first.warnings },
     { label: `the last ${len} (${formatTime(total - d.us)}-${formatTime(total)})`, operations: cuts(last), warnings: last.warnings },
-    { label: `from a time you give`, operations: [], warnings: [`Nothing changed. Tell me where it starts, for example: cut ${len} from 1:00.`] },
+    { label: `from a time you give`, operations: [], warnings: [`Nothing changed. Reply with the start time (for example: from 1:00), or say: cut ${len} from 1:00.`] },
   ]);
 }
 
@@ -613,6 +613,20 @@ function handleCutRange(env: Env, tokens: string[]): Parsed {
 // ---------------------------------------------------------------------------------------------------------------------
 // dispatch
 // ---------------------------------------------------------------------------------------------------------------------
+
+/** Answer to a "Cut <len> from where?" question with a start time ("from 1:20", "at 1:20", "1:20"). null = not that question or no time in the reply. */
+function timeAnswer(env: Env, question: string, reply: string): Parsed | null {
+  const m = /^Cut (\S+) from where\?/.exec(question);
+  if (!m || chooseIndex(reply) !== null) return null;
+  const tokens = tokenize(wordsToDigits(reply.toLowerCase()));
+  const len = parseTimeAt(tokenize(m[1]!), 0);
+  const at = parseTimeAt(tokens.filter((t) => t !== "from" && t !== "at" && t !== "start" && t !== "starting"), 0);
+  if (!len || !at) return null;
+  const total = durationOf(env);
+  if (at.us + len.us > total) return reject(env, `${formatTime(len.us)} from ${formatTime(at.us)} runs past the end of the video (${formatTime(total)}).`);
+  const res = spansFor(env, at.us, at.us + len.us);
+  return plan(env, res.spans.map((span) => ({ type: "cut", span, reason: "user" })), [...(at.bare ? ["A time had no unit; I read it as seconds."] : []), ...res.warnings]);
+}
 
 function chooseIndex(text: string): number | null {
   const t = text.toLowerCase().trim().replace(/[.!]+$/, "");
@@ -638,6 +652,12 @@ function parseOne(input: ParseInput, offset: number): Parsed {
   // 0. answer to an open question
   const pending = state.conversation.at(-1)?.pending ?? null;
   const reply = input.answer ?? (pending ? chooseIndex(raw) ?? undefined : undefined);
+  // "Cut 1:20 from where?": the third option is "a time you give", so a reply that is a time (not a choice number) applies the cut
+  // from there. No usable time -> falls through to the normal reading (a rejection that says what to type).
+  if (pending) {
+    const given = timeAnswer(env, pending.question, input.answer !== undefined ? String(input.answer) : raw);
+    if (given) return given;
+  }
   if (reply !== undefined && pending) {
     const n = typeof reply === "number" ? reply : chooseIndex(String(reply));
     if (n === null || n === 0) return reject(env, `I could not read "${String(reply)}" as a choice. Pick a number from 1 to ${pending.options.length}.`);

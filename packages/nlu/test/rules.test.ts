@@ -383,6 +383,43 @@ describe("bare durations", () => {
     expect(t.answer.durationUs).toBe(200 * U);
   });
 
+  it.each(["from 1:20", "at 1:20", "1:20", "start at one minute twenty", "from 1 minute 20 seconds"])("answering the question with a time (%s) cuts 80 s from there", (reply) => {
+    const s = session();
+    s.say("cut 80 seconds");
+    const r = s.say(reply);
+    expect(r.answer.status).toBe("applied");
+    expect(r.answer.durationUs).toBe(120 * U);
+    expect(r.answer.operations).toHaveLength(1);
+    // the same result as saying it in one sentence
+    const one = session();
+    expect(one.say("cut 80 seconds from 1:20").answer.timelineHash).toBe(r.answer.timelineHash);
+  });
+
+  it("the time answer also works through the answer field and undoes as one group", () => {
+    const s = session();
+    s.say("cut 80 seconds");
+    const r = s.say("from 0:30");
+    expect(r.answer).toMatchObject({ status: "applied", durationUs: 120 * U });
+    expect(s.say("undo").answer.durationUs).toBe(200 * U);
+    const t = session();
+    t.say("cut 80 seconds");
+    expect(t.say("", "from 0:30").answer).toMatchObject({ status: "applied", durationUs: 120 * U });
+  });
+
+  it("an answer with no usable time is rejected and changes nothing; a start that runs past the end is rejected", () => {
+    const s = session();
+    s.say("cut 80 seconds");
+    const bad = s.say("somewhere in the middle");
+    expect(bad.answer.status).toBe("rejected");
+    expect(bad.answer.durationUs).toBe(200 * U);
+    const s2 = session();
+    s2.say("cut 80 seconds");
+    const past = s2.say("from 3:00");
+    expect(past.answer.status).toBe("rejected");
+    expect(past.answer.reason).toMatch(/past the end/);
+    expect(past.answer.durationUs).toBe(200 * U);
+  });
+
   it("a start time given in the same sentence makes it unambiguous", () => {
     const s = session();
     const t = s.say("cut 80 seconds from 1:00");
