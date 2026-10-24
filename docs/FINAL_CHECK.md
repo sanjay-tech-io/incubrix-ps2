@@ -99,3 +99,13 @@ Evidence: `final_probes_single.txt`, `final_probe_p1..p8*.json`, `final_probes_s
 12. **`CLAUDE.md` names pg-boss for jobs;** a grep finds no use of it in the code (jobs use a Postgres table, per `docs/REVIEW_INFRA.md`). If the reviewer holds you to the stack line, say so first.
 13. **No GitHub Actions run is recorded** (evidence rows stay Partial); the demo URL contains the VM's ephemeral IP unless it was reserved; reboot survival was never tested; the callback and the large-URL-intake paths were not shown on the public service.
 14. Two author names appear in the git history ("Sanjay J", "sanjay-tech-io"); be ready to say they are the same person if that is so.
+
+## Commits of this check (local, not pushed)
+
+| Commit | What |
+|---|---|
+| `95421cb` | Untrack 4 smoke renders and 7 cropped stills; ignore them |
+| `ad091bf` | VFR warning: remove the stale "(M3, not built yet)" |
+| `7e06622` | SOURCES.md gaps and media note; DEPLOY.md disk numbers |
+| `6d2a0a2` | Probe client and raw outputs `docs/raw/final_*` |
+| `6c59c9d` | This file; SUBMISSION_EVIDENCE totals (39 Yes / 18 Partial), REPORT, STATUS |
