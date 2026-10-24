@@ -15,3 +15,6 @@ test-pack/real/nasa/
 
 # Read-only session pack served at /pack/ (scripts/build_pack.sh; hard links into test-pack/)
 /pack/
+# Rendered videos and stills are never committed (final check: 4 smoke renders and 7 cropped stills were tracked by mistake and untracked; they remain in earlier commits)
+docs/raw/**/*.mp4
+test-pack/real/**/frames/
