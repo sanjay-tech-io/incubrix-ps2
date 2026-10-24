@@ -14,7 +14,7 @@ What is verified and what is not: [`docs/STATUS.md`](docs/STATUS.md) (claims led
 
 * API and Swagger UI: **https://34.93.140.79.sslip.io** (docs at [`/docs`](https://34.93.140.79.sslip.io/docs), spec at `/openapi.yaml`, `/health` and `/ready` are open). The same site also answers on `https://34-93-140-79.sslip.io`.
 * Everything except health and docs needs the access token: `Authorization: Bearer <token>`. **The token is given on request**; in Swagger UI press *Authorize* and paste it.
-* One small VM with limits (2 GB upload, 300 s video, one render and one transcription at a time, rate limit per IP). What was checked, what was not, how to restart it and what it costs: [`docs/DEPLOY.md`](docs/DEPLOY.md).
+* One small VM with limits (2 GB upload, 60-minute video (`MAX_VIDEO_DURATION_S=3600`), one render and one transcription at a time, rate limit per IP). What was checked, what was not, how to restart it and what it costs: [`docs/DEPLOY.md`](docs/DEPLOY.md).
 
 ## Architecture
 

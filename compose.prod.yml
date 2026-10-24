@@ -7,7 +7,10 @@
 x-limits: &limits
   NODE_ENV: production
   MAX_UPLOAD_MB: ${MAX_UPLOAD_MB:-2048}
-  MAX_VIDEO_DURATION_S: ${MAX_VIDEO_DURATION_S:-300}
+  # 3600 s = one hour. Longer videos fail their job right after the probe with VIDEO_TOO_LONG (422, details: duration and the limit).
+  MAX_VIDEO_DURATION_S: ${MAX_VIDEO_DURATION_S:-3600}
+  # Transcription of a 60-minute video takes about 41 minutes at the measured 0.69 of real time (REPORT.md); the default 3600 s would be tight.
+  ASR_TIMEOUT_S: ${ASR_TIMEOUT_S:-7200}
   RATE_LIMIT_PER_MIN: ${RATE_LIMIT_PER_MIN:-120}
   MAX_INGEST_JOBS: ${MAX_INGEST_JOBS:-1}
   MAX_RENDER_JOBS: ${MAX_RENDER_JOBS:-1}

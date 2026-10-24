@@ -32,7 +32,7 @@ Only Caddy publishes ports: **80 and 443** (`ss -ltn` shows nothing else; compos
 | `API_TOKEN` | required | config at startup (unit test) | |
 | `RATE_LIMIT_PER_MIN` | 120 per client IP, counted before the token check | API | 130 requests with a wrong token: 118x 401 then 12x 429 with `Retry-After` (`m6a_rate_limit.txt`) |
 | `MAX_UPLOAD_MB` | 2048 (was 200 until 2026-10-23) | Caddy (`request_body`, in MiB) and API | 2.2 GiB upload: 413 JSON `FILE_TOO_LARGE` in about 0.1 s (`m5d_upload_over_cap.txt`); 2 GB upload accepted (`m5d_upload_2gb.txt`) |
-| `MAX_VIDEO_DURATION_S` | 300 | worker, right after probe, before ASR | 310 s video: job failed `VIDEO_TOO_LONG` (`m6a_duration_cap.txt`) |
+| `MAX_VIDEO_DURATION_S` | 3600 (was 300 until 2026-10-24) | worker, right after probe, before ASR | 310 s video at the old limit: job failed `VIDEO_TOO_LONG` (`m6a_duration_cap.txt`); 3590 s accepted and 3601 s refused at the new one: `docs/FINAL_CHECK.md` section 8 |
 | `MAX_INGEST_JOBS` / `MAX_RENDER_JOBS` | 1 / 1 | `claimNextJob` (advisory lock + running counts) | unit test with 6 concurrent claimers (`store.test.ts`). The worker is also a single serial loop. Not observed under real concurrent load. |
 
 ## Cold start (`docker compose down` then `up -d`, no reboot, no rebuild, volumes kept)
