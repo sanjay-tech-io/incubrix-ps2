@@ -1,0 +1,21 @@
+# Demo on my own 21 s recording (media/my_clip.mp4, not in git). Script: "Hi, welcome to the channel. Today I'm testing my
+# video editing engine. (2 s pause) Umm, the pricing is simple, and it costs nothing. Thanks for watching."
+# The 2 s pause is the only silence longer than 1 s, so the first removal applies; after the undo the same instruction applies again.
+name: demo_my_clip
+description: caption on "welcome to the channel", remove silences > 1 s, undo, remove them again, recolour the caption, render
+video: media/my_clip.mp4
+num_speakers: 1
+rights: own recording, consent self
+steps:
+  - say: 'add a caption "Welcome!" on "welcome to the channel"'
+    expect: applied
+  - say: remove silences longer than 1 second
+    expect: applied
+  - say: undo
+    expect: applied
+  - say: remove silences longer than 1 second
+    expect: applied
+  - say: make that caption red
+    expect: applied
+  - render: true
+    expect: succeeded
