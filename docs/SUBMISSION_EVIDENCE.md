@@ -21,13 +21,13 @@ How to read it
 | M5 Render matches the timeline: A/V sync within 1 frame, length within 1 frame, after any mix of edits | Yes | Generated clips at 25, 30, 29.97 fps, VFR and a 301-piece cut: length difference 0, worst A/V offset 0.44 frame: `docs/REVIEW_M3.md` section 3, `docs/raw/m3_accuracy_*.json`, `packages/render/test/accuracy.test.ts`; 11 real renders in the latest batch, frame difference 0 on all, audio minus video length at most 0.02 frame: `test-pack/real/batch_720p_m5e/*/render_1_manifest.json`; videos: `render_1.mp4` in each of those folders under [https://34.93.140.79.sslip.io/pack/real/batch_720p_m5e/](https://34.93.140.79.sslip.io/pack/real/batch_720p_m5e/) | A/V offset measured with flash and beep on generated media only. On real footage I measured frame count and length plus one speech onset. HDR and 10-bit paths are untested. Nobody listened. Audio edit points were not listened to |
 | M6 All operations work: cut range, keep only, reorder, speed, mute/bleep words, caption/text overlay, auto-caption, remove fillers, remove silences > N, ducking music, undo/redo, restore | Yes | Engine: `packages/engine/test/new_ops.test.ts`, `reorder.test.ts`, `replay.test.ts`; parser: `packages/nlu/test/rules.test.ts`; scenarios S36 to S48; renders with real ffmpeg: `packages/render/test/features.test.ts`, `m5b_scenarios_run.txt` (7 scenarios render) | Fillers: the "like" rule is a fixed heuristic, not measured on real speech; on the real recording Whisper transcribed 0 fillers (`docs/TEST_MEDIA.md` section 2). Mute and bleep take words, not time ranges (S22, `docs/REVIEW_M5.md` 8.1). Music is only the built-in generated track |
 | M7 One stated time policy, mentioned in answers | Yes | Every summary contains "Time policy: ..." (`apps/api/test/e2e.test.ts`, `ratelimit.test.ts`); S42; `test-pack/real/batch_720p_m5e/worked_example_real/results.json` | Policy words are parsed by rules ("of the original"). The LLM fallback is told the same policy; no test of an "original" phrasing through Gemini |
-| M8 Integration Standard followed, session runner works, live demo works for the whole review period | Partial | Integration Standard: section 5 below. Session runner: `apps/cli`, `runner.test.ts`, `test-pack/real/batch_720p_m5e/`. Demo: https://34.93.140.79.sslip.io, smoke tests `docs/raw/m6a_smoke_after_rotation.txt`, `docs/raw/m5b_smoke_redeploy.txt` | "Whole review period" cannot be shown today. The URL contains the VM's external IP and I could not check if it is static (`docs/DEPLOY.md`). Reboot survival untested. All outside checks ran from the VM itself or via a fetch service |
+| M8 Integration Standard followed, session runner works, live demo works for the whole review period | Yes | Integration Standard: section 5 below. Session runner: `apps/cli`, `runner.test.ts`, `test-pack/real/batch_720p_m5e/`. Demo: https://34.93.140.79.sslip.io, smoke tests `docs/raw/m6a_smoke_after_rotation.txt`, `docs/raw/m5b_smoke_redeploy.txt` | The IP 34.93.140.79 is reserved as STATIC in GCP (`incubrix-demo-ip`), so the URL does not change. Reboot survival untested. All outside checks ran from the VM itself or via a fetch service |
 
 ## 2. Core level
 
 | Item | Y/P/N | Evidence | Not covered |
 |---|---|---|---|
-| C1 All must-haves | Partial | Section 1: 7 Yes, 1 Partial | M8 is Partial |
+| C1 All must-haves | Yes | Section 1: 8 Yes, 0 Partial | Reboot survival of the demo untested (M8) |
 | C2 Worked example runs (8 steps) | Partial | Exact brief numbers on the engine fixture: S01, `packages/engine/test/worked_example.test.ts`. Same 9 steps on a real video with real ASR: `docs/WORKED_EXAMPLE_REAL.md`, `sessions/worked_example_real.yaml`, `test-pack/real/worked_example_real/`, video [render_1.mp4](https://34.93.140.79.sslip.io/pack/real/worked_example_real/render_1.mp4) | My real recording says "welcome to **our** channel" at 0:39.5 and has 7 pricing mentions, not "the channel" at 0:42 and 3. The brief's unchanged script FAILS on it (Sessions 01, 02 in `batch_720p_m5e/summary.json`, kept). I showed the same behaviour on different numbers, not the brief's numbers |
 | C3 One single-speaker video | Yes | `media/test_single.mp4` (own recording, consent self, `SOURCES.md`); `test-pack/real/worked_example_real/` (video [render_1.mp4](https://34.93.140.79.sslip.io/pack/real/worked_example_real/render_1.mp4)); 38-session batch ([folder](https://34.93.140.79.sslip.io/pack/real/batch_720p_m5e/)) | Not recorded from the brief's script. Not in git |
 | C4 One multi-speaker video | Partial | Synthetic two-voice dialogue (`media/two_voice_dialogue.mp4`, espeak-ng): 2 of 2 speakers found at the default threshold 0.3 with and without hint, 142 of 142 words labelled right, `docs/TEST_MEDIA.md` "M5d update". NASA podcast (public domain, real speech): 3 found for 2 without a hint, 1 effective with a hint | **No real two-person recording of ours.** The one real clip fails at default settings (`test-pack/real/m5d/`). The threshold 0.3 was picked from a 6-clip sweep that no value passes completely |
@@ -101,13 +101,13 @@ How to read it
 
 | Section | Yes | Partial | No | Rows |
 |---|---|---|---|---|
-| 1. Must-haves | 7 | 1 | 0 | 8 |
-| 2. Core level | 1 | 3 | 0 | 4 |
+| 1. Must-haves | 8 | 0 | 0 | 8 |
+| 2. Core level | 2 | 2 | 0 | 4 |
 | 3. Advanced level | 10 | 2 | 0 | 12 |
 | 4. Outstanding level | 3 | 4 | 0 | 7 |
 | 5. Integration Standard (10 points) | 8 | 2 | 0 | 10 |
 | 6. Hard cases | 12 | 4 | 0 | 16 |
-| **Total** | 41 | 16 | 0 | 57 |
+| **Total** | 43 | 14 | 0 | 57 |
 
 
 **Reading the totals.** The brief says a level counts only if every item in it is verified and the previous level is verified. By that rule no level is fully verified: Core has 3 Partial rows (worked example on different numbers, no real two-person video, must-have 8), Advanced has 2, Outstanding has 4. I do not claim any level as passed. The Partial rows are the honest answer; no row is "No" because every item has something built and run, but several have only synthetic or mocked evidence, and the last column says which.
@@ -115,3 +115,5 @@ How to read it
 **Final check, 2026-10-24.** Three rows moved from Yes to Partial after a fresh run against the live URL (A11, I3, I8). Every check, its result and its evidence file: `docs/FINAL_CHECK.md`.
 
 **Follow-up fixes, 2026-10-24.** A11 back to Yes and O5 to Yes after the fixes and the 60-minute run (`docs/FINAL_CHECK.md` section 8); totals are now 41 Yes / 16 Partial.
+
+**Static IP, 2026-10-25.** M8 and C1 moved to Yes: 34.93.140.79 is reserved as STATIC in GCP (`incubrix-demo-ip`). Totals are now 43 Yes / 14 Partial. Reboot survival is untested.
